@@ -1,0 +1,130 @@
+﻿using PCMS_Lipa_General_Tool.Class;
+using System;
+using System.Windows.Forms;
+using Telerik.WinControls;
+
+namespace PCMS_Lipa_General_Tool.Forms
+{
+	public partial class frmAssignProvider : Telerik.WinControls.UI.RadForm
+	{
+		private readonly CommonTask task = new();
+		private readonly Provider provider = new();
+		private readonly User user = new();
+
+		public string txtID;
+		public string empName;
+
+
+		public frmAssignProvider()
+		{
+			InitializeComponent();
+			txtIntID.ReadOnly = true;
+			dgAssignedProvider.ReadOnly = true;
+			LoadDefaults();
+		}
+
+
+		public void GetDBID()
+		{
+			task.GetSequenceNo("textbox", "AssignProvider", txtIntID, null, "AP-");
+		}
+
+		public void LoadDefaults()
+		{
+			ClearData();
+			PullValueforDropdown();
+			LoadDatabasetoTable();
+			GetDBID();
+
+		}
+
+		public void LoadDatabasetoTable()
+		{
+			task.ViewDataTable(dgAssignedProvider, "[Provider Collector]", lblCount, empName);
+		}
+
+		private void ClearData()
+		{
+			txtIntID.Clear();
+			cmbEmployeeName.Text = "Select Employee";
+			cmbProviderName.Text = "Select Provider";
+			txtRemarks.Clear();
+			GetDBID();
+		}
+
+
+		private void btnSave_Click(object sender, EventArgs e)
+		{
+
+			if (btnSave.Text == "Save")
+			{
+				if (cmbEmployeeName.Text == "" || cmbProviderName.Text == "")
+				{
+					RadMessageBox.Show("Please select Employee or Provider in the Dropdown", "Warning", MessageBoxButtons.OK, RadMessageIcon.Error);
+				}
+				else
+				{
+					provider.AssignProvider("Create", txtIntID, cmbProviderName, cmbEmployeeName, txtRemarks, empName);
+					ClearData();
+				}
+			}
+			else
+			{
+				if (cmbEmployeeName.Text == "" || cmbProviderName.Text == "")
+				{
+					RadMessageBox.Show("Please select Employee or Provider in the Dropdown", "Warning", MessageBoxButtons.OK, RadMessageIcon.Error);
+				}
+				else
+				{
+					provider.AssignProvider("Patch", txtIntID, cmbProviderName, cmbEmployeeName, txtRemarks, empName);
+					ClearData();
+				}
+			}
+			LoadDefaults();
+
+		}
+
+
+		private void frmModifyEmailformat_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Escape)
+			{
+				Close();
+			}
+		}
+
+		private void btnDelete_Click(object sender, EventArgs e)
+		{
+			provider.AssignProvider("Delete", txtIntID, cmbProviderName, cmbEmployeeName, txtRemarks, empName);
+			ClearData();
+		}
+
+		private void dgAssignedProvider_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			PullDataFromTabletoTextBox();
+		}
+
+		private void DoubleClickEnable()
+		{
+			cmbEmployeeName.Enabled = true;
+			cmbProviderName.Enabled = true;
+			txtRemarks.Enabled = true;
+			txtIntID.Enabled = false;
+		}
+
+		private void PullDataFromTabletoTextBox()
+		{
+			DoubleClickEnable();
+			btnSave.Text = "Update";
+			provider.FillupAssignProvider(dgAssignedProvider, txtIntID, cmbProviderName, cmbEmployeeName, txtRemarks, empName);
+		}
+
+		private void PullValueforDropdown()
+		{
+			cmbEmployeeName.Items.Clear();
+			user.FillComboEmp(cmbEmployeeName, empName);
+			cmbProviderName.Items.Clear();
+			provider.FillComboProvider(cmbProviderName, empName);
+		}
+	}
+}

@@ -1,0 +1,711 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <LangVersion>latest</LangVersion>
+    <ProjectGuid>{46B1FED8-2F26-466D-B02E-4A615A260BC0}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PCMS_Lipa_General_Tool</RootNamespace>
+    <AssemblyName>PCMS Lipa General Tool</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>online-test.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML, Version=0.104.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.104.2\lib\netstandard2.0\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML.Parser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d5f7376574c51ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.Parser.1.2.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscordMessenger, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DiscordMessenger.2.0.2\lib\netstandard2.0\DiscordMessenger.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.3.1.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml.Framework, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.Framework.3.1.1\lib\net46\DocumentFormat.OpenXml.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="editform">
+      <HintPath>..\..\..\..\ActiveX\editform.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="ExCSS, Version=4.2.3.0, Culture=neutral, PublicKeyToken=bdbe16be9b936b9a, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExCSS.4.2.3\lib\net48\ExCSS.dll</HintPath>
+    </Reference>
+    <Reference Include="HarfBuzzSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\HarfBuzzSharp.7.3.0.1\lib\net462\HarfBuzzSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Pkcs11Interop, Version=5.1.2.0, Culture=neutral, PublicKeyToken=c10e9c2d8c006d2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pkcs11Interop.5.1.2\lib\net45\Pkcs11Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="RBush, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RBush.4.0.0\lib\net47\RBush.dll</HintPath>
+    </Reference>
+    <Reference Include="SautinSoft.Document, Version=2024.11.20.0, Culture=neutral, PublicKeyToken=e759c76c7515592a, processorArchitecture=MSIL">
+      <HintPath>..\packages\SautinSoft.Document.2024.11.20\lib\net48\SautinSoft.Document.dll</HintPath>
+    </Reference>
+    <Reference Include="ShimSkiaSharp, Version=1.0.0.18, Culture=neutral, PublicKeyToken=dafe96fe6c845a74, processorArchitecture=MSIL">
+      <HintPath>..\packages\ShimSkiaSharp.1.0.0.18\lib\net461\ShimSkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>..\packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp, Version=2.88.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\SkiaSharp.2.88.7\lib\net462\SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp.HarfBuzz, Version=2.88.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\SkiaSharp.HarfBuzz.2.88.7\lib\net462\SkiaSharp.HarfBuzz.dll</HintPath>
+    </Reference>
+    <Reference Include="Svg.Custom, Version=1.0.0.18, Culture=neutral, PublicKeyToken=dafe96fe6c845a74, processorArchitecture=MSIL">
+      <HintPath>..\packages\Svg.Custom.1.0.0.18\lib\netstandard2.0\Svg.Custom.dll</HintPath>
+    </Reference>
+    <Reference Include="Svg.Model, Version=1.0.0.18, Culture=neutral, PublicKeyToken=dafe96fe6c845a74, processorArchitecture=MSIL">
+      <HintPath>..\packages\Svg.Model.1.0.0.18\lib\net461\Svg.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="Svg.Skia, Version=1.0.0.18, Culture=neutral, PublicKeyToken=dafe96fe6c845a74, processorArchitecture=MSIL">
+      <HintPath>..\packages\Svg.Skia.1.0.0.18\lib\net461\Svg.Skia.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.5.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.WinControls, Version=2023.1.117.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWF\2023.1.117.48\Telerik.WinControls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.WinControls.GridView, Version=2023.1.117.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.Themes.Crystal, Version=2023.1.117.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.Themes.CrystalDark, Version=2023.1.117.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.Themes.Fluent, Version=2023.1.117.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.Themes.Material, Version=2023.1.117.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.Themes.MaterialBlueGrey, Version=2023.1.117.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.Themes.MaterialPink, Version=2023.1.117.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.UI, Version=2023.1.117.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWF\2023.1.117.48\Telerik.WinControls.UI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TelerikCommon, Version=2023.1.117.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWF\2023.1.117.48\TelerikCommon.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class\Adjuster.cs" />
+    <Compile Include="Class\Attorney.cs" />
+    <Compile Include="Class\BillReview.cs" />
+    <Compile Include="Class\Broadvoice.cs" />
+    <Compile Include="Class\Bundle.cs" />
+    <Compile Include="Class\CollectorNotes.cs" />
+    <Compile Include="Class\CommonTask.cs" />
+    <Compile Include="Class\Diagnosis.cs" />
+    <Compile Include="Class\EasyPrint.cs" />
+    <Compile Include="Class\EmailFormatDB.cs" />
+    <Compile Include="Class\Global.cs" />
+    <Compile Include="Class\HearingRep.cs" />
+    <Compile Include="Class\Insurance.cs" />
+    <Compile Include="Class\Leave.cs" />
+    <Compile Include="Class\Login.cs" />
+    <Compile Include="Class\MPN.cs" />
+    <Compile Include="Class\OnlineLogins.cs" />
+    <Compile Include="Class\Pantry.cs" />
+    <Compile Include="Class\Provider.cs" />
+    <Compile Include="Class\User.cs" />
+    <Compile Include="Forms\frmAssignProvider.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAssignProvider.Designer.cs">
+      <DependentUpon>frmAssignProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAbout.Designer.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmAdjusterinformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAdjusterinformation.Designer.cs">
+      <DependentUpon>frmAdjusterinformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmAttorneyInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAttorneyInformation.Designer.cs">
+      <DependentUpon>frmAttorneyInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmBillDiagnosis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmBillDiagnosis.Designer.cs">
+      <DependentUpon>frmBillDiagnosis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmBundlecodes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmBundlecodes.Designer.cs">
+      <DependentUpon>frmBundlecodes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmBVChecker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmBVChecker.Designer.cs">
+      <DependentUpon>frmBVChecker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmDBUtility.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmDBUtility.Designer.cs">
+      <DependentUpon>frmDBUtility.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmDemoTool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmDemoTool.Designer.cs">
+      <DependentUpon>frmDemoTool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmDeveloperAccess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmDeveloperAccess.Designer.cs">
+      <DependentUpon>frmDeveloperAccess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmEasyPrint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmEasyPrint.Designer.cs">
+      <DependentUpon>frmEasyPrint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmEmailformat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmEmailformat.Designer.cs">
+      <DependentUpon>frmEmailformat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmEmpAdditionalInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmEmpAdditionalInfo.Designer.cs">
+      <DependentUpon>frmEmpAdditionalInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmEmployeeInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmEmployeeInfo.Designer.cs">
+      <DependentUpon>frmEmployeeInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmHearingRep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmHearingRep.Designer.cs">
+      <DependentUpon>frmHearingRep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmInsBillReviewDirectory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmInsBillReviewDirectory.Designer.cs">
+      <DependentUpon>frmInsBillReviewDirectory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmInsuranceInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmInsuranceInfo.Designer.cs">
+      <DependentUpon>frmInsuranceInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmLeave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmLeave.Designer.cs">
+      <DependentUpon>frmLeave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmLogin.Designer.cs">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmMainApp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmMainApp.Designer.cs">
+      <DependentUpon>frmMainApp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmManageproduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmManageproduct.Designer.cs">
+      <DependentUpon>frmManageproduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModBillReviewInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModBillReviewInfo.Designer.cs">
+      <DependentUpon>frmModBillReviewInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModBundleCodes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModBundleCodes.Designer.cs">
+      <DependentUpon>frmModBundleCodes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModConnection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModConnection.Designer.cs">
+      <DependentUpon>frmModConnection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModEasyPrintDenial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModEasyPrintDenial.Designer.cs">
+      <DependentUpon>frmModEasyPrintDenial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModHearingRep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModHearingRep.Designer.cs">
+      <DependentUpon>frmModHearingRep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModifyAdjusterInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModifyAdjusterInfo.Designer.cs">
+      <DependentUpon>frmModifyAdjusterInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModifyAtty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModifyAtty.Designer.cs">
+      <DependentUpon>frmModifyAtty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModifyDiagnosis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModifyDiagnosis.Designer.cs">
+      <DependentUpon>frmModifyDiagnosis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModifyEmailformat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModifyEmailformat.Designer.cs">
+      <DependentUpon>frmModifyEmailformat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModifyNotes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModifyNotes.Designer.cs">
+      <DependentUpon>frmModifyNotes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModLeave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModLeave.Designer.cs">
+      <DependentUpon>frmModLeave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModMPN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModMPN.Designer.cs">
+      <DependentUpon>frmModMPN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModPrivateInfoIns.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModPrivateInfoIns.Designer.cs">
+      <DependentUpon>frmModPrivateInfoIns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmMPN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmMPN.Designer.cs">
+      <DependentUpon>frmMPN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmOnlineLogins.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmOnlineLogins.Designer.cs">
+      <DependentUpon>frmOnlineLogins.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmPantry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmPantry.Designer.cs">
+      <DependentUpon>frmPantry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmProvider.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmProvider.Designer.cs">
+      <DependentUpon>frmProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmReadActivityLogs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmReadActivityLogs.Designer.cs">
+      <DependentUpon>frmReadActivityLogs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmResetPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmResetPassword.Designer.cs">
+      <DependentUpon>frmResetPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmRTFEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmRTFEditor.Designer.cs">
+      <DependentUpon>frmRTFEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSuggestion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSuggestion.Designer.cs">
+      <DependentUpon>frmSuggestion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmUpdateDCPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmUpdateDCPassword.Designer.cs">
+      <DependentUpon>frmUpdateDCPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmUserManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmUserManagement.Designer.cs">
+      <DependentUpon>frmUserManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmUserProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmUserProfile.Designer.cs">
+      <DependentUpon>frmUserProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmVersion History.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmVersion History.Designer.cs">
+      <DependentUpon>frmVersion History.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmViewActivityLogs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmViewActivityLogs.Designer.cs">
+      <DependentUpon>frmViewActivityLogs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmWCTool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmWCTool.Designer.cs">
+      <DependentUpon>frmWCTool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmWCTrainingtools.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmWCTrainingtools.Designer.cs">
+      <DependentUpon>frmWCTrainingtools.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HelperClass\cmdTasks.cs" />
+    <Compile Include="HelperClass\DBConStatus.cs" />
+    <Compile Include="HelperClass\emailSender.cs" />
+    <Compile Include="HelperClass\SecurityEncryption.cs" />
+    <Compile Include="HelperClass\WinDiscordAPI.cs" />
+    <EmbeddedResource Include="Forms\frmAssignProvider.resx">
+      <DependentUpon>frmAssignProvider.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmAbout.resx">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmAdjusterinformation.resx">
+      <DependentUpon>frmAdjusterinformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmAttorneyInformation.resx">
+      <DependentUpon>frmAttorneyInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmBillDiagnosis.resx">
+      <DependentUpon>frmBillDiagnosis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmBundlecodes.resx">
+      <DependentUpon>frmBundlecodes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmBVChecker.resx">
+      <DependentUpon>frmBVChecker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmDBUtility.resx">
+      <DependentUpon>frmDBUtility.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmDemoTool.resx">
+      <DependentUpon>frmDemoTool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmDeveloperAccess.resx">
+      <DependentUpon>frmDeveloperAccess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmEasyPrint.resx">
+      <DependentUpon>frmEasyPrint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmEmailformat.resx">
+      <DependentUpon>frmEmailformat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmEmpAdditionalInfo.resx">
+      <DependentUpon>frmEmpAdditionalInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmEmployeeInfo.resx">
+      <DependentUpon>frmEmployeeInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmHearingRep.resx">
+      <DependentUpon>frmHearingRep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmInsBillReviewDirectory.resx">
+      <DependentUpon>frmInsBillReviewDirectory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmInsuranceInfo.resx">
+      <DependentUpon>frmInsuranceInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmLeave.resx">
+      <DependentUpon>frmLeave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmLogin.resx">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMainApp.resx">
+      <DependentUpon>frmMainApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmManageproduct.resx">
+      <DependentUpon>frmManageproduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModBillReviewInfo.resx">
+      <DependentUpon>frmModBillReviewInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModBundleCodes.resx">
+      <DependentUpon>frmModBundleCodes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModConnection.resx">
+      <DependentUpon>frmModConnection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModEasyPrintDenial.resx">
+      <DependentUpon>frmModEasyPrintDenial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModHearingRep.resx">
+      <DependentUpon>frmModHearingRep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModifyAdjusterInfo.resx">
+      <DependentUpon>frmModifyAdjusterInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModifyAtty.resx">
+      <DependentUpon>frmModifyAtty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModifyDiagnosis.resx">
+      <DependentUpon>frmModifyDiagnosis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModifyEmailformat.resx">
+      <DependentUpon>frmModifyEmailformat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModifyNotes.resx">
+      <DependentUpon>frmModifyNotes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModLeave.resx">
+      <DependentUpon>frmModLeave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModMPN.resx">
+      <DependentUpon>frmModMPN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModPrivateInfoIns.resx">
+      <DependentUpon>frmModPrivateInfoIns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMPN.resx">
+      <DependentUpon>frmMPN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmOnlineLogins.resx">
+      <DependentUpon>frmOnlineLogins.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmPantry.resx">
+      <DependentUpon>frmPantry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmProvider.resx">
+      <DependentUpon>frmProvider.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmReadActivityLogs.resx">
+      <DependentUpon>frmReadActivityLogs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmResetPassword.resx">
+      <DependentUpon>frmResetPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmRTFEditor.resx">
+      <DependentUpon>frmRTFEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSuggestion.resx">
+      <DependentUpon>frmSuggestion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmUpdateDCPassword.resx">
+      <DependentUpon>frmUpdateDCPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmUserManagement.resx">
+      <DependentUpon>frmUserManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmUserProfile.resx">
+      <DependentUpon>frmUserProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmVersion History.resx">
+      <DependentUpon>frmVersion History.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmViewActivityLogs.resx">
+      <DependentUpon>frmViewActivityLogs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmWCTool.resx">
+      <DependentUpon>frmWCTool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmWCTrainingtools.resx">
+      <DependentUpon>frmWCTrainingtools.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--sirinie -->
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\analytics.png" />
+    <Content Include="Images\online-test %281%29.png" />
+    <Content Include="Images\online-test.ico" />
+    <Content Include="Images\online-test.png" />
+    <Content Include="Images\pcms-logo-footer.ico" />
+    <Content Include="Images\pcms.png" />
+    <Content Include="Images\pcms5.png" />
+    <Content Include="online-test.ico" />
+    <None Include="Resources\online-test.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ShouldAddDPIScalingManifest="True" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="..\packages\HarfBuzzSharp.NativeAssets.macOS.7.3.0.1\build\net462\HarfBuzzSharp.NativeAssets.macOS.targets" Condition="Exists('..\packages\HarfBuzzSharp.NativeAssets.macOS.7.3.0.1\build\net462\HarfBuzzSharp.NativeAssets.macOS.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\HarfBuzzSharp.NativeAssets.macOS.7.3.0.1\build\net462\HarfBuzzSharp.NativeAssets.macOS.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\HarfBuzzSharp.NativeAssets.macOS.7.3.0.1\build\net462\HarfBuzzSharp.NativeAssets.macOS.targets'))" />
+    <Error Condition="!Exists('..\packages\HarfBuzzSharp.NativeAssets.Win32.7.3.0.1\build\net462\HarfBuzzSharp.NativeAssets.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\HarfBuzzSharp.NativeAssets.Win32.7.3.0.1\build\net462\HarfBuzzSharp.NativeAssets.Win32.targets'))" />
+    <Error Condition="!Exists('..\packages\SkiaSharp.NativeAssets.macOS.2.88.7\build\net462\SkiaSharp.NativeAssets.macOS.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.macOS.2.88.7\build\net462\SkiaSharp.NativeAssets.macOS.targets'))" />
+    <Error Condition="!Exists('..\packages\SkiaSharp.NativeAssets.Win32.2.88.7\build\net462\SkiaSharp.NativeAssets.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.Win32.2.88.7\build\net462\SkiaSharp.NativeAssets.Win32.targets'))" />
+  </Target>
+  <Import Project="..\packages\HarfBuzzSharp.NativeAssets.Win32.7.3.0.1\build\net462\HarfBuzzSharp.NativeAssets.Win32.targets" Condition="Exists('..\packages\HarfBuzzSharp.NativeAssets.Win32.7.3.0.1\build\net462\HarfBuzzSharp.NativeAssets.Win32.targets')" />
+  <Import Project="..\packages\SkiaSharp.NativeAssets.macOS.2.88.7\build\net462\SkiaSharp.NativeAssets.macOS.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.macOS.2.88.7\build\net462\SkiaSharp.NativeAssets.macOS.targets')" />
+  <Import Project="..\packages\SkiaSharp.NativeAssets.Win32.2.88.7\build\net462\SkiaSharp.NativeAssets.Win32.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.Win32.2.88.7\build\net462\SkiaSharp.NativeAssets.Win32.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
