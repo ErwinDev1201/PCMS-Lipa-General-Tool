@@ -1,21 +1,17 @@
-﻿using Org.BouncyCastle.Asn1.Ocsp;
-using PCMS_Lipa_General_Tool.HelperClass;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Net.Mail;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -26,6 +22,7 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		readonly SecurityEncryption sec = new();
 		private readonly CommonTask task = new();
+		readonly emailSender mailSender = new();
 
 		
 
@@ -533,7 +530,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			string emailSubject = reason == "forgot" ? "Password Reset Request" : "Password Change Confirmation";
 			string emailContent = $"Your new password for PCMS Lipa General Tool is: {password}\n\nPlease do not share this email or your password.";
 
-			emailSender.SendPasswordEmail(emailContent, email, emailSubject);
+			mailSender.SendEmail("noAttach", emailContent, null, emailSubject, email, "PCMS Lipa General Tool - noreply", null, null);
 
 			string discordMessage = $"{userName} updated their password.";
 			task.AddActivityLog(discordMessage, userName, discordMessage, "USER PASSWORD UPDATED");
@@ -545,7 +542,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			RadMessageBox.Show(message, caption, MessageBoxButtons.OK, icon);
 		}
 
-		
+
 
 		//public void UpdatePassword(string password, string username, string empName)
 		//{
@@ -752,52 +749,52 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//}
 
-		public void FillComboEmp(RadDropDownList cmbEmpList, string empName)
+		public List<string> GetEmployeeList(string empName)
 		{
+			var query = "SELECT [EMPLOYEE NAME] FROM [User Information] WHERE STATUS = 'ACTIVE'";
+			var items = new List<string>();
+			var con = new SqlConnection(_dbConnection);
 			try
 			{
-				var query = "SELECT [EMPLOYEE NAME] FROM [User Information] WHERE STATUS = 'ACTIVE'";
-				cmbEmpList.Items.Clear();
-
-				using var con = new SqlConnection(_dbConnection);
-				using var cmd = new SqlCommand(query, con);
 				con.Open();
-				using var reader = cmd.ExecuteReader();
+				SqlCommand cmd = new(query, con);
+				SqlDataReader reader = cmd.ExecuteReader();
 				while (reader.Read())
 				{
-					string name = reader.GetString(0);
-					cmbEmpList.Items.Add(name);
+					items.Add(reader.GetString(0));
 				}
+				con.Close();
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillComboEmp", empName, "User", "N/A", ex);
+				task.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
 			}
+			return items;
 		}
 
-		public void FillComboMgmt(RadDropDownList cmbEmpList, string empName)
+
+		public List<string> GetManagementList(string empName)
 		{
+			var query = "SELECT [EMPLOYEE NAME] FROM [User Information] WHERE STATUS = 'ACTIVE' AND STATUS = 'MANAGEMENT'";
+			var items = new List<string>();
+			var con = new SqlConnection(_dbConnection);
 			try
 			{
-				var query = "SELECT [EMPLOYEE NAME] FROM [User Information] WHERE POSITION = 'MANAGEMENT'";
-				cmbEmpList.Items.Clear();
-
-				using var con = new SqlConnection(_dbConnection);
-				using var cmd = new SqlCommand(query, con);
 				con.Open();
-				using var reader = cmd.ExecuteReader();
+				SqlCommand cmd = new(query, con);
+				SqlDataReader reader = cmd.ExecuteReader();
 				while (reader.Read())
 				{
-					string name = reader.GetString(0);
-					cmbEmpList.Items.Add(name);
+					items.Add(reader.GetString(0));
 				}
+				con.Close();
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillComboMgmt", empName, "User", "N/A", ex);
+				task.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
 			}
+			return items;
 		}
-
 
 
 		//public void FillComboEmp(RadDropDownList cmbEmpList, string query, string empName)
@@ -838,21 +835,21 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 		public void EmployeeDatabase(
-	string request,
-	RadTextBox txtempID,
-	RadTextBox txtempName,
-	RadTextBox txtuserName,
-	RadTextBox txtpassWord,
-	RadDropDownList cmbUserAccess,
-	RadDropDownList cmbPosition,
-	RadDropDownList cmbUserDept,
-	RadDropDownList cmbUserStatus,
-	RadTextBox txtWorkEmail,
-	RadTextBox txtBVNo,
-	RadDropDownList cmbOffice,
-	string newEmp,
-	string theme,
-	string empName)
+			string request,
+			RadTextBox txtempID,
+			RadTextBox txtempName,
+			RadTextBox txtuserName,
+			RadTextBox txtpassWord,
+			RadDropDownList cmbUserAccess,
+			RadDropDownList cmbPosition,
+			RadDropDownList cmbUserDept,
+			RadDropDownList cmbUserStatus,
+			RadTextBox txtWorkEmail,
+			RadTextBox txtBVNo,
+			RadDropDownList cmbOffice,
+			string newEmp,
+			string theme,
+			string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -869,39 +866,36 @@ namespace PCMS_Lipa_General_Tool.Class
 				cmd.CommandText = request switch
 				{
 					"Update" => @"UPDATE [User Information]
-									SET 
-									    [EMPLOYEE NAME] = @EMPNAME,
-									    USERNAME = @USERNAME,
-									    [USER ACCESS] = @USERACCESS,
-									    POSITION = @POSITION,
-									    DEPARTMENT = @USERDEPT,
-									    [STATUS] = @USERSTATUS,
-									    [EMAIL ADDRESS] = @WORKEMAIL,
-									    [OFFICE] = @OFFICE,
-									    [Broadvoice No.] = @BVNo,
-									    [Broadvoice Status] = @BVStatus
-									WHERE
-										[Employee ID] = @EMPID",
+                          SET 
+                              [EMPLOYEE NAME] = @EMPNAME,
+                              USERNAME = @USERNAME,
+                              [USER ACCESS] = @USERACCESS,
+                              POSITION = @POSITION,
+                              DEPARTMENT = @USERDEPT,
+                              [STATUS] = @USERSTATUS,
+                              [EMAIL ADDRESS] = @WORKEMAIL,
+                              [OFFICE] = @OFFICE,
+                              [Broadvoice No.] = @BVNo,
+                              [Broadvoice Status] = @BVStatus
+                          WHERE
+                              [Employee ID] = @EMPID",
 					"Create" => @"INSERT INTO [User Information]
-										([EMPLOYEE NAME], USERNAME, PASSWORD, [USER ACCESS],
-										POSITION, DEPARTMENT, [STATUS], [EMAIL ADDRESS], 
-										[Broadvoice No.], OFFICE, [FIRST TIME LOGIN], THEME) 
-									VALUES
-										(@EMPNAME, @USERNAME, @PASSWORD, @USERACCESS,
-										@POSITION, @USERDEPT, @USERSTATUS, @WORKEMAIL, 
-										@BVNO, @OFFICE, @NEWEMP, @THEME)",
+                          ([EMPLOYEE NAME], USERNAME, PASSWORD, [USER ACCESS],
+                          POSITION, DEPARTMENT, [STATUS], [EMAIL ADDRESS], 
+                          [Broadvoice No.], OFFICE, [FIRST TIME LOGIN], THEME) 
+                          VALUES
+                          (@EMPNAME, @USERNAME, @PASSWORD, @USERACCESS,
+                          @POSITION, @USERDEPT, @USERSTATUS, @WORKEMAIL, 
+                          @BVNO, @OFFICE, @NEWEMP, @THEME)",
 					"Delete" => @"DELETE FROM [User Information]
-									WHERE
-										[Employee ID] = @EMPID",
+                          WHERE
+                              [Employee ID] = @EMPID",
 					_ => throw new ArgumentException("Invalid request type."),
 				};
 
-				// Add parameters common to Patch and Create
+				// Add common parameters for "Update" and "Create"
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@NEWEMP", newEmp);
-					cmd.Parameters.AddWithValue("@PASSWORD", sec.PassHash(txtpassWord.Text));
-					cmd.Parameters.AddWithValue("@THEME", theme);
 					cmd.Parameters.AddWithValue("@EMPNAME", txtempName.Text);
 					cmd.Parameters.AddWithValue("@USERNAME", txtuserName.Text);
 					cmd.Parameters.AddWithValue("@USERACCESS", cmbUserAccess.Text);
@@ -911,9 +905,18 @@ namespace PCMS_Lipa_General_Tool.Class
 					cmd.Parameters.AddWithValue("@WORKEMAIL", txtWorkEmail.Text);
 					cmd.Parameters.AddWithValue("@BVNO", txtBVNo.Text);
 					cmd.Parameters.AddWithValue("@OFFICE", cmbOffice.Text);
+					cmd.Parameters.AddWithValue("@BVStatus", cmbUserStatus.Text);
 				}
 
-				// Common parameter for all requests
+				// Add specific parameters for "Create"
+				if (request == "Create")
+				{
+					cmd.Parameters.AddWithValue("@NEWEMP", newEmp ?? "N/A");
+					cmd.Parameters.AddWithValue("@PASSWORD", sec.PassHash(txtpassWord.Text));
+					cmd.Parameters.AddWithValue("@THEME", theme ?? "Default");
+				}
+
+				// Add parameter for all requests
 				cmd.Parameters.AddWithValue("@EMPID", txtempID.Text);
 
 				// Execute query
@@ -923,13 +926,13 @@ namespace PCMS_Lipa_General_Tool.Class
 				logs = $"{empName} {request.ToLower()}d Employee ID: {txtempID.Text}";
 				message = $"Done! {txtempID.Text} has been successfully {request.ToLower()}d.";
 				SendCredentialstoEmail(txtWorkEmail.Text.Trim(), txtuserName.Text.Trim(), txtempName.Text.Trim());
-				
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} ADJUSTER INFORMATION");
+
+				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} USER INFORMATION");
 				task.SendToastNotifDesktop(message);
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"adjusterDBRequest {request}", empName, "Adjuster", newEmp, ex);
+				task.LogError($"EmployeeDatabase {request}", empName, "Adjuster", newEmp, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
@@ -937,6 +940,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				conn.Close();
 			}
 		}
+
 
 		private void SendCredentialstoEmail(string recipientEmail, string userName, string empName)
 		{
@@ -1030,12 +1034,15 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private void ValidateInputs(string email)
 		{
-			MailAddress emailToCheck = new(email); // Throws FormatException if invalid
+			MailAddress emailToCheck = new(email); //// Throws FormatException if invalid
 		}
 
-		public DataTable ViewEmployeeInformationUser(string empName, out string lblCount)
+		public DataTable ViewEmployeeInformationUser(string empName, out string lblCount, string window)
 		{
-			var query = "SELECT [EMPLOYEE ID], [EMPLOYEE NAME], [EMAIL ADDRESS], [BROADVOICE NO.], [DEPARTMENT], POSITION, OFFICE, STATUS, REMARKS FROM [User Information] WHERE STATUS = 'ACTIVE'";
+			string query =  window == "EmpInfo"
+				? "SELECT [EMPLOYEE ID], [EMPLOYEE NAME], [EMAIL ADDRESS], [BROADVOICE NO.], [DEPARTMENT], POSITION, OFFICE, STATUS, REMARKS FROM [User Information] WHERE STATUS = 'ACTIVE'"
+				: "SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS], [Broadvoice No.] FROM [User Information] WHERE STATUS = 'ACTIVE'";
+
 			var data = new DataTable();
 			lblCount = string.Empty;
 
@@ -1058,6 +1065,27 @@ namespace PCMS_Lipa_General_Tool.Class
 			return data;
 		}
 
+	
+
+		public void UpdateUserTheme(string empName, string menuItem)
+		{
+			var query = "UPDATE [User Information] SET [THEME] = '" + menuItem + "' WHERE [EMPLOYEE NAME] ='" + empName + "'";
+			try
+			{
+				using (var con = new SqlConnection(_dbConnection))
+				{
+					con.Open();
+					using var command = new SqlCommand(query, con);
+					command.ExecuteNonQuery();
+				}
+				//RadMessageBox.Show("Theme successfully updated", "Information", MessageBoxButtons.OK, RadMessageIcon.Info);
+				task.SendToastNotifDesktop("Theme sucessfully updated and applied");
+			}
+			catch (Exception ex)
+			{
+				task.LogError("UpdateUserTheme", empName, "User", "N/A", ex);
+			}
+		}
 
 		//public void EmployeeDatabase(string request, RadTextBox txtempID, RadTextBox txtempName, RadTextBox txtuserName, RadTextBox txtpassWord, RadDropDownList cmbUserAccess, RadDropDownList cmbPosition, RadDropDownList cmbUserDept, RadDropDownList cmbUserStatus, RadTextBox txtWorkEmail, RadTextBox txtBVNo, RadDropDownList cmbOffice, string newEmp, string theme, string empName)
 		//{

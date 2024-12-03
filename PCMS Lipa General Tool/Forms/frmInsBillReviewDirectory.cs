@@ -39,26 +39,45 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void dgBillReview_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			if (dgBillReview.SelectedRows.Count > 0)
+			try
 			{
-				var dlgModBR = new frmModBillReviewInfo();
-				bill.FillBillReview(dgBillReview, dlgModBR.txtIntID, dlgModBR.txtInsuranceName, dlgModBR.txtPhoneNo, dlgModBR.txtFax, dlgModBR.txtURPhone, dlgModBR.txtURFaxNo, dlgModBR.txtBRPhoneNo, dlgModBR.txtBRFaxNo, dlgModBR.txtOnlineEmail, dlgModBR.txtRemarks, EmpName);
-				if (accessLevel == "User")
-				{
-					dlgModBR.btnDelete.Visible = false;
-					dlgModBR.btnUpdateSave.Visible = false;
-					dlgModBR.Text = "View Bill Reviewer Info";
+				if (dgBillReview.SelectedRows.Count == 0)
+					return;
 
+				var selectedRow = dgBillReview.SelectedRows[0];
+				var modBR = new frmModBillReviewInfo
+				{
+					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
+					txtPhoneNo = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
+					txtFax = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
+					txtURPhone = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
+					txtURFaxNo = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty },
+					txtBRPhoneNo = { Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty },
+					txtBRFaxNo = { Text = selectedRow.Cells[7].Value?.ToString() ?? string.Empty },
+					txtOnlineEmail = { Text = selectedRow.Cells[8].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells[9].Value?.ToString() ?? string.Empty }
+				};
+
+				if (accessLevel != "User")
+				{
+					modBR.Text = "View/Update Adjuster Information";
+					modBR.btnUpdateSave.Text = "Update";
 				}
 				else
 				{
-					dlgModBR.btnUpdateSave.Text = "Update";
-					dlgModBR.Text = "View/Modify Bill Reviewer Info";
+					modBR.Text = "View Adjuster Information";
+					modBR.btnDelete.Visible = false;
+					modBR.btnUpdateSave.Visible = false;
 				}
-				dlgModBR.ShowDialog();
 
+				modBR.ShowDialog();
+				ShowInsuranceInfo();
 			}
-			ShowInsuranceInfo();
+			catch (Exception ex)
+			{
+				task.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
+			}
 		}
 
 		private void frmInsBillReviewDirectory_Load(object sender, EventArgs e)

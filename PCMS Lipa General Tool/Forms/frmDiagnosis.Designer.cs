@@ -1,6 +1,6 @@
 ﻿namespace PCMS_Lipa_General_Tool.Forms
 {
-	partial class frmBillDiagnosis
+	partial class frmDiagnosis
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBillDiagnosis));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDiagnosis));
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
 			this.txtBodyParts = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
@@ -77,7 +77,7 @@
 			this.txtBodyParts.Location = new System.Drawing.Point(529, 37);
 			this.txtBodyParts.Name = "txtBodyParts";
 			this.txtBodyParts.ShowClearButton = true;
-			this.txtBodyParts.Size = new System.Drawing.Size(219, 22);
+			this.txtBodyParts.Size = new System.Drawing.Size(219, 23);
 			this.txtBodyParts.TabIndex = 13;
 			this.txtBodyParts.ThemeName = "Crystal";
 			this.txtBodyParts.TextChanged += new System.EventHandler(this.txtBodyParts_TextChanged);
@@ -87,7 +87,7 @@
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel2.Location = new System.Drawing.Point(437, 40);
 			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(76, 18);
+			this.radLabel2.Size = new System.Drawing.Size(75, 19);
 			this.radLabel2.TabIndex = 12;
 			this.radLabel2.Text = "Body Parts:";
 			this.radLabel2.ThemeName = "Crystal";
@@ -98,7 +98,7 @@
 			this.txtDiagnosis.Location = new System.Drawing.Point(111, 38);
 			this.txtDiagnosis.Name = "txtDiagnosis";
 			this.txtDiagnosis.ShowClearButton = true;
-			this.txtDiagnosis.Size = new System.Drawing.Size(219, 24);
+			this.txtDiagnosis.Size = new System.Drawing.Size(219, 23);
 			this.txtDiagnosis.TabIndex = 11;
 			this.txtDiagnosis.ThemeName = "Crystal";
 			this.txtDiagnosis.TextChanged += new System.EventHandler(this.txtDiagnosis_TextChanged);
@@ -108,7 +108,7 @@
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(19, 41);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(70, 18);
+			this.radLabel1.Size = new System.Drawing.Size(69, 19);
 			this.radLabel1.TabIndex = 10;
 			this.radLabel1.Text = "Diagnosis:";
 			this.radLabel1.ThemeName = "Crystal";
@@ -118,7 +118,7 @@
 			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblSearchCount.Location = new System.Drawing.Point(19, 599);
 			this.lblSearchCount.Name = "lblSearchCount";
-			this.lblSearchCount.Size = new System.Drawing.Size(66, 18);
+			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
 			this.lblSearchCount.TabIndex = 9;
 			this.lblSearchCount.Text = "radLabel2";
 			this.lblSearchCount.ThemeName = "Crystal";
@@ -159,6 +159,7 @@
 			this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
 			this.btnNew.Location = new System.Drawing.Point(812, 14);
 			this.btnNew.Name = "btnNew";
 			this.btnNew.Size = new System.Drawing.Size(105, 48);
@@ -168,7 +169,7 @@
 			this.btnNew.ThemeName = "Crystal";
 			this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
 			// 
-			// frmBillDiagnosis
+			// frmDiagnosis
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -179,7 +180,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "frmBillDiagnosis";
+			this.Name = "frmDiagnosis";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Diagnosis";
 			this.ThemeName = "Crystal";

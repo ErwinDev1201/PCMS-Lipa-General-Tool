@@ -36,7 +36,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				task.LogError("ViewBroadvoiceList", empName, "Broadvoice", "N/A", ex);
 			}
 
 			return data;

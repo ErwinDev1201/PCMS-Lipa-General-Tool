@@ -1,14 +1,14 @@
-﻿
-using PCMS_Lipa_General_Tool.Class;
+﻿using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using YourmeeAppLibrary.Email;
+
 
 
 namespace PCMS_Lipa_General_Tool.Forms
@@ -16,14 +16,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmPantry : Telerik.WinControls.UI.RadForm
 	{
 		string emailAddress;
-		string mailSub;
 		public string EmpName;
 		public string accessLevel;
 		private static readonly string dbBackupcoll = ConfigurationManager.AppSettings["StoragePath"];
 		private readonly Pantry pantry = new();
-		private readonly cmdTasks cmdTask = new();
 		private readonly CommonTask task = new();
 		private readonly User user = new();
+		readonly emailSender mailSender = new();
 
 
 		public frmPantry()
@@ -39,9 +38,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//CheckAdmin();
 		}
 
+
+
 		private void DefaultFields()
 		{
 			// Set default configurations for all users
+			
 			btnNew.Enabled = true;
 			cmbProductList.Enabled = false;
 			txtPrice.Enabled = false;
@@ -61,8 +63,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			dtpFrom.Enabled = true;
 			dtpTo.Enabled = true;
 			btnNew.Visible = true;
-			FillEmpCmb();
-			FillProductCmb();
+			FillProductDropdown();
+			FillEmployeeDropdown();
 			LoadPantryListwithFilter();
 			txtPrice.Text = "";
 			txtIntID.Text = "";
@@ -96,6 +98,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 				cmbEmployee.Enabled = false;
 				btnCancelFilter.Location = new System.Drawing.Point(419, 38);
 				btnCancelFilter.Height = 103;
+			}
+		}
+
+		private void FillProductDropdown()
+		{
+			List<string> items = pantry.GetProductList(EmpName);
+			cmbProductList.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbProductList.Items.Add(item);
 			}
 		}
 
@@ -173,20 +185,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 			cmbItemEmpList.Text = "";
 		}
 
-		public void FillProductCmb()
-		{
 
-			cmbProductList.Items.Clear();
-			var query = "SELECT DISTINCT [Product Name] from [Pantry Product] ORDER BY [Product Name] DESC";
-			task.FillComboDropdown(cmbProductList, query, EmpName);
-		}
 
-		public void FillEmpCmb()
+		public void FillEmployeeDropdown()
 		{
-			cmbEmployee.Items.Clear();
-			user.FillComboEmp(cmbEmployee, EmpName);
-			cmbItemEmpList.Items.Clear();
-			user.FillComboEmp(cmbItemEmpList, EmpName);
+			List<string> items = user.GetEmployeeList(EmpName);
+			cmbEmployee.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbEmployee.Items.Add(item);
+			}
 		}
 
 		private void Multiply()
@@ -257,7 +265,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void cmbProductList_PopupOpening(object sender, CancelEventArgs e)
 		{
-			FillProductCmb();
+			FillProductDropdown();
 		}
 
 		public void SumPantryExpense()
@@ -411,14 +419,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 				if (EmpName == "Erwin Alcantara")
 				{
 					emailAddress = "erwin@pcmsbilling.net";
-					mailSub = mailSubject;
+					string mailSub = mailSubject;
 					System.Threading.Thread.Sleep(3000);
 					mail.SendEmail("yesAttach", mailContent, mailAttachment, mailSubject, emailAddress, "TM Pantry Store", null, null);
 				}
 				else
 				{
 					emailAddress = "edimson@pcmsbilling.net";
-					mailSub = mailSubject;
+					string mailSub = mailSubject;
 					System.Threading.Thread.Sleep(3000);
 					mail.SendEmail("yesAttach", mailContent, mailAttachment, mailSubject, emailAddress, "TM Pantry Store", null, null);
 				}

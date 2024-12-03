@@ -61,27 +61,39 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void dgEmail_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-
-			if (dgEmail.SelectedRows.Count > 0)
+			try
 			{
-				var dlgModEmail = new frmModifyEmailformat();
-				emailDB.FillEmailInfo(dgEmail, dlgModEmail.txtIntID, dlgModEmail.txtInsuranceName, dlgModEmail.txtEmailFormat, dlgModEmail.txtRemarks, EmpName);
-				if (accessLevel == "User")
-				{
-					//dlgModEmail.btnDelete.Visible = false;
-					dlgModEmail.btnSave.Visible = false;
-					dlgModEmail.Text = "View Diagnosis Info";
+				if (dgEmail.SelectedRows.Count == 0)
+					return;
 
+				var selectedRow = dgEmail.SelectedRows[0];
+				var modEmail = new frmModifyEmailformat
+				{
+					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
+					txtEmailFormat = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty }
+				};
+
+				if (accessLevel != "User")
+				{
+					modEmail.Text = "View/Update Adjuster Information";
+					modEmail.btnSave.Text = "Update";
 				}
 				else
 				{
-					dlgModEmail.btnSave.Text = "Update";
-					dlgModEmail.Text = "View/Modify Diagnosis Info";
+					modEmail.Text = "View Adjuster Information";
+					modEmail.btnSave.Visible = false;
 				}
-				dlgModEmail.ShowDialog();
 
+				modEmail.ShowDialog();
+				ViewEmailFormat();
 			}
-			ViewEmailFormat();
+			catch (Exception ex)
+			{
+				task.LogError("dgEmail_MouseDoubleClick", EmpName, "frmEmailormat", null, ex);
+			}
+			
 		}
 
 		private void frmEmailFormat_KeyDown(object sender, KeyEventArgs e)

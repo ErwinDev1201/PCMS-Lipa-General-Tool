@@ -7,8 +7,8 @@ using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
 
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -37,41 +37,12 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				task.LogError("ViewEasyPrintList", empName, "EasyPrint", "N/A", ex);
 			}
 
 			return data;
 		}
 
-		public void FillEasyPrint(RadGridView dgEasyPrinttbl, RadTextBox txtIntID, RadTextBox txtEPCode, RadTextBox txtInsuranceName, RadTextBoxControl txtdenialDescription, RadTextBoxControl txtPossibleSolution, RadTextBoxControl txtRemarks, string empName)
-		{
-			using SqlConnection con = new(_dbConnection);
-			try
-			{
-				con.Open();
-				{
-					using SqlCommand cmd = new("SELECT * FROM [Easy Print Denial]", con);
-					cmd.ExecuteNonQuery();
-					var dgRow = dgEasyPrinttbl.SelectedRows[0];
-					{
-						txtIntID.Text = dgRow.Cells[0].Value + string.Empty;
-						txtEPCode.Text = dgRow.Cells[1].Value + string.Empty;
-						txtInsuranceName.Text = dgRow.Cells[2].Value + string.Empty;
-						txtdenialDescription.Text = dgRow.Cells[3].Value + string.Empty;
-						txtPossibleSolution.Text = dgRow.Cells[4].Value + string.Empty;
-						txtRemarks.Text = dgRow.Cells[5].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError($"FillEasyPrint", empName, "EasyPrint", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
 
 		public void EPDenialDBRequest(string request, RadTextBox epdenialID, RadTextBox easyprintCode, RadTextBox insuranceName, RadTextBoxControl Description, RadTextBoxControl possibleResolution, RadTextBoxControl remarks, string empName)
 		{

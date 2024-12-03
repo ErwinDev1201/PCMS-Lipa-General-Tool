@@ -33,7 +33,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmLogin));
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.lblDeveloper = new Telerik.WinControls.UI.RadLabel();
 			this.lblProgVersion = new Telerik.WinControls.UI.RadLabel();
 			this.lblProgName = new Telerik.WinControls.UI.RadLabel();
@@ -52,9 +51,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.materialTheme1 = new Telerik.WinControls.Themes.MaterialTheme();
 			this.materialPinkTheme1 = new Telerik.WinControls.Themes.MaterialPinkTheme();
 			this.materialBlueGreyTheme1 = new Telerik.WinControls.Themes.MaterialBlueGreyTheme();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblDeveloper)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblProgVersion)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblProgName)).BeginInit();
@@ -66,6 +65,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			((System.ComponentModel.ISupportInitialize)(this.txtPassword)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtUsername)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblalert)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -81,17 +81,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.radPanel1.Size = new System.Drawing.Size(477, 101);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
-			// 
-			// pictureBox1
-			// 
-			this.pictureBox1.ErrorImage = null;
-			this.pictureBox1.Image = global::PCMS_Lipa_General_Tool.Properties.Resources.online_test;
-			this.pictureBox1.Location = new System.Drawing.Point(13, 12);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(87, 76);
-			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pictureBox1.TabIndex = 3;
-			this.pictureBox1.TabStop = false;
 			// 
 			// lblDeveloper
 			// 
@@ -142,6 +131,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			// btnLogin
 			// 
 			this.btnLogin.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnLogin.Image = global::PCMS_Lipa_General_Tool.Properties.Resources.login_;
 			this.btnLogin.Location = new System.Drawing.Point(340, 21);
 			this.btnLogin.Name = "btnLogin";
 			this.btnLogin.Size = new System.Drawing.Size(117, 70);
@@ -217,6 +207,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.lblalert.Text = "radLabel3";
 			this.lblalert.ThemeName = "Crystal";
 			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.ErrorImage = null;
+			this.pictureBox1.Image = global::PCMS_Lipa_General_Tool.Properties.Resources.online_test;
+			this.pictureBox1.Location = new System.Drawing.Point(13, 12);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(87, 76);
+			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox1.TabIndex = 3;
+			this.pictureBox1.TabStop = false;
+			// 
 			// FrmLogin
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -237,7 +238,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
 			this.radPanel1.ResumeLayout(false);
 			this.radPanel1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblDeveloper)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblProgVersion)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblProgName)).EndInit();
@@ -250,6 +250,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			((System.ComponentModel.ISupportInitialize)(this.txtPassword)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtUsername)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblalert)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

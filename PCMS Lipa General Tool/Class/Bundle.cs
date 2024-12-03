@@ -6,8 +6,8 @@ using System.DirectoryServices.AccountManagement;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -36,51 +36,10 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				task.LogError("ViewBundleCodes", empName, "Bundle", "N/A", ex);
 			}
 
 			return data;
-		}
-
-		public void FillBundleCodes(RadGridView dgBundleCodetbl, RadTextBox txtIntID, RadTextBox txtCPTCode, RadTextBoxControl txtDescription, RadTextBoxControl txtBundleCodes, RadTextBoxControl txtRemarks, RadRadioButton rdoYes, RadRadioButton rdoNo, string empName)
-		{
-			using SqlConnection con = new(_dbConnection);
-			try
-			{
-				con.Open();
-				{
-					string bundleOptions;
-					using (SqlCommand cmd = new("SELECT * FROM [Bundle Codes]", con))
-					{
-						cmd.ExecuteNonQuery();
-						var dgRow = dgBundleCodetbl.SelectedRows[0];
-						{
-							txtIntID.Text = dgRow.Cells[0].Value + string.Empty;
-							txtCPTCode.Text = dgRow.Cells[1].Value + string.Empty;
-							txtDescription.Text = dgRow.Cells[2].Value + string.Empty;
-							bundleOptions = dgRow.Cells[3].Value + string.Empty;
-							txtBundleCodes.Text = dgRow.Cells[4].Value + string.Empty;
-							txtRemarks.Text = dgRow.Cells[6].Value + string.Empty;
-						}
-					}
-					if (bundleOptions == "Y")
-					{
-						rdoYes.IsChecked = true;
-					}
-					else
-					{
-						rdoNo.IsChecked = true;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError($"FillBundleCodes", empName, "Bundle", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
 		}
 
 

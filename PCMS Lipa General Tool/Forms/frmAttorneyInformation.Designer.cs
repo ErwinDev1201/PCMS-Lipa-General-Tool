@@ -97,7 +97,7 @@
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel2.Location = new System.Drawing.Point(395, 40);
 			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(68, 18);
+			this.radLabel2.Size = new System.Drawing.Size(67, 19);
 			this.radLabel2.TabIndex = 16;
 			this.radLabel2.Text = "Category: ";
 			this.radLabel2.ThemeName = "Crystal";
@@ -108,7 +108,7 @@
 			this.txtSearch.Location = new System.Drawing.Point(111, 38);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
-			this.txtSearch.Size = new System.Drawing.Size(238, 22);
+			this.txtSearch.Size = new System.Drawing.Size(238, 23);
 			this.txtSearch.TabIndex = 15;
 			this.txtSearch.ThemeName = "Crystal";
 			this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
@@ -118,7 +118,7 @@
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(19, 41);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(87, 18);
+			this.radLabel1.Size = new System.Drawing.Size(84, 19);
 			this.radLabel1.TabIndex = 14;
 			this.radLabel1.Text = "Search here: ";
 			this.radLabel1.ThemeName = "Crystal";
@@ -128,6 +128,7 @@
 			this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
 			this.btnNew.Location = new System.Drawing.Point(824, 14);
 			this.btnNew.Name = "btnNew";
 			this.btnNew.Size = new System.Drawing.Size(114, 48);
@@ -142,7 +143,7 @@
 			this.lblDefSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblDefSearchCount.Location = new System.Drawing.Point(20, 598);
 			this.lblDefSearchCount.Name = "lblDefSearchCount";
-			this.lblDefSearchCount.Size = new System.Drawing.Size(66, 18);
+			this.lblDefSearchCount.Size = new System.Drawing.Size(66, 19);
 			this.lblDefSearchCount.TabIndex = 10;
 			this.lblDefSearchCount.Text = "radLabel5";
 			this.lblDefSearchCount.ThemeName = "Crystal";

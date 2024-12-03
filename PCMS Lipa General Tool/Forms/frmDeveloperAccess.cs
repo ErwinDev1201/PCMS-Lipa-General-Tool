@@ -2,14 +2,13 @@
 using System;
 using System.Configuration;
 using System.Data.SqlClient;
-using YourmeeAppLibrary.Security;
+
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmDeveloperAccess : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
-		private readonly SecurityEncryption secEnc = new();
+		private readonly DeveloperAccess dev = new();
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
 
 		public string empName;
@@ -38,8 +37,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnUpdateDevPassword_Click(object sender, EventArgs e)
 		{
-			var conquery = "UPDATE [User Information] SET DeveloperAccess = '" + txtNewPassword.Text + "' WHERE USERNAME = 'Erwin'";
-			task.UpdateValues(conquery, empName, "Password successfully updated");
+			dev.UpdateDevPasswordAccess(empName, txtNewPassword.Text);
 		}
 	}
 }

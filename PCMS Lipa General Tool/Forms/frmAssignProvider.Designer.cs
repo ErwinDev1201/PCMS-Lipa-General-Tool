@@ -44,7 +44,7 @@
 			this.txtIntID = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
 			this.dgAssignedProvider = new Telerik.WinControls.UI.RadGridView();
-			this.lblCount = new Telerik.WinControls.UI.RadLabel();
+			this.lblCountResult = new Telerik.WinControls.UI.RadLabel();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.btnDelete)).BeginInit();
@@ -59,7 +59,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgAssignedProvider)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgAssignedProvider.MasterTemplate)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblCount)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblCountResult)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -204,28 +204,28 @@
 			this.dgAssignedProvider.TabIndex = 1;
 			this.dgAssignedProvider.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgAssignedProvider_MouseDoubleClick);
 			// 
-			// lblCount
+			// lblCountResult
 			// 
-			this.lblCount.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblCount.Location = new System.Drawing.Point(398, 513);
-			this.lblCount.Name = "lblCount";
-			this.lblCount.Size = new System.Drawing.Size(66, 19);
-			this.lblCount.TabIndex = 2;
-			this.lblCount.Text = "radLabel4";
+			this.lblCountResult.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblCountResult.Location = new System.Drawing.Point(398, 513);
+			this.lblCountResult.Name = "lblCountResult";
+			this.lblCountResult.Size = new System.Drawing.Size(66, 19);
+			this.lblCountResult.TabIndex = 2;
+			this.lblCountResult.Text = "radLabel4";
 			// 
-			// AssignProvider
+			// frmAssignProvider
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(872, 550);
-			this.Controls.Add(this.lblCount);
+			this.Controls.Add(this.lblCountResult);
 			this.Controls.Add(this.dgAssignedProvider);
 			this.Controls.Add(this.radPanel1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "AssignProvider";
+			this.Name = "frmAssignProvider";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Email Information";
 			this.ThemeName = "Crystal";
@@ -245,7 +245,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgAssignedProvider.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgAssignedProvider)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblCount)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblCountResult)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -268,6 +268,6 @@
 		private Telerik.WinControls.UI.RadDropDownList cmbEmployeeName;
 		public Telerik.WinControls.UI.RadButton btnDelete;
 		private Telerik.WinControls.UI.RadGridView dgAssignedProvider;
-		private Telerik.WinControls.UI.RadLabel lblCount;
+		private Telerik.WinControls.UI.RadLabel lblCountResult;
 	}
 }

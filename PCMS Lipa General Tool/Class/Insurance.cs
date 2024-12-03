@@ -6,8 +6,8 @@ using System.DirectoryServices.AccountManagement;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -37,43 +37,12 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				task.LogError("ViewInsuraceList", empName, "Insurance", "N/A", ex);
 			}
 
 			return data;
 		}
 
-
-		public void FillInsuranceInfo(RadGridView dgInsInfo, RadTextBox txtIntID, RadTextBox txtInsuranceName, RadTextBox txtInsCode, RadTextBoxControl txtInsuranceAdress, RadTextBox txtPayerID, RadTextBoxControl txtRemarks, string empName)
-		{
-			using SqlConnection con = new(_dbConnection);
-			try
-			{
-				con.Open();
-				{
-					using SqlCommand cmd = new("SELECT * FROM [Insurance Info]", con);
-					cmd.ExecuteNonQuery();
-					var dgRow = dgInsInfo.SelectedRows[0];
-					{
-						txtIntID.Text = dgRow.Cells[0].Value + string.Empty;
-						txtInsuranceName.Text = dgRow.Cells[1].Value + string.Empty;
-						txtInsCode.Text = dgRow.Cells[2].Value + string.Empty;
-						txtInsuranceAdress.Text = dgRow.Cells[3].Value + string.Empty;
-						txtPayerID.Text = dgRow.Cells[4].Value + string.Empty;
-						txtRemarks.Text = dgRow.Cells[5].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError($"FillInsuranceInfo", empName, "Insurance", "N/A", ex);
-
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
 
 		public void InsuranceInfoDBRequest(string request, RadTextBox insID, RadTextBox insuranceName, RadTextBox insCode, RadTextBoxControl address, RadTextBox payerID, RadTextBoxControl remarks, string empName)
 		{

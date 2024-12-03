@@ -1,4 +1,6 @@
 ﻿
+using DiscordMessenger;
+using DocumentFormat.OpenXml.Drawing;
 using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
@@ -25,7 +27,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ShowMpnList()
 		{
-			task.ViewDataTable(dgMPN, "[MPN Information]", lblSearchCount, EmpName);
+			var dataTable = mpn.ViewMPNList(EmpName, out string lblCount);
+			dgMPN.DataSource = dataTable;
+			lblSearchCount.Text = lblCount;
 		}
 
 		//private void txtSearch_TextChanged(object sender, EventArgs e)
@@ -49,34 +53,46 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void dgMPN_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			if (DialogResult.Yes == RadMessageBox.Show("Click Yes to Open the Link and No to View more details and modify the info, Click X to close", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
+			try
 			{
-				mpn.FillUpMPNWeblink(dgMPN, txtLink, EmpName);
-				OpenLink(txtLink.Text);
-			}
-			else
-			{
-				if (dgMPN.SelectedRows.Count > 0)
+				var modMPN = new frmModMPN();
+				var selectedRow = dgMPN.SelectedRows[0];
+				if (DialogResult.Yes == RadMessageBox.Show("Click Yes to Open the Link and No to View more details and modify the info, Click X to close", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					var dlgModMPN = new frmModMPN();
-					mpn.FillMPNData(dgMPN, dlgModMPN.txtIntID, dlgModMPN.txtInsuranceName, dlgModMPN.txtMPNName, dlgModMPN.txtMPNUserName, dlgModMPN.txtPassword, dlgModMPN.txtWebLink, dlgModMPN.txtRemarks, EmpName);
-					if (accessLevel == "User")
-					{
-						dlgModMPN.btnDelete.Visible = false;
-						dlgModMPN.btnUpdateSave.Visible = false;
-						dlgModMPN.Text = "View Diagnosis Info";
+					string link = selectedRow.Cells[5].Value?.ToString() ?? string.Empty;
+					OpenLink(link);
+				}
+				else
+				{
+					modMPN.txtIntID.Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty;
+					modMPN.txtInsuranceName.Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty;
+					modMPN.txtMPNName.Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty;
+					modMPN.txtMPNUserName.Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
+					modMPN.txtPassword.Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty;
+					modMPN.txtWebLink.Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty;
+					modMPN.txtRemarks.Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty;
 
+					if (accessLevel != "User")
+					{
+						modMPN.Text = "View/Update MPN Information";
+						modMPN.btnUpdateSave.Text = "Update";
 					}
 					else
 					{
-						dlgModMPN.btnUpdateSave.Text = "Update";
-						dlgModMPN.Text = "View/Modify Diagnosis Info";
+						modMPN.Text = "View MPN Information";
+						modMPN.btnDelete.Visible = false;
+						modMPN.btnUpdateSave.Visible = false;
 					}
-					dlgModMPN.ShowDialog();
-
+					modMPN.ShowDialog();
+					ShowMpnList();
 				}
-				ShowMpnList();
+					
 			}
+			catch (Exception ex)
+			{
+				task.LogError("dgMPN_MouseDoubleClick", EmpName, "frmMPN", null, ex);
+			}
+			
 		}
 
 		private void btnNew_Click(object sender, EventArgs e)

@@ -2,13 +2,9 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.DirectoryServices.AccountManagement;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -38,46 +34,10 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				task.LogError("ViewBillReviewList", empName, "BillReview", "N/A", ex);
 			}
 
 			return data;
-		}
-
-
-		public void FillBillReview(RadGridView dgBillReview, RadTextBox txtIntID, RadTextBox txtInsuranceName, RadTextBox txtPhoneNo, RadTextBox txtFaxNo, RadTextBox txturPhoneNo, RadTextBox txturFaxNo, RadTextBox txtbrPhoneNo, RadTextBox txtbrFaxNo, RadTextBox txtOnlineEmail, RadTextBoxControl txtRemarks, string empName)
-		{
-			// Ensure a row is selected
-			if (dgBillReview.SelectedRows.Count == 0)
-			{
-				RadMessageBox.Show("No row selected. Please select a row first.", "Error", MessageBoxButtons.OK, RadMessageIcon.Info);
-				return;
-			}
-
-			var dgRow = dgBillReview.SelectedRows[0];
-
-			try
-			{
-				using SqlConnection con = new(_dbConnection);
-				using SqlCommand cmd = new("SELECT * FROM [Bill Review Directory]", con);
-				con.Open();
-
-				// Populate TextBoxes with the selected row's data
-				txtIntID.Text = dgRow.Cells[0].Value?.ToString() ?? string.Empty;
-				txtInsuranceName.Text = dgRow.Cells[1].Value?.ToString() ?? string.Empty;
-				txtPhoneNo.Text = dgRow.Cells[2].Value?.ToString() ?? string.Empty;
-				txtFaxNo.Text = dgRow.Cells[3].Value?.ToString() ?? string.Empty;
-				txturPhoneNo.Text = dgRow.Cells[4].Value?.ToString() ?? string.Empty;
-				txturFaxNo.Text = dgRow.Cells[5].Value?.ToString() ?? string.Empty;
-				txtbrPhoneNo.Text = dgRow.Cells[6].Value?.ToString() ?? string.Empty;
-				txtbrFaxNo.Text = dgRow.Cells[7].Value?.ToString() ?? string.Empty;
-				txtOnlineEmail.Text = dgRow.Cells[8].Value?.ToString() ?? string.Empty;
-				txtRemarks.Text = dgRow.Cells[9].Value?.ToString() ?? string.Empty;
-			}
-			catch (Exception ex)
-			{
-				task.LogError($"FillEmailInfo", empName, "BillReview", "N/A", ex);
-			}
 		}
 
 

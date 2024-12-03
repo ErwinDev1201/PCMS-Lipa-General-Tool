@@ -1,6 +1,7 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 
@@ -34,7 +35,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public void FillEmpCmb()
 		{
 			cmbFilterName.Items.Clear();
-			user.FillComboEmp(cmbFilterName, EmpName);
+			List<string> items = user.GetEmployeeList(EmpName);
+			cmbFilterName.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbFilterName.Items.Add(item);
+			}
 		}
 
 
@@ -83,10 +89,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			leave.FillUpSupportLeaveForm(modleave.txtEmpID, modleave.txtEmployeeName, modleave.txtPosition, modleave.txtEmploymentStatus, EmpName);
 			modleave.ShowDialog();
 			ShowLeaveList();
-			//ShowAdjInfo();
 
 		}
-		//Bug: The createID() method is not being called.
+
 
 		private void frmLeave_Load(object sender, EventArgs e)
 		{

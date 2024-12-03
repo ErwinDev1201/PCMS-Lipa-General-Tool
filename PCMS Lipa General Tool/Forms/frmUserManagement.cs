@@ -1,4 +1,5 @@
-﻿using PCMS_Lipa_General_Tool.Class;
+﻿using DiscordMessenger;
+using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
@@ -54,6 +55,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			else
 			{
 				btnRemove.Visible = true;
+				btnRemove.Enabled = true;
 			}
 			btnCancel.Visible = true;
 			btnResetPassword.Visible = true;
@@ -70,11 +72,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void DefaultItem()
 		{
-			//txtID.Visible = false;
-			txtIntID.Enabled = false;
-			//chkshowpw.IsEnabled= false;
 			Clear();
-			//txtSearch.Focus();
+			txtIntID.Enabled = false;
 			txtUsername.Enabled = false;
 			txtPassword.Enabled = false;
 			btnResetPassword.Visible = false;
@@ -85,9 +84,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			cmbUserAccess.Enabled = false;
 			txtWorkEmail.Enabled = false;
 			txtPassword.Visible = true;
-			//btnCancel.Enabled = false;
 			btnResetPassword.Visible = false;
-			//chkshowpw.IsChecked = false;
 			cmbPosition.Enabled = false;
 			btnRemove.Visible = false;
 			btnUpdateSave.Visible = false;
@@ -130,20 +127,26 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnRemove.Visible = false;
 			btnUpdateSave.Visible = true;
 			btnUpdateSave.Text = "Save";
+			txtBVNo.Enabled = true;
+			btnMoreInfo.Enabled = true;
 			btnCancel.Enabled = true;
 			btnCancel.Visible = true;
 			btnNew.Enabled = false;
 			btnMoreInfo.Visible = true;
-			//pwdMnageUser.Visibility = Visibility.;			
+			cmbUserStatus.Text = "Active";
+			cmbOffice.Text = "Lipa";
+			btnUpdateSave.Enabled =                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+			//pwdMnageUser.Visibility = ;Visibility.;			
 			dgEmployeeInfo.ReadOnly = true;
 			//			mainProcess.CreateDbId(txtIntID, Sql, @"PCMS-0");
 		}
 
 		public void ShowAllUserAccess()
 		{
-			string query =
-				"SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS], [Broadvoice No.] FROM [User Information] WHERE STATUS = 'ACTIVE'";
-			task.ViewDatagrid(dgEmployeeInfo, query, lblSearchCount, empName);
+			dgEmployeeInfo.BestFitColumns(BestFitColumnMode.DisplayedDataCells);
+			var dataTable = user.ViewEmployeeInformationUser(empName, out string lblCount, "frmUserMgmt");
+			dgEmployeeInfo.DataSource = dataTable;
+			lblSearchCount.Text = lblCount;
 		}
 
 		private void Clear()
@@ -158,7 +161,29 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtWorkEmail.Text = "";
 			cmbUserDept.Text = "";
 			cmbPosition.Text = "";
+			txtBVNo.Text = "";
 			//txtSearch.Text = "";
+		}
+
+		private void DisableInput()
+		{
+			txtIntID.Enabled = false;
+			txtEmployeeName.Enabled = false;
+			txtBVNo.Enabled = false;
+			txtUsername.Enabled = false;
+			txtWorkEmail.Enabled = false;
+			txtPassword.Enabled = false;
+			cmbEmployeeStat.Enabled = false;
+			cmbOffice.Enabled = false;
+			cmbPosition.Enabled = false;
+			cmbUserDept.Enabled = false;
+			btnCancel.Enabled = false;
+			btnMoreInfo.Enabled = false;
+			btnUpdateSave.Enabled = false;
+			btnRemove.Enabled = false;
+			cmbUserDept.Enabled = false;
+			btnResetPassword.Enabled = false;
+			cmbUserDept.Enabled = false;
 		}
 
 		private void PullDataFromTabletoTextBox()
@@ -262,6 +287,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
+				DisableInput();
 				user.EmployeeDatabase("Delete", txtIntID, txtEmployeeName, txtUsername, txtPassword, cmbUserAccess, cmbPosition, cmbUserDept, cmbUserStatus, txtWorkEmail, txtBVNo, cmbOffice, null, null, empName);
 				Clear();
 				ShowAllUserAccess();
@@ -275,7 +301,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					radPanel1.Enabled = false;
+					DisableInput();
+					//radPanel1.Enabled = false;
 					user.EmployeeDatabase("Update", txtIntID, txtEmployeeName, txtUsername, txtPassword, cmbUserAccess, cmbPosition, cmbUserDept, cmbUserStatus, txtWorkEmail, txtBVNo, cmbOffice, null, null, empName);
 					radPanel1.Enabled = true;
 					DefaultItem();

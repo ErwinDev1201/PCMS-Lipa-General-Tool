@@ -174,6 +174,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class\ActivtiyLogs.cs" />
     <Compile Include="Class\Adjuster.cs" />
     <Compile Include="Class\Attorney.cs" />
     <Compile Include="Class\BillReview.cs" />
@@ -181,7 +182,9 @@
     <Compile Include="Class\Bundle.cs" />
     <Compile Include="Class\CollectorNotes.cs" />
     <Compile Include="Class\CommonTask.cs" />
+    <Compile Include="Class\DeveloperAccess.cs" />
     <Compile Include="Class\Diagnosis.cs" />
+    <Compile Include="Class\Discord.cs" />
     <Compile Include="Class\EasyPrint.cs" />
     <Compile Include="Class\EmailFormatDB.cs" />
     <Compile Include="Class\Global.cs" />
@@ -218,11 +221,11 @@
     <Compile Include="Forms\frmAttorneyInformation.Designer.cs">
       <DependentUpon>frmAttorneyInformation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmBillDiagnosis.cs">
+    <Compile Include="Forms\frmDiagnosis.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmBillDiagnosis.Designer.cs">
-      <DependentUpon>frmBillDiagnosis.cs</DependentUpon>
+    <Compile Include="Forms\frmDiagnosis.Designer.cs">
+      <DependentUpon>frmDiagnosis.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmBundlecodes.cs">
       <SubType>Form</SubType>
@@ -505,8 +508,8 @@
     <EmbeddedResource Include="Forms\frmAttorneyInformation.resx">
       <DependentUpon>frmAttorneyInformation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmBillDiagnosis.resx">
-      <DependentUpon>frmBillDiagnosis.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmDiagnosis.resx">
+      <DependentUpon>frmDiagnosis.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmBundlecodes.resx">
       <DependentUpon>frmBundlecodes.cs</DependentUpon>
@@ -673,13 +676,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\analytics.png" />
+    <None Include="Images\discord-hero-1.jpg" />
+    <None Include="Images\new.png" />
+    <None Include="Images\file-gif.png" />
+    <None Include="Images\login-.png" />
     <Content Include="Images\online-test %281%29.png" />
     <Content Include="Images\online-test.ico" />
     <Content Include="Images\online-test.png" />
     <Content Include="Images\pcms-logo-footer.ico" />
     <Content Include="Images\pcms.png" />
     <Content Include="Images\pcms5.png" />
+    <Content Include="Images\refresh-icon-vector-clipart.png" />
+    <None Include="Images\refreshh.png" />
     <Content Include="online-test.ico" />
+    <None Include="Resources\refresh-icon-vector-clipart.png" />
     <None Include="Resources\online-test.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

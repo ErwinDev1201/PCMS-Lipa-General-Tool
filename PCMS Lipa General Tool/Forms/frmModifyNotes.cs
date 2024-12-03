@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Telerik.WinControls;
 
@@ -89,11 +90,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 			cmbProviderList.Items.Clear();
 			if (position == "Collector")
 			{
-				provider.FillProviderPerCollector(cmbProviderList, empName);
+				FillProviderperCollectorDropdown();
 			}
 			else
 			{
-				provider.FillComboProvider(cmbProviderList, empName);
+				FillProviderDropdown();
 			}
 
 		}
@@ -103,6 +104,26 @@ namespace PCMS_Lipa_General_Tool.Forms
 			if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
 			{
 				e.Handled = true; // Disallow the key if it's not a digit or control
+			}
+		}
+
+		private void FillProviderDropdown()
+		{
+			List<string> items = provider.GetProviderList(empName);
+			cmbProviderList.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbProviderList.Items.Add(item);
+			}
+		}
+
+		private void FillProviderperCollectorDropdown()
+		{
+			List<string> items = provider.GetProviderListperCollector(empName);
+			cmbProviderList.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbProviderList.Items.Add(item);
 			}
 		}
 	}

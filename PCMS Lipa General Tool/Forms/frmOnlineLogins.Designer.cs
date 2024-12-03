@@ -58,7 +58,7 @@
 			this.radLabel3 = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
-			this.lblCount = new Telerik.WinControls.UI.RadLabel();
+			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
 			this.txtSearchOnlineLogins = new Telerik.WinControls.UI.RadTextBox();
@@ -92,7 +92,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblCount)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearchOnlineLogins)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -430,18 +430,18 @@
 			this.radLabel2.Text = "Insurance Name:";
 			this.radLabel2.ThemeName = "Crystal";
 			// 
-			// lblCount
+			// lblSearchCount
 			// 
-			this.lblCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblCount.Location = new System.Drawing.Point(872, 14);
-			this.lblCount.Name = "lblCount";
-			this.lblCount.Size = new System.Drawing.Size(66, 19);
-			this.lblCount.TabIndex = 5;
-			this.lblCount.Text = "radLabel8";
-			this.lblCount.ThemeName = "Crystal";
-			this.lblCount.Click += new System.EventHandler(this.lblCount_Click);
-			this.lblCount.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lblCount_KeyDown);
+			this.lblSearchCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSearchCount.Location = new System.Drawing.Point(872, 14);
+			this.lblSearchCount.Name = "lblSearchCount";
+			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
+			this.lblSearchCount.TabIndex = 5;
+			this.lblSearchCount.Text = "radLabel8";
+			this.lblSearchCount.ThemeName = "Crystal";
+			this.lblSearchCount.Click += new System.EventHandler(this.lblCount_Click);
+			this.lblSearchCount.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lblCount_KeyDown);
 			// 
 			// radLabel1
 			// 
@@ -477,7 +477,7 @@
 			this.ClientSize = new System.Drawing.Size(1005, 662);
 			this.Controls.Add(this.txtSearchOnlineLogins);
 			this.Controls.Add(this.radLabel1);
-			this.Controls.Add(this.lblCount);
+			this.Controls.Add(this.lblSearchCount);
 			this.Controls.Add(this.radPanel2);
 			this.Controls.Add(this.radPanel1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -517,7 +517,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblCount)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearchOnlineLogins)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
@@ -550,7 +550,7 @@
 		public Telerik.WinControls.UI.RadButton btnCancel;
 		public Telerik.WinControls.UI.RadButton btnSaveUpdate;
 		public Telerik.WinControls.UI.RadButton btnNew;
-		public Telerik.WinControls.UI.RadLabel lblCount;
+		public Telerik.WinControls.UI.RadLabel lblSearchCount;
 		public Telerik.WinControls.UI.RadLabel radLabel7;
 		private Telerik.WinControls.UI.RadButtonTextBox txtPassword;
 		public Telerik.WinControls.UI.RadCheckBox chkUpdateDiscord;

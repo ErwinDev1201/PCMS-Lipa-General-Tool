@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Vml.Office;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,27 +10,16 @@ using System.Text;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
 	public class Pantry
 	{
-		private const string errorMessagefailedtoUpdate = "Failed to Update the record for ";
-		private const string errorMessagefailedtoCreate = "Failed to Create the record for ";
-		private const string errorMessaefailedtoDelete = "Failed to Delete the record for ";
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private static readonly string dbBackupcoll = ConfigurationManager.AppSettings["backupsql2csvcoll"];
-		private readonly string NameofUser = UserPrincipal.Current.DisplayName;
-		private readonly SecurityEncryption secEnc = new();
-		private readonly emailSender emailSender = new();
 		private readonly CommonTask task = new();
-		private readonly RadDesktopAlert alert = new();
-		private readonly string alercaption = Assembly.GetExecutingAssembly().GetName().Name.ToString();
-
-
-
+	
 
 
 		public void FillUpPantryListField(string query, RadGridView dataGrid, RadDropDownList cmbProducts, RadTextBox quantity, RadTextBox price, RadTextBox Remarks, RadTextBox TransactionNo, RadTextBox Summary, RadTextBox totalPrices, string empName)
@@ -362,6 +352,29 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Log errors for debugging and monitoring
 				task.LogError("ViewPantryList", empName, "Pantry", "N/A", ex);
 			}
+		}
+
+		public List<string> GetProductList(string empName)
+		{
+			var query = "SELECT DISTINCT [Product Name] from [Pantry Product] ORDER BY [Product Name] DESC";
+			var items = new List<string>();
+			var con = new SqlConnection(_dbConnection);
+			try
+			{
+				con.Open();
+				SqlCommand cmd = new(query, con);
+				SqlDataReader reader = cmd.ExecuteReader();
+				while (reader.Read())
+				{
+					items.Add(reader.GetString(0));
+				}
+				con.Close();
+			}
+			catch (Exception ex)
+			{
+				task.LogError("FillComboDropdown", empName, "Pantry", "N/A", ex);
+			}
+			return items;
 		}
 
 		private string BuildPantryListQuery(string employeeName, DateTime fromDate, DateTime toDate)

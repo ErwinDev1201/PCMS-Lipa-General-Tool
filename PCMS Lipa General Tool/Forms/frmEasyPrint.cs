@@ -65,26 +65,41 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void dgEasyPrint_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			if (dgEasyPrint.SelectedRows.Count > 0)
+			try
 			{
-				var dlgModEasyPrint = new frmModEasyPrintDenial();
-				easyPrint.FillEasyPrint(dgEasyPrint, dlgModEasyPrint.txtIntID, dlgModEasyPrint.txtEPCode, dlgModEasyPrint.txtInsuranceName, dlgModEasyPrint.txtDenialDescrption, dlgModEasyPrint.txtPossibleSolution, dlgModEasyPrint.txtRemarks, EmpName);
-				if (accessLevel == "User")
-				{
-					dlgModEasyPrint.btnDelete.Visible = false;
-					dlgModEasyPrint.btnUpdateSave.Visible = false;
-					dlgModEasyPrint.Text = "View Easy Print Denial Info";
+				if (dgEasyPrint.SelectedRows.Count == 0)
+					return;
 
+				var selectedRow = dgEasyPrint.SelectedRows[0];
+				var modEP = new frmModEasyPrintDenial
+				{
+					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
+					txtEPCode = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
+					txtDenialDescrption = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
+					txtPossibleSolution = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty }
+				};
+
+				if (accessLevel != "User")
+				{
+					modEP.Text = "View/Update Adjuster Information";
+					modEP.btnUpdateSave.Text = "Update";
 				}
 				else
 				{
-					dlgModEasyPrint.btnUpdateSave.Text = "Update";
-					dlgModEasyPrint.Text = "View/Modify asy Print DenialInfo";
+					modEP.Text = "View Adjuster Information";
+					modEP.btnDelete.Visible = false;
+					modEP.btnUpdateSave.Visible = false;
 				}
-				dlgModEasyPrint.ShowDialog();
 
+				modEP.ShowDialog();
+				ShowEpDenRes();
 			}
-			ShowEpDenRes();
+			catch (Exception ex)
+			{
+				task.LogError("dgEasyPrint_MouseDoubleClick", EmpName, "frmEasyPrint", null, ex);
+			}
 		}
 
 		private void frmEasyPrint_KeyDown(object sender, KeyEventArgs e)

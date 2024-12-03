@@ -6,8 +6,8 @@ using System.DirectoryServices.AccountManagement;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -37,76 +37,12 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				task.LogError("ViewAttorneyList", empName, "Attorney", "N/A", ex);
 			}
 
 			return data;
 		}
 
-
-
-		public void FillAttyEmpInfo(
-			RadGridView dgAttytbl,
-			RadTextBox txtIntID,
-			RadDropDownList cmbAttyType,
-			RadTextBox txtAttyName,
-			RadTextBox txtPhoneNo,
-			RadTextBox txtFax,
-			RadTextBox txtemailAdd,
-			RadTextBoxControl txtRemarks,
-			string empName)
-		{
-			//const string query = "SELECT * FROM [Attorney Information]";
-
-			try
-			{
-				using var con = new SqlConnection(_dbConnection);
-				con.Open();
-
-				//using var cmd = new SqlCommand(query, con);
-				//cmd.ExecuteNonQuery(); // Executes the query (although it's unnecessary in this context).
-
-				if (dgAttytbl.SelectedRows.Count > 0)
-				{
-					var dgRow = dgAttytbl.SelectedRows[0];
-
-					// Fill the fields from the selected row
-					txtIntID.Text = dgRow.Cells[0]?.Value?.ToString() ?? string.Empty;
-					cmbAttyType.Text = dgRow.Cells[1]?.Value?.ToString() ?? string.Empty;
-					txtAttyName.Text = dgRow.Cells[2]?.Value?.ToString() ?? string.Empty;
-					txtPhoneNo.Text = dgRow.Cells[3]?.Value?.ToString() ?? string.Empty;
-					txtFax.Text = dgRow.Cells[4]?.Value?.ToString() ?? string.Empty;
-					txtemailAdd.Text = dgRow.Cells[5]?.Value?.ToString() ?? string.Empty;
-					txtRemarks.Text = dgRow.Cells[6]?.Value?.ToString() ?? string.Empty;
-				}
-				else
-				{
-					ClearFields(txtIntID, cmbAttyType, txtAttyName, txtPhoneNo, txtFax, txtemailAdd, txtRemarks);
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("FillAttyEmpInfo", empName, "Attorney", "N/A", ex);
-			}
-		}
-
-		private void ClearFields(
-			RadTextBox txtIntID,
-			RadDropDownList cmbAttyType,
-			RadTextBox txtAttyName,
-			RadTextBox txtPhoneNo,
-			RadTextBox txtFax,
-			RadTextBox txtemailAdd,
-			RadTextBoxControl txtRemarks)
-		{
-			txtIntID.Text = string.Empty;
-			cmbAttyType.Text = string.Empty;
-			txtAttyName.Text = string.Empty;
-			txtPhoneNo.Text = string.Empty;
-			txtFax.Text = string.Empty;
-			txtemailAdd.Text = string.Empty;
-			txtRemarks.Text = string.Empty;
-		}
 
 
 		public void AttorneyDBRequest(

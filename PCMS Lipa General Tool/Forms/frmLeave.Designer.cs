@@ -37,7 +37,6 @@
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
 			this.btnNew = new Telerik.WinControls.UI.RadButton();
 			this.radGroupBox1 = new Telerik.WinControls.UI.RadGroupBox();
-			this.btnRefresh = new Telerik.WinControls.UI.RadButton();
 			this.radLabel3 = new Telerik.WinControls.UI.RadLabel();
 			this.cmbFilterStatus = new Telerik.WinControls.UI.RadDropDownList();
 			this.cmbFilterName = new Telerik.WinControls.UI.RadDropDownList();
@@ -46,12 +45,12 @@
 			this.dgLeave = new Telerik.WinControls.UI.RadGridView();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
+			this.btnRefresh = new Telerik.WinControls.UI.RadButton();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).BeginInit();
 			this.radGroupBox1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.btnRefresh)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbFilterStatus)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbFilterName)).BeginInit();
@@ -59,6 +58,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.lblCountSearch)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgLeave)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgLeave.MasterTemplate)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.btnRefresh)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -82,6 +82,7 @@
 			this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources.file_gif;
 			this.btnNew.Location = new System.Drawing.Point(760, 19);
 			this.btnNew.Name = "btnNew";
 			this.btnNew.Size = new System.Drawing.Size(157, 48);
@@ -109,25 +110,12 @@
 			this.radGroupBox1.Text = "Filter by";
 			this.radGroupBox1.ThemeName = "Crystal";
 			// 
-			// btnRefresh
-			// 
-			this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnRefresh.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnRefresh.Location = new System.Drawing.Point(853, 39);
-			this.btnRefresh.Name = "btnRefresh";
-			this.btnRefresh.Size = new System.Drawing.Size(30, 30);
-			this.btnRefresh.TabIndex = 6;
-			this.btnRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-			this.btnRefresh.ThemeName = "Crystal";
-			this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-			// 
 			// radLabel3
 			// 
 			this.radLabel3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel3.Location = new System.Drawing.Point(368, 43);
 			this.radLabel3.Name = "radLabel3";
-			this.radLabel3.Size = new System.Drawing.Size(109, 20);
+			this.radLabel3.Size = new System.Drawing.Size(102, 19);
 			this.radLabel3.TabIndex = 3;
 			this.radLabel3.Text = "Filter by Status: ";
 			this.radLabel3.ThemeName = "Crystal";
@@ -167,7 +155,7 @@
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel2.Location = new System.Drawing.Point(6, 41);
 			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(105, 20);
+			this.radLabel2.Size = new System.Drawing.Size(99, 19);
 			this.radLabel2.TabIndex = 2;
 			this.radLabel2.Text = "Filter by Name: ";
 			this.radLabel2.ThemeName = "Crystal";
@@ -177,7 +165,7 @@
 			this.lblCountSearch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblCountSearch.Location = new System.Drawing.Point(19, 600);
 			this.lblCountSearch.Name = "lblCountSearch";
-			this.lblCountSearch.Size = new System.Drawing.Size(69, 20);
+			this.lblCountSearch.Size = new System.Drawing.Size(66, 19);
 			this.lblCountSearch.TabIndex = 4;
 			this.lblCountSearch.Text = "radLabel2";
 			this.lblCountSearch.ThemeName = "Crystal";
@@ -210,6 +198,20 @@
 			this.dgLeave.ThemeName = "Crystal";
 			this.dgLeave.DoubleClick += new System.EventHandler(this.dgLeave_DoubleClick);
 			// 
+			// btnRefresh
+			// 
+			this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnRefresh.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnRefresh.Image = global::PCMS_Lipa_General_Tool.Properties.Resources.refreshh;
+			this.btnRefresh.Location = new System.Drawing.Point(853, 39);
+			this.btnRefresh.Name = "btnRefresh";
+			this.btnRefresh.Size = new System.Drawing.Size(30, 30);
+			this.btnRefresh.TabIndex = 6;
+			this.btnRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+			this.btnRefresh.ThemeName = "Crystal";
+			this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+			// 
 			// frmLeave
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -233,7 +235,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).EndInit();
 			this.radGroupBox1.ResumeLayout(false);
 			this.radGroupBox1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.btnRefresh)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbFilterStatus)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbFilterName)).EndInit();
@@ -241,6 +242,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.lblCountSearch)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgLeave.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgLeave)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.btnRefresh)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 

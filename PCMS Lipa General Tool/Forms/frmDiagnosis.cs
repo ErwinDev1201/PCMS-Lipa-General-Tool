@@ -6,14 +6,14 @@ using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmBillDiagnosis : Telerik.WinControls.UI.RadForm
+	public partial class frmDiagnosis : Telerik.WinControls.UI.RadForm
 	{
 		private readonly Diagnosis dx = new();
 		private readonly CommonTask task = new();
 		public string EmpName;
 		public string accessLevel;
 
-		public frmBillDiagnosis()
+		public frmDiagnosis()
 		{
 			InitializeComponent();
 			ShowMePTDxCodes();
@@ -73,27 +73,41 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void dgBillDiagnosis_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-
-			if (dgBillDiagnosis.SelectedRows.Count > 0)
+			try
 			{
-				var dlgModDx = new frmModifyDiagnosis();
-				dx.FillBillDiagnosisInfo(dgBillDiagnosis, dlgModDx.txtIntID, dlgModDx.txtICD10, dlgModDx.txtICD9, dlgModDx.txtDiagnosis, dlgModDx.txtBodyPart, dlgModDx.txtRemarks, EmpName);
-				if (accessLevel == "User")
-				{
-					dlgModDx.btnDelete.Visible = false;
-					dlgModDx.btnUpdateSave.Visible = false;
-					dlgModDx.Text = "View Diagnosis Info";
+				if (dgBillDiagnosis.SelectedRows.Count == 0)
+					return;
 
+				var selectedRow = dgBillDiagnosis.SelectedRows[0];
+				var modDx = new frmModifyDiagnosis
+				{
+					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
+					txtDiagnosis = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
+					txtICD10 = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
+					txtICD9 = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
+					txtBodyPart = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty }
+				};
+
+				if (accessLevel != "User")
+				{
+					modDx.Text = "View/Update Diagnosis Information";
+					modDx.btnUpdateSave.Text = "Update";
 				}
 				else
 				{
-					dlgModDx.btnUpdateSave.Text = "Update";
-					dlgModDx.Text = "View/Modify Diagnosis Info";
+					modDx.Text = "View Adjuster Information";
+					modDx.btnDelete.Visible = false;
+					modDx.btnUpdateSave.Visible = false;
 				}
-				dlgModDx.ShowDialog();
 
+				modDx.ShowDialog();
+				ShowMePTDxCodes();
 			}
-			ShowMePTDxCodes();
+			catch (Exception ex)
+			{
+				task.LogError("dgBillDiagnosis_MouseDoubleClick", EmpName, "frmDiagnosis", null, ex);
+			}
 			
 		}
 

@@ -41,7 +41,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			string paymentOption = rdoWOPay.IsChecked ? "Without Pay" : "With Pay";
 			string typeOfLeave = DetermineLeaveType();
 			string action = btnSaveUpdate.Text == "Update" ? "update this leave" : "file this leave";
-			string operation = btnSaveUpdate.Text == "Update" ? "Patch" : "Create";
+			string operation = btnSaveUpdate.Text == "Update" ? "Update" : "Create";
 
 			if (ConfirmAction(action, txtReason.Text, dtpStartdate.Text, dtpEndDate.Text, paymentOption, typeOfLeave, cmbApproval.Text))
 			{

@@ -10,6 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmUpdateDCPassword : Telerik.WinControls.UI.RadForm
 	{
 		private readonly CommonTask task = new();
+		readonly Discord dc = new();
 		public string empName;
 
 
@@ -38,8 +39,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnOK_Click(object sender, EventArgs e)
 		{
-			var query = $"UPDATE [User Information] SET [Discord Password]='{txtNewPassword}' WHERE [Discord Username]='{txtUsername.Text}'";
-			task.UpdateValues(query, empName, "Discord Password successfully updated");
+			dc.UpdateDCPassword(txtUsername.Text, txtNewPassword.Text, empName);
 			task.AddActivityLog(empName + " his/her their Discord password for " + txtUsername.Text, empName, txtUsername.Text + " is updated", "PASSWORD UPDATE");
 		}
 

@@ -47,27 +47,41 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void dgInsuranceInfo_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-
-			if (dgInsuranceInfo.SelectedRows.Count > 0)
+			try
 			{
-				var dlgModInsInfo = new frmModPrivateInfoIns();
-				insurance.FillInsuranceInfo(dgInsuranceInfo, dlgModInsInfo.txtIntID, dlgModInsInfo.txtInsuranceName, dlgModInsInfo.txtInsCode, dlgModInsInfo.txtInsuranceAddress, dlgModInsInfo.txtPayerID, dlgModInsInfo.txtRemarks, EmpName);
-				if (accessLevel == "User")
-				{
-					dlgModInsInfo.btnDelete.Visible = false;
-					dlgModInsInfo.btnUpdateSave.Visible = false;
-					dlgModInsInfo.Text = "View Insurance Info";
+				if (dgInsuranceInfo.SelectedRows.Count == 0)
+					return;
 
+				var selectedRow = dgInsuranceInfo.SelectedRows[0];
+				var modPrivIns = new frmModPrivateInfoIns
+				{
+					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
+					txtInsCode = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
+					txtInsuranceAddress = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
+					txtPayerID = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells[8].Value?.ToString() ?? string.Empty }
+				};
+
+				if (accessLevel != "User")
+				{
+					modPrivIns.Text = "View/Update Adjuster Information";
+					modPrivIns.btnUpdateSave.Text = "Update";
 				}
 				else
 				{
-					dlgModInsInfo.btnUpdateSave.Text = "Update";
-					dlgModInsInfo.Text = "View/Modify Insurance Info";
+					modPrivIns.Text = "View Adjuster Information";
+					modPrivIns.btnDelete.Visible = false;
+					modPrivIns.btnUpdateSave.Visible = false;
 				}
-				dlgModInsInfo.ShowDialog();
 
+				modPrivIns.ShowDialog();
+				ShowInsInfo();
 			}
-			ShowInsInfo();
+			catch (Exception ex)
+			{
+				task.LogError("dgInsuranceInfo_MouseDoubleClick", EmpName, "frmInsuranceInfo", null, ex);
+			}
 		}
 
 		private void btnNew_Click(object sender, EventArgs e)

@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Telerik.WinControls;
 
@@ -40,7 +41,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void LoadDatabasetoTable()
 		{
-			task.ViewDataTable(dgAssignedProvider, "[Provider Collector]", lblCount, empName);
+			var dataTable = provider.ViewProviderAssignee(empName, out string lblCount);
+
+			dgAssignedProvider.DataSource = dataTable;
+
+			lblCountResult.Text = lblCount;
 		}
 
 		private void ClearData()
@@ -122,9 +127,31 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void PullValueforDropdown()
 		{
 			cmbEmployeeName.Items.Clear();
-			user.FillComboEmp(cmbEmployeeName, empName);
+			FillEmployeeDropdown();
 			cmbProviderName.Items.Clear();
-			provider.FillComboProvider(cmbProviderName, empName);
+			FillProviderDropdown();
+			
+		}
+
+
+		private void FillProviderDropdown()
+		{
+			List<string> items = provider.GetProviderList(empName);
+			cmbProviderName.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbProviderName.Items.Add(item);
+			}
+		}
+
+		private void FillEmployeeDropdown()
+		{
+			List<string> items = user.GetEmployeeList(empName);
+			cmbEmployeeName.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbEmployeeName.Items.Add(item);
+			}
 		}
 	}
 }

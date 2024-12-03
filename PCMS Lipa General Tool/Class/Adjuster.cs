@@ -7,9 +7,6 @@ using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
 
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
-
 namespace PCMS_Lipa_General_Tool.Class
 {
 	public class Adjuster
@@ -39,45 +36,13 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				task.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
 			}
 
 			return data;
 		}
 
-		public void FillAdjusterInfo(RadGridView dgAdjustertbl, RadTextBox txtIntID, RadTextBox txtInsuranceName, RadTextBox txtAdjusterName, RadTextBox txtPhoneNo, RadTextBox txtExt, RadTextBox txtFax, RadTextBox txtemailAdd, RadTextBox txtSupervisor, RadTextBoxControl txtRemarks, string empName)
-		{
-			using SqlConnection con = new(_dbConnection);
-			try
-			{
-				con.Open();
-				{
-					using SqlCommand cmd = new("SELECT * FROM [Adjuster Information]", con);
-					cmd.ExecuteNonQuery();
-					var dgRow = dgAdjustertbl.SelectedRows[0];
-					{
-						txtIntID.Text = dgRow.Cells[0].Value + string.Empty;
-						txtInsuranceName.Text = dgRow.Cells[1].Value + string.Empty;
-						txtAdjusterName.Text = dgRow.Cells[2].Value + string.Empty;
-						txtPhoneNo.Text = dgRow.Cells[3].Value + string.Empty;
-						txtExt.Text = dgRow.Cells[4].Value + string.Empty;
-						txtFax.Text = dgRow.Cells[5].Value + string.Empty;
-						txtemailAdd.Text = dgRow.Cells[6].Value + string.Empty;
-						txtSupervisor.Text = dgRow.Cells[7].Value + string.Empty;
-						txtRemarks.Text = dgRow.Cells[8].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("FillAdjusterInfo", empName, "Adjuster", txtIntID.Text, ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
-
+		
 		public void AdjusterDBRequest(string request, RadTextBox adjID, RadTextBox insuranceName, RadTextBox adjusterName, RadTextBox phoneNo, RadTextBox ext, RadTextBox faxNo, RadTextBox email, RadTextBox supervisorName, RadTextBoxControl remarks, string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);

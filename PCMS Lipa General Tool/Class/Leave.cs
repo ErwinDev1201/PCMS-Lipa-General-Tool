@@ -441,12 +441,13 @@ namespace PCMS_Lipa_General_Tool.Class
             <html>
                 <body>
                     <p>Dear {employeeName},</p>
-                    <p>We regret to inform you that your leave request for the period {startDate} to {endDate} has not been <strong>approved</strong> due to [reason, e.g., operational requirements, insufficient leave balance, etc.].</p>
+                    <p>We regret to inform you that your leave request for the period {startDate} to {endDate} has <strong>not been approved</strong> due to {remarks}.</p>
                     <p>We understand the importance of your request and encourage you to discuss alternative options with your supervisor or the HR department if needed.</p>
                     <p>Thank you for your understanding. If you have any questions or require further clarification, please do not hesitate to reach out.</p>
                     <br/>
                     <p>Best regards,</p>
                     <p>{empName}</p>
+					<p>{apposition}</p>
                 </body>
             </html>";
 				}
@@ -464,6 +465,7 @@ namespace PCMS_Lipa_General_Tool.Class
                     <br/>
                     <p>Best regards,</p>
                     <p>{empName}</p>
+					<p>{apposition}</p>
                 </body>
             </html>";
 				}

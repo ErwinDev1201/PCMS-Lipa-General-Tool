@@ -1,4 +1,5 @@
-﻿using PCMS_Lipa_General_Tool.Class;
+﻿using Org.BouncyCastle.Asn1.X500;
+using PCMS_Lipa_General_Tool.Class;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
@@ -21,8 +22,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ShowBundleCodes()
 		{
-			string lblCount;
-			var dataTable = bundle.ViewBundleCodes(EmpName, out lblCount);
+			var dataTable = bundle.ViewBundleCodes(EmpName, out string lblCount);
 
 			dgBundleCode.DataSource = dataTable;
 
@@ -36,26 +36,49 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void dgBundleCode_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			if (dgBundleCode.SelectedRows.Count > 0)
+			try
 			{
-				var dlgModBundleCodes = new frmModBundleCodes();
-				bundle.FillBundleCodes(dgBundleCode, dlgModBundleCodes.txtIntID, dlgModBundleCodes.txtCPTCode, dlgModBundleCodes.txtDescription, dlgModBundleCodes.txtBundleCodes, dlgModBundleCodes.txtRemarks, dlgModBundleCodes.rdoYes, dlgModBundleCodes.rdoNo, EmpName);
-				if (accessLevel == "User")
+				if (dgBundleCode.SelectedRows.Count == 0)
+					return;
+				string bundleOptions;
+				var selectedRow = dgBundleCode.SelectedRows[0];
+				var modBundleCodes = new frmModBundleCodes
 				{
-					dlgModBundleCodes.btnDelete.Visible = false;
-					dlgModBundleCodes.btnUpdateSave.Visible = false;
-					dlgModBundleCodes.Text = "View Diagnosis Info";
-
+					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
+					txtCPTCode = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
+					txtDescription = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
+					txtBundleCodes = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty },
+				};
+				bundleOptions = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
+				if (bundleOptions == "Y")
+				{
+					modBundleCodes.rdoYes.IsChecked = true;
 				}
 				else
 				{
-					dlgModBundleCodes.btnUpdateSave.Text = "Update";
-					dlgModBundleCodes.Text = "View/Modify Diagnosis Info";
+					modBundleCodes.rdoNo.IsChecked = true;
 				}
-				dlgModBundleCodes.ShowDialog();
 
+				if (accessLevel != "User")
+				{
+					modBundleCodes.Text = "View/Update Bundle Codes Information";
+					modBundleCodes.btnUpdateSave.Text = "Update";
+				}
+				else
+				{
+					modBundleCodes.Text = "View Bundle Codes Information";
+					modBundleCodes.btnDelete.Visible = false;
+					modBundleCodes.btnUpdateSave.Visible = false;
+				}
+
+				modBundleCodes.ShowDialog();
+				ShowBundleCodes();
 			}
-			ShowBundleCodes();
+			catch (Exception ex)
+			{
+				task.LogError("dgBundleCode_MouseDoubleClick", EmpName, "frmBundleCodes", null, ex);
+			}
 		}
 
 		private void btnNew_Click(object sender, EventArgs e)

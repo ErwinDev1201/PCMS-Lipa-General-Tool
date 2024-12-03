@@ -33,26 +33,42 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void dgDefAtty_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			if (dgDefAtty.SelectedRows.Count > 0)
+			try
 			{
-				var modAtty = new frmModifyAtty();
-				atty.FillAttyEmpInfo(dgDefAtty, modAtty.txtIntID, modAtty.cmbAttyType, modAtty.txtAttyName, modAtty.txtPhoneNo, modAtty.txtFaxNo, modAtty.txtEmailAdd, modAtty.txtRemarks, EmpName);
-				if (accessLevel == "User")
-				{
-					modAtty.Text = "View Attorney Information";
-					modAtty.btnDelete.Visible = false;
-					modAtty.btnUpdateSave.Visible = false;
+				if (dgDefAtty.SelectedRows.Count == 0)
+					return;
 
+				var selectedRow = dgDefAtty.SelectedRows[0];
+				var modAtty = new frmModifyAtty
+				{
+					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
+					cmbAttyType = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
+					txtAttyName = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
+					txtPhoneNo = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
+					txtFaxNo = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
+					txtEmailAdd = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty }
+				};
+
+				if (accessLevel != "User")
+				{
+					modAtty.Text = "View/Update Attorney Information";
+					modAtty.btnUpdateSave.Text = "Update";
 				}
 				else
 				{
-					modAtty.Text = "View/Update Attorney Information";
-					//modAdj.btnDelete.Visible = false;
-					modAtty.btnUpdateSave.Text = "Update";
+					modAtty.Text = "View Adjuster Information";
+					modAtty.btnDelete.Visible = false;
+					modAtty.btnUpdateSave.Visible = false;
 				}
+
 				modAtty.ShowDialog();
+				ListAtty();
 			}
-			ListAtty();
+			catch (Exception ex)
+			{
+				task.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
+			}
 		}
 
 		private void frmAttorneyInformation_Load(object sender, EventArgs e)

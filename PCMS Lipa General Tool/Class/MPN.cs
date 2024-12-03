@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.DirectoryServices.AccountManagement;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -16,62 +17,31 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private readonly CommonTask task = new();
 
-		public void FillUpMPNWeblink(RadGridView dataGrid, RadTextBox Link, string empName)
+		public DataTable ViewMPNList(string empName, out string lblCount)
 		{
-			//SELECT INT_ID, INSURANCE, MPN, USERNAME, PASSWORD, WEBSITE, REMARKS FROM [MPN LIST]
-			using var con = new SqlConnection(_dbConnection);
+			const string query = "SELECT * FROM [MPN Information]";
+			var data = new DataTable();
+			lblCount = string.Empty;
+
 			try
 			{
-				con.Open();
-				using SqlCommand cmd = new("SELECT * FROM [MPN Information]", con);
-				cmd.ExecuteNonQuery();
-				if (dataGrid.SelectedRows.Count > 0)
-				{
-					Link.Text = dataGrid.SelectedRows[0].Cells[5].Value + string.Empty;
-				}
+				using var con = new SqlConnection(_dbConnection);
+				using var adp = new SqlDataAdapter(query, con);
+
+				// Fill the DataTable with data from the query
+				adp.Fill(data);
+
+				// Calculate the record count
+				lblCount = $"Total records: {data.Rows.Count}";
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"FillUpMPNWeblink", empName, "MPN", "N/A", ex);
+				task.LogError("ViewMPNList", empName, "MPN", "N/A", ex);
 			}
-			finally
-			{
-				con.Close();
-			}
+
+			return data;
 		}
 
-
-
-		public void FillMPNData(RadGridView dgMPN, RadTextBox txtIntID, RadTextBox txtInsuranceName, RadTextBox txtMPNName, RadTextBox txtMPNUsername, RadTextBox txtPassword, RadTextBox txtWebLink, RadTextBoxControl txtRemarks, string empName)
-		{
-			using SqlConnection con = new(_dbConnection);
-			try
-			{
-				con.Open();
-				{
-					using SqlCommand cmd = new("SELECT * FROM [MPN Information]", con);
-					cmd.ExecuteNonQuery();
-					var dgRow = dgMPN.SelectedRows[0];
-					{
-						txtIntID.Text = dgRow.Cells[0].Value + string.Empty;
-						txtInsuranceName.Text = dgRow.Cells[1].Value + string.Empty;
-						txtMPNName.Text = dgRow.Cells[2].Value + string.Empty;
-						txtMPNUsername.Text = dgRow.Cells[3].Value + string.Empty;
-						txtPassword.Text = dgRow.Cells[4].Value + string.Empty;
-						txtWebLink.Text = dgRow.Cells[5].Value + string.Empty;
-						txtRemarks.Text = dgRow.Cells[6].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("FillMPNData", empName, "MPN", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
 
 		public void MPNDBRequest(string request, RadTextBox mpnID, RadTextBox insuranceName, RadTextBox mpn, RadTextBox userName, RadTextBox passWord, RadTextBox webSite, RadTextBoxControl remarks, string empName)
 		{

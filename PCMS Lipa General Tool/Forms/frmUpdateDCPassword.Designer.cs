@@ -66,12 +66,13 @@
 			this.txtUsername.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtUsername.Location = new System.Drawing.Point(135, 69);
 			this.txtUsername.Name = "txtUsername";
-			this.txtUsername.Size = new System.Drawing.Size(227, 24);
+			this.txtUsername.Size = new System.Drawing.Size(227, 23);
 			this.txtUsername.TabIndex = 18;
 			this.txtUsername.ThemeName = "Crystal";
 			// 
 			// radPictureBox1
 			// 
+			this.radPictureBox1.Image = global::PCMS_Lipa_General_Tool.Properties.Resources.discord_hero_1;
 			this.radPictureBox1.ImageLayout = Telerik.WinControls.UI.RadImageLayout.Stretch;
 			this.radPictureBox1.Location = new System.Drawing.Point(155, 12);
 			this.radPictureBox1.Name = "radPictureBox1";
@@ -85,7 +86,7 @@
 			this.label1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label1.Location = new System.Drawing.Point(24, 71);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(73, 20);
+			this.label1.Size = new System.Drawing.Size(68, 15);
 			this.label1.TabIndex = 15;
 			this.label1.Text = "Username:";
 			// 
@@ -94,7 +95,7 @@
 			this.txtNewPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtNewPassword.Location = new System.Drawing.Point(135, 107);
 			this.txtNewPassword.Name = "txtNewPassword";
-			this.txtNewPassword.Size = new System.Drawing.Size(227, 24);
+			this.txtNewPassword.Size = new System.Drawing.Size(227, 23);
 			this.txtNewPassword.TabIndex = 14;
 			this.txtNewPassword.ThemeName = "Crystal";
 			this.txtNewPassword.TextChanged += new System.EventHandler(this.txtNewPassword_TextChanged);
@@ -116,7 +117,7 @@
 			this.label3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label3.Location = new System.Drawing.Point(24, 109);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(105, 20);
+			this.label3.Size = new System.Drawing.Size(96, 15);
 			this.label3.TabIndex = 5;
 			this.label3.Text = "New Password:";
 			// 

@@ -103,10 +103,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ShowDataUserAccess()
 		{
-			//dgOnlineLogins.BestFitColumns(BestFitColumnMode.AllCells);
-			const string query = "SELECT [LOGIN ID], [INSURANCE NAME], [URL LINK], BROWSER, USERNAME, [ACCOUNT OWNER], REMARKS FROM [ONLINE LOGINS] ORDER BY [LOGIN ID] ASC";
-			onlineLogin.ViewOnlineLogins(dgOnlineLogins, query, lblCount, empName);
+			dgOnlineLogins.BestFitColumns(BestFitColumnMode.AllCells);
+			var dataTable = onlineLogin.ViewOnlineLogins(empName, out string lblCount);
+			dgOnlineLogins.DataSource = dataTable;
+			lblSearchCount.Text = lblCount;
 		}
+		
 
 		private void DoubleClickEnable()
 		{
@@ -542,7 +544,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			if (txtSearchOnlineLogins.TextLength > 0)
 			{
 				dgOnlineLogins.Enabled = true;
-				task.SearchTwoColumnOneFieldText(dgOnlineLogins, "[ONLINE LOGINS]", "[Insurance Name]", "[Remarks]", txtSearchOnlineLogins, lblCount, empName);
+				task.SearchTwoColumnOneFieldText(dgOnlineLogins, "[ONLINE LOGINS]", "[Insurance Name]", "[Remarks]", txtSearchOnlineLogins, lblSearchCount, empName);
 			}
 		}
 	}

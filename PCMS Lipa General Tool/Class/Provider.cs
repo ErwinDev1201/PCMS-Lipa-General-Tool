@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.HelperClass;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -8,8 +9,8 @@ using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
 
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -19,6 +20,30 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private readonly CommonTask task = new();
 
+		public DataTable ViewProviderAssignee(string empName, out string lblCount)
+		{
+			var query = "SELECT * FROM [Provider Collector]";
+			var data = new DataTable();
+			lblCount = string.Empty;
+
+			try
+			{
+				using var con = new SqlConnection(_dbConnection);
+				using var adp = new SqlDataAdapter(query, con);
+
+				// Fill the DataTable with data from the query
+				adp.Fill(data);
+
+				// Calculate the record count
+				lblCount = $"Total records: {data.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				task.LogError("ViewProviderAssignee", empName, "Provider", "N/A", ex);
+			}
+
+			return data;
+		}
 
 		public DataTable ViewProviderList(string empName, out string lblCount)
 		{
@@ -39,7 +64,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				task.LogError("ViewProviderList", empName, "Provider", "N/A", ex);
 			}
 
 			return data;
@@ -235,49 +260,51 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		public void FillComboProvider(RadDropDownList cmbProvider, string empName)
+		public List<string> GetProviderList(string empName)
 		{
+			var query = "SELECT [Provider Name] FROM [Provider Information]";
+			var items = new List<string>();
+			var con = new SqlConnection(_dbConnection);
 			try
 			{
-				var query = "SELECT [Provider Name] FROM [Provider Information]";
-				cmbProvider.Items.Clear();
-
-				using var con = new SqlConnection(_dbConnection);
-				using var cmd = new SqlCommand(query, con);
 				con.Open();
-				using var reader = cmd.ExecuteReader();
+				SqlCommand cmd = new(query, con);
+				SqlDataReader reader = cmd.ExecuteReader();
 				while (reader.Read())
 				{
-					string name = reader.GetString(0);
-					cmbProvider.Items.Add(name);
+					items.Add(reader.GetString(0));
 				}
+				con.Close();
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillComboProvider", empName, "Provider", "N/A", ex);
+				task.LogError("GetProviderList", empName, "Pantry", "N/A", ex);
 			}
+			return items;
 		}
 
-		public void FillProviderPerCollector(RadDropDownList cmbProvider, string empName)
+
+		public List<string> GetProviderListperCollector(string empName)
 		{
+			var query = $"SELECT [Provider Name] FROM [Provider Collector] WHERE [Employee Name] = '{empName}'";
+			var items = new List<string>();
+			var con = new SqlConnection(_dbConnection);
 			try
 			{
-				using var con = new SqlConnection(_dbConnection);
-				using var cmd = new SqlCommand("SELECT [Provider Name] FROM [Provider Collector] WHERE [Employee Name] = @empName", con);
-				cmd.Parameters.AddWithValue("@empName", empName);
 				con.Open();
-				using var reader = cmd.ExecuteReader();
+				SqlCommand cmd = new(query, con);
+				SqlDataReader reader = cmd.ExecuteReader();
 				while (reader.Read())
 				{
-					string name = reader.GetString(0);
-					cmbProvider.Items.Add(name);
+					items.Add(reader.GetString(0));
 				}
+				con.Close();
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillProviderPerCollector", empName, "Provider", "N/A", ex);
+				task.LogError("GetProviderListperCollector", empName, "Pantry", "N/A", ex);
 			}
+			return items;
 		}
-
 	}
 }

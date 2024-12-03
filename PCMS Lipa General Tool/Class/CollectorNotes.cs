@@ -16,6 +16,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		private readonly CommonTask task = new();
 
 
+
 		public void FillNotesInfo(RadGridView dgCurrentNotes, RadTextBox txtIntID, RadDropDownList cmbProviderList, RadTextBox txtChartNo, RadTextBox txtPatientName, RadTextBoxControl txtNotes, RadTextBoxControl txtRemarks, string empName)
 		{
 			using SqlConnection con = new(_dbConnection);

@@ -6,8 +6,8 @@ using System.DirectoryServices.AccountManagement;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -35,40 +35,13 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				task.LogError("ViewEmailFormatList", empName, "EmailFormatDB", "N/A", ex);
 			}
 
 			return data;
 		}
 
 
-		public void FillEmailInfo(RadGridView dgEmailInfo, RadTextBox txtIntID, RadTextBox txtInsuranceName, RadTextBox txtEmailFormat, RadTextBoxControl txtRemarks, string empName)
-		{
-			using SqlConnection con = new(_dbConnection);
-			try
-			{
-				con.Open();
-				{
-					using SqlCommand cmd = new("SELECT * FROM [Insurance Email Format]", con);
-					cmd.ExecuteNonQuery();
-					var dgRow = dgEmailInfo.SelectedRows[0];
-					{
-						txtIntID.Text = dgRow.Cells[0].Value + string.Empty;
-						txtInsuranceName.Text = dgRow.Cells[1].Value + string.Empty;
-						txtEmailFormat.Text = dgRow.Cells[2].Value + string.Empty;
-						txtRemarks.Text = dgRow.Cells[3].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError($"FillHearingRep", empName, "Pantry", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
 
 		public void EmailFormatDBRequest(string request, RadTextBox formatID, RadTextBox insuranceName, RadTextBox emailFormat, RadTextBoxControl remarks, string empName)
 		{

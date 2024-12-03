@@ -153,30 +153,29 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-
-		public void ViewOnlineLogins(RadGridView dataGrid, string query, RadLabel lblcount, string empName)
+		public DataTable ViewOnlineLogins(string empName, out string lblCount)
 		{
-			var con = new SqlConnection(_dbConnection);
+			const string query = "SELECT [LOGIN ID], [INSURANCE NAME], [URL LINK], BROWSER, USERNAME, [ACCOUNT OWNER], REMARKS FROM [ONLINE LOGINS] ORDER BY [LOGIN ID] ASC";
+			var data = new DataTable();
+			lblCount = string.Empty;
+
 			try
 			{
-				using (var adp = new SqlDataAdapter(query, con))
-				{
-					var data = new DataTable();
-					adp.Fill(data);
-					adp.Update(data);
-					dataGrid.DataSource = data.DefaultView;
-					lblcount.Text = $"Total records: {dataGrid.RowCount}";
-				}
-				dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+				using var con = new SqlConnection(_dbConnection);
+				using var adp = new SqlDataAdapter(query, con);
+
+				// Fill the DataTable with data from the query
+				adp.Fill(data);
+
+				// Calculate the record count
+				lblCount = $"Total records: {data.Rows.Count}";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewDatagrid", empName, "OnlineLogin", "N/A", ex);
+				task.LogError("ViewOnlineLogins", empName, "OnlineLogins", "N/A", ex);
 			}
-			finally
-			{
-				con.Close();
-			}
+
+			return data;
 		}
 
 		//public void OnlineLoginDB(string request, RadTextBox insID, RadTextBox insName, RadTextBox webLink, RadTextBox userName, RadTextBox passWord, RadTextBoxControl remarks, RadTextBox owner, RadDropDownList browser, RadCheckBox updateDC, string empName)

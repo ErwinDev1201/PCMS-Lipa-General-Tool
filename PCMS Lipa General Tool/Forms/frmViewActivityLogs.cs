@@ -3,12 +3,17 @@ using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
+using DiscordMessenger;
+using DocumentFormat.OpenXml.Vml.Office;
+using System.Collections.Generic;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmViewActivityLogs : Telerik.WinControls.UI.RadForm
 	{
 		private readonly CommonTask task = new();
+		readonly ActivtiyLogs activity = new();
+
 		public string empName;
 		public string accessLevel;
 
@@ -22,9 +27,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ViewLog()
 		{
 			dgActivityLogs.BestFitColumns(BestFitColumnMode.AllCells);
-			const string query = "SELECT * FROM [Activity Logs] ORDER BY [Activity ID]";
-			task.ViewDatagrid(dgActivityLogs, query, lblSearchCount, empName);
-
+			var dataTable = activity.ViewActivityLogs(empName, out string lblCount);
+			dgActivityLogs.DataSource = dataTable;
+			lblSearchCount.Text = lblCount;
 		}
 
 		//private void txtSearch_TextChanged(object sender, EventArgs e)
@@ -46,24 +51,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 		}
 
 
-		public void FillActionCmb()
+		private void FillActionDropdown()
 		{
-			cmbAction.Items.Clear();
-			var query = "SELECT DISTINCT [Action] from [Activity Logs] ORDER BY [Action]";
-			task.FillComboDropdown(cmbAction, query, empName);
+			List<string> items = activity.GetListofAction(empName);
+			cmbAction.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbAction.Items.Add(item);
+			}
 		}
 
-		//private void cmbAction_PopupOpening(object sender, System.ComponentModel.CancelEventArgs e)
-		//{
-		//	
-		//}
-
-		//private void cmbAction_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
-		//{
-		//	
-		//
-		//
-		//}
 
 		private void dgActivityLogs_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
@@ -102,7 +99,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void cmbAction_PopupOpening(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			FillActionCmb();
+			FillActionDropdown();
 		}
 	}
 }

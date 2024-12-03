@@ -6,8 +6,8 @@ using System.DirectoryServices.AccountManagement;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -35,41 +35,12 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				task.LogError("ViewHearinRepList", empName, "HearingRep", "N/A", ex);
 			}
 
 			return data;
 		}
 
-		public void FillHearingRep(RadGridView dgHearingRep, RadTextBox txtIntID, RadTextBox txtBoard, RadTextBox txtHearingRep, RadTextBox txtemailAddress, RadTextBox txtPhoneNo, RadTextBoxControl txtRemarks, string empName)
-		{
-			using SqlConnection con = new(_dbConnection);
-			try
-			{
-				con.Open();
-				{
-					using SqlCommand cmd = new("SELECT * FROM [Hearing Representative]", con);
-					cmd.ExecuteNonQuery();
-					var dgRow = dgHearingRep.SelectedRows[0];
-					{
-						txtIntID.Text = dgRow.Cells[0].Value + string.Empty;
-						txtBoard.Text = dgRow.Cells[1].Value + string.Empty;
-						txtHearingRep.Text = dgRow.Cells[2].Value + string.Empty;
-						txtemailAddress.Text = dgRow.Cells[3].Value + string.Empty;
-						txtPhoneNo.Text = dgRow.Cells[4].Value + string.Empty;
-						txtRemarks.Text = dgRow.Cells[5].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError($"FillHearingRep", empName, "Pantry", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
 
 
 		public void HRRepDBRequest(string request, RadTextBox repID, RadTextBox boardNo, RadTextBox hearRepName, RadTextBox email, RadTextBox phoneNo, RadTextBoxControl remarks, string empName)

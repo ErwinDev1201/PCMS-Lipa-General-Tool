@@ -7,13 +7,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telerik.WinControls;
-using YourmeeAppLibrary.Security;
+
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmModConnection : Telerik.WinControls.UI.RadForm
 	{
-		private readonly string NameofUser = UserPrincipal.Current.DisplayName;
 		readonly SecurityEncryption secEnc = new();
 		readonly CommonTask task = new();
 		public string empName;

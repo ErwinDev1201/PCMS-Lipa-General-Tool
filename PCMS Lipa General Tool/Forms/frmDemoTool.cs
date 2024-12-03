@@ -66,7 +66,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void mnuDiagnosis_Click(object sender, EventArgs e)
 		{
-			var dlgDiagnosis = new frmBillDiagnosis();
+			var dlgDiagnosis = new frmDiagnosis();
 			if (accessLevel == "User")
 			{
 				dlgDiagnosis.Text = "Diagnosis";
@@ -367,8 +367,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			RadMenuItem menuItem = sender as RadMenuItem;
 			ThemeResolutionService.ApplicationThemeName = menuItem.Tag as string;
-			var updateTheme = "UPDATE [User Information] SET [THEME] = '" + menuItem.Tag + "' WHERE [EMPLOYEE NAME] ='" + EmpName + "'";
-			task.UpdateValues(updateTheme, EmpName, "Theme successfully updated");
+			user.UpdateUserTheme(menuItem.Tag.ToString(), EmpName);
 		}
 
 		private void mnuUseProfile_Click(object sender, EventArgs e)

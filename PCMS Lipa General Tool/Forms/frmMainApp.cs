@@ -2,6 +2,7 @@
 using PCMS_Lipa_General_Tool.Forms;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -652,8 +653,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		{
 			RadMenuItem menuItem = sender as RadMenuItem;
 			ThemeResolutionService.ApplicationThemeName = menuItem.Tag as string;
-			var updateTheme = "UPDATE [User Information] SET [THEME] = '" + menuItem.Tag + "' WHERE [EMPLOYEE NAME] ='" + EmpName + "'";
-			task.UpdateValues(updateTheme, EmpName, "Theme successfully updated");
+			user.UpdateUserTheme(EmpName, menuItem.Tag.ToString());
 		}
 
 		private void mnuSuggestion_Click(object sender, EventArgs e)
@@ -670,7 +670,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		private void mnuDiagnosis_Click(object sender, EventArgs e)
 		{
-			var dlgDiagnosis = new frmBillDiagnosis();
+			var dlgDiagnosis = new frmDiagnosis();
 			if (accessLevel == "User")
 			{
 				dlgDiagnosis.btnNew.Visible = false;
@@ -731,7 +731,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		private void mnuwcDX_Click(object sender, EventArgs e)
 		{
-			var dlgDiagnosis = new frmBillDiagnosis();
+			var dlgDiagnosis = new frmDiagnosis();
 			if (accessLevel == "User")
 			{
 				dlgDiagnosis.btnNew.Visible = false;
@@ -872,9 +872,19 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			grpPatientName.Enabled = false;
 			grpDate.Enabled = false;
 			dgallNotesView.ReadOnly = true;
-			provider.FillComboProvider(cmbAllProvider, EmpName);
+			FillProviderDropdown();  
 		}
 
+
+		private void FillProviderDropdown()
+		{
+			List<string> items = provider.GetProviderList(EmpName);
+			cmbAllProvider.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbAllProvider.Items.Add(item);
+			}
+		}
 
 		private void radbuttonAction()
 		{

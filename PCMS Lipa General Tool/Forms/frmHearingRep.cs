@@ -39,27 +39,41 @@ namespace PCMS_Lipa_General_Tool.Forms
 		//
 		private void dgHearingRep_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-
-			if (dgHearingRep.SelectedRows.Count > 0)
+			try
 			{
-				var dlgModHeariRep = new frmModHearingRep();
-				hearing.FillHearingRep(dgHearingRep, dlgModHeariRep.txtIntID, dlgModHeariRep.txtBoard, dlgModHeariRep.txtHearingRep, dlgModHeariRep.txtEmailAdd, dlgModHeariRep.txtPhoneNo, dlgModHeariRep.txtRemarks, EmpName);
-				if (accessLevel == "User")
-				{
-					dlgModHeariRep.btnDelete.Visible = false;
-					dlgModHeariRep.btnUpdateSave.Visible = false;
-					dlgModHeariRep.Text = "View Hearing Rep Info";
+				if (dgHearingRep.SelectedRows.Count == 0)
+					return;
 
+				var selectedRow = dgHearingRep.SelectedRows[0];
+				var modHearingRep = new frmModHearingRep
+				{
+					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
+					txtBoard = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
+					txtHearingRep = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
+					txtEmailAdd = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
+					txtPhoneNo = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty }
+				};
+
+				if (accessLevel != "User")
+				{
+					modHearingRep.Text = "View/Update Hearing Rep Information";
+					modHearingRep.btnUpdateSave.Text = "Update";
 				}
 				else
 				{
-					dlgModHeariRep.btnUpdateSave.Text = "Update";
-					dlgModHeariRep.Text = "View/Modify Hearing Rep Info";
+					modHearingRep.Text = "View Hearing Rep Information";
+					modHearingRep.btnDelete.Visible = false;
+					modHearingRep.btnUpdateSave.Visible = false;
 				}
-				dlgModHeariRep.ShowDialog();
 
+				modHearingRep.ShowDialog();
+				ShowHearingRepList();
 			}
-			ShowHearingRepList();
+			catch (Exception ex)
+			{
+				task.LogError("dgHearingRep_MouseDoubleClick", EmpName, "frmHearingRep", null, ex);
+			}
 		}
 
 		private void frmHearingRep_Load(object sender, EventArgs e)

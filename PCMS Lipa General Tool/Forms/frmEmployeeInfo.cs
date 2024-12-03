@@ -1,4 +1,5 @@
-﻿using PCMS_Lipa_General_Tool.Class;
+﻿using DocumentFormat.OpenXml.Drawing;
+using PCMS_Lipa_General_Tool.Class;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
@@ -21,15 +22,34 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void LoadEmployeeInformation()
 		{
-			var dataTable = user.ViewEmployeeInformationUser(EmpName, out string lblCount);
-
+			var dataTable = user.ViewEmployeeInformationUser(EmpName, out string lblCount, "EmpInfo");
 			dgEmpInfo.DataSource = dataTable;
-
 			lblSearchCount.Text = lblCount;
 		}
 
 		private void AutoFillEmp()
 		{
+			try
+			{
+				if (dgEmpInfo.SelectedRows.Count == 0)
+					return;
+
+				var selectedRow = dgEmpInfo.SelectedRows[0];
+				{
+					txtEmpID.Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty;
+					txtEmpName.Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty;
+					txtemailAdd.Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty;
+					txtBVNo.Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
+					cmbUserDept.Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty;
+					cmbUserPosition.Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty;
+					cmbempStatus.Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty;
+					txtRemarks.Text = selectedRow.Cells[7].Value?.ToString() ?? string.Empty;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("AutoFillEmp", EmpName, "frmEmployeeInfo", txtEmpID.Text, ex);
+			}
 			user.FillUpEmpTxtBox(dgEmpInfo, txtEmpID, txtEmpName, txtemailAdd, txtBVNo, cmbUserDept, cmbUserPosition, cmbOfficeLoc, cmbempStatus, txtRemarks, EmpName);
 		}
 
@@ -69,7 +89,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (txtSearch.Text == "")
 			{
-				user.ViewEmployeeInformationUser(dgEmpInfo, lblSearchCount, EmpName);
+				
+				LoadEmployeeInformation();
 			}
 			else
 			{

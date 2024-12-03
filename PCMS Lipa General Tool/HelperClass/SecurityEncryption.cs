@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace YourmeeAppLibrary.Security
+namespace PCMS_Lipa_General_Tool.HelperClass
 {
 	public  class SecurityEncryption
 	{

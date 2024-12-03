@@ -6,8 +6,8 @@ using System.DirectoryServices.AccountManagement;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -36,41 +36,12 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewDxList", empName, "CommonTask", "N/A", ex);
+				task.LogError("ViewDxList", empName, "Diagnosis", "N/A", ex);
 			}
 
 			return data;
 		}
 
-		public void FillBillDiagnosisInfo(RadGridView dgBilDxInfotbl, RadTextBox txtIntID, RadTextBox txtICD10, RadTextBox txtICD9, RadTextBox txtDiagnosis, RadTextBox txtBodyPart, RadTextBoxControl txtRemarks, string empName)
-		{
-			using SqlConnection con = new(_dbConnection);
-			try
-			{
-				con.Open();
-				{
-					using SqlCommand cmd = new("SELECT * FROM [Diagnosis]", con);
-					cmd.ExecuteNonQuery();
-					var dgRow = dgBilDxInfotbl.SelectedRows[0];
-					{
-						txtIntID.Text = dgRow.Cells[0].Value + string.Empty;
-						txtICD10.Text = dgRow.Cells[1].Value + string.Empty;
-						txtICD9.Text = dgRow.Cells[2].Value + string.Empty;
-						txtDiagnosis.Text = dgRow.Cells[3].Value + string.Empty;
-						txtBodyPart.Text = dgRow.Cells[4].Value + string.Empty;
-						txtRemarks.Text = dgRow.Cells[5].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError($"FillBillDiagnosisInfo", empName, "Diagnosis", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
 
 		public void DiagnosisDBRequest(string request, RadTextBox dxID, RadTextBox icd10, RadTextBox icd9, RadTextBox Diagnosis, RadTextBox BodyParts, RadTextBoxControl remarks, string empName)
 		{

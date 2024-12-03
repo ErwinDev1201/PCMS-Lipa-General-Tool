@@ -1,7 +1,10 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 using Telerik.WinControls;
+using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
@@ -13,44 +16,47 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public string empName;
 		public string accessLevel;
 
+
 		public frmDBUtility()
 		{
+
+			var backend = new DeveloperAccess(); // Assume BackendService contains FillComboDropdown
+			List<string> items = backend.FillComboDropdown(empName);
 			InitializeComponent();
-			FillDatabaseTable();
-
-
-
+			PopulateDatabaseTable(items);
 		}
 
 
-		public void FillDatabaseTable()
+
+		public void PopulateDatabaseTable(List<string> items)
 		{
 			try
 			{
-				cmbTable.Items.Clear();
-				var query = "select name from [PCMS LIPA GENERAL TOOL].sys.sequences";
-				task.FillComboDropdown(cmbTable, query, empName);
-
-
-
+				cmbTable.Items.Clear(); // Clear existing items, if any
+				foreach (var item in items)
+				{
+					cmbTable.Items.Add(item);
+				}
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillDatabaseTable", empName, "frmDBUtility", null, ex);
+
+				task.LogError("PopulateDatabaseTable", empName, "frmDBUtility", null, ex);
 			}
+			
 		}
 
 		private void btnChangeSeq_Click(object sender, EventArgs e)
 		{
 			task.AlterDBSequece(txtSequence, cmbTable, empName);
-			task.AddActivityLog("Sequence of " + cmbTable.Text + " is changed by " + empName + " to " + txtSequence.Text, empName, empName + " change the sequence of " + cmbTable.Text, "DB CHANGED SEQUENCE");
+			task.AddActivityLog($"Sequence of {cmbTable.Text} is changed by {empName} to {txtSequence.Text}", empName, $"{empName} change the sequence of {cmbTable.Text}", "DB CHANGED SEQUENCE");
 			RadMessageBox.Show("Sequence successfully updated to " + txtSequence.Text);
 			ClearData();
 		}
 
 		private void GetcurrentSequence()
 		{
-			var query = "SELECT current_value FROM sys.sequences WHERE name = '" + cmbTable.Text + "'";
+			var query = $"SELECT current_value FROM sys.sequences WHERE name = '{cmbTable.Text}'";
 			task.GetSequenceNoPre(query, lblcurrentVal);
 		}
 

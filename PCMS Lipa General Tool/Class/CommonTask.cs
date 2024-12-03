@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Configuration;
 using System.Data;
@@ -9,8 +10,8 @@ using System.Reflection;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using YourmeeAppLibrary.Email;
-using YourmeeAppLibrary.Security;
+
+
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -149,76 +150,6 @@ namespace PCMS_Lipa_General_Tool.Class
 			alert.Show();
 		}
 
-		public void ViewDatagrid(RadGridView dataGrid, string query, RadLabel lblcount, string empName)
-		{
-			var con = new SqlConnection(_dbConnection);
-			try
-			{
-				using (var adp = new SqlDataAdapter(query, con))
-				{
-					var data = new DataTable();
-					adp.Fill(data);
-					adp.Update(data);
-					dataGrid.DataSource = data.DefaultView;
-					lblcount.Text = $"Total records: {dataGrid.RowCount}";
-				}
-				dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
-			}
-			catch (Exception ex)
-			{
-				LogError("ViewDatagrid", empName, "CommonTask", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
-
-
-		public void ViewDataTable(RadGridView dataGrid, string tableName, RadLabel lblcount, string empName)
-		{
-			var query = "SELECT * FROM " + tableName;
-			var con = new SqlConnection(_dbConnection);
-			try
-			{
-				using (var adp = new SqlDataAdapter(query, con))
-				{
-					var data = new DataTable();
-					adp.Fill(data);
-					adp.Update(data);
-					dataGrid.DataSource = data.DefaultView;
-					lblcount.Text = $"Total records: {dataGrid.RowCount}";
-				}
-				dataGrid.BestFitColumns(BestFitColumnMode.DisplayedDataCells);
-			}
-			catch (Exception ex)
-			{
-				LogError("ViewDataTable", empName, "CommonTask", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
-
-		public void UpdateValues(string query, string empName, string message)
-		{
-			try
-			{
-				using (var con = new SqlConnection(_dbConnection))
-				{
-					con.Open();
-					using var command = new SqlCommand(query, con);
-					command.ExecuteNonQuery();
-				}
-				//RadMessageBox.Show("Theme successfully updated", "Information", MessageBoxButtons.OK, RadMessageIcon.Info);
-				SendToastNotifDesktop(message);
-			}
-			catch (Exception ex)
-			{
-				LogError("UpdateValues", empName, "CommonTask", "N/A", ex);
-			}
-		}
 
 		public void UpdateFirstLoginInfo(string query, string userName, string empName, string message)
 		{
@@ -242,21 +173,6 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 
-		public void SaveValues(string query, string empName)
-		{
-			try
-			{
-				using var con = new SqlConnection(_dbConnection);
-				con.Open();
-				var command = new SqlCommand(query, con);
-				command.ExecuteNonQuery();
-			}
-			catch (Exception ex)
-			{
-				LogError("SaveValues", empName, "CommonTask", "N/A", ex);
-			}
-
-		}
 
 		private void GetUsersEmail(string name, string empName)
 		{
@@ -280,6 +196,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				con.Close();
 			}
 		}
+
 		public void NotifyEmail(string request, string mailContent, string employeeName, string empName, string position)
 		{
 			string emailAddress;
@@ -291,14 +208,14 @@ namespace PCMS_Lipa_General_Tool.Class
 			{
 				//support pdf attachment in next build. - 03222024
 				// uncomment when building release
-				//emailAddress = "Edimson@pcmsbilling.net";
-				//ccEmail1 = "Angeline@pcmsbilling.net";
+				emailAddress = "Edimson@pcmsbilling.net";
+				ccEmail1 = "Angeline@pcmsbilling.net";
 				//ccEmail2 = "Shalah@pcmsbilling.net";
 
 				//yopmail use for testing to avoid sending spam/test email in activate account and comment when building release
-				emailAddress = "Edimson@yopmail.com";
-				ccEmail1 = "Angeline@yopmail.com";
-				ccEmail2 = "Shalah@yopmail.com";
+				//emailAddress = "Edimson@yopmail.com";
+				//ccEmail1 = "Angeline@yopmail.com";
+				//ccEmail2 = "Shalah@yopmail.com";
 
 				if (request == "file")
 				{
@@ -311,7 +228,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					}
 					else
 					{
-						mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", ccEmail1, ccEmail2);
+						mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", ccEmail1, null);
 						//emailSender.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", );
 					}
 
@@ -560,7 +477,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				LogError($"AlterDBSequece", empName, "Pantry", "N/A", ex);
+				LogError($"AlterDBSequece", empName, "CommonTask", "N/A", ex);
 			}
 			finally
 			{
@@ -624,26 +541,6 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		public void FillComboDropdown(RadDropDownList cmbList, string query, string empName)
-		{
-			var con = new SqlConnection(_dbConnection);
-			try
-			{
-				con.Open();
-				SqlCommand cmd = new(query, con);
-				SqlDataReader reader = cmd.ExecuteReader();
-				while (reader.Read())
-				{
-					string name = reader.GetString(0);
-					cmbList.Items.Add(name);
-				}
-				con.Close();
-			}
-			catch (Exception ex)
-			{
-				LogError($"FillComboDropdown", empName, "CommonTask", "N/A", ex);
-			}
-		}
 
 		public void ExportTabletoExcel(RadGridView dgGridView, string filename, string empName)
 		{
@@ -719,12 +616,12 @@ namespace PCMS_Lipa_General_Tool.Class
 				: ex.ToString();
 
 			var errorMessage = $@"
-Error: {ex.Message}
-Name: {empName}
-Module: {module}
-Process: {processName}
-ID: {ID}
-Detailed Error: {detailedError}";
+				Error: {ex.Message}
+				Name: {empName}
+				Module: {module}
+				Process: {processName}
+				ID: {ID}
+				Detailed Error: {detailedError}";
 
 			dc.PublishtoDiscord(
 				Global.errorNameSender,

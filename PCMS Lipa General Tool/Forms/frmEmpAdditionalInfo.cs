@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
@@ -131,8 +132,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void FillManagementName()
 		{
 			cmbManagement.Items.Clear();
-			user.FillComboMgmt(cmbManagement, EmpName);
-			
+			List<string> items = user.GetManagementList(EmpName);
+			cmbManagement.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbManagement.Items.Add(item);
+			}
+
 		}
 
 		private void cmbManagement_PopupOpened(object sender, EventArgs e)
