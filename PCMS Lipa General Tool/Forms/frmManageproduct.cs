@@ -49,6 +49,24 @@ namespace PCMS_Lipa_General_Tool.Forms
 			paneltable.Enabled = true;
 		}
 
+		private void DisableInput()
+		{ 
+			txtIntID.Enabled = false;
+			txtIntID.ReadOnly = true;
+			txtPrice.Enabled = false;
+			txtRemarks.Enabled = false;
+			txtProductName.Enabled = false;
+			btnDelete.Enabled = false;
+			btnSave.Enabled = false;
+			btnCancel.Enabled = false;
+			dgPantryProduct.Enabled = false;
+			//txtSearch.Enabled = true;
+			btnNew.Enabled = false;
+			dgPantryProduct.BestFitColumns(BestFitColumnMode.AllCells);
+			ShowAllUserAccess();
+			paneltable.Enabled = false;
+		}
+
 
 		private void Clear()
 		{
@@ -103,14 +121,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnSave_Click(object sender, EventArgs e)
 		{
+			DisableInput();
 			if (btnSave.Text == "Update")
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
 					pantry.PantryProductDBRequest("Update", txtIntID, txtProductName, txtPrice, txtRemarks, empName);
-					ShowAllUserAccess();
-					Clear();
-					DefaultItem();
+				
 				}
 			}
 			else
@@ -127,18 +144,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					var querycheck = $"SELECT [Product Name] FROM [Pantry Product] WHERE [Product Name] = '{txtProductName.Text}'";
 					pantry.CheckProductExist(querycheck, txtIntID, txtProductName, txtPrice, txtRemarks, empName);
-					Clear();
-					ShowAllUserAccess();
-					DefaultItem();
-					txtProductName.Focus();
-
 				}
 			}
-
+			ShowAllUserAccess();
+			Clear();
+			DefaultItem();
+			txtProductName.Focus();
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
+			DisableInput();
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
 				pantry.PantryProductDBRequest("Delete", txtIntID, txtProductName, txtPrice, txtRemarks, empName);

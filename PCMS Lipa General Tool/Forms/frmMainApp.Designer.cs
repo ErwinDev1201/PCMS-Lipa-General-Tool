@@ -149,6 +149,16 @@
 			this.grpSearch = new Telerik.WinControls.UI.RadGroupBox();
 			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
 			this.dgallNotesView = new Telerik.WinControls.UI.RadGridView();
+			this.fluentTheme1 = new Telerik.WinControls.Themes.FluentTheme();
+			this.fluentDarkTheme1 = new Telerik.WinControls.Themes.FluentDarkTheme();
+			this.materialPinkTheme2 = new Telerik.WinControls.Themes.MaterialPinkTheme();
+			this.windows7Theme1 = new Telerik.WinControls.Themes.Windows7Theme();
+			this.windows8Theme1 = new Telerik.WinControls.Themes.Windows8Theme();
+			this.windows11Theme1 = new Telerik.WinControls.Themes.Windows11Theme();
+			this.breezeTheme1 = new Telerik.WinControls.Themes.BreezeTheme();
+			this.office2010BlueTheme1 = new Telerik.WinControls.Themes.Office2010BlueTheme();
+			this.desertTheme1 = new Telerik.WinControls.Themes.DesertTheme();
+			this.mnuAIAssist = new Telerik.WinControls.UI.RadMenuItem();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radMenu1)).BeginInit();
@@ -204,7 +214,8 @@
             this.mnuProvider,
             this.mnuPersonaReminders,
             this.mnuViewCollectorNotes,
-            this.radMenuSeparatorItem2});
+            this.radMenuSeparatorItem2,
+            this.mnuAIAssist});
 			this.mnuTool.Name = "mnuTool";
 			this.mnuTool.Text = "&Tools";
 			// 
@@ -553,6 +564,7 @@
 			this.mnuYourmeeThemes.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.mnuYourmeeThemes.Name = "mnuYourmeeThemes";
 			this.mnuYourmeeThemes.Text = "Yourmee Built-in Themes";
+			this.mnuYourmeeThemes.Click += new System.EventHandler(this.mnuYourmeeThemes_Click);
 			// 
 			// mnuCustomThemes
 			// 
@@ -691,9 +703,9 @@
             this.statlblpoweredby,
             this.commandBarSeparator4,
             this.statlbldateTime});
-			this.radStatusStrip1.Location = new System.Drawing.Point(0, 728);
+			this.radStatusStrip1.Location = new System.Drawing.Point(0, 729);
 			this.radStatusStrip1.Name = "radStatusStrip1";
-			this.radStatusStrip1.Size = new System.Drawing.Size(1193, 26);
+			this.radStatusStrip1.Size = new System.Drawing.Size(1193, 25);
 			this.radStatusStrip1.TabIndex = 3;
 			this.radStatusStrip1.ThemeName = "Crystal";
 			this.radStatusStrip1.StatusBarClick += new Telerik.WinControls.UI.RadStatusStrip.RadStatusBarClickEvenHandler(this.radStatusStrip1_StatusBarClick);
@@ -881,7 +893,7 @@
             this.mnuHelp});
 			this.radMenu1.Location = new System.Drawing.Point(0, 0);
 			this.radMenu1.Name = "radMenu1";
-			this.radMenu1.Size = new System.Drawing.Size(1193, 34);
+			this.radMenu1.Size = new System.Drawing.Size(1193, 33);
 			this.radMenu1.TabIndex = 1;
 			this.radMenu1.ThemeName = "Crystal";
 			// 
@@ -902,7 +914,7 @@
 			// 
 			this.pgCollectorStats.Controls.Add(this.collectorPanel);
 			this.pgCollectorStats.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.pgCollectorStats.ItemSize = new System.Drawing.SizeF(51F, 28F);
+			this.pgCollectorStats.ItemSize = new System.Drawing.SizeF(49F, 26F);
 			this.pgCollectorStats.Location = new System.Drawing.Point(6, 33);
 			this.pgCollectorStats.Name = "pgCollectorStats";
 			this.pgCollectorStats.Size = new System.Drawing.Size(1181, 714);
@@ -1013,7 +1025,7 @@
 			this.pgAllNotes.Controls.Add(this.grpSearch);
 			this.pgAllNotes.Controls.Add(this.dgallNotesView);
 			this.pgAllNotes.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.pgAllNotes.ItemSize = new System.Drawing.SizeF(70F, 28F);
+			this.pgAllNotes.ItemSize = new System.Drawing.SizeF(68F, 26F);
 			this.pgAllNotes.Location = new System.Drawing.Point(6, 33);
 			this.pgAllNotes.Name = "pgAllNotes";
 			this.pgAllNotes.Size = new System.Drawing.Size(1181, 654);
@@ -1217,13 +1229,19 @@
 			this.dgallNotesView.ThemeName = "Crystal";
 			this.dgallNotesView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgallNotesView_MouseDoubleClick);
 			// 
+			// mnuAIAssist
+			// 
+			this.mnuAIAssist.Name = "mnuAIAssist";
+			this.mnuAIAssist.Text = "AI Assistant (Coming Soon)";
+			this.mnuAIAssist.Click += new System.EventHandler(this.mnuAIAssist_Click);
+			// 
 			// pictureBox1
 			// 
 			this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-			this.pictureBox1.Location = new System.Drawing.Point(0, 34);
+			this.pictureBox1.Location = new System.Drawing.Point(0, 33);
 			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(1193, 720);
+			this.pictureBox1.Size = new System.Drawing.Size(1193, 721);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox1.TabIndex = 2;
 			this.pictureBox1.TabStop = false;
@@ -1416,5 +1434,15 @@
 		private Telerik.WinControls.UI.RadButton btnallRefresh;
 		public Telerik.WinControls.UI.RadMenuItem mnuAssignProvider;
 		public Telerik.WinControls.UI.RadMenuItem mnuViewCollectorNotes;
+		private Telerik.WinControls.Themes.FluentTheme fluentTheme1;
+		private Telerik.WinControls.Themes.FluentDarkTheme fluentDarkTheme1;
+		private Telerik.WinControls.Themes.MaterialPinkTheme materialPinkTheme2;
+		private Telerik.WinControls.Themes.Windows7Theme windows7Theme1;
+		private Telerik.WinControls.Themes.Windows8Theme windows8Theme1;
+		private Telerik.WinControls.Themes.Windows11Theme windows11Theme1;
+		private Telerik.WinControls.Themes.BreezeTheme breezeTheme1;
+		private Telerik.WinControls.Themes.Office2010BlueTheme office2010BlueTheme1;
+		private Telerik.WinControls.Themes.DesertTheme desertTheme1;
+		private Telerik.WinControls.UI.RadMenuItem mnuAIAssist;
 	}
 }

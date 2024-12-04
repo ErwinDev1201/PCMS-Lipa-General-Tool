@@ -1,4 +1,5 @@
-﻿using PCMS_Lipa_General_Tool.Class;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using PCMS_Lipa_General_Tool.Class;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -20,6 +21,41 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		}
 
+		public void DefaultItem()
+		{
+			txtBundleCodes.Enabled = true;
+			txtCPTCode.Enabled = true;
+			txtDescription.Enabled = true;
+			txtIntID.Enabled = true;
+			txtRemarks.Enabled = true;
+			rdoNo.Enabled = true;
+			rdoYes.Enabled = true;
+			btnDelete.Enabled = true;
+			btnUpdateSave.Enabled = true;
+
+			txtBundleCodes.Clear();
+			txtCPTCode.Clear();
+			txtDescription.Clear();
+			txtIntID.ReadOnly = true;
+			txtRemarks.Clear();
+			GetDBID();
+		}
+
+
+		private void DisableInputs()
+		{
+
+			txtBundleCodes.Enabled = false;
+			txtCPTCode.Enabled = false;
+			txtDescription.Enabled = false;
+			txtIntID.Enabled = false;
+			txtRemarks.Enabled = false;
+			rdoNo.Enabled = false;
+			rdoYes.Enabled = false;
+			btnDelete.Enabled = false;
+			btnUpdateSave.Enabled = false;
+		}
+
 		public void GetDBID()
 		{
 			task.GetSequenceNo("textbox", "BundleCodeSeq", txtIntID, null, "TX-");
@@ -27,6 +63,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)
 		{
+			DisableInputs();
 			string indicator;
 			if (btnUpdateSave.Text == "Update")
 			{
@@ -40,7 +77,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					{
 						indicator = "N";
 					}
-					bundle.BundleCodesDBRequest("Update", txtIntID, txtCPTCode, txtBundleCodes, txtDescription, indicator, txtRemarks, empName);
+					bundle.BundleCodesDBRequest("Update", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks, empName);
 				}
 			}
 			else
@@ -53,13 +90,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					indicator = "N";
 				}
-				bundle.BundleCodesDBRequest("Create", txtIntID, txtCPTCode, txtBundleCodes, txtDescription, indicator, txtRemarks, empName);
+				bundle.BundleCodesDBRequest("Create", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks, empName);
 			}
+			DefaultItem();
 			Close();
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
+			DisableInputs();
 			string indicator;
 			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
@@ -71,9 +110,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					indicator = "No";
 				}
-				bundle.BundleCodesDBRequest("Delete", txtIntID, txtCPTCode, txtBundleCodes, txtDescription, indicator, txtRemarks, empName);
-				Close();
+				bundle.BundleCodesDBRequest("Delete", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks, empName);
 			}
+			DefaultItem();
+			Close();
 		}
 
 		private void frmModBundleCodes_KeyDown(object sender, KeyEventArgs e)

@@ -200,7 +200,22 @@ namespace PCMS_Lipa_General_Tool.Forms
 				if (txtUsername.Text != "" && txtEmployeeName.Text != "" && txtPassword.Text != "" && cmbUserDept.Text != "" && cmbUserAccess.Text != "" && cmbPosition.Text != "" && cmbUserStatus.Text != "" && cmbOffice.Text != "")
 				{
 					btnMoreInfo.Enabled = false;
-					user.EmployeeDatabase("Create", txtIntID, txtEmployeeName, txtUsername, txtPassword, cmbUserAccess, cmbPosition, cmbUserDept, cmbUserStatus, txtWorkEmail, txtBVNo, cmbOffice, "Yes", "Crystal", empName);
+					user.EmployeeDatabase(
+						"Create",
+						txtIntID.Text,
+						txtEmployeeName.Text,
+						txtUsername.Text,
+						txtPassword.Text,
+						cmbUserAccess.Text,
+						cmbPosition.Text,
+						cmbUserDept.Text,
+						cmbUserStatus.Text,
+						txtWorkEmail.Text,
+						txtBVNo.Text,
+						cmbOffice.Text,
+						"Yes",
+						"Crystal",
+						empName);
 					UpdateMoreEmployeeInformation("Create");
 					ShowAllUserAccess();
 					DefaultItem();
@@ -288,7 +303,22 @@ namespace PCMS_Lipa_General_Tool.Forms
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
 				DisableInput();
-				user.EmployeeDatabase("Delete", txtIntID, txtEmployeeName, txtUsername, txtPassword, cmbUserAccess, cmbPosition, cmbUserDept, cmbUserStatus, txtWorkEmail, txtBVNo, cmbOffice, null, null, empName);
+				user.EmployeeDatabase(
+					"Delete",
+					txtIntID.Text,
+					txtEmployeeName.Text,
+					txtUsername.Text,
+					txtPassword.Text,
+					cmbUserAccess.Text,
+					cmbPosition.Text,
+					cmbUserDept.Text,
+					cmbUserStatus.Text,
+					txtWorkEmail.Text,
+					txtBVNo.Text,
+					cmbOffice.Text, 
+					null,
+					null,
+					empName);
 				Clear();
 				ShowAllUserAccess();
 				DefaultItem();
@@ -303,7 +333,22 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					DisableInput();
 					//radPanel1.Enabled = false;
-					user.EmployeeDatabase("Update", txtIntID, txtEmployeeName, txtUsername, txtPassword, cmbUserAccess, cmbPosition, cmbUserDept, cmbUserStatus, txtWorkEmail, txtBVNo, cmbOffice, null, null, empName);
+					user.EmployeeDatabase(
+						"Update",
+						txtIntID.Text,
+						txtEmployeeName.Text,
+						txtUsername.Text,
+						txtPassword.Text,
+						cmbUserAccess.Text,
+						cmbPosition.Text,
+						cmbUserDept.Text,
+						cmbUserStatus.Text,
+						txtWorkEmail.Text,
+						txtBVNo.Text,
+						cmbOffice.Text,
+						null,
+						null,
+						empName);
 					radPanel1.Enabled = true;
 					DefaultItem();
 					Clear();
@@ -314,7 +359,22 @@ namespace PCMS_Lipa_General_Tool.Forms
 				if (txtUsername.Text != "" && txtEmployeeName.Text != "" && txtPassword.Text != "" && cmbUserDept.Text != "" && cmbUserAccess.Text != "" && cmbPosition.Text != "" && cmbUserStatus.Text != "" && cmbOffice.Text != "")
 				{
 					//var query = "INSERT INTO [User Information] ([Employee ID], [EMPLOYEE NAME], USERNAME, PASSWORD, [USER ACCESS], POSITION, [DEPARTMENT], [STATUS], [EMAIL ADDRESS], OFFICE, [FIRST TIME LOGIN], THEME ) VALUES ('" + txtIntID.Text + "','" + txtEmployeeName.Text + "','" + txtUsername.Text + "','" + txtPassword.Text + "','" + cmbUserAccess.Text + "','" + cmbPosition.Text + "','" + cmbUserDept.Text + "','" + cmbUserStatus.Text + "','" + txtWorkEmail.Text + "','" + cmbOffice.Text + "', 'YES', 'Crystal')";
-					user.EmployeeDatabase("Create", txtIntID, txtEmployeeName, txtUsername, txtPassword, cmbUserAccess, cmbPosition, cmbUserDept, cmbUserStatus, txtWorkEmail, txtBVNo, cmbOffice, "Yes", "Crystal", empName);
+					user.EmployeeDatabase(
+						"Create",
+						txtIntID.Text,
+						txtEmployeeName.Text,
+						txtUsername.Text,
+						txtPassword.Text,
+						cmbUserAccess.Text,
+						cmbPosition.Text,
+						cmbUserDept.Text,
+						cmbUserStatus.Text,
+						txtWorkEmail.Text,
+						txtBVNo.Text,
+						cmbOffice.Text, 
+						"Yes", 
+						"Crystal", 
+						empName);
 					Clear();
 					DefaultItem();
 					ShowAllUserAccess();

@@ -46,12 +46,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					insurance.InsuranceInfoDBRequest(
 						"Update",
-						txtIntID,
-						txtInsuranceName,
-						txtInsCode,
-						txtInsuranceAddress,
-						txtPayerID,
-						txtRemarks,
+						txtIntID.Text,
+						txtInsuranceName.Text,
+						txtInsCode.Text,
+						txtInsuranceAddress.Text,
+						txtPayerID.Text,
+						txtRemarks.Text,
 						empName
 					);
 				}
@@ -60,12 +60,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				insurance.InsuranceInfoDBRequest(
 					"Create",
-					txtIntID,
-					txtInsuranceName,
-					txtInsCode,
-					txtInsuranceAddress,
-					txtPayerID,
-					txtRemarks,
+					txtIntID.Text,
+					txtInsuranceName.Text,
+					txtInsCode.Text,
+					txtInsuranceAddress.Text,
+					txtPayerID.Text,
+					txtRemarks.Text,
 					empName
 				);
 				
@@ -78,7 +78,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				insurance.InsuranceInfoDBRequest("Delete", txtIntID, txtInsuranceName, txtInsCode, txtInsuranceAddress, txtPayerID, txtRemarks, empName);
+				insurance.InsuranceInfoDBRequest(
+					"Delete",
+					txtIntID.Text,
+					txtInsuranceName.Text,
+					txtInsCode.Text,
+					txtInsuranceAddress.Text,
+					txtPayerID.Text,
+					txtRemarks.Text,
+					empName);
 				ClearData();
 				Close();
 			}

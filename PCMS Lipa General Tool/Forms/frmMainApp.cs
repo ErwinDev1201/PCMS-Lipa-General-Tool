@@ -635,6 +635,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 				CreateThemeMenuItem(mnuYourmeeThemes, "Breeze", "Breeze");
 				CreateThemeMenuItem(mnuYourmeeThemes, "Office 2010 (Blue)", "Office2010Blue");
 				CreateThemeMenuItem(mnuYourmeeThemes, "Windows 11 Feel", "Windows11");
+				CreateThemeMenuItem(mnuYourmeeThemes, "Desert", "Desert");
 			}
 			catch (Exception ex)
 			{
@@ -1067,6 +1068,18 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 					resetTimer.Start();
 				}
 			}
+		}
+
+		private void mnuYourmeeThemes_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void mnuAIAssist_Click(object sender, EventArgs e)
+		{
+			RadMessageBox.Show("Still under development", "Under Development");
+			//var ai = new frmAIAssistant();
+			//ai.ShowDialog();
 		}
 	}
 }

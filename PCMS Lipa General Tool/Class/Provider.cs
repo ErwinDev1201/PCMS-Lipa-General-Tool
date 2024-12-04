@@ -171,32 +171,48 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 
-		public void AssignProvider(string requestType, RadTextBox assignID, RadDropDownList providerName, RadDropDownList employeeName, RadTextBoxControl remarks, string empName)
+		public void AssignProvider(
+	string requestType,
+	string assignID,
+	string providerName,
+	string employeeName,
+	string remarks,
+	string empName)
 		{
-			var message = GenerateActivityMessage(requestType, assignID.Text, providerName.Text, employeeName.Text, null, null, remarks.Text);
-			var logs = $"{empName} {requestType.ToLower()}ed patientName ID: {assignID.Text}";
+			// Generate activity message and logs
+			var message = GenerateActivityMessage(requestType, assignID, providerName, employeeName, null, null, remarks);
+			var logs = $"{empName} {requestType.ToLower()}ed patientName ID: {assignID}";
 			string sqlCommandText;
 
+			// Determine SQL command based on the request type
 			switch (requestType)
 			{
 				case "Patch":
-					sqlCommandText = "UPDATE [Provider Collector] SET [Provider Name] = @providerName, [Employee Name] = @employeeName, REMARKS = @REMARKS WHERE [Assigned ID] = @assignID";
+					sqlCommandText = @"UPDATE [Provider Collector] 
+                               SET [Provider Name] = @providerName, 
+                                   [Employee Name] = @employeeName, 
+                                   REMARKS = @REMARKS 
+                               WHERE [Assigned ID] = @assignID";
 					break;
 
 				case "Create":
-					sqlCommandText = "INSERT INTO [Provider Collector] ([Assigned ID], [Provider Name], [Employee Name], [Remarks]) VALUES (@assignID, @providerName, @employeeName, @REMARKS)";
+					sqlCommandText = @"INSERT INTO [Provider Collector] 
+                               ([Assigned ID], [Provider Name], [Employee Name], [Remarks]) 
+                               VALUES (@assignID, @providerName, @employeeName, @REMARKS)";
 					break;
 
 				case "Delete":
-					sqlCommandText = "DELETE FROM [Provider Collector] WHERE [Assigned ID] = @assignID";
+					sqlCommandText = @"DELETE FROM [Provider Collector] 
+                               WHERE [Assigned ID] = @assignID";
 					break;
 
 				default:
-					RadMessageBox.Show("Invalid request type", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+					MessageBox.Show("Invalid request type", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					return;
 			}
 
-			ExecuteAssignProviderRequest(sqlCommandText, requestType, assignID.Text, providerName.Text, employeeName.Text, remarks.Text, empName, message, logs);
+			// Execute the database request
+			ExecuteAssignProviderRequest(sqlCommandText, requestType, assignID, providerName, employeeName, remarks, empName, message, logs);
 		}
 
 		private void ExecuteAssignProviderRequest(string sqlCommandText, string requestType, string assignID, string providerName, string employeeName, string remarks, string empName, string message, string logs)

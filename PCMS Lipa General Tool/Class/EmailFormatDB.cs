@@ -43,7 +43,13 @@ namespace PCMS_Lipa_General_Tool.Class
 
 
 
-		public void EmailFormatDBRequest(string request, RadTextBox formatID, RadTextBox insuranceName, RadTextBox emailFormat, RadTextBoxControl remarks, string empName)
+		public void EmailFormatDBRequest(
+			string request,
+			string formatID,
+			string insuranceName, 
+			string emailFormat,
+			string remarks,
+			string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -75,27 +81,27 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@FORMATID", formatID.Text);
-					cmd.Parameters.AddWithValue("@INSURANCE", insuranceName.Text);
-					cmd.Parameters.AddWithValue("@EMAILFORMAT", emailFormat.Text);
-					cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
+					cmd.Parameters.AddWithValue("@FORMATID", formatID);
+					cmd.Parameters.AddWithValue("@INSURANCE", insuranceName);
+					cmd.Parameters.AddWithValue("@EMAILFORMAT", emailFormat);
+					cmd.Parameters.AddWithValue("@REMARKS", remarks);
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@FORMATID", formatID.Text);
+				cmd.Parameters.AddWithValue("@FORMATID", formatID);
 
 				// Execute query
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				logs = $"{empName} {request.ToLower()}d Email Format ID: {formatID.Text}";
-				message = $"Done! {formatID.Text} has been successfully {request.ToLower()}d.";
+				logs = $"{empName} {request.ToLower()}d Email Format ID: {formatID}";
+				message = $"Done! {formatID} has been successfully {request.ToLower()}d.";
 				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} EMAIL FORMAT INFORMATION");
 				task.SendToastNotifDesktop(logs);
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"EmailFormatDBRequest - {request}", empName, "EmailFormatDB", formatID.Text, ex);
+				task.LogError($"EmailFormatDBRequest - {request}", empName, "EmailFormatDB", formatID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally

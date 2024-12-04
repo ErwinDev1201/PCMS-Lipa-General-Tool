@@ -220,7 +220,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 					}
 					else
 					{
-						pantry.PantryListDBRequest("Update", txtIntID, cmbItemEmpList, cmbProductList, txtQuantity, txtPrice, txtTotalPrice, txtSummary, txtRemarks, EmpName);
+						pantry.PantryListDBRequest(
+							"Update",
+							txtIntID.Text,
+							cmbItemEmpList.Text,
+							cmbProductList.Text,
+							int.Parse(txtQuantity.Text),
+							decimal.Parse(txtPrice.Text),
+							decimal.Parse(txtTotalPrice.Text),
+							txtSummary.Text,
+							txtRemarks.Text,
+							EmpName);
 					}
 				}
 			}
@@ -232,7 +242,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				else
 				{
-					pantry.PantryListDBRequest("Create", txtIntID, cmbItemEmpList, cmbProductList, txtQuantity, txtPrice, txtTotalPrice, txtSummary, txtRemarks, EmpName);
+					pantry.PantryListDBRequest(
+						"Create",
+						txtIntID.Text,
+						cmbItemEmpList.Text,
+						cmbProductList.Text,
+						int.Parse(txtQuantity.Text),
+						decimal.Parse(txtPrice.Text),
+						decimal.Parse(txtTotalPrice.Text),
+						txtSummary.Text,
+						txtRemarks.Text,
+						EmpName);
 
 				}
 			}
@@ -475,7 +495,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//process.DeleteValues(query);
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				pantry.PantryListDBRequest("Delete", txtIntID, cmbItemEmpList, cmbProductList, txtQuantity, txtPrice, txtTotalPrice, txtSummary, txtRemarks, EmpName);
+				pantry.PantryListDBRequest(
+					"Delete",
+					txtIntID.Text,
+					cmbItemEmpList.Text,
+					cmbProductList.Text,
+					int.Parse(txtQuantity.Text),
+					decimal.Parse(txtPrice.Text),
+					decimal.Parse(txtTotalPrice.Text),
+					txtSummary.Text,
+					txtRemarks.Text,
+					EmpName);
 				DefaultFields();
 				LoadPantryListwithFilter();
 			}

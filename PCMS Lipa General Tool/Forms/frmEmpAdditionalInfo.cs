@@ -109,15 +109,37 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnUpdate_Click(object sender, EventArgs e)
 		{
-			user.MoreEmployeeDatabase(txtEmpID, txtEmpName, txtRDWebUsername, txtRDWebPassword, txtLytecUsername, txtLytecPassword, txtWorkEmail, txtWorkEmailPass, txtDateofBirth, txtBVNo, txtBVUsername, txtBVPassword, txtPCName, txtPCUsername, txtPCPassword, cmbManagement, txtRemarks, cmbFirstTime, txtDCUsernaem, txtDCPassword, EmpName, cmbEmploymentStatus);
-			//task.AddActivityLog("Updated User Information for\nEmployee No: " + txtEmpID.Text + "\nEmployee Name: " + txtEmpName, EmpName, "Updated User Information for Employee #: " + txtEmpID.Text, "UPDATED USER INFORMATION",  EmpName);
+			user.MoreEmployeeDatabase(
+	txtEmpID.Text,
+	txtEmpName.Text,
+	txtRDWebUsername.Text,
+	txtRDWebPassword.Text,
+	txtLytecUsername.Text,
+	txtLytecPassword.Text,
+	txtWorkEmail.Text,
+	txtWorkEmailPass.Text,
+	DateTime.Parse(txtDateofBirth.Text),
+	txtBVNo.Text,
+	txtBVUsername.Text,
+	txtBVPassword.Text,
+	txtPCName.Text,
+	txtPCUsername.Text,
+	txtPCPassword.Text,
+	cmbManagement.Text,
+	txtRemarks.Text,
+	cmbFirstTime.Text,
+	txtDCUsernaem.Text,
+	txtDCPassword.Text,
+	cmbEmploymentStatus.Text,
+	EmpName);
+
 			//RadMessageBox.Show("Record Succesfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 			Close();
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-			user.EmployeeDatabase("Delete", txtEmpID, txtEmpName, null, null, null, null, null, null, null, null, null, null, null, EmpName);
+			user.EmployeeDatabase("Delete", txtEmpID.Text, txtEmpName.Text, null, null, null, null, null, null, null, null, null, null, null, EmpName);
 			Close();
 		}
 

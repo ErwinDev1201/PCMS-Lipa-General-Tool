@@ -42,15 +42,39 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtChartNo.Clear();
 			PullValueforDropdown();
 
+
+			txtIntID.Enabled = true;
+			txtRemarks.Enabled = true;
+			cmbProviderList.Enabled = true;
+			txtNotes.Enabled = true;
+			txtPatientName.Enabled = true;
+			txtChartNo.Enabled = true;
+			btnDelete.Enabled = true;
+			btnUpdateSave.Enabled = true;
+			GetDBID();
 		}
+
+		private void DisableInput()
+		{
+			txtIntID.Enabled = false;
+			txtRemarks.Enabled = false;
+			cmbProviderList.Enabled = false;
+			txtNotes.Enabled = false;
+			txtPatientName.Enabled = false;
+			txtChartNo.Enabled = false;
+			btnDelete.Enabled = false;
+			btnUpdateSave.Enabled = false;
+		}
+
 		private void btnUpdateSave_Click(object sender, EventArgs e)
 		{
+			DisableInput();
 			if (btnUpdateSave.Text == "Update")
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Would you like to go ahead and update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					cx.NoteDBRequest("Update", txtIntID, cmbProviderList, txtChartNo, txtPatientName, txtNotes, txtRemarks, empName);
-					ClearData();
+					cx.NoteDBRequest("Update", txtIntID.Text, cmbProviderList.Text, txtChartNo.Text, txtPatientName.Text, txtNotes.Text, txtRemarks.Text, empName);
+					
 				}
 			}
 			else
@@ -61,17 +85,19 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				else
 				{
-					cx.NoteDBRequest("Create", txtIntID, cmbProviderList, txtChartNo, txtPatientName, txtNotes, txtRemarks, empName);
+					cx.NoteDBRequest("Create", txtIntID.Text, cmbProviderList.Text, txtChartNo.Text, txtPatientName.Text, txtNotes.Text, txtRemarks.Text, empName);
 				}
 			}
+			ClearData();
 			Close();
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
+			DisableInput();
 			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				cx.NoteDBRequest("Delete", txtIntID, cmbProviderList, txtChartNo, txtPatientName, txtNotes, txtRemarks, empName);
+				cx.NoteDBRequest("Delete", txtIntID.Text, cmbProviderList.Text, txtChartNo.Text, txtPatientName.Text, txtNotes.Text, txtRemarks.Text, empName);
 				ClearData();
 				Close();
 			}

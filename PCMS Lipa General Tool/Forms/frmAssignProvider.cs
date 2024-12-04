@@ -69,7 +69,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				else
 				{
-					provider.AssignProvider("Create", txtIntID, cmbProviderName, cmbEmployeeName, txtRemarks, empName);
+					provider.AssignProvider("Create", txtIntID.Text, cmbProviderName.Text, cmbEmployeeName.Text, txtRemarks.Text, empName);
 					ClearData();
 				}
 			}
@@ -81,7 +81,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				else
 				{
-					provider.AssignProvider("Patch", txtIntID, cmbProviderName, cmbEmployeeName, txtRemarks, empName);
+					provider.AssignProvider("Patch", txtIntID.Text, cmbProviderName.Text, cmbEmployeeName.Text, txtRemarks.Text, empName);
 					ClearData();
 				}
 			}
@@ -100,8 +100,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-			provider.AssignProvider("Delete", txtIntID, cmbProviderName, cmbEmployeeName, txtRemarks, empName);
-			ClearData();
+			provider.AssignProvider("Delete", txtIntID.Text, cmbProviderName.Text, cmbEmployeeName.Text, txtRemarks.Text, empName);
 		}
 
 		private void dgAssignedProvider_MouseDoubleClick(object sender, MouseEventArgs e)

@@ -47,7 +47,15 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		public void NoteDBRequest(string request, RadTextBox noteID, RadDropDownList providerName, RadTextBox chartNo, RadTextBox patientName, RadTextBoxControl Notes, RadTextBoxControl remarks, string empName)
+		public void NoteDBRequest(
+			string request,
+			string noteID,
+			string providerName,
+			string chartNo,
+			string patientName,
+			string notes,
+			string remarks,
+			string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -60,64 +68,63 @@ namespace PCMS_Lipa_General_Tool.Class
 
 				string logs, message;
 
+				// Define SQL command based on the request type
 				cmd.CommandText = request switch
 				{
 					"Update" => @"
-                            UPDATE [Collector Notes]
-								SET 
-									[Provider Name] = @providerName,
-									[Chart No] = @chartNo, [Patient Name] = @patientName,
-									[Notes] = @Notes, [Collector Name] = @collectorName,
-									REMARKS = @REMARKS
-								WHERE
-									[Notes ID] = @noteID",
+                    UPDATE [Collector Notes]
+                    SET 
+                        [Provider Name] = @providerName,
+                        [Chart No] = @chartNo, [Patient Name] = @patientName,
+                        [Notes] = @Notes, [Collector Name] = @collectorName,
+                        REMARKS = @REMARKS
+                    WHERE
+                        [Notes ID] = @noteID",
 					"Create" => @"
-                            INSERT INTO [Collector Notes] ([Notes ID], Date, [Time Stamp], [Provider Name], [Chart No],
-									[Patient Name], Notes, [Collector Name], Remarks)
-								VALUES
-									(@noteID, @Date, @TimeStamp, @providerName,
-									@chartNo, @patientName, @Notes, @collectorName, @Remarks)",
+                    INSERT INTO [Collector Notes] ([Notes ID], Date, [Time Stamp], [Provider Name], [Chart No],
+                        [Patient Name], Notes, [Collector Name], Remarks)
+                    VALUES
+                        (@noteID, @Date, @TimeStamp, @providerName,
+                        @chartNo, @patientName, @Notes, @collectorName, @Remarks)",
 					"Delete" => @"
-								DELETE FROM
-									[Collector Notes]
-								WHERE
-									[Notes ID] = @noteID",
+                    DELETE FROM
+                        [Collector Notes]
+                    WHERE
+                        [Notes ID] = @noteID",
 					_ => throw new ArgumentException("Invalid request type"),
 				};
 
-				// Add parameters common to Patch and Create
+				// Add parameters for Update and Create requests
 				if (request != "Delete")
 				{
-
-					var currentDate = DateTime.Now.ToString("yyyy-MM-dd"); // only the date part
-					DateTime currentTimeStamp = DateTime.Now;  // date with time
+					var currentDate = DateTime.Now.ToString("yyyy-MM-dd"); // Date only
+					DateTime currentTimeStamp = DateTime.Now; // Full timestamp
 
 					cmd.Parameters.AddWithValue("@Date", currentDate);
 					cmd.Parameters.AddWithValue("@TimeStamp", currentTimeStamp);
-					cmd.Parameters.AddWithValue("@providerName", providerName.SelectedItem?.Text ?? (object)DBNull.Value);
-					cmd.Parameters.AddWithValue("@chartNo", chartNo.Text);
-					cmd.Parameters.AddWithValue("@patientName", patientName.Text);
-					cmd.Parameters.AddWithValue("@Notes", Notes.Text);
-					cmd.Parameters.AddWithValue("@collectorName", empName);
-					cmd.Parameters.AddWithValue("@Remarks", remarks.Text);
+					cmd.Parameters.AddWithValue("@providerName", string.IsNullOrEmpty(providerName) ? (object)DBNull.Value : providerName);
+					cmd.Parameters.AddWithValue("@chartNo", chartNo ?? string.Empty);
+					cmd.Parameters.AddWithValue("@patientName", patientName ?? string.Empty);
+					cmd.Parameters.AddWithValue("@Notes", notes ?? string.Empty);
+					cmd.Parameters.AddWithValue("@collectorName", empName ?? string.Empty);
+					cmd.Parameters.AddWithValue("@Remarks", remarks ?? string.Empty);
 				}
 
-				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@noteID", noteID.Text);
+				// Add common parameter for all requests
+				cmd.Parameters.AddWithValue("@noteID", noteID ?? string.Empty);
 
-				// Execute query
+				// Execute the SQL command
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				logs = $"{empName} {request.ToLower()}d Collector Notes ID: {noteID.Text}";
-				message = $"Done! {noteID.Text} has been successfully {request.ToLower()}d.";
+				logs = $"{empName} {request.ToLower()}d Collector Notes ID: {noteID}";
+				message = $"Done! {noteID} has been successfully {request.ToLower()}d.";
 				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} COLLECTOR NOTES INFORMATION");
 				task.SendToastNotifDesktop(message);
-
 			}
 			catch (Exception ex)
 			{
-				task.LogError("CollectorNotes", empName, "NoteDBRequest", noteID.Text, ex);
+				task.LogError("CollectorNotes", empName, "NoteDBRequest", noteID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
@@ -125,6 +132,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				conn.Close();
 			}
 		}
+
 
 
 		public void ViewNotesToday(RadGridView dataGrid, RadLabel lblcount, string empName)

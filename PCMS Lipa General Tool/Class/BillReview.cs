@@ -143,9 +143,9 @@ namespace PCMS_Lipa_General_Tool.Class
 		//}
 
 		public void BillReviewDBRequest(
-			string request, RadTextBox reviewerID, RadTextBox insuranceName, RadTextBox phoneNo, RadTextBox faxNo,
-			RadTextBox urphoneNO, RadTextBox urfaxNo, RadTextBox brphoneNo, RadTextBox brfaxNo,
-			RadTextBox email, RadTextBoxControl remarks, string empName)
+			string request, string reviewerID, string insuranceName, string phoneNo, string faxNo,
+			string urphoneNO, string urfaxNo, string brphoneNo, string brfaxNo,
+			string email, string remarks, string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -180,32 +180,32 @@ namespace PCMS_Lipa_General_Tool.Class
 				if (request != "Delete")
 				{
 
-					cmd.Parameters.AddWithValue("@INSURANCENAME", insuranceName.Text);
-					cmd.Parameters.AddWithValue("@PHONENO", phoneNo.Text);
-					cmd.Parameters.AddWithValue("@FAXNO", faxNo.Text);
-					cmd.Parameters.AddWithValue("@URPHONENO", urphoneNO.Text);
-					cmd.Parameters.AddWithValue("@URFAXNO", urfaxNo.Text);
-					cmd.Parameters.AddWithValue("@BRPHONENO", brphoneNo.Text);
-					cmd.Parameters.AddWithValue("@BRFAXNO", brfaxNo.Text);
-					cmd.Parameters.AddWithValue("@EMAIL", email.Text);
-					cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
+					cmd.Parameters.AddWithValue("@INSURANCENAME", insuranceName);
+					cmd.Parameters.AddWithValue("@PHONENO", phoneNo);
+					cmd.Parameters.AddWithValue("@FAXNO", faxNo);
+					cmd.Parameters.AddWithValue("@URPHONENO", urphoneNO);
+					cmd.Parameters.AddWithValue("@URFAXNO", urfaxNo);
+					cmd.Parameters.AddWithValue("@BRPHONENO", brphoneNo);
+					cmd.Parameters.AddWithValue("@BRFAXNO", brfaxNo);
+					cmd.Parameters.AddWithValue("@EMAIL", email);
+					cmd.Parameters.AddWithValue("@REMARKS", remarks);
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@REVIEWERID", reviewerID.Text);
+				cmd.Parameters.AddWithValue("@REVIEWERID", reviewerID);
 
 				// Execute query
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				logs = $"{empName} {request.ToLower()}d Bill Reviewer ID: {reviewerID.Text}";
-				message = $"Done! {reviewerID.Text} has been successfully {request.ToLower()}d.";
+				logs = $"{empName} {request.ToLower()}d Bill Reviewer ID: {reviewerID}";
+				message = $"Done! {reviewerID} has been successfully {request.ToLower()}d.";
 				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} BILL REVIEW INFORMATION");
 
 			}
 			catch (Exception ex)
 			{
-				task.LogError("BillReviewDBRequest", empName, "BillReview", reviewerID.Text, ex);
+				task.LogError("BillReviewDBRequest", empName, "BillReview", reviewerID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally

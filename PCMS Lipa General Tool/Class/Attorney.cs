@@ -47,11 +47,11 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		public void AttorneyDBRequest(
 			string request,
-			RadTextBox attyID, RadDropDownList
+			string attyID, string
 			cmbAttyType,
-			RadTextBox attyName,
-			RadTextBox phoneNo,
-			RadTextBox faxNo, RadTextBox email, RadTextBoxControl remarks, string empName)
+			string attyName,
+			string phoneNo,
+			string faxNo, string email, string remarks, string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -84,30 +84,30 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@ATTYID", attyID.Text);
-					cmd.Parameters.AddWithValue("@ATTYTYPE", cmbAttyType.Text);
-					cmd.Parameters.AddWithValue("@ATTYNAME", attyName.Text);
-					cmd.Parameters.AddWithValue("@PHONENO", phoneNo.Text);
-					cmd.Parameters.AddWithValue("@FAXNO", faxNo.Text);
-					cmd.Parameters.AddWithValue("@EMAIL", email.Text);
-					cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
+					cmd.Parameters.AddWithValue("@ATTYID", attyID);
+					cmd.Parameters.AddWithValue("@ATTYTYPE", cmbAttyType);
+					cmd.Parameters.AddWithValue("@ATTYNAME", attyName);
+					cmd.Parameters.AddWithValue("@PHONENO", phoneNo);
+					cmd.Parameters.AddWithValue("@FAXNO", faxNo);
+					cmd.Parameters.AddWithValue("@EMAIL", email);
+					cmd.Parameters.AddWithValue("@REMARKS", remarks);
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@ATTYID", attyID.Text);
+				cmd.Parameters.AddWithValue("@ATTYID", attyID);
 
 				// Execute query
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				logs = $"{empName} {request.ToLower()}d Atty ID: {attyID.Text}";
-				message = $"Done! {attyID.Text} has been successfully {request.ToLower()}d.";
+				logs = $"{empName} {request.ToLower()}d Atty ID: {attyID}";
+				message = $"Done! {attyID} has been successfully {request.ToLower()}d.";
 				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} ATTORNEY INFORMATION");
 				task.SendToastNotifDesktop(logs);
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"AttorneyDBRequest {request}", empName, "Attorney", attyID.Text, ex);
+				task.LogError($"AttorneyDBRequest {request}", empName, "Attorney", attyID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
