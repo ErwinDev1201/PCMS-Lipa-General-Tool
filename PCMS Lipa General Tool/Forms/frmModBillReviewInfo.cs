@@ -20,6 +20,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void ClearData()
 		{
+
+			txtBRFaxNo.Enabled = true;
+			txtPhoneNo.Enabled = true;
+			txtFax.Enabled = true;
+			txtInsuranceName.Enabled = true;
+			txtPhoneNo.Enabled = true;
+			txtOnlineEmail.Enabled = true;
+			txtRemarks.Enabled = true;
+			txtURPhone.Enabled = true;
+			btnDelete.Enabled = false;
+			btnUpdateSave.Enabled = false;
+
 			txtBRFaxNo.Clear();
 			txtPhoneNo.Clear();
 			txtFax.Clear();
@@ -31,6 +43,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtURPhone.Clear();
 		}
 
+		private void DisableInput()
+		{
+			txtBRFaxNo.Enabled = false;
+			txtPhoneNo.Enabled = false;
+			txtFax.Enabled = false;
+			txtInsuranceName.Enabled = false;
+			txtPhoneNo.Enabled = false;
+			txtOnlineEmail.Enabled = false;
+			txtRemarks.Enabled = false;
+			txtURPhone.Enabled = false;
+			btnDelete.Enabled = false;
+			btnUpdateSave.Enabled = false;
+		}
+
 
 		public void GetDBID()
 		{
@@ -39,27 +65,29 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
+			DisableInput();
 			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				bill.BillReviewDBRequest("Delete", txtIntID, txtInsuranceName, txtPhoneNo, txtFax, txtURPhone, txtURFaxNo, txtBRPhoneNo, txtBRFaxNo, txtOnlineEmail, txtRemarks, empName);
+				bill.BillReviewDBRequest("Delete", txtIntID.Text, txtInsuranceName.Text, txtPhoneNo.Text, txtFax.Text, txtURPhone.Text, txtURFaxNo.Text, txtBRPhoneNo.Text, txtBRFaxNo.Text, txtOnlineEmail.Text, txtRemarks.Text, empName);
 			}
+			ClearData();
 		}
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)
 		{
+			DisableInput();
 			if (btnUpdateSave.Text == "Update")
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Would you like to go ahead and update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					bill.BillReviewDBRequest("Update", txtIntID, txtInsuranceName, txtPhoneNo, txtFax, txtURPhone, txtURFaxNo, txtBRPhoneNo, txtBRFaxNo, txtOnlineEmail, txtRemarks, empName);
+					bill.BillReviewDBRequest("Update", txtIntID.Text, txtInsuranceName.Text, txtPhoneNo.Text, txtFax.Text, txtURPhone.Text, txtURFaxNo.Text, txtBRPhoneNo.Text, txtBRFaxNo.Text, txtOnlineEmail.Text, txtRemarks.Text, empName);
 				}
-				ClearData();
 			}
 			else
 			{
-				bill.BillReviewDBRequest("Create", txtIntID, txtInsuranceName, txtPhoneNo, txtFax, txtURPhone, txtURFaxNo, txtBRPhoneNo, txtBRFaxNo, txtOnlineEmail, txtRemarks, empName);
-				ClearData();
+				bill.BillReviewDBRequest("Create", txtIntID.Text, txtInsuranceName.Text, txtPhoneNo.Text, txtFax.Text, txtURPhone.Text, txtURFaxNo.Text, txtBRPhoneNo.Text, txtBRFaxNo.Text, txtOnlineEmail.Text, txtRemarks.Text, empName);
 			}
+			ClearData();
 			Close();
 		}
 

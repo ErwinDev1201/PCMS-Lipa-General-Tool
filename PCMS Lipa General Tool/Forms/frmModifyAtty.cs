@@ -30,6 +30,29 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtPhoneNo.Clear();
 			txtRemarks.Clear();
 
+			txtAttyName.Enabled = true;
+			txtRemarks.Enabled = true;
+			txtEmailAdd.Enabled = true;
+			txtFaxNo.Enabled = true;
+			txtPhoneNo.Enabled = true;
+			txtRemarks.Enabled = true;
+			btnDelete.Enabled = true;
+			btnUpdateSave.Enabled = true;
+			GetDBID();
+
+		}
+
+		private void DisableInput()
+		{
+			txtAttyName.Enabled = false;
+			txtRemarks.Enabled = false;
+			txtEmailAdd.Enabled = false;
+			txtFaxNo.Enabled = false;
+			txtPhoneNo.Enabled = false;
+			txtRemarks.Enabled = false;
+			btnDelete.Enabled = false;
+			btnUpdateSave.Enabled = false;
+			GetDBID();
 		}
 
 		public void GetDBID()
@@ -40,17 +63,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)
 		{
+			DisableInput();
 			if (btnUpdateSave.Text == "Update")
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Would you like to go ahead and update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					atty.AttorneyDBRequest("Update", txtIntID, cmbAttyType, txtAttyName, txtPhoneNo, txtFaxNo, txtEmailAdd, txtRemarks, empName);
+					atty.AttorneyDBRequest("Update", txtIntID.Text, cmbAttyType.Text, txtAttyName.Text, txtPhoneNo.Text, txtFaxNo.Text, txtEmailAdd.Text, txtRemarks.Text, empName);
 				}
 			}
 			else
 			{
-				atty.AttorneyDBRequest("Create", txtIntID, cmbAttyType, txtAttyName, txtPhoneNo, txtFaxNo, txtEmailAdd, txtRemarks, empName);
-
+				atty.AttorneyDBRequest("Create", txtIntID.Text, cmbAttyType.Text, txtAttyName.Text, txtPhoneNo.Text, txtFaxNo.Text, txtEmailAdd.Text, txtRemarks.Text, empName);
 			}
 			ClearData();
 			Close();
@@ -58,9 +81,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
+			DisableInput();
 			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				atty.AttorneyDBRequest("Delete", txtIntID, cmbAttyType, txtAttyName, txtPhoneNo, txtFaxNo, txtEmailAdd, txtRemarks, empName);
+				atty.AttorneyDBRequest("Delete", txtIntID.Text, cmbAttyType.Text, txtAttyName.Text, txtPhoneNo.Text, txtFaxNo.Text, txtEmailAdd.Text, txtRemarks.Text, empName);
 				ClearData();
 				Close();
 			}

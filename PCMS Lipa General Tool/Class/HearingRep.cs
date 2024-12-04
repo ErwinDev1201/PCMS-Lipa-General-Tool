@@ -43,7 +43,15 @@ namespace PCMS_Lipa_General_Tool.Class
 
 
 
-		public void HRRepDBRequest(string request, RadTextBox repID, RadTextBox boardNo, RadTextBox hearRepName, RadTextBox email, RadTextBox phoneNo, RadTextBoxControl remarks, string empName)
+		public void HRRepDBRequest(
+			string request,
+			string repID,
+			string boardNo,
+			string hearRepName,
+			string email,
+			string phoneNo, 
+			string remarks,
+			string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -75,29 +83,29 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@REPID", repID.Text);
-					cmd.Parameters.AddWithValue("@BOARD", boardNo.Text);
-					cmd.Parameters.AddWithValue("@NAME", hearRepName.Text);
-					cmd.Parameters.AddWithValue("@EMAIL", email.Text);
-					cmd.Parameters.AddWithValue("@PHONENO", phoneNo.Text);
-					cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
+					cmd.Parameters.AddWithValue("@REPID", repID);
+					cmd.Parameters.AddWithValue("@BOARD", boardNo);
+					cmd.Parameters.AddWithValue("@NAME", hearRepName);
+					cmd.Parameters.AddWithValue("@EMAIL", email);
+					cmd.Parameters.AddWithValue("@PHONENO", phoneNo);
+					cmd.Parameters.AddWithValue("@REMARKS", remarks);
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@REPID", repID.Text);
+				cmd.Parameters.AddWithValue("@REPID", repID);
 
 				// Execute query
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				logs = $"{empName} {request.ToLower()}d Hearing Rep ID: {repID.Text}";
-				message = $"Done! {repID.Text} has been successfully {request.ToLower()}d.";
+				logs = $"{empName} {request.ToLower()}d Hearing Rep ID: {repID}";
+				message = $"Done! {repID} has been successfully {request.ToLower()}d.";
 				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} HEARING REP INFORMATION");
 				task.SendToastNotifDesktop(logs);
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"HRRepDBRequest - {request}", empName, "Hearing Rep", repID.Text, ex);
+				task.LogError($"HRRepDBRequest - {request}", empName, "Hearing Rep", repID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally

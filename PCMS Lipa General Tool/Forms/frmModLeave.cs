@@ -31,8 +31,60 @@ namespace PCMS_Lipa_General_Tool.Forms
 		//	//mainProcess.FillUpSupportLeaveForm(txtEmpID, txtEmployeeName, txtPosition, txtEmploymentStatus, EmpName);
 		//}
 
+		private void DefaulSet()
+		{
+			txtEmpID.Enabled = true;
+			txtEmployeeName.Enabled = true;
+			txtEmploymentStatus.Enabled = true;
+			txtPosition.Enabled = true;
+			txtReason.Enabled = true;
+			txtRemarks.Enabled = true;
+			dtpEndDate.Enabled = true;
+			dtpStartdate.Enabled = true;
+			rdoBereavement.Enabled = true;
+			rdoBirthday.Enabled = true;
+			rdoMaternity.Enabled = true;
+			rdoPaternity.Enabled = true;
+			rdoBirthday.Enabled = true;
+			rdoSick.Enabled = true;
+			rdoVacation.Enabled = true;
+			rdoWOPay.Enabled = true;
+			rdoWPay.Enabled = true;
+			btnCancel.Enabled = true;
+			btnDelete.Enabled = true;
+			btnSaveUpdate.Enabled = true;
+			lblLeaveID.Enabled = true;
+		}
+
+
+		private void DisableInput()
+		{
+			txtEmpID.Enabled = false;
+			txtEmployeeName.Enabled = false;
+			txtEmploymentStatus.Enabled = false;
+			txtPosition.Enabled = false;
+			txtReason.Enabled = false;
+			txtRemarks.Enabled = false;
+			dtpEndDate.Enabled = false;
+			dtpStartdate.Enabled = false;
+			rdoBereavement.Enabled = false;
+			rdoBirthday.Enabled = false;
+			rdoMaternity.Enabled = false;
+			rdoPaternity.Enabled = false;
+			rdoBirthday.Enabled = false;
+			rdoSick.Enabled = false;
+			rdoVacation.Enabled = false;
+			rdoWOPay.Enabled = false;
+			rdoWPay.Enabled = false;
+			btnCancel.Enabled = false;
+			btnDelete.Enabled = false;
+			btnSaveUpdate.Enabled = false;
+			lblLeaveID.Enabled = false;
+		}
+
 		private void btnSaveUpdate_Click(object sender, EventArgs e)
 		{
+			DisableInput();
 			if (!ValidateInputs())
 			{
 				return;
@@ -46,8 +98,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 			if (ConfirmAction(action, txtReason.Text, dtpStartdate.Text, dtpEndDate.Text, paymentOption, typeOfLeave, cmbApproval.Text))
 			{
 				leave.LeaveFiling(operation, lblLeaveID, txtEmpID, txtEmployeeName, dtpStartdate, dtpEndDate, paymentOption, typeOfLeave, txtReason, cmbApproval, txtRemarks, EmpName, txtPosition);
-				Close();
 			}
+			DefaulSet();
+			Close();
+
 			//if (!rdoWPay.IsChecked && !rdoWOPay.IsChecked)
 			//{
 			//	RadMessageBox.Show("Payment Option is required", "Warning", MessageBoxButtons.OK, RadMessageIcon.Info);

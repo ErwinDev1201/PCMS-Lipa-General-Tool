@@ -37,42 +37,100 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		public void NewFillUpTextBoxwcmb(string query, RadGridView dataGrid, RadTextBox IntID, RadTextBox Name, RadTextBox Link, RadTextBox Username, RadTextBox accountOwner, RadTextBoxControl Remarks, RadDropDownList Browser, string empName)
+		public DataTable FetchOnlineLoginsData(string empName)
 		{
-			using var con = new SqlConnection(_dbConnection);
+			string query = "SELECT * FROM [Online Logins]";
+			var dataTable = new DataTable();
+
 			try
 			{
-				con.Open();
-				using SqlCommand cmd = new(query, con);
-				cmd.ExecuteNonQuery();
-				if (dataGrid.SelectedRows.Count > 0)
-				{
-					var row = dataGrid.SelectedRows[0];
-					{
-						IntID.Text = row.Cells[0].Value + string.Empty;
-						Name.Text = row.Cells[1].Value + string.Empty;
-						Link.Text = row.Cells[2].Value + string.Empty;
-						Browser.Text = row.Cells[3].Value + string.Empty;
-						Username.Text = row.Cells[4].Value + string.Empty;
-						accountOwner.Text = row.Cells[5].Value + string.Empty;
-						Remarks.Text = row.Cells[6].Value + string.Empty;
+				using var con = new SqlConnection(_dbConnection);
+				using var cmd = new SqlCommand(query, con);
+				using var adapter = new SqlDataAdapter(cmd);
 
-					}
-				}
+				// Fill the DataTable with data from the query
+				adapter.Fill(dataTable);
 			}
 			catch (Exception ex)
 			{
-				task.LogError("NewFillUpTextBoxwcmb", empName, "OnlineLogins", "", ex);
+				task.LogError("FetchOnlineLoginsData", empName, "OnlineLogins", string.Empty, ex);
+				throw;
 			}
-			finally
-			{
-				con.Close();
-			}
+
+			return dataTable;
 		}
 
-		public void OnlineLoginDB(string request, RadTextBox insID, RadTextBox insName, RadTextBox webLink, RadTextBox userName, RadTextBox passWord, RadTextBoxControl remarks, RadTextBox owner, RadDropDownList browser, RadCheckBox updateDC, string empName)
-		{
 
+		public void FillOnlineLoginsInfo(
+			DataRow selectedRow,
+			out string intID,
+			out string name,
+			out string link,
+			out string username,
+			out string password,
+			out string accountOwner,
+			out string remarks,
+			out string browser)
+		{
+			// Initialize outputs
+			intID = selectedRow[0]?.ToString() ?? string.Empty;
+			name = selectedRow[1]?.ToString() ?? string.Empty;
+			link = selectedRow[2]?.ToString() ?? string.Empty;
+			username = selectedRow[3]?.ToString() ?? string.Empty;
+			password = selectedRow[4]?.ToString() ?? string.Empty;
+			accountOwner = selectedRow[5]?.ToString() ?? string.Empty;
+			remarks = selectedRow[6]?.ToString() ?? string.Empty;
+			browser = selectedRow[7]?.ToString() ?? string.Empty;
+		}
+
+
+		//public void NewFillUpTextBoxwcmb( RadGridView dataGrid, RadTextBox IntID, RadTextBox Name, RadTextBox Link, RadTextBox Username, RadTextBox accountOwner, RadTextBoxControl Remarks, RadDropDownList Browser, string empName)
+		//{
+		//	using var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		string query = "SELECT * FROM [Online Logins]";
+		//		con.Open();
+		//		using SqlCommand cmd = new(query, con);
+		//		cmd.ExecuteNonQuery();
+		//		if (dataGrid.SelectedRows.Count > 0)
+		//		{
+		//			var row = dataGrid.SelectedRows[0];
+		//			{
+		//				IntID.Text = row.Cells[0].Value + string.Empty;
+		//				Name.Text = row.Cells[1].Value + string.Empty;
+		//				Link.Text = row.Cells[2].Value + string.Empty;
+		//				Browser.Text = row.Cells[3].Value + string.Empty;
+		//				Username.Text = row.Cells[4].Value + string.Empty;
+		//				accountOwner.Text = row.Cells[5].Value + string.Empty;
+		//				Remarks.Text = row.Cells[6].Value + string.Empty;
+		//
+		//			}
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("NewFillUpTextBoxwcmb", empName, "OnlineLogins", "", ex);
+		//	}
+		//	finally
+		//	{
+		//		con.Close();
+		//	}
+		//
+
+		public void OnlineLoginDB(
+	string request,
+	string insID,
+	string insName,
+	string webLink,
+	string userName,
+	string passWord,
+	string remarks,
+	string owner,
+	string browser,
+	bool updateDC,
+	string empName)
+		{
 			using SqlConnection conn = new(_dbConnection);
 			try
 			{
@@ -84,67 +142,69 @@ namespace PCMS_Lipa_General_Tool.Class
 
 				string logs, message, dcmessage;
 
+				// Determine the SQL command based on the request type
 				cmd.CommandText = request switch
 				{
 					"Update" => @"UPDATE [ONLINE LOGINS]
-								SET [Insurance Name] = @INSURANCE, [URL Link] = @LINK, USERNAME = @USERNAME,
-									PASSWORD = @PASSWORD, REMARKS = @REMARKS, [ACCOUNT OWNER] = @OWNER,
-									BROWSER = @BROWSER
-								WHERE
-									[LOGIN ID] = @INSID",
+                          SET [Insurance Name] = @INSURANCE, [URL Link] = @LINK, USERNAME = @USERNAME,
+                              PASSWORD = @PASSWORD, REMARKS = @REMARKS, [ACCOUNT OWNER] = @OWNER,
+                              BROWSER = @BROWSER
+                          WHERE
+                              [LOGIN ID] = @INSID",
 					"Create" => @"INSERT INTO [ONLINE LOGINS]
-									([LOGIN ID], [Insurance Name], [URL Link], Username, Password, Remarks, [Account Owner], Browser)
-								VALUES 
-									(@INSID, @INSURANCE, @LINK, @USERNAME, @PASSWORD, @REMARKS, @OWNER, @BROWSER)",
+                          ([LOGIN ID], [Insurance Name], [URL Link], Username, Password, Remarks, [Account Owner], Browser)
+                          VALUES 
+                              (@INSID, @INSURANCE, @LINK, @USERNAME, @PASSWORD, @REMARKS, @OWNER, @BROWSER)",
 					"Delete" => @"DELETE FROM [ONLINE LOGINS]
-								WHERE
-									[LOGIN ID] = @INSID",
+                          WHERE
+                              [LOGIN ID] = @INSID",
 					_ => throw new ArgumentException("Invalid request type."),
 				};
 
-				// Add parameters common to Patch and Create
+				// Add parameters for Update and Create
 				if (request != "Delete")
 				{
-
-					cmd.Parameters.AddWithValue("@INSURANCE", insName.Text);
-					cmd.Parameters.AddWithValue("@LINK", webLink.Text);
-					cmd.Parameters.AddWithValue("@USERNAME", userName.Text);
-					cmd.Parameters.AddWithValue("@PASSWORD", passWord.Text);
-					cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
-					cmd.Parameters.AddWithValue("@OWNER", owner.Text);
-					cmd.Parameters.AddWithValue("@BROWSER", browser.Text);
+					cmd.Parameters.AddWithValue("@INSURANCE", insName ?? string.Empty);
+					cmd.Parameters.AddWithValue("@LINK", webLink ?? string.Empty);
+					cmd.Parameters.AddWithValue("@USERNAME", userName ?? string.Empty);
+					cmd.Parameters.AddWithValue("@PASSWORD", passWord ?? string.Empty);
+					cmd.Parameters.AddWithValue("@REMARKS", remarks ?? string.Empty);
+					cmd.Parameters.AddWithValue("@OWNER", owner ?? string.Empty);
+					cmd.Parameters.AddWithValue("@BROWSER", browser ?? string.Empty);
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@INSID", insID.Text);
+				cmd.Parameters.AddWithValue("@INSID", insID ?? string.Empty);
 
 				// Execute query
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				// Use string interpolation for clarity and efficiency
-				dcmessage = $@"Hi, I just submitted a {request} for {insName.Text}. Here are the details you might want to check:
+				dcmessage = $@"Hi, I just submitted a {request} for {insName}. Here are the details you might want to check:
 
-						Insurance Name: {insName.Text}
-						Website Link: {webLink.Text}
-						Username: {userName.Text}
-						Password: {passWord.Text}
-						Account Owner: {owner.Text}
-						Remarks: {remarks.Text}";
+                Insurance Name: {insName}
+                Website Link: {webLink}
+                Username: {userName}
+                Password: {passWord}
+                Account Owner: {owner}
+                Remarks: {remarks}";
 
-				logs = $"{empName} {request.ToLower()}d OnlineLogin ID: {insID.Text}";
-				message = $"Done! {insID.Text} has been successfully {request.ToLower()}d.";
-				if (updateDC.Checked == true)
+				logs = $"{empName} {request.ToLower()}d OnlineLogin ID: {insID}";
+				message = $"Done! {insID} has been successfully {request.ToLower()}d.";
+
+				// Publish to Discord if updateDC is true
+				if (updateDC)
 				{
-					dc.PublishtoDiscord(Global.ProgName, $"Online Logins Access {request}d - {insName.Text}", dcmessage, empName, Global.Onloginwebhook, Global.onlogininvite);
+					dc.PublishtoDiscord(Global.ProgName, $"Online Logins Access {request}d - {insName}", dcmessage, empName, Global.Onloginwebhook, Global.onlogininvite);
 				}
-				
+
+				// Add activity log and send a toast notification
 				task.AddActivityLog(dcmessage, empName, logs, $"{request.ToUpper()} ONLINE LOGIN INFORMATION");
 				task.SendToastNotifDesktop(message);
 			}
 			catch (Exception ex)
 			{
-				task.LogError("OnlineLoginDB", empName, "OnlineLogins", insID.Text, ex);
+				task.LogError("OnlineLoginDB", empName, "OnlineLogins", insID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
@@ -153,6 +213,90 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
+
+		//public void OnlineLoginDB(string request, RadTextBox insID, RadTextBox insName, RadTextBox webLink, RadTextBox userName, RadTextBox passWord, RadTextBoxControl remarks, RadTextBox owner, RadDropDownList browser, RadCheckBox updateDC, string empName)
+		//{
+		//
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		conn.Open();
+		//		SqlCommand cmd = new()
+		//		{
+		//			Connection = conn
+		//		};
+		//
+		//		string logs, message, dcmessage;
+		//
+		//		cmd.CommandText = request switch
+		//		{
+		//			"Update" => @"UPDATE [ONLINE LOGINS]
+		//						SET [Insurance Name] = @INSURANCE, [URL Link] = @LINK, USERNAME = @USERNAME,
+		//							PASSWORD = @PASSWORD, REMARKS = @REMARKS, [ACCOUNT OWNER] = @OWNER,
+		//							BROWSER = @BROWSER
+		//						WHERE
+		//							[LOGIN ID] = @INSID",
+		//			"Create" => @"INSERT INTO [ONLINE LOGINS]
+		//							([LOGIN ID], [Insurance Name], [URL Link], Username, Password, Remarks, [Account Owner], Browser)
+		//						VALUES 
+		//							(@INSID, @INSURANCE, @LINK, @USERNAME, @PASSWORD, @REMARKS, @OWNER, @BROWSER)",
+		//			"Delete" => @"DELETE FROM [ONLINE LOGINS]
+		//						WHERE
+		//							[LOGIN ID] = @INSID",
+		//			_ => throw new ArgumentException("Invalid request type."),
+		//		};
+		//
+		//		// Add parameters common to Patch and Create
+		//		if (request != "Delete")
+		//		{
+		//
+		//			cmd.Parameters.AddWithValue("@INSURANCE", insName.Text);
+		//			cmd.Parameters.AddWithValue("@LINK", webLink.Text);
+		//			cmd.Parameters.AddWithValue("@USERNAME", userName.Text);
+		//			cmd.Parameters.AddWithValue("@PASSWORD", passWord.Text);
+		//			cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
+		//			cmd.Parameters.AddWithValue("@OWNER", owner.Text);
+		//			cmd.Parameters.AddWithValue("@BROWSER", browser.Text);
+		//		}
+		//
+		//		// Common parameter for all requests
+		//		cmd.Parameters.AddWithValue("@INSID", insID.Text);
+		//
+		//		// Execute query
+		//		cmd.ExecuteNonQuery();
+		//
+		//		// Log activity
+		//		// Use string interpolation for clarity and efficiency
+		//		dcmessage = $@"Hi, I just {request}d the login for {insName.Text}. Here are the details you might want to check:
+		//
+		//		Insurance Name: {insName.Text}
+		//		Website Link: {webLink.Text}
+		//		Username: {userName.Text}
+		//		Password: {passWord.Text}
+		//		Account Owner: {owner.Text}
+		//		Remarks: {remarks.Text}";
+		//
+		//		logs = $"{empName} {request.ToLower()}d OnlineLogin ID: {insID.Text}";
+		//		message = $"Done! {insID.Text} has been successfully {request.ToLower()}d.";
+		//		if (updateDC.Checked == true)
+		//		{
+		//			dc.PublishtoDiscord(Global.ProgName, $"Online Logins Access {request}d - {insName.Text}", dcmessage, empName, Global.Onloginwebhook, Global.onlogininvite);
+		//		}
+		//		
+		//		task.AddActivityLog(dcmessage, empName, logs, $"{request.ToUpper()} ONLINE LOGIN INFORMATION");
+		//		task.SendToastNotifDesktop(message);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("OnlineLoginDB", empName, "OnlineLogins", insID.Text, ex);
+		//		RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+		//	}
+		//	finally
+		//	{
+		//		conn.Close();
+		//	}
+		//}
+		//
 		public DataTable ViewOnlineLogins(string empName, out string lblCount)
 		{
 			const string query = "SELECT [LOGIN ID], [INSURANCE NAME], [URL LINK], BROWSER, USERNAME, [ACCOUNT OWNER], REMARKS FROM [ONLINE LOGINS] ORDER BY [LOGIN ID] ASC";

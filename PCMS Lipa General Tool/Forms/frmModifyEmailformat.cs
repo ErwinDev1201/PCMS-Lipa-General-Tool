@@ -33,7 +33,23 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtInsuranceName.Clear();
 			txtEmailFormat.Clear();
 			txtRemarks.Clear();
+
+			txtInsuranceName.Enabled = true;
+			txtEmailFormat.Enabled = true;
+			txtRemarks.Enabled = true;
+			btnSave.Enabled = true;
+			GetDBID();
 		}
+
+
+		private void DsisableInput()
+		{
+			txtInsuranceName.Enabled = false;
+			txtEmailFormat.Enabled = false;
+			txtRemarks.Enabled = false;
+			btnSave.Enabled = false;
+		}
+
 		private void btnSave_Click(object sender, EventArgs e)
 		{
 
@@ -43,7 +59,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			else
 			{
-				emailDB.EmailFormatDBRequest("Create", txtIntID, txtInsuranceName, txtEmailFormat, txtRemarks, empName);
+				emailDB.EmailFormatDBRequest("Create", txtIntID.Text, txtInsuranceName.Text, txtEmailFormat.Text, txtRemarks.Text, empName);
 				ClearData();
 			}
 			Close();

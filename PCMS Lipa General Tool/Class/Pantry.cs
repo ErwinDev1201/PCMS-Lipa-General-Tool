@@ -585,7 +585,18 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//}
 		//
-		public void PantryListDBRequest(string request, RadTextBox itemID, RadDropDownList empName, RadDropDownList product, RadTextBox quantity, RadTextBox itemPrice, RadTextBoxControl totalPrice, RadTextBoxControl summary, RadTextBoxControl remarks, string authorName)
+
+		public void PantryListDBRequest(
+	string request,
+	string itemID,
+	string empName,
+	string product,
+	int quantity,
+	decimal itemPrice,
+	decimal totalPrice,
+	string summary,
+	string remarks,
+	string authorName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -598,70 +609,56 @@ namespace PCMS_Lipa_General_Tool.Class
 
 				string logs, message;
 
+				// Determine SQL command based on the request type
 				cmd.CommandText = request switch
 				{
 					"Update" => @"UPDATE [Pantry Listahan] SET [Employee Name] = @EMPNAME, PRODUCT = @PRODUCT,
-									QUANTITY = @QUANTITY, PRICE = @PRICE,
-									[TOTAL PRICE] = @TOTALPRICE, SUMMARY = @SUMMARY, REMARKS = @REMARKS
-								WHERE
-									[List ID] = @ITEMID",
+                            QUANTITY = @QUANTITY, PRICE = @PRICE,
+                            [TOTAL PRICE] = @TOTALPRICE, SUMMARY = @SUMMARY, REMARKS = @REMARKS
+                          WHERE
+                            [List ID] = @ITEMID",
 					"Create" => @"INSERT INTO [Pantry Listahan] ([List ID], DATE, [Time Stamp], [Employee Name],
-									PRODUCT, QUANTITY, PRICE, [TOTAL PRICE], SUMMARY, REMARKS)
-								VALUES
-									(@ITEMID, @DATEINSERT, @TIMESTAMP, @EMPNAME, @PRODUCT, @QUANTITY, @PRICE, @TOTALPRICE, @SUMMARY, @REMARKS)",
+                            PRODUCT, QUANTITY, PRICE, [TOTAL PRICE], SUMMARY, REMARKS)
+                          VALUES
+                            (@ITEMID, @DATEINSERT, @TIMESTAMP, @EMPNAME, @PRODUCT, @QUANTITY, @PRICE, @TOTALPRICE, @SUMMARY, @REMARKS)",
 					"Delete" => @"DELETE FROM [Pantry Listahan]
-								WHERE
-									[List ID] = @ITEMID",
+                          WHERE
+                            [List ID] = @ITEMID",
 					_ => throw new ArgumentException("Invalid request type."),
 				};
 
-				// Add parameters common to Patch and Create
+				// Add parameters for Update and Create
 				if (request != "Delete")
 				{
-
 					var currentDate = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Taipei Standard Time").ToString("yyyy-MM-dd");
-					var currentTimeStamp = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Taipei Standard Time").ToString("yyyy-MM-dd hh:mm tt");  // date with time
+					var currentTimeStamp = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Taipei Standard Time").ToString("yyyy-MM-dd hh:mm tt");
 
 					cmd.Parameters.AddWithValue("@DATEINSERT", currentDate);
 					cmd.Parameters.AddWithValue("@TIMESTAMP", currentTimeStamp);
-					cmd.Parameters.AddWithValue("@EMPNAME", empName.Text);
-					cmd.Parameters.AddWithValue("@PRODUCT", product.Text);
-					cmd.Parameters.AddWithValue("@QUANTITY", quantity.Text);
-					if (decimal.TryParse(itemPrice.Text, out decimal price))
-					{
-						cmd.Parameters.AddWithValue("@PRICE", price);
-					}
-					else
-					{
-						throw new FormatException("Invalid price format. Please enter a numeric value.");
-					}
-					if (decimal.TryParse(totalPrice.Text, out decimal tprice))
-					{
-						cmd.Parameters.AddWithValue("@TOTALPRICE", tprice);
-					}
-					else
-					{
-						throw new FormatException("Invalid price format. Please enter a numeric value.");
-					}
-					cmd.Parameters.AddWithValue("@SUMMARY", summary.Text);
-					cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
+					cmd.Parameters.AddWithValue("@EMPNAME", empName ?? string.Empty);
+					cmd.Parameters.AddWithValue("@PRODUCT", product ?? string.Empty);
+					cmd.Parameters.AddWithValue("@QUANTITY", quantity);
+					cmd.Parameters.AddWithValue("@PRICE", itemPrice);
+					cmd.Parameters.AddWithValue("@TOTALPRICE", totalPrice);
+					cmd.Parameters.AddWithValue("@SUMMARY", summary ?? string.Empty);
+					cmd.Parameters.AddWithValue("@REMARKS", remarks ?? string.Empty);
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@ITEMID", itemID.Text);
+				cmd.Parameters.AddWithValue("@ITEMID", itemID ?? string.Empty);
 
 				// Execute query
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				logs = $"{empName.Text} {request.ToLower()}d Pantry List ID: {itemID.Text}";
-				message = $"Done! {itemID.Text} has been successfully {request.ToLower()}d.";
+				logs = $"{empName} {request.ToLower()}d Pantry List ID: {itemID}";
+				message = $"Done! {itemID} has been successfully {request.ToLower()}d.";
 				task.AddActivityLog(message, authorName, logs, $"{request.ToUpper()}D PANTRY LIST INFORMATION");
 				task.SendToastNotifDesktop(message);
 			}
 			catch (Exception ex)
 			{
-				task.LogError("PantryListDBRequest", authorName, "Pantry", itemID.Text, ex);
+				task.LogError("PantryListDBRequest", authorName, "Pantry", itemID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
@@ -670,6 +667,92 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
+
+		//public void PantryListDBRequest(string request, RadTextBox itemID, RadDropDownList empName, RadDropDownList product, RadTextBox quantity, RadTextBox itemPrice, RadTextBoxControl totalPrice, RadTextBoxControl summary, RadTextBoxControl remarks, string authorName)
+		//{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		conn.Open();
+		//		SqlCommand cmd = new()
+		//		{
+		//			Connection = conn
+		//		};
+		//
+		//		string logs, message;
+		//
+		//		cmd.CommandText = request switch
+		//		{
+		//			"Update" => @"UPDATE [Pantry Listahan] SET [Employee Name] = @EMPNAME, PRODUCT = @PRODUCT,
+		//							QUANTITY = @QUANTITY, PRICE = @PRICE,
+		//							[TOTAL PRICE] = @TOTALPRICE, SUMMARY = @SUMMARY, REMARKS = @REMARKS
+		//						WHERE
+		//							[List ID] = @ITEMID",
+		//			"Create" => @"INSERT INTO [Pantry Listahan] ([List ID], DATE, [Time Stamp], [Employee Name],
+		//							PRODUCT, QUANTITY, PRICE, [TOTAL PRICE], SUMMARY, REMARKS)
+		//						VALUES
+		//							(@ITEMID, @DATEINSERT, @TIMESTAMP, @EMPNAME, @PRODUCT, @QUANTITY, @PRICE, @TOTALPRICE, @SUMMARY, @REMARKS)",
+		//			"Delete" => @"DELETE FROM [Pantry Listahan]
+		//						WHERE
+		//							[List ID] = @ITEMID",
+		//			_ => throw new ArgumentException("Invalid request type."),
+		//		};
+		//
+		//		// Add parameters common to Patch and Create
+		//		if (request != "Delete")
+		//		{
+		//
+		//			var currentDate = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Taipei Standard Time").ToString("yyyy-MM-dd");
+		//			var currentTimeStamp = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Taipei Standard Time").ToString("yyyy-MM-dd hh:mm tt");  // date with time
+		//
+		//			cmd.Parameters.AddWithValue("@DATEINSERT", currentDate);
+		//			cmd.Parameters.AddWithValue("@TIMESTAMP", currentTimeStamp);
+		//			cmd.Parameters.AddWithValue("@EMPNAME", empName.Text);
+		//			cmd.Parameters.AddWithValue("@PRODUCT", product.Text);
+		//			cmd.Parameters.AddWithValue("@QUANTITY", quantity.Text);
+		//			if (decimal.TryParse(itemPrice.Text, out decimal price))
+		//			{
+		//				cmd.Parameters.AddWithValue("@PRICE", price);
+		//			}
+		//			else
+		//			{
+		//				throw new FormatException("Invalid price format. Please enter a numeric value.");
+		//			}
+		//			if (decimal.TryParse(totalPrice.Text, out decimal tprice))
+		//			{
+		//				cmd.Parameters.AddWithValue("@TOTALPRICE", tprice);
+		//			}
+		//			else
+		//			{
+		//				throw new FormatException("Invalid price format. Please enter a numeric value.");
+		//			}
+		//			cmd.Parameters.AddWithValue("@SUMMARY", summary.Text);
+		//			cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
+		//		}
+		//
+		//		// Common parameter for all requests
+		//		cmd.Parameters.AddWithValue("@ITEMID", itemID.Text);
+		//
+		//		// Execute query
+		//		cmd.ExecuteNonQuery();
+		//
+		//		// Log activity
+		//		logs = $"{empName.Text} {request.ToLower()}d Pantry List ID: {itemID.Text}";
+		//		message = $"Done! {itemID.Text} has been successfully {request.ToLower()}d.";
+		//		task.AddActivityLog(message, authorName, logs, $"{request.ToUpper()}D PANTRY LIST INFORMATION");
+		//		task.SendToastNotifDesktop(message);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("PantryListDBRequest", authorName, "Pantry", itemID.Text, ex);
+		//		RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+		//	}
+		//	finally
+		//	{
+		//		conn.Close();
+		//	}
+		//}
+		//
 
 		public void FillPanindaniTmCombo(string query, RadDropDownList pantryList, string empName)
 		{

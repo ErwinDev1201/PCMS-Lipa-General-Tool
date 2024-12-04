@@ -43,7 +43,15 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 
-		public void BundleCodesDBRequest(string request, RadTextBox treatmentID, RadTextBox cptCode, RadTextBoxControl bundleCodes, RadTextBoxControl Description, string indicator, RadTextBoxControl remarks, string empName)
+		public void BundleCodesDBRequest(
+			string request,
+			string treatmentID,
+			string cptCode,
+			string bundleCodes,
+			string Description, 
+			string indicator,
+			RadTextBoxControl remarks,
+			string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -76,29 +84,29 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@TREAMENTID", treatmentID.Text);
-					cmd.Parameters.AddWithValue("@CPTCODE", cptCode.Text);
-					cmd.Parameters.AddWithValue("@BUNDLECODE", bundleCodes.Text);
-					cmd.Parameters.AddWithValue("@DESCRIPTION", Description.Text);
+					cmd.Parameters.AddWithValue("@TREAMENTID", treatmentID);
+					cmd.Parameters.AddWithValue("@CPTCODE", cptCode);
+					cmd.Parameters.AddWithValue("@BUNDLECODE", bundleCodes);
+					cmd.Parameters.AddWithValue("@DESCRIPTION", Description);
 					cmd.Parameters.AddWithValue("@INDICATOR", indicator);
-					cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
+					cmd.Parameters.AddWithValue("@REMARKS", remarks);
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@TREAMENTID", treatmentID.Text);
+				cmd.Parameters.AddWithValue("@TREAMENTID", treatmentID);
 
 				// Execute query
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				logs = $"{empName} {request.ToLower()}d Treatment ID: {treatmentID.Text}";
-				message = $"Done! {treatmentID.Text} has been successfully {request.ToLower()}d.";
+				logs = $"{empName} {request.ToLower()}d Treatment ID: {treatmentID}";
+				message = $"Done! {treatmentID} has been successfully {request.ToLower()}d.";
 				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} BUNDLE CODES INFORMATION");
 				task.SendToastNotifDesktop(logs);
 			}
 			catch (Exception ex)
 			{
-				task.LogError("BundleCodesDBRequest", empName, "Bundle", treatmentID.Text, ex);
+				task.LogError("BundleCodesDBRequest", empName, "Bundle", treatmentID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally

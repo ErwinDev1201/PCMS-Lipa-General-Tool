@@ -3,10 +3,12 @@ using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Configuration;
+using System.Data;
 using System.Diagnostics;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
@@ -218,15 +220,49 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//mainProcess.CreateDbId(txtlogID, auditID, @"AL-");
 		}
 
-		private void AutoFill()
-		{
-			string query = "SELECT [LOGIN ID], [INSURANCE NAME], [URL LINK], BROWSER, USERNAME, [ACCOUNT OWNER], REMARKS FROM [ONLINE LOGINS]";
-			onlineLogin.NewFillUpTextBoxwcmb(query, dgOnlineLogins, txtLoginID, txtInsuranceName, txtWebLink, txtUsername, txtaccntOwner, txtRemarks, cmbBrowser, empName);
-			string query2 = "SELECT PASSWORD FROM [ONLINE LOGINS] WHERE [LOGIN ID] ='" + txtLoginID.Text + "'";
-			onlineLogin.FillPasswordDGTextBox(query2, txtPassword, empName);
-			DoubleClickEnable();
-		}
-
+		//private void AutoFill()
+		//{
+		//	try
+		//	{
+		//		// Step 1: Fetch data from the database
+		//		 var onlineLoginsTable = onlineLogin.FetchOnlineLoginsData(empName);
+		//
+		//		// Step 2: Extract specific row data
+		//		string intID, name, link, username, password, accountOwner, remarks, browser;
+		//		onlineLogin.FillOnlineLoginsInfo(
+		//			onlineLoginsTable,
+		//			out intID,
+		//			out name,
+		//			out link,
+		//			out username,
+		//			out password,
+		//			out accountOwner,
+		//			out remarks,
+		//			out browser,
+		//			empName
+		//		);
+		//
+		//		// Step 3: Update Telerik UI components
+		//		txtLoginID.Text = intID;
+		//		txtInsuranceName.Text = name;
+		//		txtWebLink.Text = link;
+		//		cmbBrowser.Text = browser;
+		//		txtUsername.Text = username;
+		//		txtPassword.Text = password;
+		//		txtaccntOwner.Text = accountOwner;
+		//		txtRemarks.Text = remarks;
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		RadMessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+		//	}
+		//	//string query = "SELECT [LOGIN ID], [INSURANCE NAME], [URL LINK], BROWSER, USERNAME, [ACCOUNT OWNER], REMARKS FROM [ONLINE LOGINS]";
+		//	//onlineLogin.NewFillUpTextBoxwcmb(query, dgOnlineLogins, txtLoginID, txtInsuranceName, txtWebLink, txtUsername, txtaccntOwner, txtRemarks, cmbBrowser, empName);
+		//	//string query2 = "SELECT PASSWORD FROM [ONLINE LOGINS] WHERE [LOGIN ID] ='" + txtLoginID.Text + "'";
+		//	//onlineLogin.FillPasswordDGTextBox(query2, txtPassword, empName);
+		//	DoubleClickEnable();
+		//}
+		//
 
 		private void btnNew_Click(object sender, EventArgs e)
 		{
@@ -273,15 +309,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					onlineLogin.OnlineLoginDB(
 						"Update",
-						txtLoginID,
-						txtInsuranceName,
-						txtWebLink,
-						txtUsername,
-						txtPassword,
-						txtRemarks,
-						txtaccntOwner,
-						cmbBrowser,
-						chkUpdateDiscord,
+						txtLoginID.Text,
+						txtInsuranceName.Text,
+						txtWebLink.Text,
+						txtUsername.Text,
+						txtPassword.Text,
+						txtRemarks.Text,
+						txtaccntOwner.Text,
+						cmbBrowser.Text,
+						chkUpdateDiscord.Checked,
 						empName
 					);
 					ShowDataUserAccess();
@@ -296,15 +332,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					onlineLogin.OnlineLoginDB(
 						"Create",
-						txtLoginID,
-						txtInsuranceName,
-						txtWebLink,
-						txtUsername,
-						txtPassword,
-						txtRemarks,
-						txtaccntOwner,
-						cmbBrowser,
-						chkUpdateDiscord,
+						txtLoginID.Text,
+						txtInsuranceName.Text,
+						txtWebLink.Text,
+						txtUsername.Text,
+						txtPassword.Text,
+						txtRemarks.Text,
+						txtaccntOwner.Text,
+						cmbBrowser.Text,
+						chkUpdateDiscord.Checked,
 						empName
 					);
 					Clear();
@@ -437,7 +473,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				onlineLogin.OnlineLoginDB("Delete", txtLoginID, txtInsuranceName, txtWebLink, txtUsername, txtPassword, txtRemarks, txtaccntOwner, cmbBrowser, chkUpdateDiscord, empName);
+				onlineLogin.OnlineLoginDB(
+					"Delete",
+					txtLoginID.Text,
+					txtInsuranceName.Text,
+					txtWebLink.Text,
+					txtUsername.Text,
+					txtPassword.Text,
+					txtRemarks.Text,
+					txtaccntOwner.Text,
+					cmbBrowser.Text,
+					chkUpdateDiscord.Checked,
+					empName);
 				ShowDataUserAccess();
 				UserAccessDefault();
 				Clear();
@@ -472,12 +519,70 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void dgOnlineLogins_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			AutoFill();
+			dgOnlineLogins.CellDoubleClick += DgAdjusterInfo_CellDoubleClick;
+			var onlineLoginsTable = onlineLogin.FetchOnlineLoginsData(empName);
+			dgOnlineLogins.DataSource = onlineLoginsTable;
+			//AutoFill();
 		}
+
+		private void DgAdjusterInfo_CellDoubleClick(object sender, Telerik.WinControls.UI.GridViewCellEventArgs e)
+		{
+			try
+			{
+				if (dgOnlineLogins.DataSource is DataTable onlineLoginsTable)
+				{
+					// Ensure a valid row was double-clicked
+					if (e.Row is GridViewDataRowInfo row && row.DataBoundItem is DataRowView rowView)
+					{
+						// Get the DataRow from the DataRowView
+						DataRow selectedRow = rowView.Row;
+
+						// Extract specific row data
+						string intID, name, link, username, password, accountOwner, remarks, browser;
+						onlineLogin.FillOnlineLoginsInfo(
+							selectedRow,
+							out intID,
+							out name,
+							out link,
+							out username,
+							out password,
+							out accountOwner,
+							out remarks,
+							out browser
+						);
+
+						// Populate Telerik UI components
+						txtLoginID.Text = intID;
+						txtInsuranceName.Text = name;
+						txtWebLink.Text = link;
+						cmbBrowser.Text = browser;
+						txtUsername.Text = username;
+						txtPassword.Text = password;
+						txtaccntOwner.Text = accountOwner;
+						txtRemarks.Text = remarks;
+						DoubleClickEnable();
+					}
+					else
+					{
+						RadMessageBox.Show("No valid row was selected.", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+					}
+				}
+				else
+				{
+					RadMessageBox.Show("The data source is not a valid DataTable.", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+				}
+			}
+			catch (Exception ex)
+			{
+				RadMessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+			}
+		}
+
+
 
 		private void dgOnlineLogins_KeyUp(object sender, KeyEventArgs e)
 		{
-			AutoFill();
+			//AutoFill();
 		}
 
 		//private void chkShowPassword_CheckStateChanged(object sender, EventArgs e)

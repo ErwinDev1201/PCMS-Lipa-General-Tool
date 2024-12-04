@@ -43,7 +43,15 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 
-		public void DiagnosisDBRequest(string request, RadTextBox dxID, RadTextBox icd10, RadTextBox icd9, RadTextBox Diagnosis, RadTextBox BodyParts, RadTextBoxControl remarks, string empName)
+		public void DiagnosisDBRequest(
+			string request,
+			string dxID,
+			string icd10,
+			string icd9,
+			string Diagnosis,
+			string BodyParts,
+			string remarks,
+			string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -73,29 +81,29 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@DXID", dxID.Text);
-					cmd.Parameters.AddWithValue("@ICD10", icd10.Text);
-					cmd.Parameters.AddWithValue("@ICD9", icd9.Text);
-					cmd.Parameters.AddWithValue("@DIAGNOSIS", Diagnosis.Text);
-					cmd.Parameters.AddWithValue("@BODYPARTS", BodyParts.Text);
-					cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
+					cmd.Parameters.AddWithValue("@DXID", dxID);
+					cmd.Parameters.AddWithValue("@ICD10", icd10);
+					cmd.Parameters.AddWithValue("@ICD9", icd9);
+					cmd.Parameters.AddWithValue("@DIAGNOSIS", Diagnosis);
+					cmd.Parameters.AddWithValue("@BODYPARTS", BodyParts);
+					cmd.Parameters.AddWithValue("@REMARKS", remarks);
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@DXID", dxID.Text);
+				cmd.Parameters.AddWithValue("@DXID", dxID);
 
 				// Execute query
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				logs = $"{empName} {request.ToLower()}d Diagnosis ID: {dxID.Text}";
-				message = $"Done! {dxID.Text} has been successfully {request.ToLower()}d.";
+				logs = $"{empName} {request.ToLower()}d Diagnosis ID: {dxID}";
+				message = $"Done! {dxID} has been successfully {request.ToLower()}d.";
 				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} DIAGNOSIS INFORMATION");
 				task.SendToastNotifDesktop(logs);
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"DiagnosisDBRequest - {request}", empName, "Diagnosis", dxID.Text, ex);
+				task.LogError($"DiagnosisDBRequest - {request}", empName, "Diagnosis", dxID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally

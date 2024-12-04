@@ -44,7 +44,15 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 
-		public void InsuranceInfoDBRequest(string request, RadTextBox insID, RadTextBox insuranceName, RadTextBox insCode, RadTextBoxControl address, RadTextBox payerID, RadTextBoxControl remarks, string empName)
+		public void InsuranceInfoDBRequest(
+			string request, 
+			string insID, 
+			string insuranceName,
+			string insCode, 
+			string address,
+			string payerID,
+			string remarks, 
+			string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -77,30 +85,30 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@INSID", insID.Text);
-					cmd.Parameters.AddWithValue("@INSURANCENAME", insuranceName.Text);
-					cmd.Parameters.AddWithValue("@INSCODE", insCode.Text);
-					cmd.Parameters.AddWithValue("@ADDRESS", address.Text);
-					cmd.Parameters.AddWithValue("@PAYERID", payerID.Text);
-					cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
+					cmd.Parameters.AddWithValue("@INSID", insID);
+					cmd.Parameters.AddWithValue("@INSURANCENAME", insuranceName);
+					cmd.Parameters.AddWithValue("@INSCODE", insCode);
+					cmd.Parameters.AddWithValue("@ADDRESS", address);
+					cmd.Parameters.AddWithValue("@PAYERID", payerID);
+					cmd.Parameters.AddWithValue("@REMARKS", remarks);
 
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@INSID", insID.Text);
+				cmd.Parameters.AddWithValue("@INSID", insID);
 
 				// Execute query
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				logs = $"{empName} {request.ToLower()}d Insurance ID: {insID.Text}";
-				message = $"Done! {insID.Text} has been successfully {request.ToLower()}d.";
+				logs = $"{empName} {request.ToLower()}d Insurance ID: {insID}";
+				message = $"Done! {insID} has been successfully {request.ToLower()}d.";
 				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} INSURANCE INFORMATION");
 				task.SendToastNotifDesktop(logs);
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"InsuranceInfoDBRequest - {request}", empName, "Insurance", insID.Text, ex);
+				task.LogError($"InsuranceInfoDBRequest - {request}", empName, "Insurance", insID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally

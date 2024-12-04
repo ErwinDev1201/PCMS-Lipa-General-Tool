@@ -202,19 +202,19 @@ namespace PCMS_Lipa_General_Tool.Class
 			string emailAddress;
 			string mailSubject;
 			string ccEmail1;
-			string ccEmail2;
+			//string ccEmail2;
 
 			try
 			{
 				//support pdf attachment in next build. - 03222024
 				// uncomment when building release
-				emailAddress = "Edimson@pcmsbilling.net";
-				ccEmail1 = "Angeline@pcmsbilling.net";
+				//emailAddress = "Edimson@pcmsbilling.net";
+				//ccEmail1 = "Angeline@pcmsbilling.net";
 				//ccEmail2 = "Shalah@pcmsbilling.net";
 
 				//yopmail use for testing to avoid sending spam/test email in activate account and comment when building release
-				//emailAddress = "Edimson@yopmail.com";
-				//ccEmail1 = "Angeline@yopmail.com";
+				emailAddress = "Edimson@yopmail.com";
+				ccEmail1 = "Angeline@yopmail.com";
 				//ccEmail2 = "Shalah@yopmail.com";
 
 				if (request == "file")

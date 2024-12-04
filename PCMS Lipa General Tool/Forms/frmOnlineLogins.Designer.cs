@@ -135,7 +135,6 @@
 			this.dgOnlineLogins.TabIndex = 0;
 			this.dgOnlineLogins.ThemeName = "Crystal";
 			this.dgOnlineLogins.Click += new System.EventHandler(this.dgOnlineLogins_SizeChanged);
-			this.dgOnlineLogins.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dgOnlineLogins_KeyUp);
 			this.dgOnlineLogins.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgOnlineLogins_MouseDoubleClick);
 			// 
 			// radPanel2

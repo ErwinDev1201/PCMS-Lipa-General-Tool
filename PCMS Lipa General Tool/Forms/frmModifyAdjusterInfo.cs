@@ -31,18 +31,61 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtRemarks.Clear();
 			txtAdjusterName.Clear();
 
+			txtInsuranceName.Enabled = true;
+			txtRemarks.Enabled = true;
+			txtEmailAdd.Enabled = true;
+			txtFax.Enabled = true;
+			txtphoneno.Enabled = true;
+			txtExtension.Enabled = true;
+			txtSupervisor.Enabled = true;
+			txtRemarks.Enabled = true;
+			txtAdjusterName.Enabled = true;
+			btnDelete.Enabled = true;
+			btnUpdateSave.Enabled = true;
+			GetDBID(); 
+		}
+
+		private void DisableInput()
+		{
+			txtInsuranceName.Enabled = false;
+			txtRemarks.Enabled = false;
+			txtEmailAdd.Enabled = false;
+			txtFax.Enabled = false;
+			txtphoneno.Enabled = false;
+			txtExtension.Enabled = false;
+			txtSupervisor.Enabled = false;
+			txtRemarks.Enabled = false;
+			txtAdjusterName.Enabled = false;
+			btnDelete.Enabled = false;
+			btnUpdateSave.Enabled = false;
 		}
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "AdjusterInfo", txtIntID, null, "ADJ -");
+			task.GetSequenceNo("textbox", "AdjusterInfo", txtIntID, null, "ADJ-");
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
+			DisableInput();
 			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				adj.AdjusterDBRequest("Delete", txtIntID, txtInsuranceName, txtAdjusterName, txtphoneno, txtExtension, txtFax, txtEmailAdd, txtSupervisor, txtRemarks, empName);
+				{
+					adj.AdjusterDBRequest(
+					"Delete",
+					txtIntID.Text,
+					txtInsuranceName.Text,
+					txtAdjusterName.Text,
+					txtphoneno.Text,
+					txtExtension.Text,
+					txtFax.Text,
+					txtEmailAdd.Text,
+					txtSupervisor.Text,
+					txtRemarks.Text,
+					empName
+					);
+
+				}
 				ClearData();
 				Close();
 			}
@@ -50,17 +93,46 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)
 		{
+			DisableInput();
 			if (btnUpdateSave.Text == "Update")
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Would you like to go ahead and update this record??", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					adj.AdjusterDBRequest("Update", txtIntID, txtInsuranceName, txtAdjusterName, txtphoneno, txtExtension, txtFax, txtEmailAdd, txtSupervisor, txtRemarks, empName);
+					adj.AdjusterDBRequest(
+					"Update",
+					txtIntID.Text,
+					txtInsuranceName.Text,
+					txtAdjusterName.Text,
+					txtphoneno.Text,
+					txtExtension.Text,
+					txtFax.Text,
+					txtEmailAdd.Text,
+					txtSupervisor.Text,
+					txtRemarks.Text,
+					empName
+					);
+
 				}
 
 			}
 			else
 			{
-				adj.AdjusterDBRequest("Create", txtIntID, txtInsuranceName, txtAdjusterName, txtphoneno, txtExtension, txtFax, txtEmailAdd, txtSupervisor, txtRemarks, empName);
+				{
+					adj.AdjusterDBRequest(
+					"Create",
+					txtIntID.Text,
+					txtInsuranceName.Text,
+					txtAdjusterName.Text,
+					txtphoneno.Text,
+					txtExtension.Text,
+					txtFax.Text,
+					txtEmailAdd.Text,
+					txtSupervisor.Text,
+					txtRemarks.Text,
+					empName
+					);
+
+				}
 
 			}
 			ClearData();

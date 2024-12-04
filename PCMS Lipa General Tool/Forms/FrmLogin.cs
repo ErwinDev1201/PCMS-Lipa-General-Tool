@@ -38,8 +38,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btn.CustomFontSize = 8;
 			//btn.Text = "\ue13D";
 			btn.Text = "\ue052";
-			txtUsername.Text = "Erwin";
-			txtPassword.Text = "Pcms@1234";
+			//txtUsername.Text = "Erwin";
+			//txtPassword.Text = "Pcms@1234";
 		}
 
 
