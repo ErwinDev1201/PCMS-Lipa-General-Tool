@@ -180,7 +180,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				dcmessage = $@"Hi, I just submitted a {request} for {insName}. Here are the details you might want to check:
+				dcmessage = $@"Hi, I just {request}d the a online access for {insName}. Here are the details you might want to check:
 
                 Insurance Name: {insName}
                 Website Link: {webLink}
