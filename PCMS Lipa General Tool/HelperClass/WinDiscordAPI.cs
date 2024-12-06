@@ -1,9 +1,7 @@
 ﻿using DiscordMessenger;
 using System;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Net;
-using System.Threading;
 
 
 namespace PCMS_Lipa_General_Tool.HelperClass

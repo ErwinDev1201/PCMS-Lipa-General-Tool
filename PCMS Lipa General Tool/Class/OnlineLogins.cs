@@ -3,7 +3,6 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.DirectoryServices.AccountManagement;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
@@ -50,6 +49,9 @@ namespace PCMS_Lipa_General_Tool.Class
 
 				// Fill the DataTable with data from the query
 				adapter.Fill(dataTable);
+			
+				///
+
 			}
 			catch (Exception ex)
 			{
@@ -61,8 +63,60 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 
+		public DataTable GetOnlineLoginInfo()
+		{
+			const string query = "SELECT * FROM [Online Logins]";
+			var dataTable = new DataTable();
+
+			try
+			{
+				using var con = new SqlConnection(_dbConnection);
+				using var cmd = new SqlCommand(query, con);
+				using var adapter = new SqlDataAdapter(cmd);
+
+				con.Open();
+				adapter.Fill(dataTable);
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetOnlineLoginInfo", "N/A", "OnlineLogins", "N/A", ex);
+				throw new Exception("Error fetching online logins information.", ex);
+			}
+
+			return dataTable;
+		}
+
+		public (string loginID, string insuranceName, string weblink, string username, string password, string accountowner, string remarks, string browser) ExtractOnlineLoginInfoFromRow(DataRow selectedRow)
+		{
+			try
+			{
+				if (selectedRow == null)
+				{
+					throw new ArgumentNullException(nameof(selectedRow), "Selected row cannot be null.");
+				}
+
+				// Extract values from the selected row
+				string loginID = selectedRow["Login ID"]?.ToString() ?? string.Empty;
+				string insuranceName = selectedRow["Insurance Name"]?.ToString() ?? string.Empty;
+				string weblink = selectedRow["URL Link"]?.ToString() ?? string.Empty;
+				string username = selectedRow["Username"]?.ToString() ?? string.Empty;
+				string password = selectedRow["Password"]?.ToString() ?? string.Empty;
+				string accountowner = selectedRow["Account Owner"]?.ToString() ?? string.Empty;
+				string remarks = selectedRow["Remarks"]?.ToString() ?? string.Empty;
+				string browser = selectedRow["Browser"]?.ToString() ?? string.Empty;
+
+				return (loginID, insuranceName, weblink, username, password, accountowner, remarks, browser);
+			}
+			catch (Exception ex)
+			{
+				task.LogError("ExtractOnlineLoginInfoFromRow", "N/A", "Attorney", "N/A", ex);
+				throw new Exception("Error extracting online login information from the selected row.", ex);
+			}
+		}
+
+
 		public void FillOnlineLoginsInfo(
-			DataRow selectedRow,
+			DataTable dgLoginAccess,
 			out string intID,
 			out string name,
 			out string link,
@@ -70,53 +124,78 @@ namespace PCMS_Lipa_General_Tool.Class
 			out string password,
 			out string accountOwner,
 			out string remarks,
-			out string browser)
+			out string browser,
+			string empName)
+		
 		{
 			// Initialize outputs
-			intID = selectedRow[0]?.ToString() ?? string.Empty;
-			name = selectedRow[1]?.ToString() ?? string.Empty;
-			link = selectedRow[2]?.ToString() ?? string.Empty;
-			username = selectedRow[3]?.ToString() ?? string.Empty;
-			password = selectedRow[4]?.ToString() ?? string.Empty;
-			accountOwner = selectedRow[5]?.ToString() ?? string.Empty;
-			remarks = selectedRow[6]?.ToString() ?? string.Empty;
-			browser = selectedRow[7]?.ToString() ?? string.Empty;
+			intID = string.Empty;
+			name = string.Empty;
+			link = string.Empty;
+			username = string.Empty;
+			password = string.Empty;
+			accountOwner = string.Empty;
+			remarks = string.Empty;
+			browser = string.Empty;
+
+			try
+			{
+				if (dgLoginAccess.Rows.Count > 0)
+				{
+					DataRow selectedRow = dgLoginAccess.Rows[0];
+
+					intID = selectedRow[0].ToString() ?? string.Empty;
+					name = selectedRow[2].ToString() ?? string.Empty;
+					link = selectedRow[3].ToString() ?? string.Empty;
+					username = selectedRow[4].ToString() ?? string.Empty;
+					password = selectedRow[5].ToString() ?? string.Empty;
+					accountOwner = selectedRow[6].ToString() ?? string.Empty;
+					remarks = selectedRow[7].ToString() ?? string.Empty;
+					browser = selectedRow[0].ToString() ?? string.Empty;
+				}
+			}
+			catch (Exception ex)
+			{
+
+				task.LogError("FillAttyEmpInfo", empName, "OnlineLogins", intID, ex);
+			}
 		}
 
 
-		//public void NewFillUpTextBoxwcmb( RadGridView dataGrid, RadTextBox IntID, RadTextBox Name, RadTextBox Link, RadTextBox Username, RadTextBox accountOwner, RadTextBoxControl Remarks, RadDropDownList Browser, string empName)
-		//{
-		//	using var con = new SqlConnection(_dbConnection);
-		//	try
-		//	{
-		//		string query = "SELECT * FROM [Online Logins]";
-		//		con.Open();
-		//		using SqlCommand cmd = new(query, con);
-		//		cmd.ExecuteNonQuery();
-		//		if (dataGrid.SelectedRows.Count > 0)
-		//		{
-		//			var row = dataGrid.SelectedRows[0];
-		//			{
-		//				IntID.Text = row.Cells[0].Value + string.Empty;
-		//				Name.Text = row.Cells[1].Value + string.Empty;
-		//				Link.Text = row.Cells[2].Value + string.Empty;
-		//				Browser.Text = row.Cells[3].Value + string.Empty;
-		//				Username.Text = row.Cells[4].Value + string.Empty;
-		//				accountOwner.Text = row.Cells[5].Value + string.Empty;
-		//				Remarks.Text = row.Cells[6].Value + string.Empty;
-		//
-		//			}
-		//		}
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		task.LogError("NewFillUpTextBoxwcmb", empName, "OnlineLogins", "", ex);
-		//	}
-		//	finally
-		//	{
-		//		con.Close();
-		//	}
-		//
+		public void NewFillUpTextBoxwcmb(RadGridView dataGrid, RadTextBox IntID, RadTextBox Name, RadTextBox Link, RadTextBox Username, RadTextBox accountOwner, RadTextBoxControl Remarks, RadDropDownList Browser, string empName)
+		{
+			using var con = new SqlConnection(_dbConnection);
+			try
+			{
+				string query = "SELECT * FROM [Online Logins]";
+				con.Open();
+				using SqlCommand cmd = new(query, con);
+				cmd.ExecuteNonQuery();
+				if (dataGrid.SelectedRows.Count > 0)
+				{
+					var row = dataGrid.SelectedRows[0];
+					{
+						IntID.Text = row.Cells[0].Value + string.Empty;
+						Name.Text = row.Cells[1].Value + string.Empty;
+						Link.Text = row.Cells[2].Value + string.Empty;
+						Browser.Text = row.Cells[3].Value + string.Empty;
+						Username.Text = row.Cells[4].Value + string.Empty;
+						accountOwner.Text = row.Cells[5].Value + string.Empty;
+						Remarks.Text = row.Cells[6].Value + string.Empty;
+
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("NewFillUpTextBoxwcmb", empName, "OnlineLogins", "", ex);
+			}
+			finally
+			{
+				con.Close();
+			}
+		}
+		
 
 		public void OnlineLoginDB(
 	string request,
@@ -299,7 +378,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//
 		public DataTable ViewOnlineLogins(string empName, out string lblCount)
 		{
-			const string query = "SELECT [LOGIN ID], [INSURANCE NAME], [URL LINK], BROWSER, USERNAME, [ACCOUNT OWNER], REMARKS FROM [ONLINE LOGINS] ORDER BY [LOGIN ID] ASC";
+			const string query = "SELECT * FROM [ONLINE LOGINS] ORDER BY [LOGIN ID] ASC";
 			var data = new DataTable();
 			lblCount = string.Empty;
 

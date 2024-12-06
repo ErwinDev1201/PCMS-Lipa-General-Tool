@@ -1,6 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
-using System.Configuration;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 

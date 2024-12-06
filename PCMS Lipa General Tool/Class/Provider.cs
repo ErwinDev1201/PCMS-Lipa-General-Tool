@@ -1,10 +1,8 @@
-﻿using PCMS_Lipa_General_Tool.HelperClass;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.DirectoryServices.AccountManagement;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;

@@ -1,10 +1,8 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
-using System.DirectoryServices.AccountManagement;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telerik.WinControls;
 
