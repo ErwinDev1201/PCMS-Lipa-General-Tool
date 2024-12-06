@@ -1,11 +1,6 @@
 ﻿using SautinSoft.Document;
-using System;
 using System.Diagnostics;
 using System.IO;
-using ThTask = System.Threading.Tasks;
-
-using System.Threading;
-using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.HelperClass
 {

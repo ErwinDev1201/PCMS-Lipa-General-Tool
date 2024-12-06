@@ -73,6 +73,7 @@
 			this.mnuPersonaReminders = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuViewCollectorNotes = new Telerik.WinControls.UI.RadMenuItem();
 			this.radMenuSeparatorItem2 = new Telerik.WinControls.UI.RadMenuSeparatorItem();
+			this.mnuAIAssist = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuPantryStore = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuPantryList = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuManageProduct = new Telerik.WinControls.UI.RadMenuItem();
@@ -158,7 +159,6 @@
 			this.breezeTheme1 = new Telerik.WinControls.Themes.BreezeTheme();
 			this.office2010BlueTheme1 = new Telerik.WinControls.Themes.Office2010BlueTheme();
 			this.desertTheme1 = new Telerik.WinControls.Themes.DesertTheme();
-			this.mnuAIAssist = new Telerik.WinControls.UI.RadMenuItem();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radMenu1)).BeginInit();
@@ -527,6 +527,12 @@
 			this.radMenuSeparatorItem2.Text = "radMenuSeparatorItem2";
 			this.radMenuSeparatorItem2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
+			// mnuAIAssist
+			// 
+			this.mnuAIAssist.Name = "mnuAIAssist";
+			this.mnuAIAssist.Text = "AI Assistant (Coming Soon)";
+			this.mnuAIAssist.Click += new System.EventHandler(this.mnuAIAssist_Click);
+			// 
 			// mnuPantryStore
 			// 
 			this.mnuPantryStore.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -703,9 +709,9 @@
             this.statlblpoweredby,
             this.commandBarSeparator4,
             this.statlbldateTime});
-			this.radStatusStrip1.Location = new System.Drawing.Point(0, 729);
+			this.radStatusStrip1.Location = new System.Drawing.Point(0, 728);
 			this.radStatusStrip1.Name = "radStatusStrip1";
-			this.radStatusStrip1.Size = new System.Drawing.Size(1193, 25);
+			this.radStatusStrip1.Size = new System.Drawing.Size(1193, 26);
 			this.radStatusStrip1.TabIndex = 3;
 			this.radStatusStrip1.ThemeName = "Crystal";
 			this.radStatusStrip1.StatusBarClick += new Telerik.WinControls.UI.RadStatusStrip.RadStatusBarClickEvenHandler(this.radStatusStrip1_StatusBarClick);
@@ -893,7 +899,7 @@
             this.mnuHelp});
 			this.radMenu1.Location = new System.Drawing.Point(0, 0);
 			this.radMenu1.Name = "radMenu1";
-			this.radMenu1.Size = new System.Drawing.Size(1193, 33);
+			this.radMenu1.Size = new System.Drawing.Size(1193, 34);
 			this.radMenu1.TabIndex = 1;
 			this.radMenu1.ThemeName = "Crystal";
 			// 
@@ -914,7 +920,7 @@
 			// 
 			this.pgCollectorStats.Controls.Add(this.collectorPanel);
 			this.pgCollectorStats.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.pgCollectorStats.ItemSize = new System.Drawing.SizeF(49F, 26F);
+			this.pgCollectorStats.ItemSize = new System.Drawing.SizeF(51F, 28F);
 			this.pgCollectorStats.Location = new System.Drawing.Point(6, 33);
 			this.pgCollectorStats.Name = "pgCollectorStats";
 			this.pgCollectorStats.Size = new System.Drawing.Size(1181, 714);
@@ -1025,7 +1031,7 @@
 			this.pgAllNotes.Controls.Add(this.grpSearch);
 			this.pgAllNotes.Controls.Add(this.dgallNotesView);
 			this.pgAllNotes.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.pgAllNotes.ItemSize = new System.Drawing.SizeF(68F, 26F);
+			this.pgAllNotes.ItemSize = new System.Drawing.SizeF(70F, 28F);
 			this.pgAllNotes.Location = new System.Drawing.Point(6, 33);
 			this.pgAllNotes.Name = "pgAllNotes";
 			this.pgAllNotes.Size = new System.Drawing.Size(1181, 654);
@@ -1229,19 +1235,13 @@
 			this.dgallNotesView.ThemeName = "Crystal";
 			this.dgallNotesView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgallNotesView_MouseDoubleClick);
 			// 
-			// mnuAIAssist
-			// 
-			this.mnuAIAssist.Name = "mnuAIAssist";
-			this.mnuAIAssist.Text = "AI Assistant (Coming Soon)";
-			this.mnuAIAssist.Click += new System.EventHandler(this.mnuAIAssist_Click);
-			// 
 			// pictureBox1
 			// 
 			this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-			this.pictureBox1.Location = new System.Drawing.Point(0, 33);
+			this.pictureBox1.Location = new System.Drawing.Point(0, 34);
 			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(1193, 721);
+			this.pictureBox1.Size = new System.Drawing.Size(1193, 720);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox1.TabIndex = 2;
 			this.pictureBox1.TabStop = false;
@@ -1259,7 +1259,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "frmMainApp";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "RadForm1";
+			this.Text = ",b";
 			this.ThemeName = "Crystal";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMainApp_FormClosing);

@@ -1,8 +1,4 @@
-﻿
-using DiscordMessenger;
-using DocumentFormat.OpenXml.Drawing;
-using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+﻿using PCMS_Lipa_General_Tool.Class;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;

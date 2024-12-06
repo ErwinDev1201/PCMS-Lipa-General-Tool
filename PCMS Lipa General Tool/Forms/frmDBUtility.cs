@@ -1,10 +1,7 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using Telerik.WinControls;
-using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
