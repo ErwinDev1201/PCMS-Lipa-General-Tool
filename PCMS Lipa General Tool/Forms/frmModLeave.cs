@@ -97,7 +97,19 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 			if (ConfirmAction(action, txtReason.Text, dtpStartdate.Text, dtpEndDate.Text, paymentOption, typeOfLeave, cmbApproval.Text))
 			{
-				leave.LeaveFiling(operation, lblLeaveID, txtEmpID, txtEmployeeName, dtpStartdate, dtpEndDate, paymentOption, typeOfLeave, txtReason, cmbApproval, txtRemarks, EmpName, txtPosition);
+				leave.LeaveFiling(
+					operation,
+					lblLeaveID.Text,
+					txtEmpID.Text,
+					txtEmployeeName.Text,
+					dtpStartdate.Value.ToString("yyyy-MM-dd"),
+					dtpEndDate.Value.ToString("yyyy-MM-dd"),
+					paymentOption, typeOfLeave,
+					txtReason.Text,
+					cmbApproval.Text,
+					txtRemarks.Text,
+					EmpName,
+					txtPosition.Text);
 			}
 			DefaulSet();
 			Close();
@@ -272,7 +284,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure want to delete this leave?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				leave.LeaveFiling("Delete", lblLeaveID, txtEmpID, txtEmployeeName, dtpStartdate, dtpEndDate, null, null, txtReason, cmbApproval, txtRemarks, EmpName, null);
+				leave.LeaveFiling(
+					"Delete",
+					lblLeaveID.Text,
+					txtEmpID.Text,
+					txtEmployeeName.Text,
+					dtpStartdate.Value.ToString("yyyy-MM-dd"),
+					dtpEndDate.Value.ToString("yyyy-MM-dd"),
+					null, null,
+					txtReason.Text,
+					cmbApproval.Text,
+					txtRemarks.Text	,
+					EmpName, null);
 			}
 			Close();
 		}

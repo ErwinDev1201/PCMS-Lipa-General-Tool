@@ -327,10 +327,19 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 		public void LeaveFiling(
-			string request, RadLabel leaveID,
-			RadTextBox empID, RadTextBox EmployeeName, RadDateTimePicker startDate,
-			RadDateTimePicker endDate, string paymentOption, string typeofLeave, RadTextBoxControl reason, RadDropDownList approvalStatus,
-			RadTextBoxControl remarks, string empName, RadTextBox approverPosition)
+			string request,
+			string leaveID,
+			string empID,
+			string EmployeeName,
+			string startDate,
+			string endDate,
+			string paymentOption,
+			string typeofLeave,
+			string reason,
+			string approvalStatus,
+			string remarks,
+			string empName,
+			string approverPosition)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -363,36 +372,36 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@EmpID", empID.Text);
-					cmd.Parameters.AddWithValue("@EmpName", EmployeeName.Text);
-					cmd.Parameters.AddWithValue("@StartDate", startDate.Text);
-					cmd.Parameters.AddWithValue("@EndDate", endDate.Text);
+					cmd.Parameters.AddWithValue("@EmpID", empID);
+					cmd.Parameters.AddWithValue("@EmpName", EmployeeName);
+					cmd.Parameters.AddWithValue("@StartDate", startDate);
+					cmd.Parameters.AddWithValue("@EndDate", endDate);
 					cmd.Parameters.AddWithValue("@Payment", paymentOption);
 					cmd.Parameters.AddWithValue("@AppliedLeave", typeofLeave);
-					cmd.Parameters.AddWithValue("@Reason", reason.Text);
-					cmd.Parameters.AddWithValue("@Status", approvalStatus.Text);
+					cmd.Parameters.AddWithValue("@Reason", reason);
+					cmd.Parameters.AddWithValue("@Status", approvalStatus);
 					cmd.Parameters.AddWithValue("@Approver", empName);
-					cmd.Parameters.AddWithValue("@Remarks", remarks.Text);
+					cmd.Parameters.AddWithValue("@Remarks", remarks);
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@leaveID", leaveID.Text);
+				cmd.Parameters.AddWithValue("@leaveID", leaveID);
 
 				// Execute query
 				cmd.ExecuteNonQuery();
 
-				message = GenerateMessage(request, leaveID.Text, EmployeeName.Text, startDate.Text, endDate.Text, paymentOption, typeofLeave, reason.Text, approvalStatus.Text, remarks.Text);
-				mailContent = GenerateEmailContent(EmployeeName.Text, startDate.Text, endDate.Text, paymentOption, typeofLeave, reason.Text, emailRequestType, approvalStatus.Text, approverPosition.Text, empName, remarks.Text);
+				message = GenerateMessage(request, leaveID, EmployeeName, startDate, endDate, paymentOption, typeofLeave, reason, approvalStatus, remarks);
+				mailContent = GenerateEmailContent(EmployeeName, startDate, endDate, paymentOption, typeofLeave, reason, emailRequestType, approvalStatus, approverPosition, empName, remarks);
 				// Determine the request type and notify via email
-				task.NotifyEmail(emailRequestType, mailContent, EmployeeName.Text, empName, approverPosition.Text);
-				logs = $"{empName} {request.ToLower()}d leave ID: {leaveID.Text}";
-				notifmessage = $"Done! {leaveID.Text} has been successfully {request.ToLower()}d.";
+				task.NotifyEmail(emailRequestType, mailContent, EmployeeName, empName, approverPosition);
+				logs = $"{empName} {request.ToLower()}d leave ID: {leaveID}";
+				notifmessage = $"Done! {leaveID} has been successfully {request.ToLower()}d.";
 				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} ADJUSTER INFORMATION");
 				task.SendToastNotifDesktop(notifmessage);
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"LeaveFiling ({request})", empName, "Leave", leaveID.Text, ex);
+				task.LogError($"LeaveFiling ({request})", empName, "Leave", leaveID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally

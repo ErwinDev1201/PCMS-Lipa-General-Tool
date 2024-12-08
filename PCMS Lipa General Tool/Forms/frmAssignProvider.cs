@@ -120,7 +120,23 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			DoubleClickEnable();
 			btnSave.Text = "Update";
-			provider.FillupAssignProvider(dgAssignedProvider, txtIntID, cmbProviderName, cmbEmployeeName, txtRemarks, empName);
+			try
+			{
+				if (dgAssignedProvider.SelectedRows.Count == 0)
+					return;
+
+				var selectedRow = dgAssignedProvider.SelectedRows[0];
+
+				txtIntID.Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty;
+				cmbEmployeeName.Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty;
+				cmbProviderName.Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty;
+				txtRemarks.Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty;
+				
+			}
+			catch (Exception ex)
+			{
+				task.LogError("PullDataFromTabletoTextBox", empName, "frmAssignProvider", "N/A", ex);
+			}
 		}
 
 		private void PullValueforDropdown()

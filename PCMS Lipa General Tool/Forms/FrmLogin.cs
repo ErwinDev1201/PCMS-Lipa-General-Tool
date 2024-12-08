@@ -41,17 +41,47 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//txtPassword.Text = "Pcms@1234";
 		}
 
-
 		private void btnLogin_Click(object sender, EventArgs e)
 		{
-			 var loginUI = new FrmLogin();
-			pushLogin.UserLogin(txtUsername, txtPassword, loginPanel, lblalert, loginUI);
-			if (lblalert.Text == "")
+			UserLogin();
+		}
+
+		private void UserLogin()
+		{
+
+			// Initialize variables for login
+			string username = txtUsername.Text;
+			string password = txtPassword.Text;
+			bool isLoginPanelEnabled = true;
+			string alertMessage = string.Empty;
+
+			// Create an instance of the Login class
+			var loginManager = new Login();
+
+			// Call the UserLogin method
+			loginManager.UserLogin(ref username, ref password, ref isLoginPanelEnabled, ref alertMessage, "CurrentEmployeeName");
+
+			// Update the front-end UI based on the results
+			loginPanel.Enabled = isLoginPanelEnabled;
+			lblalert.Text = alertMessage;
+
+			// If no alert message, proceed with hiding the login form
+			if (string.IsNullOrEmpty(alertMessage))
 			{
-				loginUI.Hide();
 				Hide();
 			}
 		}
+
+		//private void btnLogin_Click(object sender, EventArgs e)
+		//{
+		//	 var loginUI = new FrmLogin();
+		//	pushLogin.UserLogin(txtUsername.Text, txtPassword, loginPanel, lblalert, loginUI);
+		//	if (lblalert.Text == "")
+		//	{
+		//		loginUI.Hide();
+		//		Hide();
+		//	}
+		//}
 
 
 		private void txtUsername_TextChanged(object sender, EventArgs e)
@@ -122,31 +152,51 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
+			// Open the reset password dialog
 			var changePassword = new frmResetPassword
 			{
 				Text = "Forgot Password",
 				changePassword = "forgot"
-
 			};
 			changePassword.btnOK.Text = "Update Password";
 			changePassword.lblTemp.Text = "Username";
 			changePassword.ShowDialog();
-			pushLogin.DefaultLoginSet(txtUsername, txtPassword, loginPanel, lblalert);
+
+			// Initialize variables for resetting the login form
+			string username = txtUsername.Text;
+			string password = txtPassword.Text;
+			bool isLoginPanelEnabled = true;
+			string alertMessage;
+
+			// Reset the login form using the refactored Login class
+			var loginManager = new Login();
+			loginManager.DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out alertMessage);
+
+			// Update the UI after resetting
+			txtUsername.Text = username;
+			txtPassword.Text = password;
+			loginPanel.Enabled = isLoginPanelEnabled;
+			lblalert.Text = alertMessage;
 		}
+
+
+		//private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		//{
+		//	var changePassword = new frmResetPassword
+		//	{
+		//		Text = "Forgot Password",
+		//		changePassword = "forgot"
+		//
+		//	};
+		//	changePassword.btnOK.Text = "Update Password";
+		//	changePassword.lblTemp.Text = "Username";
+		//	changePassword.ShowDialog();
+		//	pushLogin.DefaultLoginSet(txtUsername, txtPassword, loginPanel, lblalert);
+		//}
 
 		private void txtPassword_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.Enter)
-			{
-				var loginUI = new FrmLogin();
-				pushLogin.UserLogin(txtUsername, txtPassword, loginPanel, lblalert, loginUI);
-				if (lblalert.Text == "")
-				{
-					loginUI.Hide();
-					Hide();
-
-				}
-			}
+			UserLogin();
 		}
 
 	}

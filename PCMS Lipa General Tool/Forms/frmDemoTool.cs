@@ -18,7 +18,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 		//private readonly MailSender mailSender = new MailSender();
 		private readonly string _DemoGen = privSupport + @"\Demo_GenReminder.rtf";
 
-		private readonly cmdTasks _Worker = new();
 		private readonly string _personalreminderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\PersonalReminder.rtf";
 		private readonly Leave leave = new();
 		private readonly CommonTask task = new();
@@ -372,9 +371,22 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void mnuUseProfile_Click(object sender, EventArgs e)
 		{
-			var userProfile = new frmUserProfile();
-			var queryUserProfile = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [USER ACCESS], [POSITION], [RDWEB USERNAME], [RDWEB PASSWORD], [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [Broadvoice No.], [DATE OF BIRTH], [Discord Username], [Discord Password] FROM [User Information] WHERE USERNAME='" + userName + "'";
-			user.FillUserProfile(queryUserProfile, userProfile.txtIntID, userProfile.txtEmpName, userProfile.txtUsername, userProfile.txtUserAccess, userProfile.txtUserPosition, userProfile.txtRDWebUsername, userProfile.txtRDWebPassword, userProfile.txtLytecUsername, userProfile.txtLytecPassword, userProfile.txtWorkEmail, userProfile.txtBVNo, userProfile.txtDateofBirth, userProfile.txtDiscordUsername, userProfile.txtDiscordPassword, EmpName);
+			var userProfile = new frmUserProfile();        
+			user.FillUserProfile(
+				userProfile.txtIntID.Text,
+				userProfile.txtEmpName.Text,
+				userProfile.txtUsername.Text,
+				userProfile.txtUserAccess.Text,
+				userProfile.txtUserPosition.Text,
+				userProfile.txtRDWebUsername.Text,
+				userProfile.txtRDWebPassword.Text,
+				userProfile.txtLytecUsername.Text,
+				userProfile.txtLytecPassword.Text,
+				userProfile.txtWorkEmail.Text,
+				userProfile.txtBVNo.Text,
+				userProfile.txtDateofBirth.Text,
+				userProfile.txtDiscordUsername.Text,
+				userProfile.txtDiscordPassword.Text, EmpName);
 			userProfile.empName = EmpName;
 			userProfile.Text = "My Profile";
 			userProfile.ShowDialog();
@@ -384,25 +396,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (!File.Exists(_personalreminderPath))
 			{
-				_Worker.CreateRTFfile(_personalreminderPath);
-				if (File.Exists(_personalreminderPath))
-				{
-					var testForm = new frmRTFEditor
-					{
-						file = _personalreminderPath
-					};
-					testForm.Show();
-				}
+				task.CreateRtfFile(_personalreminderPath);
+				
 			}
-			else
+			var testForm = new frmRTFEditor
 			{
-				var testForm = new frmRTFEditor
-				{
-					file = _personalreminderPath
-				};
-				testForm.Show();
-			}
-
+				file = _personalreminderPath
+			};
+			testForm.Show();
 		}
 
 		private void mnuFileLeave_Click(object sender, EventArgs e)

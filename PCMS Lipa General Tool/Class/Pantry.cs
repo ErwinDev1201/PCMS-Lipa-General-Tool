@@ -19,135 +19,135 @@ namespace PCMS_Lipa_General_Tool.Class
 	
 
 
-		public void FillUpPantryListField(string query, RadGridView dataGrid, RadDropDownList cmbProducts, RadTextBox quantity, RadTextBox price, RadTextBox Remarks, RadTextBox TransactionNo, RadTextBox Summary, RadTextBox totalPrices, string empName)
-		{
-			using var con = new SqlConnection(_dbConnection);
-			try
-			{
-				con.Open();
-				using (SqlCommand cmd = new(query, con))
-				{
-					cmd.ExecuteNonQuery();
-					if (dataGrid.SelectedRows.Count > 0)
-					{
-						var row = dataGrid.SelectedRows[0];
-						{
-							cmbProducts.Text = row.Cells[0].Value + string.Empty;
-							quantity.Text = row.Cells[1].Value + string.Empty;
-							price.Text = row.Cells[2].Value + string.Empty;
-							Remarks.Text = row.Cells[3].Value + string.Empty;
-							TransactionNo.Text = row.Cells[4].Value + string.Empty;
-							Summary.Text = row.Cells[5].Value + string.Empty;
-							totalPrices.Text = row.Cells[6].Value + string.Empty;
-						}
-					}
-				};
-			}
-			catch (Exception ex)
-			{
-				task.LogError("FillUpPantryListField", empName, "Pantry", "N/A", ex);
+		//public void FillUpPantryListField(string query, RadGridView dataGrid, RadDropDownList cmbProducts, RadTextBox quantity, RadTextBox price, RadTextBox Remarks, RadTextBox TransactionNo, RadTextBox Summary, RadTextBox totalPrices, string empName)
+		//{
+		//	using var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		con.Open();
+		//		using (SqlCommand cmd = new(query, con))
+		//		{
+		//			cmd.ExecuteNonQuery();
+		//			if (dataGrid.SelectedRows.Count > 0)
+		//			{
+		//				var row = dataGrid.SelectedRows[0];
+		//				{
+		//					cmbProducts.Text = row.Cells[0].Value + string.Empty;
+		//					quantity.Text = row.Cells[1].Value + string.Empty;
+		//					price.Text = row.Cells[2].Value + string.Empty;
+		//					Remarks.Text = row.Cells[3].Value + string.Empty;
+		//					TransactionNo.Text = row.Cells[4].Value + string.Empty;
+		//					Summary.Text = row.Cells[5].Value + string.Empty;
+		//					totalPrices.Text = row.Cells[6].Value + string.Empty;
+		//				}
+		//			}
+		//		};
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("FillUpPantryListField", empName, "Pantry", "N/A", ex);
+		//
+		//	}
+		//	finally
+		//	{
+		//		con.Close();
+		//	}
+		//}
 
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
+		//public void PantryAutoFillUp(RadTextBox intID, RadDropDownList Name, RadDropDownList productName, RadTextBox price, RadTextBox quantity, RadTextBox totalPrice, RadTextBox summary, RadTextBox remarks, RadGridView dgPantryList,
+		//	RadButton addItem, RadButton cancel, RadButton removeItem, RadButton newItem, RadDateTimePicker dtpTo, RadDateTimePicker dtpFrom, RadGroupBox grpItems, string permission, string empName)
+		//{
+		//	try
+		//	{
+		//		if (permission == "Admin")
+		//		{
+		//			grpItems.Enabled = true;
+		//			price.ReadOnly = false;
+		//			Name.Enabled = false;
+		//			productName.Enabled = true;
+		//			productName.Enabled = true;
+		//			productName.Visible = true;
+		//			productName.ReadOnly = false;
+		//			price.Enabled = true;
+		//			quantity.Enabled = true;
+		//			totalPrice.Enabled = true;
+		//			summary.Enabled = true;
+		//			remarks.Enabled = true;
+		//			addItem.Enabled = false;
+		//			cancel.Visible = true;
+		//			cancel.Enabled = true;
+		//			newItem.Enabled = false;
+		//			removeItem.Enabled = true;
+		//			removeItem.Enabled = true;
+		//			addItem.Text = "Update";
+		//			removeItem.Visible = true;
+		//			addItem.Visible = true;
+		//			dtpFrom.Visible = true;
+		//			dtpTo.Visible = true;
+		//
+		//			if (dgPantryList.SelectedRows.Count > 0)
+		//			{
+		//				intID.Text = dgPantryList.SelectedRows[0].Cells[0].Value + string.Empty;
+		//				Name.Text = dgPantryList.SelectedRows[0].Cells[3].Value + string.Empty;
+		//				productName.Text = dgPantryList.SelectedRows[0].Cells[4].Value + string.Empty;
+		//				price.Text = dgPantryList.SelectedRows[0].Cells[6].Value + string.Empty;
+		//				quantity.Text = dgPantryList.SelectedRows[0].Cells[5].Value + string.Empty;
+		//				totalPrice.Text = dgPantryList.SelectedRows[0].Cells[7].Value + string.Empty;
+		//				summary.Text = dgPantryList.SelectedRows[0].Cells[8].Value + string.Empty;
+		//				remarks.Text = dgPantryList.SelectedRows[0].Cells[9].Value + string.Empty;
+		//			}
+		//		}
+		//		else
+		//		{
+		//			grpItems.Enabled = true;
+		//			price.ReadOnly = true;
+		//			productName.ReadOnly = true;
+		//			quantity.ReadOnly = true;
+		//			remarks.ReadOnly = true;
+		//			summary.ReadOnly = true;
+		//			totalPrice.ReadOnly = true;
+		//			Name.Enabled = false;
+		//			productName.Enabled = true;
+		//			price.Enabled = true;
+		//			quantity.Enabled = true;
+		//			totalPrice.Enabled = true;
+		//			summary.Enabled = true;
+		//			remarks.Enabled = true;
+		//			addItem.Enabled = false;
+		//			cancel.Visible = true;
+		//			cancel.Enabled = true;
+		//			cancel.Width = 366;
+		//			cancel.Location = new System.Drawing.Point(22, 467);
+		//			newItem.Enabled = false;
+		//			remarks.Height = 94;
+		//			addItem.Text = "Update";
+		//			removeItem.Visible = false;
+		//			addItem.Visible = false;
+		//			dtpFrom.Visible = true;
+		//			dtpTo.Visible = true;
+		//
+		//			if (dgPantryList.SelectedRows.Count > 0)
+		//			{
+		//				intID.Text = dgPantryList.SelectedRows[0].Cells[0].Value + string.Empty;
+		//				Name.Text = dgPantryList.SelectedRows[0].Cells[3].Value + string.Empty;
+		//				productName.Text = dgPantryList.SelectedRows[0].Cells[4].Value + string.Empty;
+		//				price.Text = dgPantryList.SelectedRows[0].Cells[6].Value + string.Empty;
+		//				quantity.Text = dgPantryList.SelectedRows[0].Cells[5].Value + string.Empty;
+		//				totalPrice.Text = dgPantryList.SelectedRows[0].Cells[7].Value + string.Empty;
+		//				summary.Text = dgPantryList.SelectedRows[0].Cells[8].Value + string.Empty;
+		//				remarks.Text = dgPantryList.SelectedRows[0].Cells[9].Value + string.Empty;
+		//			}
+		//		}
+		//
+		//
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("PantryAutoFillUp", empName, "Pantry", "N/A", ex);
+		//	}
+		//}
 
-		public void PantryAutoFillUp(RadTextBox intID, RadDropDownList Name, RadDropDownList productName, RadTextBox price, RadTextBox quantity, RadTextBox totalPrice, RadTextBox summary, RadTextBox remarks, RadGridView dgPantryList,
-			RadButton addItem, RadButton cancel, RadButton removeItem, RadButton newItem, RadDateTimePicker dtpTo, RadDateTimePicker dtpFrom, RadGroupBox grpItems, string permission, string empName)
-		{
-			try
-			{
-				if (permission == "Admin")
-				{
-					grpItems.Enabled = true;
-					price.ReadOnly = false;
-					Name.Enabled = false;
-					productName.Enabled = true;
-					productName.Enabled = true;
-					productName.Visible = true;
-					productName.ReadOnly = false;
-					price.Enabled = true;
-					quantity.Enabled = true;
-					totalPrice.Enabled = true;
-					summary.Enabled = true;
-					remarks.Enabled = true;
-					addItem.Enabled = false;
-					cancel.Visible = true;
-					cancel.Enabled = true;
-					newItem.Enabled = false;
-					removeItem.Enabled = true;
-					removeItem.Enabled = true;
-					addItem.Text = "Update";
-					removeItem.Visible = true;
-					addItem.Visible = true;
-					dtpFrom.Visible = true;
-					dtpTo.Visible = true;
-
-					if (dgPantryList.SelectedRows.Count > 0)
-					{
-						intID.Text = dgPantryList.SelectedRows[0].Cells[0].Value + string.Empty;
-						Name.Text = dgPantryList.SelectedRows[0].Cells[3].Value + string.Empty;
-						productName.Text = dgPantryList.SelectedRows[0].Cells[4].Value + string.Empty;
-						price.Text = dgPantryList.SelectedRows[0].Cells[6].Value + string.Empty;
-						quantity.Text = dgPantryList.SelectedRows[0].Cells[5].Value + string.Empty;
-						totalPrice.Text = dgPantryList.SelectedRows[0].Cells[7].Value + string.Empty;
-						summary.Text = dgPantryList.SelectedRows[0].Cells[8].Value + string.Empty;
-						remarks.Text = dgPantryList.SelectedRows[0].Cells[9].Value + string.Empty;
-					}
-				}
-				else
-				{
-					grpItems.Enabled = true;
-					price.ReadOnly = true;
-					productName.ReadOnly = true;
-					quantity.ReadOnly = true;
-					remarks.ReadOnly = true;
-					summary.ReadOnly = true;
-					totalPrice.ReadOnly = true;
-					Name.Enabled = false;
-					productName.Enabled = true;
-					price.Enabled = true;
-					quantity.Enabled = true;
-					totalPrice.Enabled = true;
-					summary.Enabled = true;
-					remarks.Enabled = true;
-					addItem.Enabled = false;
-					cancel.Visible = true;
-					cancel.Enabled = true;
-					cancel.Width = 366;
-					cancel.Location = new System.Drawing.Point(22, 467);
-					newItem.Enabled = false;
-					remarks.Height = 94;
-					addItem.Text = "Update";
-					removeItem.Visible = false;
-					addItem.Visible = false;
-					dtpFrom.Visible = true;
-					dtpTo.Visible = true;
-
-					if (dgPantryList.SelectedRows.Count > 0)
-					{
-						intID.Text = dgPantryList.SelectedRows[0].Cells[0].Value + string.Empty;
-						Name.Text = dgPantryList.SelectedRows[0].Cells[3].Value + string.Empty;
-						productName.Text = dgPantryList.SelectedRows[0].Cells[4].Value + string.Empty;
-						price.Text = dgPantryList.SelectedRows[0].Cells[6].Value + string.Empty;
-						quantity.Text = dgPantryList.SelectedRows[0].Cells[5].Value + string.Empty;
-						totalPrice.Text = dgPantryList.SelectedRows[0].Cells[7].Value + string.Empty;
-						summary.Text = dgPantryList.SelectedRows[0].Cells[8].Value + string.Empty;
-						remarks.Text = dgPantryList.SelectedRows[0].Cells[9].Value + string.Empty;
-					}
-				}
-
-
-			}
-			catch (Exception ex)
-			{
-				task.LogError("PantryAutoFillUp", empName, "Pantry", "N/A", ex);
-			}
-		}
-
-		public void FillItemPrice(RadTextBox priceTag, RadDropDownList cmbProduct, string empName)
+		public void FillItemPrice(string priceTag, string cmbProduct, string empName)
 		{
 			try
 			{
@@ -157,7 +157,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				// }
 				// 
 				// 
-				var query = $"SELECT [Product Name], PRICE from [Pantry Product] WHERE [Product Name]= '{cmbProduct.Text}'";
+				var query = $"SELECT [Product Name], PRICE from [Pantry Product] WHERE [Product Name]= '{cmbProduct}'";
 				using SqlConnection con = new(_dbConnection);
 				using SqlCommand cmd = new(query, con);
 				con.Open();
@@ -165,7 +165,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				{
 					while (reader.Read())
 					{
-						priceTag.Text = reader.GetValue(1).ToString();
+						priceTag = reader.GetValue(1).ToString();
 					}
 				}
 				con.Close();
@@ -584,16 +584,16 @@ namespace PCMS_Lipa_General_Tool.Class
 		//
 
 		public void PantryListDBRequest(
-	string request,
-	string itemID,
-	string empName,
-	string product,
-	int quantity,
-	decimal itemPrice,
-	decimal totalPrice,
-	string summary,
-	string remarks,
-	string authorName)
+			string request,
+			string itemID,
+			string empName,
+			string product,
+			int quantity,
+			decimal itemPrice,
+			decimal totalPrice,
+			string summary,
+			string remarks,
+			string authorName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try

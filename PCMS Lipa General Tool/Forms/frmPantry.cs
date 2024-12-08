@@ -380,7 +380,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 
 				//process.ProductListIndex(txtPrice, query);
-				pantry.FillItemPrice(txtPrice, cmbProductList, EmpName);
+				pantry.FillItemPrice(txtPrice.Text, cmbProductList.Text, EmpName);
 				if (txtQuantity.Text != "")
 				{
 					txtSummary.Text = txtQuantity.Text + " Piece(s) of " + cmbProductList.Text;
@@ -425,7 +425,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var dtpfrom = dtpFrom.Value;
 				var dtpto = dtpTo.Value;
 				var pathFile = dbBackupcoll;
-				disableAll();
+				DisableAll();
 				lblstatus.Text = "Creating Spreadsheets and Collecting Data...";
 				string fileName = "Pantry List " + dtpfrom.ToString("MM.dd.yy") + "-" + dtpto.ToString("MM.dd.yy") + ".xls";
 				string mailAttachment = Path.Combine(pathFile, fileName);
@@ -438,7 +438,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				lblstatus.Text = "Preparing Email Content and checking attachment...";
 				if (EmpName == "Erwin Alcantara")
 				{
-					emailAddress = "erwin@pcmsbilling.net";
+					emailAddress = "mr.erwinalcantara@gmail.com";
 					string mailSub = mailSubject;
 					System.Threading.Thread.Sleep(3000);
 					mail.SendEmail("yesAttach", mailContent, mailAttachment, mailSubject, emailAddress, "TM Pantry Store", null, null);
@@ -461,7 +461,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 		}
 
-		private void disableAll()
+		private void DisableAll()
 		{
 			btnNew.Enabled = false;
 			dgPantryList.ReadOnly = false;

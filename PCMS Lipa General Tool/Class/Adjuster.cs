@@ -42,17 +42,17 @@ namespace PCMS_Lipa_General_Tool.Class
 
 
 		public void AdjusterDBRequest(
-	string request,
-	string adjID,
-	string insuranceName,
-	string adjusterName,
-	string phoneNo,
-	string ext,
-	string faxNo,
-	string email,
-	string supervisorName,
-	string remarks,
-	string empName)
+			string request,
+			string adjID,
+			string insuranceName,
+			string adjusterName,
+			string phoneNo,
+			string ext,
+			string faxNo,
+			string email,
+			string supervisorName,
+			string remarks,
+			string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try

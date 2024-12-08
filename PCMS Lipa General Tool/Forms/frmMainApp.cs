@@ -523,7 +523,21 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		{
 			var userProfile = new frmUserProfile();
 			var queryUserProfile = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [USER ACCESS], POSITION, [RDWEB USERNAME], [RDWEB PASSWORD], [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [Broadvoice No.], [DATE OF BIRTH], [Discord Username], [Discord Password] FROM [User Information] WHERE USERNAME='" + userName + "'";
-			user.FillUserProfile(queryUserProfile, userProfile.txtIntID, userProfile.txtEmpName, userProfile.txtUsername, userProfile.txtUserAccess, userProfile.txtUserPosition, userProfile.txtRDWebUsername, userProfile.txtRDWebPassword, userProfile.txtLytecUsername, userProfile.txtLytecPassword, userProfile.txtWorkEmail, userProfile.txtBVNo, userProfile.txtDateofBirth, userProfile.txtDiscordUsername, userProfile.txtDiscordPassword, EmpName);
+			user.FillUserProfile(
+				userProfile.txtIntID.Text,
+				userProfile.txtEmpName.Text,
+				userProfile.txtUsername.Text,
+				userProfile.txtUserAccess.Text,
+				userProfile.txtUserPosition.Text,
+				userProfile.txtRDWebUsername.Text,
+				userProfile.txtRDWebPassword.Text,
+				userProfile.txtLytecUsername.Text,
+				userProfile.txtLytecPassword.Text,
+				userProfile.txtWorkEmail.Text,
+				userProfile.txtBVNo.Text,
+				userProfile.txtDateofBirth.Text,
+				userProfile.txtDiscordUsername.Text,
+				userProfile.txtDiscordPassword.Text, EmpName);
 			userProfile.Text = "User Profile Information";
 			userProfile.empName = EmpName;
 			userProfile.ShowDialog();
@@ -853,9 +867,25 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		public void viewNotesTab()
 		{
-			collnotes.ViewNotesToday(dgCurrentNotes, lblCountNotes, EmpName);
-			collnotes.ViewNotesMonth(lblMonthly, lblAverage, EmpName);
-			collnotes.ViewNotes(dgallNotesView, EmpName, position);
+			//collnotes.ViewNotesToday(dgCurrentNotes, lblCountNotes, EmpName);
+			LoadAllNotes();
+			LoadNotesToday();
+			collnotes.ViewNotesMonth(lblMonthly.Text, lblAverage.Text, EmpName);
+			//collnotes.ViewNotes(dgallNotesView, EmpName, position);
+		}
+
+		private void LoadNotesToday()
+		{
+			var dataTable = collnotes.ViewNotesToday(EmpName, out string lblCount);
+			dgCurrentNotes.DataSource = dataTable;
+			lblCountNotes.Text = lblCount;
+		}
+
+		private void LoadAllNotes()
+		{
+			var dataTable = collnotes.ViewNotes(EmpName, out string lblCount, position);
+			dgCurrentNotes.DataSource = dataTable;
+			lblCountNotes.Text = lblCount;
 		}
 
 		private void radButton2_Click(object sender, EventArgs e)

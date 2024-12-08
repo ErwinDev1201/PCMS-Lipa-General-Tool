@@ -171,15 +171,15 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		public void AssignProvider(
 	string requestType,
-	string assignID,
+	string assignedID,
 	string providerName,
 	string employeeName,
 	string remarks,
 	string empName)
 		{
 			// Generate activity message and logs
-			var message = GenerateActivityMessage(requestType, assignID, providerName, employeeName, null, null, remarks);
-			var logs = $"{empName} {requestType.ToLower()}ed patientName ID: {assignID}";
+			var message = GenerateActivityMessage(requestType, assignedID, providerName, employeeName, remarks);
+			var logs = $"{empName} {requestType.ToLower()}ed patientName ID: {assignedID}";
 			string sqlCommandText;
 
 			// Determine SQL command based on the request type
@@ -210,7 +210,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 
 			// Execute the database request
-			ExecuteAssignProviderRequest(sqlCommandText, requestType, assignID, providerName, employeeName, remarks, empName, message, logs);
+			ExecuteAssignProviderRequest(sqlCommandText, requestType, assignedID, providerName, employeeName, remarks, empName, message, logs);
 		}
 
 		private void ExecuteAssignProviderRequest(string sqlCommandText, string requestType, string assignID, string providerName, string employeeName, string remarks, string empName, string message, string logs)
@@ -239,40 +239,46 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		private string GenerateActivityMessage(string requestType, string noteID, string providerName, string chartNo, string patientName, string Notes, string remarks)
+		private string GenerateActivityMessage(string requestType, string providerID, string providerName, string employeeName, string remarks)
 		{
-			return $"I {requestType.ToLower()}ed a record. Check the details below:\n\npatientName ID: {noteID}\nICD-10: {providerName}\nICD-9: {chartNo}\npatientName: {patientName}\nBody Parts: {Notes}\nRemarks: {remarks}";
+			return $@"
+I {requestType.ToLower()}ed a record.
+Check the details below:
+{employeeName} is assigned to {providerName} ({providerID})
+Additional Remarks: {remarks}";
 		}
 
-		public void FillupAssignProvider(RadGridView dgAssignProvider, RadTextBox txtAssignID, RadDropDownList cmbProviderName, RadDropDownList cmbEmployeeName, RadTextBoxControl txtRemarks, string empName)
-		{
-			var query = "SELECT * FROM [Provider Collector]";
-			using var con = new SqlConnection(_dbConnection);
-			try
-			{
-				con.Open();
-				using SqlCommand cmd = new(query, con);
-				cmd.ExecuteNonQuery();
-				var row = dgAssignProvider.SelectedRows[0];
-				if (dgAssignProvider.SelectedRows.Count > 0)
-				{
-					{
-						txtAssignID.Text = row.Cells[0].Value + string.Empty;
-						cmbEmployeeName.Text = row.Cells[1].Value + string.Empty;
-						cmbProviderName.Text = row.Cells[2].Value + string.Empty;
-						txtRemarks.Text = row.Cells[3].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GenerateActivityMessage", empName, "Provider", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
+
+
+		//public void FillupAssignProvider(RadGridView dgAssignProvider, RadTextBox txtAssignID, RadDropDownList cmbProviderName, RadDropDownList cmbEmployeeName, RadTextBoxControl txtRemarks, string empName)
+		//{
+		//	var query = "SELECT * FROM [Provider Collector]";
+		//	using var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		con.Open();
+		//		using SqlCommand cmd = new(query, con);
+		//		cmd.ExecuteNonQuery();
+		//		var row = dgAssignProvider.SelectedRows[0];
+		//		if (dgAssignProvider.SelectedRows.Count > 0)
+		//		{
+		//			{
+		//				txtAssignID.Text = row.Cells[0].Value + string.Empty;
+		//				cmbEmployeeName.Text = row.Cells[1].Value + string.Empty;
+		//				cmbProviderName.Text = row.Cells[2].Value + string.Empty;
+		//				txtRemarks.Text = row.Cells[3].Value + string.Empty;
+		//			}
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("GenerateActivityMessage", empName, "Provider", "N/A", ex);
+		//	}
+		//	finally
+		//	{
+		//		con.Close();
+		//	}
+		//}
 
 		public List<string> GetProviderList(string empName)
 		{

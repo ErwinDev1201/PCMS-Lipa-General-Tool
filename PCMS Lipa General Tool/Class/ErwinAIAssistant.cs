@@ -21,10 +21,10 @@ namespace PCMS_Lipa_General_Tool.Class
 		{
 			_apiKey = apiKey;
 			_client = new RestClient("https://api.openai.com/v1");
-			_messages = new List<dynamic>
-		{
+			_messages =
+		[
 			new { role = "system", content = "You are a helpful assistant." }
-		};
+		];
 		}
 
 		public async Task<string> SendMessageAsync(string userInput)

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
 namespace PCMS_Lipa_General_Tool.Class
@@ -26,8 +27,24 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		
 
-		public void FillUserProfile(string query, RadTextBox txtIntID, RadTextBox txtName, RadTextBox txtUsername, RadTextBox cmbLevel, RadTextBox cmbRole, RadTextBox txtRDWebUsername, RadTextBox txtRDWebPassword, RadTextBox txtLytecUsername, RadTextBox txtLytecPassword, RadTextBox txtEmail, RadTextBox txtBroadvoice, RadTextBox txtDateOfBirth, RadTextBox dcUsername, RadTextBox dcPassword, string empName)
+		public void FillUserProfile(
+			string txtIntID,
+			string txtName,
+			string txtUsername,
+			string cmbLevel,
+			string cmbRole,
+			string txtRDWebUsername,
+			string txtRDWebPassword,
+			string txtLytecUsername,
+			string txtLytecPassword,
+			string txtEmail,
+			string txtBroadvoice,
+			string txtDateOfBirth,
+			string dcUsername,
+			string dcPassword, 
+			string empName)
 		{
+			var query = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [USER ACCESS], [POSITION], [RDWEB USERNAME], [RDWEB PASSWORD], [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [Broadvoice No.], [DATE OF BIRTH], [Discord Username], [Discord Password] FROM [User Information] WHERE USERNAME='" + txtUsername + "'";
 			try
 			{
 				using var connection = new SqlConnection(_dbConnection);
@@ -39,11 +56,11 @@ namespace PCMS_Lipa_General_Tool.Class
 				if (reader.Read())
 				{
 					// Create a helper method to reduce repetitive code
-					void SetTextBoxValue(RadTextBox textBox, int columnIndex)
+					void SetTextBoxValue(string textBox, int columnIndex)
 					{
 						if (textBox != null && !reader.IsDBNull(columnIndex))
 						{
-							textBox.Text = reader.GetString(columnIndex);
+							textBox = reader.GetString(columnIndex);
 						}
 					}
 
@@ -66,7 +83,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillUserProfile", empName, "User", txtIntID.Text, ex);           //task.ExecutedbCollBackupCsv(empName);
+				task.LogError("FillUserProfile", empName, "User", txtIntID, ex);           //task.ExecutedbCollBackupCsv(empName);
 			}
 		}
 
@@ -542,8 +559,6 @@ namespace PCMS_Lipa_General_Tool.Class
 			RadMessageBox.Show(message, caption, MessageBoxButtons.OK, icon);
 		}
 
-
-
 		//public void UpdatePassword(string password, string username, string empName)
 		//{
 		//	string hashedPassword = secEnc.PassHash(password);
@@ -835,21 +850,21 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 		public void EmployeeDatabase(
-	string request,
-	string empID,
-	string empName,
-	string userName,
-	string passWord,
-	string userAccess,
-	string position,
-	string userDept,
-	string userStatus,
-	string workEmail,
-	string bvNo,
-	string office,
-	string newEmp,
-	string theme,
-	string authorName)
+			string request,
+			string empID,
+			string empName,
+			string userName,
+			string passWord,
+			string userAccess,
+			string position,
+			string userDept,
+			string userStatus,
+			string workEmail,
+			string bvNo,
+			string office,
+			string newEmp,
+			string theme,
+			string authorName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try

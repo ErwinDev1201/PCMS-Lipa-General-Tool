@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using GemBox.Document;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Configuration;
@@ -9,6 +10,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
+using HorizontalAlignment = GemBox.Document.HorizontalAlignment;
 
 
 
@@ -18,7 +20,6 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private readonly string dbBackupcoll = ConfigurationManager.AppSettings["backupsql2csvcoll"];
 		readonly RadDesktopAlert alert = new();
 		private readonly string alercaption = Assembly.GetExecutingAssembly().GetName().Name.ToString();
 
@@ -29,38 +30,71 @@ namespace PCMS_Lipa_General_Tool.Class
 		private string email;
 
 
-
-		public void ExecutedbCollBackupCsv(string empName)
+		public void CreateRtfFile(string filename)
 		{
-			var localbackup = @"D:\PCMS Maintenance\PCMS Lipa General Tool";
-			var query = "SELECT [Login ID], [Insurance Name], [URL Link], USERNAME, PASSWORD, [ACCOUNT OWNER], [Browser] REMARKS FROM [ONLINE LOGINS]";
-			var path = dbBackupcoll + @"\Online Logins.csv";
-			if (!Directory.Exists(dbBackupcoll))
+			ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+
+			// Create a new document
+			var document = new DocumentModel();
+
+			// Add a section to the document
+			var section = new Section(document);
+			document.Sections.Add(section);
+
+			// Add a title "Personal Reminder" in bold format
+			section.Blocks.Add(new Paragraph(document, new Run(document, "Personal Reminder")
 			{
-				Directory.CreateDirectory(dbBackupcoll);
-			}
-			if (File.Exists(path))
-			{
-				File.Delete(path);
-			}
-			try
-			{
-				SQLToCSV(query, path, empName);
-			}
-			catch (Exception)
-			{
-				path = localbackup + @"\Online Logins.csv";
-				if (!Directory.Exists(localbackup))
+				CharacterFormat = new CharacterFormat
 				{
-					Directory.CreateDirectory(localbackup);
+					Bold = true,
+					Size = 16, // Optional: Adjust font size for emphasis
+					FontColor = Color.Black // Optional: Ensure black font color for clarity
 				}
-				if (File.Exists(path))
+			})
+			{
+				ParagraphFormat = new ParagraphFormat
 				{
-					File.Delete(path);
+					Alignment = HorizontalAlignment.Center // Center-align the title
 				}
-				SQLToCSV(query, path, empName);
-			}
+			});
+
+			// Save the document as an RTF file
+			document.Save(filename);
 		}
+
+		//public void ExecutedbCollBackupCsv(string empName)
+		//{
+		//	var localbackup = @"D:\PCMS Maintenance\PCMS Lipa General Tool";
+		//	var query = "SELECT [Login ID], [Insurance Name], [URL Link], USERNAME, PASSWORD, [ACCOUNT OWNER], [Browser] REMARKS FROM [ONLINE LOGINS]";
+		//	var path = dbBackupcoll + @"\Online Logins.csv";
+		//	if (!Directory.Exists(dbBackupcoll))
+		//	{
+		//		Directory.CreateDirectory(dbBackupcoll);
+		//	}
+		//	if (File.Exists(path))
+		//	{
+		//		File.Delete(path);
+		//	}
+		//	try
+		//	{
+		//		SQLToCSV(query, path, empName);
+		//	}
+		//	catch (Exception)
+		//	{
+		//		path = localbackup + @"\Online Logins.csv";
+		//		if (!Directory.Exists(localbackup))
+		//		{
+		//			Directory.CreateDirectory(localbackup);
+		//		}
+		//		if (File.Exists(path))
+		//		{
+		//			File.Delete(path);
+		//		}
+		//		SQLToCSV(query, path, empName);
+		//	}
+		//}
+		//
+
 
 		public void SQLToCSV(string query, string Filename, string empName)
 		{

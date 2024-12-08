@@ -133,37 +133,60 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
+		//public void ViewNotesToday(RadGridView dataGrid, RadLabel lblcount, string empName)
+		//{
+		//	var query = $"SELECT * FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%' AND DATE LIKE '{DateTime.Now:yyyy-MM-dd}'";
+		//	var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		using (var adp = new SqlDataAdapter(query, con))
+		//		{
+		//			var data = new DataTable();
+		//			adp.Fill(data);
+		//			adp.Update(data);
+		//			dataGrid.DataSource = data.DefaultView;
+		//			lblcount.Text = $"Total Notes (Today): {dataGrid.RowCount}";
+		//		}
+		//		dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError($"ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
+		//	}
+		//	finally
+		//	{
+		//		con.Close();
+		//	}
+		//}
 
-
-		public void ViewNotesToday(RadGridView dataGrid, RadLabel lblcount, string empName)
+		public DataTable ViewNotesToday(string empName, out string lblCount)
 		{
 			var query = $"SELECT * FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%' AND DATE LIKE '{DateTime.Now:yyyy-MM-dd}'";
-			var con = new SqlConnection(_dbConnection);
+			var data = new DataTable();
+			lblCount = string.Empty;
+
 			try
 			{
-				using (var adp = new SqlDataAdapter(query, con))
-				{
-					var data = new DataTable();
-					adp.Fill(data);
-					adp.Update(data);
-					dataGrid.DataSource = data.DefaultView;
-					lblcount.Text = $"Total Notes (Today): {dataGrid.RowCount}";
-				}
-				dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+				using var con = new SqlConnection(_dbConnection);
+				using var adp = new SqlDataAdapter(query, con);
+
+				// Fill the DataTable with data from the query
+				adp.Fill(data);
+
+				// Calculate the record count
+				lblCount = $"Total records: {data.Rows.Count}";
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
+				task.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
 			}
-			finally
-			{
-				con.Close();
-			}
+
+			return data;
 		}
 
+		
 
-
-		public void ViewNotesMonth(RadLabel lblcount, RadLabel lblAverage, string empName)
+		public void ViewNotesMonth(string lblcount, string lblAverage, string empName)
 		{
 			var noofNotesMonthQuery = $"SELECT COUNT(*) FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%' AND DATE LIKE '{DateTime.Now:yyyy-MM}%'";
 			var noofdaysQuery = $"SELECT COUNT(DISTINCT CAST(DATE AS DATE)) FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%' AND DATE LIKE '{DateTime.Now:yyyy-MM}%'";
@@ -180,7 +203,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				using (var cmd = new SqlCommand(noofNotesMonthQuery, con))
 				{
 					noofNotesMonth = (int)cmd.ExecuteScalar();
-					lblcount.Text = $"Total Notes (This Month): {noofNotesMonth}";
+					lblcount = $"Total Notes (This Month): {noofNotesMonth}";
 				}
 
 				// Execute query to get the count of distinct days with notes
@@ -191,7 +214,7 @@ namespace PCMS_Lipa_General_Tool.Class
 
 				// Calculate average notes per day
 				double averageNotesPerDay = noofdays > 0 ? (double)noofNotesMonth / noofdays : 0;
-				lblAverage.Text = $"Average Notes per Day: {averageNotesPerDay:F2}";
+				lblAverage = $"Average Notes per Day: {averageNotesPerDay:F2}";
 			}
 			catch (Exception ex)
 			{
@@ -203,7 +226,8 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		public void ViewNotes(RadGridView dataGrid, string empName, string position)
+
+		public DataTable ViewNotes(string empName, out string lblCount, string position)
 		{
 			string query;
 			if (position == "Collector")
@@ -214,29 +238,62 @@ namespace PCMS_Lipa_General_Tool.Class
 			{
 				query = $"SELECT * FROM [Collector Notes]";
 			}
+			var data = new DataTable();
+			lblCount = string.Empty;
 
-			var con = new SqlConnection(_dbConnection);
 			try
 			{
-				using (var adp = new SqlDataAdapter(query, con))
-				{
-					var data = new DataTable();
-					adp.Fill(data);
-					adp.Update(data);
-					dataGrid.DataSource = data.DefaultView;
-					//lcount.Text = $"Total Notes (Today): {dataGrid.RowCount}";
-				}
-				dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+				using var con = new SqlConnection(_dbConnection);
+				using var adp = new SqlDataAdapter(query, con);
+
+				// Fill the DataTable with data from the query
+				adp.Fill(data);
+
+				// Calculate the record count
+				lblCount = $"Total records: {data.Rows.Count}";
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"ViewNotes", empName, "CollectorNotes", "N/A", ex);
+				task.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
 			}
-			finally
-			{
-				con.Close();
-			}
+
+			return data;
 		}
+
+		//public void ViewNotes(DataTable dataGrid, string empName, string position)
+		//{
+		//	string query;
+		//	if (position == "Collector")
+		//	{
+		//		query = $"SELECT * FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%'";
+		//	}
+		//	else
+		//	{
+		//		query = $"SELECT * FROM [Collector Notes]";
+		//	}
+		//
+		//	var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		using (var adp = new SqlDataAdapter(query, con))
+		//		{
+		//			var data = new DataTable();
+		//			adp.Fill(data);
+		//			adp.Update(data);
+		//			dataGrid.DataSource = data.DefaultView;
+		//			//lcount.Text = $"Total Notes (Today): {dataGrid.RowCount}";
+		//		}
+		//		dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError($"ViewNotes", empName, "CollectorNotes", "N/A", ex);
+		//	}
+		//	finally
+		//	{
+		//		con.Close();
+		//	}
+		//}
 
 		public void SearchTextAcrossColumns(RadGridView uiTableName, string dbTableName, string searchValue, RadLabel searchCount, string empName)
 		{
