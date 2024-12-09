@@ -500,6 +500,12 @@
     <Compile Include="Forms\frmSuggestion.Designer.cs">
       <DependentUpon>frmSuggestion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmTicketingTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmTicketingTask.Designer.cs">
+      <DependentUpon>frmTicketingTask.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmUpdateDCPassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -674,6 +680,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSuggestion.resx">
       <DependentUpon>frmSuggestion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmTicketingTask.resx">
+      <DependentUpon>frmTicketingTask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmUpdateDCPassword.resx">
       <DependentUpon>frmUpdateDCPassword.cs</DependentUpon>

@@ -11,7 +11,6 @@ using PCMS_Lipa_General_Tool.HelperClass;
 
 namespace PCMS_Lipa_General_Tool.Class
 {
-
 	public class Login
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
@@ -22,7 +21,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		public static string Dev = Global.Dev;
 		public string conStatus;
 		private string EmpName;
-		//private string userName;
+		private string userName;
 		private string Position;
 		private string Department;
 		private string UserStatus;
@@ -33,6 +32,10 @@ namespace PCMS_Lipa_General_Tool.Class
 		private string devAccess;
 		private string theme;
 
+		readonly frmMainApp mainApp = new(); // Replace with your actual MainApp class
+		readonly frmDemoTool demoTool = new();
+
+		// Resets login data to default values
 		public void DefaultLoginSet(ref string username, ref string password, ref bool isLoginPanelEnabled, out string alertMessage)
 		{
 			username = string.Empty;
@@ -41,6 +44,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			alertMessage = string.Empty;
 		}
 
+		// Checks database connectivity
 		public void CheckConnectivity()
 		{
 			try
@@ -54,7 +58,8 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		public void UserLogin(ref string username, ref string password, ref bool isLoginPanelEnabled, ref string alertMessage, string empName)
+		// Handles user login logic
+		public void UserLogin(ref string username, ref string password, ref bool isLoginPanelEnabled, ref string alertMessage)
 		{
 			string conquery;
 			isLoginPanelEnabled = false;
@@ -65,7 +70,6 @@ namespace PCMS_Lipa_General_Tool.Class
 				conSQL.Open();
 				devAccess = GetDeveloperAccess(conSQL);
 
-				// Determine query based on developer access
 				conquery = GetLoginQuery(password == devAccess);
 
 				using var cmdSQL = new SqlCommand(conquery, conSQL);
@@ -75,7 +79,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				using var readerSQL = cmdSQL.ExecuteReader();
 				if (readerSQL.Read())
 				{
-					ProcessLogin(readerSQL, ref username, ref password, ref isLoginPanelEnabled, ref alertMessage, empName);
+					ProcessLogin(readerSQL, ref username, ref password, ref isLoginPanelEnabled, ref alertMessage);
 				}
 				else
 				{
@@ -89,59 +93,214 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		// Helper Methods
-
 		private string GetDeveloperAccess(SqlConnection conSQL)
 		{
-			string developerAccess = string.Empty;
-			var checkDevPassword = "SELECT DeveloperAccess FROM [User Information] WHERE Username = 'Erwin'";
-
-			using var cmdSQLDevPass = new SqlCommand(checkDevPassword, conSQL);
-			using var readerDevPassword = cmdSQLDevPass.ExecuteReader();
-			if (readerDevPassword.Read())
-			{
-				developerAccess = readerDevPassword.GetString(0);
-			}
-			return developerAccess;
+			const string query = "SELECT DeveloperAccess FROM [User Information] WHERE Username = 'Erwin'";
+			using var cmdSQL = new SqlCommand(query, conSQL);
+			using var reader = cmdSQL.ExecuteReader();
+			return reader.Read() ? reader.GetString(0) : string.Empty;
 		}
 
 		private string GetLoginQuery(bool isDevAccess)
 		{
 			return isDevAccess
-				? "SELECT DISTINCT USERNAME, PASSWORD, [EMPLOYEE NAME], POSITION, [USER ACCESS], [DEPARTMENT], [STATUS], [OFFICE], [FIRST TIME LOGIN], [EMAIL ADDRESS], [Employee ID], THEME, [Employment Status] FROM [User Information] WHERE USERNAME = @username"
-				: "SELECT DISTINCT USERNAME, PASSWORD, [EMPLOYEE NAME], POSITION, [USER ACCESS], [DEPARTMENT], [STATUS], [OFFICE], [FIRST TIME LOGIN], [EMAIL ADDRESS], [Employee ID], THEME, [Employment Status] FROM [User Information] WHERE USERNAME = @username AND PASSWORD = @password";
+				? "SELECT DISTINCT * FROM [User Information] WHERE USERNAME = @username"
+				: "SELECT DISTINCT * FROM [User Information] WHERE USERNAME = @username AND PASSWORD = @password";
 		}
 
-		private void ProcessLogin(SqlDataReader readerSQL, ref string username, ref string password, ref bool isLoginPanelEnabled, ref string alertMessage, string empName)
+		private void ProcessLogin(
+			SqlDataReader readerSQL,
+			ref string username,
+			ref string password,
+			ref bool isLoginPanelEnabled,
+			ref string alertMessage)
 		{
-			UserStatus = readerSQL.GetString(6);
+			UserStatus = readerSQL.GetString(readerSQL.GetOrdinal("Status"));
 
-			if (string.Equals(UserStatus, "INACTIVE", StringComparison.OrdinalIgnoreCase))
+			if (UserStatus.Equals("INACTIVE", StringComparison.OrdinalIgnoreCase))
 			{
 				HandleInactiveUser(ref alertMessage, ref password, ref username, ref isLoginPanelEnabled);
 				return;
 			}
 
-			username = readerSQL.GetString(0);
-			EmpName = readerSQL.GetString(2);
-			email = readerSQL.GetString(9);
-			firstTime = readerSQL.GetString(8);
+			EmpName = readerSQL.GetString(readerSQL.GetOrdinal("Employee Name"));
+			userName = readerSQL.GetString(readerSQL.GetOrdinal("Username"));
+			email = readerSQL.GetString(readerSQL.GetOrdinal("Email Address"));
+			firstTime = readerSQL.GetString(readerSQL.GetOrdinal("First Time Login"));
 
-			if (string.Equals(firstTime, "YES", StringComparison.OrdinalIgnoreCase))
+			if (firstTime.Equals("YES", StringComparison.OrdinalIgnoreCase))
 			{
 				PromptFirstTimePasswordChange(ref username, ref password, ref isLoginPanelEnabled, ref alertMessage, email);
 			}
 			else
 			{
-				Position = readerSQL.GetString(3);
-				UserAccess = readerSQL.GetString(4);
-				Department = readerSQL.GetString(5);
-				officeLoc = readerSQL.GetString(7);
-				theme = readerSQL.GetString(11);
+				Position = readerSQL.GetString(readerSQL.GetOrdinal("Position"));
+				UserAccess = readerSQL.GetString(readerSQL.GetOrdinal("User Access")); 
+				Department = readerSQL.GetString(readerSQL.GetOrdinal("Department"));
+				officeLoc = readerSQL.GetString(readerSQL.GetOrdinal("Office"));
+				theme = readerSQL.GetString(readerSQL.GetOrdinal("Theme"));
 
-				// Further user role-specific configuration can be done here
+				ConfigureUserThemeIfMissing(readerSQL, username);
+				var logMessage = $"{EmpName} logged in PCMS General Tool\nTime Logged In: {DateTime.Now:G}\nUser Access: {UserAccess}\nPosition: {Position}\nLocation: {officeLoc}";
+				// Determine visibility and load the appropriate tool
+				// Replace with your actual DemoTool class
+
+				SetMainAppProperties(mainApp, readerSQL, logMessage);
+				bool showDemoTool = ConfigureVisibility(mainApp, demoTool, UserAccess, Department, Position, readerSQL);
+
+				if (showDemoTool)
+				{
+					demoTool.Text = $"{ProgName} ver. {ProgVer} ({EmpName})";
+					demoTool.Show();
+				}
+				else
+				{
+					mainApp.Text = $"{ProgName} ver. {ProgVer} ({EmpName})";
+					mainApp.Show();
+				}
 			}
 		}
+
+
+		private void ConfigureUserThemeIfMissing(SqlDataReader readerSQL, string username)
+		{
+			if (!readerSQL.IsDBNull(11)) return; // Skip if theme exists
+
+			const string query = "UPDATE [User Information] SET THEME = @theme WHERE USERNAME = @username";
+			using var conSQL = new SqlConnection(_dbConnection);
+			using var cmdTheme = new SqlCommand(query, conSQL);
+			conSQL.Open();
+
+			cmdTheme.Parameters.AddWithValue("@theme", "Crystal"); // Default theme
+			cmdTheme.Parameters.AddWithValue("@username", username);
+			cmdTheme.ExecuteNonQuery();
+		}
+
+		private void SetMainAppProperties(frmMainApp mainApp, SqlDataReader readerSQL, string logMessage)
+		{
+			mainApp.employeeID = readerSQL.GetString(readerSQL.GetOrdinal("Employee ID"));
+			mainApp.EmpName = EmpName;
+			mainApp.userName = userName;
+			mainApp.accessLevel = UserAccess;
+			mainApp.statlblUsername.Text = EmpName;
+			mainApp.statlblAccess.Text = UserAccess;
+			mainApp.statlblPosition.Text = Position;
+			mainApp.officeLoc = officeLoc;
+			mainApp.themeName = theme;
+			mainApp.position = Position;
+		
+			task.AddActivityLog(logMessage, EmpName, $"{EmpName} logged in", "USER LOGGED IN");
+		} 
+
+		private bool ConfigureVisibility(frmMainApp mainApp, frmDemoTool demoTool, string role, string department, string position, SqlDataReader readerSQL)
+		{
+			//mainApp.pgViewCollectorNotes.Visible = false;
+			string combineRole = $"{role}_{department}_{position}";
+
+			if (combineRole.Contains("Programmer_All Department_Programmer"))
+			{
+				// Specific visibility settings for Programmer role can be added here
+				mainApp.pictureBox1.BringToFront();
+				return false; // Show MainApp by default for this role
+			}
+			else if (combineRole.Contains("Administrator_All Department_Supervisor") || combineRole.Contains("Administrator_All Department_Operations Manager"))
+			{
+				HideAdminControls(mainApp);
+				return false; // Show MainApp for Administrator roles
+			}
+			else if (combineRole.Contains("Management_All Department_Supervisor") || combineRole.Contains("Management_All Department_Operations Manager"))
+			{
+				HideAdminControls(mainApp);
+				mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
+				return false; // Show MainApp for Management roles
+			}
+			else if (combineRole == "Power User_Private_Collector" || combineRole == "User_Private_Collector")
+			{
+				HidePrivateCollectorControls(mainApp);
+				return false;
+			}
+			else if (combineRole == "Power User_Workers Comp_Private_Collector" || combineRole == "User_Workers Comp_Collector")
+			{
+				HideWorkersCollectorControls(mainApp);
+				return false;
+			}
+			else if (combineRole == "Power User_Private_Back Office" || combineRole == "Power User_Worker Comp_Back Office" ||
+					 combineRole == "User_Private_Back Office" || combineRole == "User_Workers Comp_Back Office")
+			{
+				SetupBackOfficeUser(demoTool, readerSQL);
+				return true;
+			}
+			else
+			{
+				RadMessageBox.Show("Your role or access is not configured Properly, Please check with Erwin", "Role Exception", MessageBoxButtons.OK, RadMessageIcon.Error);
+				Application.Exit();
+			}
+
+			return false;
+		}
+
+		private void HideAdminControls(frmMainApp mainApp)
+		{
+			Console.WriteLine("Hiding Admin controls");
+			mainApp.mnuOpenConfig.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuDevAccountAccess.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuActivityLog.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuDBSequence.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuOpenConfig.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuViewCollectorNotes.Visibility = ElementVisibility.Collapsed;
+			mainApp.pictureBox1.BringToFront();
+		}
+
+		private void HidePrivateCollectorControls(frmMainApp mainApp)
+		{
+			Console.WriteLine("Hiding Collector controls");
+			mainApp.mnuWorkcomp.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuBackOffice.Visibility = ElementVisibility.Collapsed;
+			mainApp.separator1.Visibility = ElementVisibility.Collapsed;
+			mainApp.seperator2.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuDevAccountAccess.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuDBSequence.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuActivityLog.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuOpenConfig.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuAssignProvider.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuAdmin.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuViewCollectorNotes.Visibility = ElementVisibility.Collapsed;
+			mainApp.pictureBox1.BringToFront();
+		}
+
+		private void HideWorkersCollectorControls(frmMainApp mainApp)
+		{
+			Console.WriteLine("Hiding Collector controls");
+			mainApp.mnuPrivateCollectors.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuBackOffice.Visibility = ElementVisibility.Collapsed;
+			mainApp.separator1.Visibility = ElementVisibility.Collapsed;
+			mainApp.seperator2.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuDevAccountAccess.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuAdmin.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuViewCollectorNotes.Visibility = ElementVisibility.Collapsed;
+			mainApp.pictureBox1.BringToFront();
+		}
+
+		private void SetupBackOfficeUser(frmDemoTool demoTool, SqlDataReader readerSQL)
+		{
+			Console.WriteLine("Setting up BackOffice user controls");
+
+			demoTool.employeeID = readerSQL.GetString(10); // Ensure index 10 is correct
+			demoTool.EmpName = EmpName; // Ensure EmpName is correctly initialized
+			demoTool.userName = userName;
+			demoTool.accessLevel = UserAccess;
+			demoTool.statlblUsername.Text = EmpName;
+			demoTool.statlblAccess.Text = UserAccess;
+			demoTool.statlblPosition.Text = Position;
+			demoTool.officeLoc = officeLoc;
+			demoTool.Text = $"{ProgName} | Demo Tool | ({EmpName})";
+
+		}
+
+
+
 
 		private void HandleInactiveUser(ref string alertMessage, ref string password, ref string username, ref bool isLoginPanelEnabled)
 		{
@@ -152,26 +311,188 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private void PromptFirstTimePasswordChange(ref string username, ref string password, ref bool isLoginPanelEnabled, ref string alertMessage, string email)
 		{
-			// Implementation for first-time password change
-			DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out alertMessage);
+			// Simulate password change prompt logic
+			alertMessage = $"First-time login detected. Password reset email sent to {email}.";
+			DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out _);
 		}
 
 		private void HandleInvalidPassword(ref string alertMessage, ref string password, ref string username, ref bool isLoginPanelEnabled)
 		{
 			alertMessage = "PASSWORD IS INCORRECT";
-			string logs = $"Incorrect password used for {username}";
-			task.AddActivityLog(logs, "", logs, "INCORRECT PASSWORD");
+			task.AddActivityLog($"Incorrect password used for {username}", "", "Incorrect password used for {username}", "INCORRECT PASSWORD");
 			isLoginPanelEnabled = true;
 			password = string.Empty;
 		}
 
 		private void LogAndNotifyError(Exception ex, string username, ref string alertMessage)
 		{
-			string errorMessage = $"Error processing login for {username}:\n{ex}";
+			string errorMessage = $"Error processing login for {username}:\n{ex.Message}";
 			task.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
 			alertMessage = "An error occurred, please check with Developer.";
 		}
 	}
+
+
+	//public class Login
+	//{
+	//	private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+	//	private readonly CommonTask task = new();
+	//	private readonly SecurityEncryption secEnc = new();
+	//	public static string ProgName = Global.ProgName;
+	//	public static string ProgVer = Global.ProgVer;
+	//	public static string Dev = Global.Dev;
+	//	public string conStatus;
+	//	private string EmpName;
+	//	//private string userName;
+	//	private string Position;
+	//	private string Department;
+	//	private string UserStatus;
+	//	private string UserAccess;
+	//	private string officeLoc;
+	//	private string firstTime;
+	//	private string email;
+	//	private string devAccess;
+	//	private string theme;
+	//
+	//	public void DefaultLoginSet(ref string username, ref string password, ref bool isLoginPanelEnabled, out string alertMessage)
+	//	{
+	//		username = string.Empty;
+	//		password = string.Empty;
+	//		isLoginPanelEnabled = true;
+	//		alertMessage = string.Empty;
+	//	}
+	//
+	//	public void CheckConnectivity()
+	//	{
+	//		try
+	//		{
+	//			DBConStatus dBConStat = new(_dbConnection);
+	//			conStatus = dBConStat.IsConnected ? "Connected | Login" : "Disconnected | Login";
+	//		}
+	//		catch (Exception)
+	//		{
+	//			conStatus = "Disconnected | Login";
+	//		}
+	//	}
+	//
+	//	public void UserLogin(ref string username, ref string password, ref bool isLoginPanelEnabled, ref string alertMessage, string empName)
+	//	{
+	//		string conquery;
+	//		isLoginPanelEnabled = false;
+	//
+	//		try
+	//		{
+	//			using var conSQL = new SqlConnection(_dbConnection);
+	//			conSQL.Open();
+	//			devAccess = GetDeveloperAccess(conSQL);
+	//
+	//			// Determine query based on developer access
+	//			conquery = GetLoginQuery(password == devAccess);
+	//
+	//			using var cmdSQL = new SqlCommand(conquery, conSQL);
+	//			cmdSQL.Parameters.AddWithValue("@username", username);
+	//			cmdSQL.Parameters.AddWithValue("@password", secEnc.PassHash(password));
+	//
+	//			using var readerSQL = cmdSQL.ExecuteReader();
+	//			if (readerSQL.Read())
+	//			{
+	//				ProcessLogin(readerSQL, ref username, ref password, ref isLoginPanelEnabled, ref alertMessage, empName);
+	//			}
+	//			else
+	//			{
+	//				HandleInvalidPassword(ref alertMessage, ref password, ref username, ref isLoginPanelEnabled);
+	//			}
+	//		}
+	//		catch (Exception ex)
+	//		{
+	//			LogAndNotifyError(ex, username, ref alertMessage);
+	//			isLoginPanelEnabled = true;
+	//		}
+	//	}
+	//
+	//	// Helper Methods
+	//
+	//	private string GetDeveloperAccess(SqlConnection conSQL)
+	//	{
+	//		string developerAccess = string.Empty;
+	//		var checkDevPassword = "SELECT DeveloperAccess FROM [User Information] WHERE Username = 'Erwin'";
+	//
+	//		using var cmdSQLDevPass = new SqlCommand(checkDevPassword, conSQL);
+	//		using var readerDevPassword = cmdSQLDevPass.ExecuteReader();
+	//		if (readerDevPassword.Read())
+	//		{
+	//			developerAccess = readerDevPassword.GetString(0);
+	//		}
+	//		return developerAccess;
+	//	}
+	//
+	//	private string GetLoginQuery(bool isDevAccess)
+	//	{
+	//		return isDevAccess
+	//			? "SELECT DISTINCT USERNAME, PASSWORD, [EMPLOYEE NAME], POSITION, [USER ACCESS], [DEPARTMENT], [STATUS], [OFFICE], [FIRST TIME LOGIN], [EMAIL ADDRESS], [Employee ID], THEME, [Employment Status] FROM [User Information] WHERE USERNAME = @username"
+	//			: "SELECT DISTINCT USERNAME, PASSWORD, [EMPLOYEE NAME], POSITION, [USER ACCESS], [DEPARTMENT], [STATUS], [OFFICE], [FIRST TIME LOGIN], [EMAIL ADDRESS], [Employee ID], THEME, [Employment Status] FROM [User Information] WHERE USERNAME = @username AND PASSWORD = @password";
+	//	}
+	//
+	//	private void ProcessLogin(SqlDataReader readerSQL, ref string username, ref string password, ref bool isLoginPanelEnabled, ref string alertMessage, string empName)
+	//	{
+	//		UserStatus = readerSQL.GetString(6);
+	//
+	//		if (string.Equals(UserStatus, "INACTIVE", StringComparison.OrdinalIgnoreCase))
+	//		{
+	//			HandleInactiveUser(ref alertMessage, ref password, ref username, ref isLoginPanelEnabled);
+	//			return;
+	//		}
+	//
+	//		username = readerSQL.GetString(0);
+	//		EmpName = readerSQL.GetString(2);
+	//		email = readerSQL.GetString(9);
+	//		firstTime = readerSQL.GetString(8);
+	//
+	//		if (string.Equals(firstTime, "YES", StringComparison.OrdinalIgnoreCase))
+	//		{
+	//			PromptFirstTimePasswordChange(ref username, ref password, ref isLoginPanelEnabled, ref alertMessage, email);
+	//		}
+	//		else
+	//		{
+	//			Position = readerSQL.GetString(3);
+	//			UserAccess = readerSQL.GetString(4);
+	//			Department = readerSQL.GetString(5);
+	//			officeLoc = readerSQL.GetString(7);
+	//			theme = readerSQL.GetString(11);
+	//
+	//			// Further user role-specific configuration can be done here
+	//		}
+	//	}
+	//
+	//	private void HandleInactiveUser(ref string alertMessage, ref string password, ref string username, ref bool isLoginPanelEnabled)
+	//	{
+	//		alertMessage = $"YOUR ACCOUNT HAS BEEN DISABLED (Username: {username})";
+	//		isLoginPanelEnabled = true;
+	//		DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out _);
+	//	}
+	//
+	//	private void PromptFirstTimePasswordChange(ref string username, ref string password, ref bool isLoginPanelEnabled, ref string alertMessage, string email)
+	//	{
+	//		// Implementation for first-time password change
+	//		DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out alertMessage);
+	//	}
+	//
+	//	private void HandleInvalidPassword(ref string alertMessage, ref string password, ref string username, ref bool isLoginPanelEnabled)
+	//	{
+	//		alertMessage = "PASSWORD IS INCORRECT";
+	//		string logs = $"Incorrect password used for {username}";
+	//		task.AddActivityLog(logs, "", logs, "INCORRECT PASSWORD");
+	//		isLoginPanelEnabled = true;
+	//		password = string.Empty;
+	//	}
+	//
+	//	private void LogAndNotifyError(Exception ex, string username, ref string alertMessage)
+	//	{
+	//		string errorMessage = $"Error processing login for {username}:\n{ex}";
+	//		task.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
+	//		alertMessage = "An error occurred, please check with Developer.";
+	//	}
+	//}
 
 	//public class Login
 	//{

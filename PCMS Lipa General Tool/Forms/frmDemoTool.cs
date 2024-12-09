@@ -1,4 +1,5 @@
-﻿using PCMS_Lipa_General_Tool.Class;
+﻿using editform;
+using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Configuration;
@@ -399,11 +400,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 				task.CreateRtfFile(_personalreminderPath);
 				
 			}
-			var testForm = new frmRTFEditor
+			var editor = new frmRTFEditor
 			{
 				file = _personalreminderPath
 			};
-			testForm.Show();
+			editor.Show();
 		}
 
 		private void mnuFileLeave_Click(object sender, EventArgs e)

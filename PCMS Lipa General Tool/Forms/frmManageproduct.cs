@@ -1,4 +1,5 @@
 ﻿
+using DocumentFormat.OpenXml.Drawing;
 using PCMS_Lipa_General_Tool.Class;
 using System;
 using System.Windows.Forms;
@@ -177,11 +178,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void AutoFill()
 		{
+			
+			if (dgPantryProduct.SelectedRows.Count == 0)
+				return;
+
+			var selectedRow = dgPantryProduct.SelectedRows[0];
+			txtIntID.Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty;
+			txtProductName.Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty;
+			txtPrice.Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty;
+			txtRemarks.Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
 			DoubleClickEnable();
-			if (dgPantryProduct.SelectedRows.Count > 0)
-			{
-				pantry.FillProductInfo(dgPantryProduct, txtIntID, txtProductName, txtPrice, txtRemarks, empName);
-			}
 		}
 
 		//private void txtSearch_TextChanged(object sender, EventArgs e)
