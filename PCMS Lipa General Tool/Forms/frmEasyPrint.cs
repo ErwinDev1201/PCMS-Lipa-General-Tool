@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 
@@ -112,7 +113,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
-			task.SearchTwoColumnOneFieldText(dgEasyPrint, "[Easy Print Denial]", "[Easy Print Code]", "REMARKS", txtSearch, lblCountResult, EmpName);
+			try
+			{
+				DataTable resultTable = easyPrint.SearchData(
+				txtSearch.Text,
+				out string searchcount, EmpName);
+
+				dgEasyPrint.DataSource = resultTable;
+				lblCountResult.Text = searchcount;
+
+			}
+			catch (Exception ex)
+			{
+				task.LogError("txtSearch_TextChanged", EmpName, "frmEasyprint", null, ex);
+			}
 		}
 	}
 }

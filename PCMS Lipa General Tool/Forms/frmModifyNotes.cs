@@ -29,7 +29,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "CollectorNotesSeq", txtIntID, null, "CX -");
+			task.GetSequenceNo("textbox", "CollectorNotesSeq", txtIntID.Text, null, "CX -");
 		}
 
 		private void ClearData()

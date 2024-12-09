@@ -34,7 +34,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "MPNInfoSeq", txtIntID, null, "MPN-");
+			task.GetSequenceNo("textbox", "MPNInfoSeq", txtIntID.Text, null, "MPN-");
 		}
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)
@@ -43,13 +43,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				mpn.MPNDBRequest(
 					"Create",
-					txtIntID,
-					txtInsuranceName,
-					txtMPNName,
-					txtMPNUserName,
-					txtPassword,
-					txtWebLink,
-					txtRemarks,
+					txtIntID.Text,
+					txtInsuranceName.Text,
+					txtMPNName.Text,
+					txtMPNUserName.Text,
+					txtPassword.Text,
+					txtWebLink.Text,
+					txtRemarks.Text,
 					empName
 				);
 				ClearData();
@@ -62,14 +62,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 			) == DialogResult.Yes)
 			{
 				mpn.MPNDBRequest(
-					"Update",
-					txtIntID,
-					txtInsuranceName,
-					txtMPNName,
-					txtMPNUserName,
-					txtPassword,
-					txtWebLink,
-					txtRemarks,
+						"Update",
+					txtIntID.Text,
+					txtInsuranceName.Text,
+					txtMPNName.Text,
+					txtMPNUserName.Text,
+					txtPassword.Text,
+					txtWebLink.Text,
+					txtRemarks.Text,
 					empName
 				);
 				ClearData();
@@ -83,7 +83,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				mpn.MPNDBRequest("Delete", txtIntID, txtInsuranceName, txtMPNName, txtMPNUserName, txtPassword, txtWebLink, txtRemarks, empName);
+				mpn.MPNDBRequest("Delete", txtIntID.Text, txtInsuranceName.Text, txtMPNName.Text, txtMPNUserName.Text, txtPassword.Text, txtWebLink.Text, txtRemarks.Text, empName);
 				ClearData();
 				Close();
 			}

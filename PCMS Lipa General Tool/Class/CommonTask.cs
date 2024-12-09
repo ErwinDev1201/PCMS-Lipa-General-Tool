@@ -183,7 +183,6 @@ namespace PCMS_Lipa_General_Tool.Class
 			alert.Show();
 		}
 
-
 		public void UpdateFirstLoginInfo(string query, string userName, string empName, string message)
 		{
 			try
@@ -282,222 +281,341 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		}
 
-		public void CheckIfExistinDB(string tableName, string columntosearch, RadTextBox itemToSearch, string modLoc, string request, RadLabel lblalert)
+		public string CheckIfExistinDB(string username, string modLoc, string request)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			conn.Open();
 			try
 			{
-				SqlCommand command = new("SELECT COUNT(*) FROM " + tableName + " WHERE " + columntosearch + " = @itemName", conn);
-				command.Parameters.AddWithValue("@itemName", itemToSearch.Text);
-				int count = (int)command.ExecuteScalar();
-				if (count > 0)
+				using SqlCommand command = new(
+					@"SELECT COUNT(*) FROM [User Information] WHERE USERNAME = @username", conn);
+				command.Parameters.AddWithValue("@username", username);
+
+				int userCount = (int)command.ExecuteScalar();
+
+				if (userCount > 0)
 				{
 					if (modLoc == "UserMgmt" && request == "Create")
 					{
-						//if (request == "Create")
-						//{
-						RadMessageBox.Show("Username already exist", "Information", MessageBoxButtons.OK, RadMessageIcon.Info);
-						//}
+						return "Username already exists.";
 					}
-
 				}
 				else
 				{
 					if (request == "Login" && modLoc == "Login")
 					{
-						lblalert.Visible = true;
-						lblalert.Text = "Username not found";
+						return "Username not found.";
 					}
 				}
+
+				return string.Empty; // No issues found
+			}
+			catch (SqlException sqlEx)
+			{
+				LogError("CheckIfExistinDB", "N/A", "CommonTask", "SQL Exception", sqlEx);
+				return "A database error occurred. Please try again later.";
 			}
 			catch (Exception ex)
 			{
-				LogError("CheckIfExistinDB", "n/A", "CommonTask", "N/A", ex);
+				LogError("CheckIfExistinDB", "N/A", "CommonTask", "General Exception", ex);
+				return "An unexpected error occurred. Please contact support.";
 			}
 			finally
 			{
-				conn.Close();
+				if (conn.State == ConnectionState.Open)
+				{
+					conn.Close();
+				}
 			}
 		}
 
-		public void SearchEmpTwoColumnOneFieldText(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadTextBox itemToSearch, RadLabel searchCount, string empName)
+
+		//public void CheckIfExistinDB(string username, string modLoc, string request, RadLabel lblalert)
+		//{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	conn.Open();
+		//	try
+		//	{
+		//		SqlCommand command = new(
+		//			$@"SELECT COUNT(*)
+		//			FROM
+		//				[User Informmation]
+		//			WHERE
+		//				USERNAME = @username", conn);
+		//		command.Parameters.AddWithValue("@username", username);
+		//		int count = (int)command.ExecuteScalar();
+		//		if (count > 0)
+		//		{
+		//			if (modLoc == "UserMgmt" && request == "Create")
+		//			{
+		//				//if (request == "Create")
+		//				//{
+		//				RadMessageBox.Show("Username already exist", "Information", MessageBoxButtons.OK, RadMessageIcon.Info);
+		//				//}
+		//			}
+		//
+		//		}
+		//		else
+		//		{
+		//			if (request == "Login" && modLoc == "Login")
+		//			{
+		//				lblalert.Visible = true;
+		//				lblalert.Text = "Username not found";
+		//			}
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		LogError("CheckIfExistinDB", "n/A", "CommonTask", "N/A", ex);
+		//	}
+		//	finally
+		//	{
+		//		conn.Close();
+		//	}
+		//}
+		//
+
+		public DataTable GetSearch(
+			string itemToSearch,
+			string statusColumn,
+			out string searchCount)
 		{
+			DataTable resultTable = new();
+
 			using SqlConnection conn = new(_dbConnection);
 			try
 			{
-				using DataTable dt = new(dbTableName);
-				using SqlCommand cmd = new("SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS]" +
-					"FROM [User Information] WHERE " + columntosearch1 + " LIKE @columntoSearch2 OR " + columntosearch2 + " LIKE @columntoSearch3", conn);
-				cmd.Parameters.AddWithValue("columntoSearch2", string.Format("%{0}%", itemToSearch.Text));
-				cmd.Parameters.AddWithValue("columntoSearch3", string.Format("%{0}%", itemToSearch.Text));
-				SqlDataAdapter adapter = new(cmd);
-				adapter.Fill(dt);
-				uiTableName.DataSource = dt;
-				searchCount.Text = $"Total records: {uiTableName.RowCount}";
+				conn.Open();
 
+				// Define the base query
+				string query = $@"
+SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT],
+[USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS]
+FROM [User Information]
+WHERE USERNAME LIKE @itemToSearch";
+
+				// Add the STATUS filter only if statusColumn is not "All"
+				if (statusColumn != "All")
+				{
+					query += " AND STATUS LIKE @statusSearch";
+				}
+
+				using SqlCommand cmd = new(query, conn);
+				cmd.Parameters.AddWithValue("@itemToSearch", $"%{itemToSearch}%");
+
+				// Add the @statusSearch parameter only if statusColumn is not "All"
+				if (statusColumn != "All")
+				{
+					cmd.Parameters.AddWithValue("@statusSearch", $"%{statusColumn}%");
+				}
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
 			}
 			catch (Exception ex)
 			{
-				LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
-
+				// Log the error and provide feedback
+				LogError("SearchEmpTwoColumnOneFieldText", "N/A", "CommonTask", "N/A", ex);
+				searchCount = "Error occurred while fetching records.";
 			}
+
+			return resultTable;
 		}
 
-		public void SearchEmpTwoColumnTwoFieldText(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadTextBox itemToSearch, RadDropDownList itemToSearch2, RadLabel searchCount, string empName)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				using DataTable dt = new(dbTableName);
-				using SqlCommand cmd = new("SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS]" +
-					"FROM [User Information] WHERE " + columntosearch1 + " LIKE @columntoSearch2 AND " + columntosearch2 + " LIKE @columntoSearch3", conn);
-				cmd.Parameters.AddWithValue("columntoSearch2", string.Format("%{0}%", itemToSearch.Text));
-				cmd.Parameters.AddWithValue("columntoSearch3", string.Format(itemToSearch2.Text));
-				SqlDataAdapter adapter = new(cmd);
-				adapter.Fill(dt);
-				uiTableName.DataSource = dt;
-				searchCount.Text = $"Total records: {uiTableName.RowCount}";
 
-			}
-			catch (Exception ex)
-			{
-				LogError("SearchEmpTwoColumnTwoFieldText", empName, "CommonTask", "N/A", ex);
-			}
-		}
-		public void SearchTwoColumnOneFieldText(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadTextBox itemToSearch, RadLabel searchCount, string empName)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				using DataTable dt = new(dbTableName);
-				using SqlCommand cmd = new("SELECT * FROM " + dbTableName +
-					" WHERE " + columntosearch1 + " LIKE @columntoSearch2 OR " + columntosearch2 + " LIKE @columntoSearch3", conn);
-				cmd.Parameters.AddWithValue("columntoSearch2", string.Format("%{0}%", itemToSearch.Text));
-				cmd.Parameters.AddWithValue("columntoSearch3", string.Format("%{0}%", itemToSearch.Text));
-				SqlDataAdapter adapter = new(cmd);
-				adapter.Fill(dt);
-				uiTableName.DataSource = dt;
-				searchCount.Text = $"Total records: {uiTableName.RowCount}";
 
-			}
-			catch (Exception ex)
-			{
-				LogError("SearchTwoColumnOneFieldText", empName, "CommonTask", null, ex);
-			}
-		}
+		//		public void SearchEmpTwoColumnOneFieldText(
+		//			DataTable uiTableName,
+		//			string dbTableName,
+		//			string employeeName,
+		//			string Status,
+		//			string itemToSearch,
+		//			string searchCount,
+		//			string empName)
+		//		{
+		//			using SqlConnection conn = new(_dbConnection);
+		//			try
+		//			{
+		//				using DataTable dt = new(dbTableName);
+		//				using SqlCommand cmd = new($@"
+		//SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT],
+		//[USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS]
+		//FROM
+		//[User Information]
+		//WHERE {employeeName} LIKE @employeeName OR @empStatus LIKE @itemSearch", conn);
+		//				cmd.Parameters.AddWithValue("@employeeName", string.Format("%{0}%", itemToSearch));
+		//				cmd.Parameters.AddWithValue("@empStatus", string.Format("%{0}%", itemToSearch));
+		//				SqlDataAdapter adapter = new(cmd);
+		//				adapter.Fill(dt);
+		//				uiTableName.DataSource = dt;
+		//				searchCount = $"Total records: {uiTableName.RowCount}";
+		//
+		//			}
+		//			catch (Exception ex)
+		//			{
+		//				LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
+		//
+		//			}
+		//		}
 
-		public void SearchTwoColumnOneFieldCombo(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadDropDownList itemToSearch, RadLabel searchCount, string empName)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				using DataTable dt = new(dbTableName);
-				using SqlCommand cmd = new("SELECT * FROM " + dbTableName +
-					" WHERE " + columntosearch1 + " LIKE @columntoSearch2 OR " + columntosearch2 + " LIKE @columntoSearch3", conn);
-				cmd.Parameters.AddWithValue("columntoSearch2", string.Format("%{0}%", itemToSearch.Text));
-				cmd.Parameters.AddWithValue("columntoSearch3", string.Format("%{0}%", itemToSearch.Text));
-				SqlDataAdapter adapter = new(cmd);
-				adapter.Fill(dt);
-				uiTableName.DataSource = dt;
-				searchCount.Text = $"Total records: {uiTableName.RowCount}";
+		//public void SearchEmpTwoColumnTwoFieldText(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadTextBox itemToSearch, RadDropDownList itemToSearch2, RadLabel searchCount, string empName)
+		//{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		using DataTable dt = new(dbTableName);
+		//		using SqlCommand cmd = new("SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS]" +
+		//			"FROM [User Information] WHERE " + columntosearch1 + " LIKE @columntoSearch2 AND " + columntosearch2 + " LIKE @columntoSearch3", conn);
+		//		cmd.Parameters.AddWithValue("columntoSearch2", string.Format("%{0}%", itemToSearch.Text));
+		//		cmd.Parameters.AddWithValue("columntoSearch3", string.Format(itemToSearch2.Text));
+		//		SqlDataAdapter adapter = new(cmd);
+		//		adapter.Fill(dt);
+		//		uiTableName.DataSource = dt;
+		//		searchCount.Text = $"Total records: {uiTableName.RowCount}";
+		//
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		LogError("SearchEmpTwoColumnTwoFieldText", empName, "CommonTask", "N/A", ex);
+		//	}
+		//}
 
-			}
-			catch (Exception ex)
-			{
-				LogError("SearchTwoColumnOneFieldCombo", empName, "CommonTask", null, ex);
-			}
-		}
+		//public void SearchTwoColumnOneFieldText(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadTextBox itemToSearch, RadLabel searchCount, string empName)
+		//{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		using DataTable dt = new(dbTableName);
+		//		using SqlCommand cmd = new("SELECT * FROM " + dbTableName +
+		//			" WHERE " + columntosearch1 + " LIKE @columntoSearch2 OR " + columntosearch2 + " LIKE @columntoSearch3", conn);
+		//		cmd.Parameters.AddWithValue("columntoSearch2", string.Format("%{0}%", itemToSearch.Text));
+		//		cmd.Parameters.AddWithValue("columntoSearch3", string.Format("%{0}%", itemToSearch.Text));
+		//		SqlDataAdapter adapter = new(cmd);
+		//		adapter.Fill(dt);
+		//		uiTableName.DataSource = dt;
+		//		searchCount.Text = $"Total records: {uiTableName.RowCount}";
+		//
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		LogError("SearchTwoColumnOneFieldText", empName, "CommonTask", null, ex);
+		//	}
+		//}
 
-		public void SearchThreeColumnOneFieldText(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, string columntosearch3, RadTextBox itemToSearch, RadLabel searchCount, string empName)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				using DataTable dt = new(dbTableName);
-				using SqlCommand cmd = new("SELECT * FROM " + dbTableName +
-					" WHERE " + columntosearch1 + " LIKE @columntoSearch2 OR " + columntosearch2 + " LIKE @columntoSearch3 OR " + columntosearch3 + " LIKE @columntoSearch4", conn);
-				cmd.Parameters.AddWithValue("columntoSearch2", string.Format("%{0}%", itemToSearch.Text));
-				cmd.Parameters.AddWithValue("columntoSearch3", string.Format("%{0}%", itemToSearch.Text));
-				cmd.Parameters.AddWithValue("columntoSearch4", string.Format("%{0}%", itemToSearch.Text));
-				SqlDataAdapter adapter = new(cmd);
-				adapter.Fill(dt);
-				uiTableName.DataSource = dt;
-				searchCount.Text = $"Total records: {uiTableName.RowCount}";
+		//public void SearchTwoColumnOneFieldCombo(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadDropDownList itemToSearch, RadLabel searchCount, string empName)
+		//{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		using DataTable dt = new(dbTableName);
+		//		using SqlCommand cmd = new("SELECT * FROM " + dbTableName +
+		//			" WHERE " + columntosearch1 + " LIKE @columntoSearch2 OR " + columntosearch2 + " LIKE @columntoSearch3", conn);
+		//		cmd.Parameters.AddWithValue("columntoSearch2", string.Format("%{0}%", itemToSearch.Text));
+		//		cmd.Parameters.AddWithValue("columntoSearch3", string.Format("%{0}%", itemToSearch.Text));
+		//		SqlDataAdapter adapter = new(cmd);
+		//		adapter.Fill(dt);
+		//		uiTableName.DataSource = dt;
+		//		searchCount.Text = $"Total records: {uiTableName.RowCount}";
+		//
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		LogError("SearchTwoColumnOneFieldCombo", empName, "CommonTask", null, ex);
+		//	}
+		//}
+		//
+		//public void SearchThreeColumnOneFieldText(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, string columntosearch3, RadTextBox itemToSearch, RadLabel searchCount, string empName)
+		//{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		using DataTable dt = new(dbTableName);
+		//		using SqlCommand cmd = new("SELECT * FROM " + dbTableName +
+		//			" WHERE " + columntosearch1 + " LIKE @columntoSearch2 OR " + columntosearch2 + " LIKE @columntoSearch3 OR " + columntosearch3 + " LIKE @columntoSearch4", conn);
+		//		cmd.Parameters.AddWithValue("columntoSearch2", string.Format("%{0}%", itemToSearch.Text));
+		//		cmd.Parameters.AddWithValue("columntoSearch3", string.Format("%{0}%", itemToSearch.Text));
+		//		cmd.Parameters.AddWithValue("columntoSearch4", string.Format("%{0}%", itemToSearch.Text));
+		//		SqlDataAdapter adapter = new(cmd);
+		//		adapter.Fill(dt);
+		//		uiTableName.DataSource = dt;
+		//		searchCount.Text = $"Total records: {uiTableName.RowCount}";
+		//
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		LogError("SearchThreeColumnOneFieldText", empName, "CommonTask", null, ex);
+		//	}
+		//}
+		//
+		//public void SearchTwoColumnTwoFieldCombo(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadTextBox itemToSearch1, RadDropDownList itemToSearch2, RadLabel searchCount, string empName)
+		//{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		using DataTable dt = new(dbTableName);
+		//		using SqlCommand cmd = new("SELECT * FROM " + dbTableName +
+		//			" WHERE " + columntosearch1 + " LIKE @columntoSearch1 AND " + columntosearch2 + "LIKE @columntoSearch2", conn);
+		//		cmd.Parameters.AddWithValue("columntoSearch1", string.Format("%{0}%", itemToSearch1.Text));
+		//		cmd.Parameters.AddWithValue("columntoSearch2", itemToSearch2.Text);
+		//		SqlDataAdapter adapter = new(cmd);
+		//		adapter.Fill(dt);
+		//		uiTableName.DataSource = dt;
+		//		searchCount.Text = $"Total records: {uiTableName.RowCount}";
+		//
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		LogError("SearchTwoColumnTwoFieldCombo", empName, "CommonTask", null, ex);
+		//	}
+		//
+		//}
 
-			}
-			catch (Exception ex)
-			{
-				LogError("SearchThreeColumnOneFieldText", empName, "CommonTask", null, ex);
-			}
-		}
-
-		public void SearchTwoColumnTwoFieldCombo(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadTextBox itemToSearch1, RadDropDownList itemToSearch2, RadLabel searchCount, string empName)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				using DataTable dt = new(dbTableName);
-				using SqlCommand cmd = new("SELECT * FROM " + dbTableName +
-					" WHERE " + columntosearch1 + " LIKE @columntoSearch1 AND " + columntosearch2 + "LIKE @columntoSearch2", conn);
-				cmd.Parameters.AddWithValue("columntoSearch1", string.Format("%{0}%", itemToSearch1.Text));
-				cmd.Parameters.AddWithValue("columntoSearch2", itemToSearch2.Text);
-				SqlDataAdapter adapter = new(cmd);
-				adapter.Fill(dt);
-				uiTableName.DataSource = dt;
-				searchCount.Text = $"Total records: {uiTableName.RowCount}";
-
-			}
-			catch (Exception ex)
-			{
-				LogError("SearchTwoColumnTwoFieldCombo", empName, "CommonTask", null, ex);
-			}
-
-		}
-
-		public void SearchTwoColumnTwoFieldText(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadTextBox itemToSearch1, RadTextBox itemToSearch2, RadLabel searchCount, string empName)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				using DataTable dt = new(dbTableName);
-				using SqlCommand cmd = new("SELECT * FROM " + dbTableName +
-					" WHERE " + columntosearch1 + " LIKE @columntoSearch1 AND " + columntosearch2 + " = @columntoSearch2", conn);
-				cmd.Parameters.AddWithValue("columntoSearch1", string.Format("%{0}%", itemToSearch1.Text));
-				cmd.Parameters.AddWithValue("columntoSearch2", string.Format("%{0}%", itemToSearch2.Text));
-				SqlDataAdapter adapter = new(cmd);
-				adapter.Fill(dt);
-				uiTableName.DataSource = dt;
-				searchCount.Text = $"Total records: {uiTableName.RowCount}";
-
-			}
-			catch (Exception ex)
-			{
-				LogError("SearchTwoColumnTwoFieldText", empName, "CommonTask", null, ex);
-			}
-		}
-
-		public void EmpSearchTwoColumnTwoFieldCombo(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadTextBox itemToSearch1, RadDropDownList itemToSearch2, RadLabel searchCount, string empName)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				using DataTable dt = new(dbTableName);
-				using SqlCommand cmd = new("SELECT [Employee ID], [Employee Name], [Username], [Department], [User Access], [Position], [Status], [Office], [Email Address] FROM " + dbTableName +
-					" WHERE " + columntosearch1 + " LIKE @columntoSearch1 AND " + columntosearch2 + "LIKE @columntoSearch2", conn);
-				cmd.Parameters.AddWithValue("columntoSearch1", string.Format("%{0}%", itemToSearch1.Text));
-				cmd.Parameters.AddWithValue("columntoSearch2", itemToSearch2.Text);
-				SqlDataAdapter adapter = new(cmd);
-				adapter.Fill(dt);
-				uiTableName.DataSource = dt;
-				searchCount.Text = $"Total records: {uiTableName.RowCount}";
-
-			}
-			catch (Exception ex)
-			{
-				LogError("EmpSearchTwoColumnTwoFieldCombo", empName, "CommonTask", null, ex);
-			}
-		}
+		//public void SearchTwoColumnTwoFieldText(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadTextBox itemToSearch1, RadTextBox itemToSearch2, RadLabel searchCount, string empName)
+		//{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		using DataTable dt = new(dbTableName);
+		//		using SqlCommand cmd = new("SELECT * FROM " + dbTableName +
+		//			" WHERE " + columntosearch1 + " LIKE @columntoSearch1 AND " + columntosearch2 + " = @columntoSearch2", conn);
+		//		cmd.Parameters.AddWithValue("columntoSearch1", string.Format("%{0}%", itemToSearch1.Text));
+		//		cmd.Parameters.AddWithValue("columntoSearch2", string.Format("%{0}%", itemToSearch2.Text));
+		//		SqlDataAdapter adapter = new(cmd);
+		//		adapter.Fill(dt);
+		//		uiTableName.DataSource = dt;
+		//		searchCount.Text = $"Total records: {uiTableName.RowCount}";
+		//
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		LogError("SearchTwoColumnTwoFieldText", empName, "CommonTask", null, ex);
+		//	}
+		//}
+		//
+		//public void EmpSearchTwoColumnTwoFieldCombo(RadGridView uiTableName, string dbTableName, string columntosearch1, string columntosearch2, RadTextBox itemToSearch1, RadDropDownList itemToSearch2, RadLabel searchCount, string empName)
+		//{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		using DataTable dt = new(dbTableName);
+		//		using SqlCommand cmd = new("SELECT [Employee ID], [Employee Name], [Username], [Department], [User Access], [Position], [Status], [Office], [Email Address] FROM " + dbTableName +
+		//			" WHERE " + columntosearch1 + " LIKE @columntoSearch1 AND " + columntosearch2 + "LIKE @columntoSearch2", conn);
+		//		cmd.Parameters.AddWithValue("columntoSearch1", string.Format("%{0}%", itemToSearch1.Text));
+		//		cmd.Parameters.AddWithValue("columntoSearch2", itemToSearch2.Text);
+		//		SqlDataAdapter adapter = new(cmd);
+		//		adapter.Fill(dt);
+		//		uiTableName.DataSource = dt;
+		//		searchCount.Text = $"Total records: {uiTableName.RowCount}";
+		//
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		LogError("EmpSearchTwoColumnTwoFieldCombo", empName, "CommonTask", null, ex);
+		//	}
+		//}
 
 		public void AlterDBSequece(RadTextBox sequence, RadDropDownList databaseTable, string empName)
 		{
@@ -543,7 +661,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		public void GetSequenceNo(string inputType, string sequenceName, RadTextBox txtnextSequence, RadLabel lblnextSequnce, string preID)
+		public void GetSequenceNo(string inputType, string sequenceName, string txtnextSequence, string lblnextSequnce, string preID)
 		{
 			//int Price;
 			var query = "SELECT NEXT VALUE FOR " + sequenceName;
@@ -558,11 +676,11 @@ namespace PCMS_Lipa_General_Tool.Class
 					int currSeq = reader.GetInt32(0);
 					if (inputType == "label")
 					{
-						lblnextSequnce.Text = preID + (currSeq + 1).ToString();
+						lblnextSequnce = preID + (currSeq + 1).ToString();
 					}
 					else
 					{
-						txtnextSequence.Text = preID + (currSeq + 1).ToString();
+						txtnextSequence = preID + (currSeq + 1).ToString();
 					}
 					//nextSequence.Text = preID + currSeq;// + ToString();
 				}

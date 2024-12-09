@@ -1,5 +1,4 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Configuration;
 using System.Diagnostics;
@@ -399,11 +398,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 				task.CreateRtfFile(_personalreminderPath);
 				
 			}
-			var testForm = new frmRTFEditor
+			var editor = new frmRTFEditor
 			{
 				file = _personalreminderPath
 			};
-			testForm.Show();
+			editor.Show();
 		}
 
 		private void mnuFileLeave_Click(object sender, EventArgs e)
@@ -418,7 +417,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			modleave.dtpStartdate.Text = DateTime.Now.ToString();
 			modleave.txtEmpID.Text = employeeID;
 			modleave.GetDBListID();
-			leave.FillUpSupportLeaveForm(modleave.txtEmpID, modleave.txtEmployeeName, modleave.txtPosition, modleave.txtEmploymentStatus, EmpName);
+			leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
 			modleave.ShowDialog();
 		}
 

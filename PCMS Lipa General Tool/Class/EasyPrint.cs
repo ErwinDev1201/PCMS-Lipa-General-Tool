@@ -41,6 +41,40 @@ namespace PCMS_Lipa_General_Tool.Class
 			return data;
 		}
 
+		public DataTable SearchData(
+	string searchTerm,
+	out string searchCount,
+	string empName)
+		{
+			DataTable resultTable = new();
+
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+				string query = $@"
+SELECT *
+FROM [Easy Print Denial]
+WHERE [Easy Print Code] LIKE @searchTerm
+OR [Remarks] LIKE @searchTerm";
+
+				using SqlCommand cmd = new(query, conn);
+				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				searchCount = "An error occurred while fetching records.";
+			}
+
+			return resultTable;
+		}
 
 		public void EPDenialDBRequest(
 			string request,
@@ -104,7 +138,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			catch (Exception ex)
 			{
 				task.LogError($"EPDenialDBRequest - {request}", empName, "EasyPrint", epdenialID, ex);
-				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
 			finally
 			{

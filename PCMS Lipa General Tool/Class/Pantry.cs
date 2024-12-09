@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Vml.Office;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -16,7 +17,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
 		private readonly CommonTask task = new();
-	
+
 
 
 		//public void FillUpPantryListField(string query, RadGridView dataGrid, RadDropDownList cmbProducts, RadTextBox quantity, RadTextBox price, RadTextBox Remarks, RadTextBox TransactionNo, RadTextBox Summary, RadTextBox totalPrices, string empName)
@@ -147,122 +148,181 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//}
 
-		public void FillItemPrice(string priceTag, string cmbProduct, string empName)
+		public string FillItemPrice(string cmbProduct, string empName)
 		{
 			try
 			{
-				// if (string.IsNullOrWhiteSpace(cmbProduct.Text))
-				// {
-				// 	throw new ArgumentException("Product selection cannot be empty.");
-				// }
-				// 
-				// 
 				var query = $"SELECT [Product Name], PRICE from [Pantry Product] WHERE [Product Name]= '{cmbProduct}'";
 				using SqlConnection con = new(_dbConnection);
 				using SqlCommand cmd = new(query, con);
 				con.Open();
-				using (SqlDataReader reader = cmd.ExecuteReader())
+				using SqlDataReader reader = cmd.ExecuteReader();
+				if (reader.Read()) // If data exists
 				{
-					while (reader.Read())
-					{
-						priceTag = reader.GetValue(1).ToString();
-					}
+					return reader.GetValue(1).ToString();
 				}
-				con.Close();
 			}
 			catch (Exception ex)
 			{
 				task.LogError("FillItemPrice", empName, "Pantry", "N/A", ex);
 			}
+			return string.Empty; // Return empty string if no result or error occurs
 		}
 
-		public void FillProductInfo(RadGridView dgPantry, RadTextBox txtIntID, RadTextBox txtProductName, RadTextBox txtPrice, RadTextBoxControl txtRemarks, string empName)
+
+
+		//public void FillItemPrice(string priceTag, string cmbProduct, string empName)
+		//{
+		//	try
+		//	{
+		//		// if (string.IsNullOrWhiteSpace(cmbProduct.Text))
+		//		// {
+		//		// 	throw new ArgumentException("Product selection cannot be empty.");
+		//		// }
+		//		// 
+		//		// 
+		//		var query = $"SELECT [Product Name], PRICE from [Pantry Product] WHERE [Product Name]= '{cmbProduct}'";
+		//		using SqlConnection con = new(_dbConnection);
+		//		using SqlCommand cmd = new(query, con);
+		//		con.Open();
+		//		using (SqlDataReader reader = cmd.ExecuteReader())
+		//		{
+		//			while (reader.Read())
+		//			{
+		//				priceTag = reader.GetValue(1).ToString();
+		//			}
+		//		}
+		//		con.Close();
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("FillItemPrice", empName, "Pantry", "N/A", ex);
+		//	}
+		//}
+		//
+		//public void FillProductInfo(RadGridView dgPantry, RadTextBox txtIntID, RadTextBox txtProductName, RadTextBox txtPrice, RadTextBoxControl txtRemarks, string empName)
+		//{
+		//	using SqlConnection con = new(_dbConnection);
+		//	try
+		//	{
+		//		con.Open();
+		//		{
+		//			using SqlCommand cmd = new("SELECT * FROM [Pantry Product]", con);
+		//			cmd.ExecuteNonQuery();
+		//			var dgRow = dgPantry.SelectedRows[0];
+		//			{
+		//				txtIntID.Text = dgRow.Cells[0].Value + string.Empty;
+		//				txtProductName.Text = dgRow.Cells[1].Value + string.Empty;
+		//				txtPrice.Text = dgRow.Cells[2].Value + string.Empty;
+		//				txtRemarks.Text = dgRow.Cells[3].Value + string.Empty;
+		//			}
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("FillProductInfo", empName, "Pantry", "N/A", ex);
+		//	}
+		//	finally
+		//	{
+		//		con.Close();
+		//	}
+		//}
+		//
+		//public void CheckProductExist(
+		//	string query,
+		//	RadTextBox
+		//	txtIntID,RadTextBox txtName, RadTextBox txtPrice, RadTextBoxControl txtRemarks, string empName)
+		//{
+		//	var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		query = $"SELECT [Product Name] FROM [Pantry Product] WHERE [Product Name] = '{txtName.Text}'";
+		//		con.Open();
+		//		SqlDataAdapter adapter = new(query, con);
+		//		DataTable dt = new();
+		//		adapter.Fill(dt);
+		//		if (dt.Rows.Count >= 1)
+		//		{
+		//			RadMessageBox.Show("Item already exist", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
+		//		}
+		//		else
+		//		{
+		//			PantryProductDBRequest("Create", txtIntID, txtName, txtPrice, txtRemarks, empName);
+		//		}
+		//		con.Close();
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//
+		//		task.LogError("FillProductInfo", empName, "Pantry", txtIntID.Text, ex);
+		//	}
+		//}
+		//
+
+		public void CheckProductExist(string txtIntID, string txtName, string txtPrice, string txtRemarks, string empName)
 		{
 			using SqlConnection con = new(_dbConnection);
 			try
 			{
+				string query = $"SELECT [Product Name] FROM [Pantry Product] WHERE [Product Name] = @ProductName";
 				con.Open();
-				{
-					using SqlCommand cmd = new("SELECT * FROM [Pantry Product]", con);
-					cmd.ExecuteNonQuery();
-					var dgRow = dgPantry.SelectedRows[0];
-					{
-						txtIntID.Text = dgRow.Cells[0].Value + string.Empty;
-						txtProductName.Text = dgRow.Cells[1].Value + string.Empty;
-						txtPrice.Text = dgRow.Cells[2].Value + string.Empty;
-						txtRemarks.Text = dgRow.Cells[3].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("FillProductInfo", empName, "Pantry", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
+				using SqlCommand cmd = new(query, con);
+				cmd.Parameters.AddWithValue("@ProductName", txtName.Trim());
 
-		public void CheckProductExist(string query, RadTextBox txtIntID, RadTextBox txtName, RadTextBox txtPrice, RadTextBoxControl txtRemarks, string empName)
-		{
-			var con = new SqlConnection(_dbConnection);
-			try
-			{
-				con.Open();
-				SqlDataAdapter adapter = new(query, con);
+				using SqlDataAdapter adapter = new(cmd);
 				DataTable dt = new();
 				adapter.Fill(dt);
+
 				if (dt.Rows.Count >= 1)
 				{
-					RadMessageBox.Show("Item already exist", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
+					RadMessageBox.Show("Item already exists", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 				}
 				else
 				{
 					PantryProductDBRequest("Create", txtIntID, txtName, txtPrice, txtRemarks, empName);
 				}
-				con.Close();
 			}
 			catch (Exception ex)
 			{
-
-				task.LogError("FillProductInfo", empName, "Pantry", txtIntID.Text, ex);
+				task.LogError("CheckProductExist", empName, "Pantry", txtIntID, ex);
+				throw;
 			}
 		}
 
-		public void PantryProductDBRequest(string request, RadTextBox itemID, RadTextBox itemName, RadTextBox itemPrice, RadTextBoxControl itemRemarks, string empName)
+		public void PantryProductDBRequest(string request, string itemID, string itemName, string itemPrice, string itemRemarks, string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
 			{
 				conn.Open();
-				SqlCommand cmd = new()
+				using SqlCommand cmd = new()
 				{
-					Connection = conn
+					Connection = conn,
+					CommandText = request switch
+					{
+						"Update" => @"UPDATE [Pantry Product] 
+                                SET [Product Name] = @ITEMNAME, 
+                                    PRICE = @ITEMPRICE, 
+                                    REMARKS = @ITEMREMARKS
+                                WHERE [Product ID] = @ITEMID",
+
+						"Create" => @"INSERT INTO [Pantry Product] ([Product ID], [Product Name], PRICE, REMARKS)
+                                VALUES (@ITEMID, @ITEMNAME, @ITEMPRICE, @ITEMREMARKS)",
+
+						"Delete" => @"DELETE FROM [Pantry Product]
+                                WHERE [Product ID] = @ITEMID",
+
+						_ => throw new ArgumentException("Invalid request type."),
+					}
 				};
 
-				string logs, message;
+				cmd.Parameters.AddWithValue("@ITEMID", itemID.Trim());
 
-				// Prepare query based on request type
-				cmd.CommandText = request switch
+				if (!string.Equals(request, "Delete", StringComparison.OrdinalIgnoreCase))
 				{
-					"Update" => @"UPDATE [Pantry Product] 
-                          SET [Product Name] = @ITEMNAME, PRICE = @ITEMPRICE, [REMARKS] = @ITEMREMARKS
-                          WHERE [Product ID] = @ITEMID",
-					"Create" => @"INSERT INTO [Pantry Product] ([Product ID], [Product Name], PRICE, REMARKS)
-                          VALUES (@ITEMID, @ITEMNAME, @ITEMPRICE, @ITEMREMARKS)",
-					"Delete" => @"DELETE FROM [Pantry Product]
-                          WHERE [PRODUCT ID] = @ITEMID",
-					_ => throw new ArgumentException("Invalid request type."),
-				};
+					cmd.Parameters.AddWithValue("@ITEMNAME", itemName.Trim());
 
-				// Add parameters
-				cmd.Parameters.AddWithValue("@ITEMID", itemID.Text);
-
-				if (request != "Delete")
-				{
-					cmd.Parameters.AddWithValue("@ITEMNAME", itemName.Text);
-					if (decimal.TryParse(itemPrice.Text, out decimal price))
+					if (decimal.TryParse(itemPrice.Trim(), out decimal price))
 					{
 						cmd.Parameters.AddWithValue("@ITEMPRICE", price);
 					}
@@ -270,30 +330,97 @@ namespace PCMS_Lipa_General_Tool.Class
 					{
 						throw new FormatException("Invalid price format. Please enter a numeric value.");
 					}
-					//cmd.Parameters.AddWithValue("@ITEMPRICE", itemPrice.Text);
-					cmd.Parameters.AddWithValue("@ITEMREMARKS", itemRemarks.Text);
+
+					cmd.Parameters.AddWithValue("@ITEMREMARKS", itemRemarks.Trim());
 				}
 
-				// Execute query
-				cmd.ExecuteNonQuery();
+				int affectedRows = cmd.ExecuteNonQuery();
+				if (affectedRows > 0)
+				{
+					string logs = $"{empName} {request.ToLower()}d Product ID: {itemID}";
+					string message = $"Done! Product ID: {itemID} has been successfully {request.ToLower()}d.";
 
-				// Log activity
-				logs = $"{empName} {request.ToLower()}d Product ID: {itemID.Text}";
-				message = $"Done! {itemID.Text} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()}D PRODUCT LIST INFORMATION");
-				task.SendToastNotifDesktop(message);
+					task.AddActivityLog(message, empName, logs, $"{request.ToUpper()}D PRODUCT LIST INFORMATION");
+					task.SendToastNotifDesktop(message);
+				}
+				else
+				{
+					throw new InvalidOperationException("No rows were affected by the operation. Please verify the input data.");
+				}
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
-				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
-			}
-			finally
-			{
-				conn.Close();
+				task.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID, ex);
+				throw new InvalidOperationException($"Error during {request} operation: {ex.Message}", ex);
 			}
 		}
 
+
+
+		//public void PantryProductDBRequest(string request, RadTextBox itemID, RadTextBox itemName, RadTextBox itemPrice, RadTextBoxControl itemRemarks, string empName)
+		//{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		conn.Open();
+		//		SqlCommand cmd = new()
+		//		{
+		//			Connection = conn
+		//		};
+		//
+		//		string logs, message;
+		//
+		//		// Prepare query based on request type
+		//		cmd.CommandText = request switch
+		//		{
+		//			"Update" => @"UPDATE [Pantry Product] 
+		//                  SET [Product Name] = @ITEMNAME, PRICE = @ITEMPRICE, [REMARKS] = @ITEMREMARKS
+		//                  WHERE [Product ID] = @ITEMID",
+		//			"Create" => @"INSERT INTO [Pantry Product] ([Product ID], [Product Name], PRICE, REMARKS)
+		//                  VALUES (@ITEMID, @ITEMNAME, @ITEMPRICE, @ITEMREMARKS)",
+		//			"Delete" => @"DELETE FROM [Pantry Product]
+		//                  WHERE [PRODUCT ID] = @ITEMID",
+		//			_ => throw new ArgumentException("Invalid request type."),
+		//		};
+		//
+		//		// Add parameters
+		//		cmd.Parameters.AddWithValue("@ITEMID", itemID.Text);
+		//
+		//		if (request != "Delete")
+		//		{
+		//			cmd.Parameters.AddWithValue("@ITEMNAME", itemName.Text);
+		//			if (decimal.TryParse(itemPrice.Text, out decimal price))
+		//			{
+		//				cmd.Parameters.AddWithValue("@ITEMPRICE", price);
+		//			}
+		//			else
+		//			{
+		//				throw new FormatException("Invalid price format. Please enter a numeric value.");
+		//			}
+		//			//cmd.Parameters.AddWithValue("@ITEMPRICE", itemPrice.Text);
+		//			cmd.Parameters.AddWithValue("@ITEMREMARKS", itemRemarks.Text);
+		//		}
+		//
+		//		// Execute query
+		//		cmd.ExecuteNonQuery();
+		//
+		//		// Log activity
+		//		logs = $"{empName} {request.ToLower()}d Product ID: {itemID.Text}";
+		//		message = $"Done! {itemID.Text} has been successfully {request.ToLower()}d.";
+		//		task.AddActivityLog(message, empName, logs, $"{request.ToUpper()}D PRODUCT LIST INFORMATION");
+		//		task.SendToastNotifDesktop(message);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
+		//		throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+		//	}
+		//	finally
+		//	{
+		//		conn.Close();
+		//	}
+		//}
+		//
 
 		public DataTable ViewProductList(string empName, out string lblCount)
 		{
@@ -774,30 +901,129 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-
-
-		public void SumTotalAmount(string query, RadTextBoxControl totalPrice)
+		public void CalculateTotalPantryExpense(string employeeName, DateTime startDate, DateTime endDate, out decimal totalAmount)
 		{
-			//int Price;
 			var con = new SqlConnection(_dbConnection);
 			try
 			{
+				// Build query dynamically based on conditions
+				string query = string.IsNullOrWhiteSpace(employeeName) || employeeName == "Edimson Escalona"
+					? $"SELECT SUM([TOTAL PRICE]) FROM [Pantry Listahan] WHERE DATE BETWEEN '{startDate:yyyy-MM-dd}' AND '{endDate:yyyy-MM-dd}'"
+					: $"SELECT SUM([TOTAL PRICE]) FROM [Pantry Listahan] WHERE [Employee Name] LIKE '%{employeeName}%' AND DATE BETWEEN '{startDate:yyyy-MM-dd}' AND '{endDate:yyyy-MM-dd}'";
+
 				con.Open();
-				SqlCommand cmd = new(query, con);
-				SqlDataReader reader = cmd.ExecuteReader();
-				while (reader.Read())
+				using SqlCommand cmd = new(query, con);
+				using SqlDataReader reader = cmd.ExecuteReader();
+
+				if (reader.Read() && reader.GetValue(0) != DBNull.Value)
 				{
-					totalPrice.Text = reader.GetValue(0).ToString();
+					totalAmount = reader.GetDecimal(0);
 				}
-				con.Close();
+				else
+				{
+					totalAmount = 0;
+				}
 
-
+				Console.WriteLine($"Total List is ₱{totalAmount:0.00}");
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"SumTotalAmount", "N/A", "Pantry", "N/A", ex);
+				task.LogError("CalculateTotalPantryExpense", "System", "frmPantry", null, ex);
+				totalAmount = 0;
+				throw;
+			}
+			finally
+			{
+				if (con.State == System.Data.ConnectionState.Open)
+					con.Close();
 			}
 		}
+
+		public DataTable SearchData(
+	string searchTerm,
+	out string searchCount,
+	string empName)
+		{
+			DataTable resultTable = new();
+
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+				string query = $@"
+SELECT *
+FROM [Pantry Product]
+WHERE [Product Name] LIKE @searchTerm
+OR [Remarks] LIKE @searchTerm";
+
+				using SqlCommand cmd = new(query, conn);
+				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				searchCount = "An error occurred while fetching records.";
+			}
+
+			return resultTable;
+		}
+
+
+		//public void CalculateTotalPantryExpense(string employeeName, DateTime startDate, DateTime endDate, out decimal totalAmount)
+		//{
+		//	try
+		//	{
+		//		string query;
+		//
+		//		if (string.IsNullOrWhiteSpace(employeeName) || employeeName == "Edimson Escalona")
+		//		{
+		//			query = $"SELECT SUM([TOTAL PRICE]) FROM [Pantry Listahan] WHERE DATE BETWEEN '{startDate:yyyy-MM-dd}' AND '{endDate:yyyy-MM-dd}'";
+		//		}
+		//		else
+		//		{
+		//			query = $"SELECT SUM([TOTAL PRICE]) FROM [Pantry Listahan] WHERE [Employee Name] LIKE '%{employeeName}%' AND DATE BETWEEN '{startDate:yyyy-MM-dd}' AND '{endDate:yyyy-MM-dd}'";
+		//		}
+		//
+		//		totalAmount = SumTotalAmount(query);
+		//		Console.WriteLine($"Total List is ₱{totalAmount:0.00}");
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("SumPantryExpense", "System", "frmPantry", null, ex);
+		//		totalAmount = 0;
+		//		throw;
+		//	}
+		//}
+		//
+		//
+		//public void SumTotalAmount(string query, string totalPrice)
+		//{
+		//	//int Price;
+		//	var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		con.Open();
+		//		SqlCommand cmd = new(query, con);
+		//		SqlDataReader reader = cmd.ExecuteReader();
+		//		while (reader.Read())
+		//		{
+		//			totalPrice = reader.GetValue(0).ToString();
+		//		}
+		//		con.Close();
+		//
+		//
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError($"SumTotalAmount", "N/A", "Pantry", "N/A", ex);
+		//	}
+		//}
 
 	}
 }

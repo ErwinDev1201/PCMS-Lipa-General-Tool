@@ -41,15 +41,65 @@ namespace PCMS_Lipa_General_Tool.Class
 			return data;
 		}
 
+		public DataTable SearchData(
+	string searchTerm,
+	string AttorneyType,
+	out string searchCount,
+	string empName)
+		{
+			DataTable resultTable = new();
+
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+				string query = $@"
+SELECT *
+FROM [Insurance Email Format]
+WHERE ([Attorney Name] LIKE @searchTerm
+OR [Remarks] LIKE @searchTerm)";
+
+				// Add the STATUS filter only if statusColumn is not "All"
+				if (AttorneyType != "All")
+				{
+					query += " AND [Attorney Type] LIKE @attyType";
+				}
+
+				using SqlCommand cmd = new(query, conn);
+				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
+
+				// Add the @statusSearch parameter only if statusColumn is not "All"
+				if (AttorneyType != "All")
+				{
+					cmd.Parameters.AddWithValue("@attyType", $"%{AttorneyType}%");
+				}
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				searchCount = "An error occurred while fetching records.";
+			}
+
+			return resultTable;
+		}
 
 
 		public void AttorneyDBRequest(
 			string request,
-			string attyID, string
-			cmbAttyType,
+			string attyID,
+			string cmbAttyType,
 			string attyName,
 			string phoneNo,
-			string faxNo, string email, string remarks, string empName)
+			string faxNo,
+			string email,
+			string remarks,
+			string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -106,8 +156,9 @@ namespace PCMS_Lipa_General_Tool.Class
 			catch (Exception ex)
 			{
 				task.LogError($"AttorneyDBRequest {request}", empName, "Attorney", attyID, ex);
-				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
+			//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			finally
 			{
 				conn.Close();

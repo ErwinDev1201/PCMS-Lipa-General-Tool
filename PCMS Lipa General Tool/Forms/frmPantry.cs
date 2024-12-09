@@ -172,7 +172,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void GetDBListID()
 		{
-			task.GetSequenceNo("textbox", "PantryListSeq", txtIntID, null, "PL-");
+			task.GetSequenceNo("textbox", "PantryListSeq", txtIntID.Text, null, "PL-");
 		}
 
 		private void Clear()
@@ -278,7 +278,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			else
 			{
-				txtSummary.Text = txtQuantity.Text + " Piece(s) of " + cmbProductList.Text;
+				txtSummary.Text = $@"{txtQuantity.Text} Piece(s)
+of
+{cmbProductList.Text}";
 			}
 
 		}
@@ -292,21 +294,23 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			try
 			{
-				if (cmbEmployee.Text == "Edimson Escalona" || cmbEmployee.Text == "")
-				{
-					string tmQueryPantry = $"SELECT SUM([TOTAL PRICE]) FROM [Pantry Listahan] WHERE DATE BETWEEN '{dtpFrom.Value:yyyy-MM-dd}' AND '{dtpTo.Value:yyyy-MM-dd}'";
-					pantry.SumTotalAmount(tmQueryPantry, txtTotalPrice);
-					txtSummary.Enabled = true;
-					txtSummary.Text = "Total List is \u20b1" + txtTotalPrice.Text;
-
-				}
-				else
-				{
-					string empListQuery = $"SELECT SUM([TOTAL PRICE]) FROM [Pantry Listahan] WHERE [Employee Name] LIKE '%{cmbEmployee.Text}%' AND DATE BETWEEN '{dtpFrom.Value:yyyy-MM-dd}' AND '{dtpTo.Value:yyyy-MM-dd}'";
-					pantry.SumTotalAmount(empListQuery, txtTotalPrice);
-					txtSummary.Enabled = true;
-					txtSummary.Text = "Total List is \u20b1" + txtTotalPrice.Text;
-				}
+				//string query;
+				//if (cmbEmployee.Text == "Edimson Escalona" || cmbEmployee.Text == "")
+				//{
+				//	query = $"SELECT SUM([TOTAL PRICE]) FROM [Pantry Listahan] WHERE DATE BETWEEN '{dtpFrom.Value:yyyy-MM-dd}' AND '{dtpTo.Value:yyyy-MM-dd}'";
+				//	
+				//
+				//}
+				//else
+				//{
+				//	query = $"SELECT SUM([TOTAL PRICE]) FROM [Pantry Listahan] WHERE [Employee Name] LIKE '%{cmbEmployee.Text}%' AND DATE BETWEEN '{dtpFrom.Value:yyyy-MM-dd}' AND '{dtpTo.Value:yyyy-MM-dd}'";
+				//	
+				//}
+				pantry.CalculateTotalPantryExpense(cmbEmployee.Text, dtpFrom.Value, dtpTo.Value, out decimal totalPrice);
+				txtTotalPrice.Text = totalPrice.ToString();
+				txtSummary.Enabled = true;
+				txtSummary.Text = $@"Total List is
+₱ {txtTotalPrice.Text}";
 			}
 			catch (Exception ex)
 			{
@@ -380,10 +384,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 
 				//process.ProductListIndex(txtPrice, query);
-				pantry.FillItemPrice(txtPrice.Text, cmbProductList.Text, EmpName);
+				//pantry.FillItemPrice(out string txtPrice, cmbProductList.Text, EmpName);
+				string price = pantry.FillItemPrice(cmbProductList.Text, EmpName);
+				txtPrice.Text = price;
 				if (txtQuantity.Text != "")
 				{
-					txtSummary.Text = txtQuantity.Text + " Piece(s) of " + cmbProductList.Text;
+					txtSummary.Text = $@"{txtQuantity.Text} Piece(s)
+of
+{cmbProductList.Text}";
 					Multiply();
 				}
 				else

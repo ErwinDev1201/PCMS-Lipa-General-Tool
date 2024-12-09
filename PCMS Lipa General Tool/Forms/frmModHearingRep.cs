@@ -55,7 +55,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "HearingRepSeq", txtIntID, null, "EP-"); ;
+			task.GetSequenceNo("textbox", "HearingRepSeq", txtIntID.Text, null, "EP-"); ;
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)

@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 
@@ -49,7 +50,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				task.LogError("AutoFillEmp", EmpName, "frmEmployeeInfo", txtEmpID.Text, ex);
 			}
-			user.FillUpEmpTxtBox(dgEmpInfo, txtEmpID, txtEmpName, txtemailAdd, txtBVNo, cmbUserDept, cmbUserPosition, cmbOfficeLoc, cmbempStatus, txtRemarks, EmpName);
+			//user.FillEmployeeData(dgEmpInfo, txtEmpID, txtEmpName, txtemailAdd, txtBVNo, cmbUserDept, cmbUserPosition, cmbOfficeLoc, cmbempStatus, txtRemarks, EmpName);
 		}
 
 
@@ -86,15 +87,32 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
-			if (txtSearch.Text == "")
+			try
 			{
-				
-				LoadEmployeeInformation();
+				DataTable resultTable = user.SearchData(
+				txtSearch.Text,
+				out string searchcount, EmpName);
+
+				dgEmpInfo.DataSource = resultTable;
+				lblSearchCount
+					.Text = searchcount;
+
 			}
-			else
+			catch (Exception ex)
 			{
-				task.SearchThreeColumnOneFieldText(dgEmpInfo, "[User Information]", "[Employee Name]", "[Broadvoice No.]", "[Remarks]", txtSearch, lblSearchCount, EmpName);
+				task.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
 			}
+			//if (txtSearch.Text == "")
+			//{
+			//	
+			//	LoadEmployeeInformation();
+			//}
+			//else
+			//{
+			//
+			//	
+			//	//task.SearchThreeColumnOneFieldText(dgEmpInfo, "[User Information]", "[Employee Name]", "[Broadvoice No.]", "[Remarks]", txtSearch, lblSearchCount, EmpName);
+			//}
 		}
 	}
 }

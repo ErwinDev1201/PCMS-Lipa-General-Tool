@@ -3,6 +3,7 @@ using System;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 using System.Collections.Generic;
+using System.Data;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
@@ -79,20 +80,47 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
-			task.SearchTwoColumnOneFieldText(dgActivityLogs, "[Activity Logs]", "NAME", "Message", txtSearch, lblSearchCount, empName);
+			LoadSearchandFilter();
+			//task.SearchTwoColumnOneFieldText(dgActivityLogs, "[Activity Logs]", "NAME", "Message", txtSearch, lblSearchCount, empName);
+		}
+
+		private void LoadSearchandFilter()
+		{
+			try
+			{
+				// check what the dropdown is firing
+				Console.WriteLine($"Selected status: {cmbAction.Text}");
+				// Input values for the search
+				// Call the back-end method to perform the search
+				DataTable resultTable = task.GetSearch(
+					txtSearch.Text,
+					cmbAction.Text,
+					out string searchCountMessage);
+
+				// Bind the result to the RadGridView
+				dgActivityLogs.DataSource = resultTable;
+
+				// Display the search count in a label or message box
+				lblSearchCount.Text = searchCountMessage; // Ensure lblSearchCount is a valid label in your form
+			}
+			catch (Exception ex)
+			{
+				task.LogError("LoadSearchFilter", empName, "frmUserActivty", null, ex);
+			}
 		}
 
 		private void cmbAction_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
 		{
-			if (txtSearch.Text == "")
-			{
-				task.SearchTwoColumnOneFieldCombo(dgActivityLogs, "[Activity Logs]", "Action", "Action", cmbAction, lblSearchCount, empName);
-			}
-			else
-			{
-				task.SearchTwoColumnTwoFieldCombo(dgActivityLogs, "[Activity Logs]", "Name", "Action", txtSearch, cmbAction, lblSearchCount, empName);
-			}
-		}
+			LoadSearchandFilter();
+			//if (txtSearch.Text == "")
+			//{
+			//	task.SearchTwoColumnOneFieldCombo(dgActivityLogs, "[Activity Logs]", "Action", "Action", cmbAction, lblSearchCount, empName);
+			//}
+			//else
+			//{
+			//	task.SearchTwoColumnTwoFieldCombo(dgActivityLogs, "[Activity Logs]", "Name", "Action", txtSearch, cmbAction, lblSearchCount, empName);
+			//}
+		}	//
 
 		private void cmbAction_PopupOpening(object sender, System.ComponentModel.CancelEventArgs e)
 		{

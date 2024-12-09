@@ -1,6 +1,7 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
 using System.Configuration;
+using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 
@@ -106,7 +107,22 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
-			task.SearchTwoColumnOneFieldText(dgHearingRep, "[Hearing Representative]", "[Name]", "[Remarks]", txtSearch, lblSearchCount, EmpName);
+
+			try
+			{
+				DataTable resultTable = hearing.SearchData(
+				txtSearch.Text,
+				out string searchcount, EmpName);
+
+				dgHearingRep.DataSource = resultTable;
+				lblSearchCount.Text = searchcount;
+
+			}
+			catch (Exception ex)
+			{
+				task.LogError("txtSearch_TextChanged", EmpName, "frmHearingRep", null, ex);
+			}
+			//task.SearchTwoColumnOneFieldText(dgHearingRep, "[Hearing Representative]", "[Name]", "[Remarks]", txtSearch, lblSearchCount, EmpName);
 		}
 	}
 }

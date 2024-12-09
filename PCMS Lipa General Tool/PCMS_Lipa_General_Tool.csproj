@@ -338,11 +338,11 @@
     <Compile Include="Forms\frmHearingRep.Designer.cs">
       <DependentUpon>frmHearingRep.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmInsBillReviewDirectory.cs">
+    <Compile Include="Forms\frmBillReviewDirectory.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmInsBillReviewDirectory.Designer.cs">
-      <DependentUpon>frmInsBillReviewDirectory.cs</DependentUpon>
+    <Compile Include="Forms\frmBillReviewDirectory.Designer.cs">
+      <DependentUpon>frmBillReviewDirectory.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmInsuranceInfo.cs">
       <SubType>Form</SubType>
@@ -500,6 +500,12 @@
     <Compile Include="Forms\frmSuggestion.Designer.cs">
       <DependentUpon>frmSuggestion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmTicketingTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmTicketingTask.Designer.cs">
+      <DependentUpon>frmTicketingTask.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmUpdateDCPassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -594,8 +600,8 @@
     <EmbeddedResource Include="Forms\frmHearingRep.resx">
       <DependentUpon>frmHearingRep.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmInsBillReviewDirectory.resx">
-      <DependentUpon>frmInsBillReviewDirectory.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmBillReviewDirectory.resx">
+      <DependentUpon>frmBillReviewDirectory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmInsuranceInfo.resx">
       <DependentUpon>frmInsuranceInfo.cs</DependentUpon>
@@ -674,6 +680,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSuggestion.resx">
       <DependentUpon>frmSuggestion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmTicketingTask.resx">
+      <DependentUpon>frmTicketingTask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmUpdateDCPassword.resx">
       <DependentUpon>frmUpdateDCPassword.cs</DependentUpon>

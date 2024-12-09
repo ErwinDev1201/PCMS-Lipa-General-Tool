@@ -39,6 +39,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmUserManagement));
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
+			this.lblResult = new Telerik.WinControls.UI.RadLabel();
 			this.cmbUserDept = new Telerik.WinControls.UI.RadDropDownList();
 			this.radLabel5 = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel13 = new Telerik.WinControls.UI.RadLabel();
@@ -77,6 +78,7 @@
 			this.dgEmployeeInfo = new Telerik.WinControls.UI.RadGridView();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblResult)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbUserDept)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel5)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel13)).BeginInit();
@@ -121,6 +123,7 @@
 			// 
 			this.radPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+			this.radPanel1.Controls.Add(this.lblResult);
 			this.radPanel1.Controls.Add(this.cmbUserDept);
 			this.radPanel1.Controls.Add(this.radLabel5);
 			this.radPanel1.Controls.Add(this.radLabel13);
@@ -154,6 +157,17 @@
 			this.radPanel1.Size = new System.Drawing.Size(446, 662);
 			this.radPanel1.TabIndex = 11;
 			this.radPanel1.ThemeName = "Crystal";
+			// 
+			// lblResult
+			// 
+			this.lblResult.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblResult.ForeColor = System.Drawing.Color.Red;
+			this.lblResult.Location = new System.Drawing.Point(143, 156);
+			this.lblResult.Name = "lblResult";
+			this.lblResult.Size = new System.Drawing.Size(74, 19);
+			this.lblResult.TabIndex = 78;
+			this.lblResult.Text = "radLabel12";
+			this.lblResult.ThemeName = "Crystal";
 			// 
 			// cmbUserDept
 			// 
@@ -209,7 +223,7 @@
 			// txtUsername
 			// 
 			this.txtUsername.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtUsername.Location = new System.Drawing.Point(144, 172);
+			this.txtUsername.Location = new System.Drawing.Point(144, 177);
 			this.txtUsername.Name = "txtUsername";
 			this.txtUsername.Size = new System.Drawing.Size(280, 23);
 			this.txtUsername.TabIndex = 73;
@@ -219,7 +233,7 @@
 			// btnResetPassword
 			// 
 			this.btnResetPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnResetPassword.Location = new System.Drawing.Point(143, 214);
+			this.btnResetPassword.Location = new System.Drawing.Point(143, 218);
 			this.btnResetPassword.Name = "btnResetPassword";
 			this.btnResetPassword.Size = new System.Drawing.Size(281, 33);
 			this.btnResetPassword.TabIndex = 1;
@@ -261,7 +275,7 @@
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btnNew.Location = new System.Drawing.Point(14, 25);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(376, 37);
+			this.btnNew.Size = new System.Drawing.Size(410, 37);
 			this.btnNew.TabIndex = 54;
 			this.btnNew.Text = "New";
 			this.btnNew.ThemeName = "Crystal";
@@ -449,7 +463,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.radLabel3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel3.Location = new System.Drawing.Point(20, 172);
+			this.radLabel3.Location = new System.Drawing.Point(20, 177);
 			this.radLabel3.Name = "radLabel3";
 			this.radLabel3.Size = new System.Drawing.Size(71, 19);
 			this.radLabel3.TabIndex = 54;
@@ -487,7 +501,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.radLabel4.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel4.Location = new System.Drawing.Point(20, 219);
+			this.radLabel4.Location = new System.Drawing.Point(22, 221);
 			this.radLabel4.Name = "radLabel4";
 			this.radLabel4.Size = new System.Drawing.Size(69, 19);
 			this.radLabel4.TabIndex = 55;
@@ -513,7 +527,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtPassword.Location = new System.Drawing.Point(144, 219);
+			this.txtPassword.Location = new System.Drawing.Point(144, 223);
 			this.txtPassword.Name = "txtPassword";
 			this.txtPassword.Size = new System.Drawing.Size(211, 23);
 			this.txtPassword.TabIndex = 67;
@@ -554,7 +568,7 @@
 			// 
 			this.cmbEmployeeStat.DropDownAnimationEnabled = true;
 			this.cmbEmployeeStat.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			radListDataItem5.Text = "Both";
+			radListDataItem5.Text = "All";
 			radListDataItem6.Text = "Active";
 			radListDataItem7.Text = "InActive";
 			this.cmbEmployeeStat.Items.Add(radListDataItem5);
@@ -643,6 +657,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
 			this.radPanel1.ResumeLayout(false);
 			this.radPanel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblResult)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbUserDept)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel5)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel13)).EndInit();
@@ -726,5 +741,6 @@
         public Telerik.WinControls.UI.RadTextBox txtBVNo;
 		public Telerik.WinControls.UI.RadDropDownList cmbUserDept;
 		private Telerik.WinControls.UI.RadLabel radLabel5;
+		private Telerik.WinControls.UI.RadLabel lblResult;
 	}
 }

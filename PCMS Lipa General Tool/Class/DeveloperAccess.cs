@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Asn1.Ocsp;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -30,6 +31,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			catch (Exception ex)
 			{
 				task.LogError("UpdateDevPasswordAccess", empName, "DeveloperAccess", "N/A", ex);
+				throw new InvalidOperationException($"Error during update operation. Please try again later.");
 			}
 		}
 

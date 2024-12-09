@@ -10,8 +10,6 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telerik.WinControls;
-using Telerik.WinControls.UI;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
 namespace PCMS_Lipa_General_Tool.Class
@@ -25,7 +23,6 @@ namespace PCMS_Lipa_General_Tool.Class
 		private readonly CommonTask task = new();
 		readonly emailSender mailSender = new();
 
-		
 
 		public void FillUserProfile(
 			string txtIntID,
@@ -41,76 +38,157 @@ namespace PCMS_Lipa_General_Tool.Class
 			string txtBroadvoice,
 			string txtDateOfBirth,
 			string dcUsername,
-			string dcPassword, 
+			string dcPassword,
 			string empName)
 		{
-			var query = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [USER ACCESS], [POSITION], [RDWEB USERNAME], [RDWEB PASSWORD], [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [Broadvoice No.], [DATE OF BIRTH], [Discord Username], [Discord Password] FROM [User Information] WHERE USERNAME='" + txtUsername + "'";
 			try
 			{
-				using var connection = new SqlConnection(_dbConnection);
-				using var command = new SqlCommand(query, connection);
+				using var con = new SqlConnection(_dbConnection);
+				using var cmd = new SqlCommand(@"
+			SELECT
+				[Employee ID], [EMPLOYEE NAME], USERNAME,
+				[USER ACCESS], [POSITION], [RDWEB USERNAME],
+				[RDWEB PASSWORD], [LYTEC USERNAME], [LYTEC PASSWORD],
+				[EMAIL ADDRESS], [Broadvoice No.], [DATE OF BIRTH],
+				[Discord Username], [Discord Password]
+			FROM
+				[User Information]
+			WHERE 
+				[EMPLOYEE NAME] = @EmployeeName", con);
 
-				connection.Open();
-				using var reader = command.ExecuteReader();
+				cmd.Parameters.AddWithValue("@EmployeeName", empName);
+
+				con.Open();
+				using var reader = cmd.ExecuteReader();
 
 				if (reader.Read())
 				{
-					// Create a helper method to reduce repetitive code
-					void SetTextBoxValue(string textBox, int columnIndex)
-					{
-						if (textBox != null && !reader.IsDBNull(columnIndex))
-						{
-							textBox = reader.GetString(columnIndex);
-						}
-					}
+					// Use GetOrdinal to map column names to indices once
+					int idxEmployeeID = reader.GetOrdinal("Employee ID");
+					int idxEmployeeName = reader.GetOrdinal("EMPLOYEE NAME");
+					int idxUserName = reader.GetOrdinal("USERNAME");
+					int idxUserAccess = reader.GetOrdinal("USER ACCESS");
+					int idxUserPosition = reader.GetOrdinal("POSITION");
+					int idxRDWebUsername = reader.GetOrdinal("RDWEB USERNAME");
+					int idxRDWebPassword = reader.GetOrdinal("RDWEB PASSWORD");
+					int idxLytecUsername = reader.GetOrdinal("LYTEC USERNAME");
+					int idxLytecPassword = reader.GetOrdinal("LYTEC PASSWORD");
+					int idxEmailAddress = reader.GetOrdinal("EMAIL ADDRESS");
+					int idxBroadvoiceNumber = reader.GetOrdinal("BROADVOICE NO.");
+					int idxDateOfBirth = reader.GetOrdinal("DATE OF BIRTH");
+					int idxDiscordUsername = reader.GetOrdinal("Discord Username");
+					int idxDiscordPassword = reader.GetOrdinal("Discord Password");
 
-					// Populate fields
-					SetTextBoxValue(txtIntID, 0);
-					SetTextBoxValue(txtName, 1);
-					SetTextBoxValue(txtUsername, 2);
-					SetTextBoxValue(cmbLevel, 3);
-					SetTextBoxValue(cmbRole, 4);
-					SetTextBoxValue(txtRDWebUsername, 5);
-					SetTextBoxValue(txtRDWebPassword, 6);
-					SetTextBoxValue(txtLytecUsername, 7);
-					SetTextBoxValue(txtLytecPassword, 8);
-					SetTextBoxValue(txtEmail, 9);
-					SetTextBoxValue(txtBroadvoice, 10);
-					SetTextBoxValue(txtDateOfBirth, 11);
-					SetTextBoxValue(dcUsername, 12);
-					SetTextBoxValue(dcPassword, 13);
+					// Assign values to parameters
+					txtIntID = reader.GetString(idxEmployeeID);
+					txtName = reader.GetString(idxEmployeeName);
+					txtUsername = reader.GetString(idxUserName);
+					cmbLevel = reader.GetString(idxUserAccess);
+					cmbRole = reader.GetString(idxUserPosition);
+					txtRDWebUsername = reader.GetString(idxRDWebUsername);
+					txtRDWebPassword = reader.GetString(idxRDWebPassword);
+					txtLytecUsername = reader.GetString(idxLytecUsername);
+					txtLytecPassword = reader.GetString(idxLytecPassword);
+					txtEmail = reader.GetString(idxEmailAddress);
+					txtBroadvoice = reader.GetString(idxBroadvoiceNumber);
+					txtDateOfBirth = reader.GetString(idxDateOfBirth);
+					dcUsername= reader.GetString(idxDiscordUsername);
+					dcPassword = reader.GetString(idxDiscordPassword);
 				}
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillUserProfile", empName, "User", txtIntID, ex);           //task.ExecutedbCollBackupCsv(empName);
+				// Handle exceptions appropriately
+				Console.WriteLine($"An error occurred: {ex.Message}");
 			}
 		}
 
+		//public void FillUserProfile(
+		//	string txtIntID,
+		//	string txtName,
+		//	string txtUsername,
+		//	string cmbLevel,
+		//	string cmbRole,
+		//	string txtRDWebUsername,
+		//	string txtRDWebPassword,
+		//	string txtLytecUsername,
+		//	string txtLytecPassword,
+		//	string txtEmail,
+		//	string txtBroadvoice,
+		//	string txtDateOfBirth,
+		//	string dcUsername,
+		//	string dcPassword, 
+		//	string empName)
+		//{
+		//	var query = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [USER ACCESS], [POSITION], [RDWEB USERNAME], [RDWEB PASSWORD], [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [Broadvoice No.], [DATE OF BIRTH], [Discord Username], [Discord Password] FROM [User Information] WHERE USERNAME='" + txtUsername + "'";
+		//	try
+		//	{
+		//		using var connection = new SqlConnection(_dbConnection);
+		//		using var command = new SqlCommand(query, connection);
+		//
+		//		connection.Open();
+		//		using var reader = command.ExecuteReader();
+		//
+		//		if (reader.Read())
+		//		{
+		//			// Create a helper method to reduce repetitive code
+		//			void SetTextBoxValue(string textBox, int columnIndex)
+		//			{
+		//				if (textBox != null && !reader.IsDBNull(columnIndex))
+		//				{
+		//					textBox = reader.GetString(columnIndex);
+		//				}
+		//			}
+		//
+		//			// Populate fields
+		//			SetTextBoxValue(txtIntID, 0);
+		//			SetTextBoxValue(txtName, 1);
+		//			SetTextBoxValue(txtUsername, 2);
+		//			SetTextBoxValue(cmbLevel, 3);
+		//			SetTextBoxValue(cmbRole, 4);
+		//			SetTextBoxValue(txtRDWebUsername, 5);
+		//			SetTextBoxValue(txtRDWebPassword, 6);
+		//			SetTextBoxValue(txtLytecUsername, 7);
+		//			SetTextBoxValue(txtLytecPassword, 8);
+		//			SetTextBoxValue(txtEmail, 9);
+		//			SetTextBoxValue(txtBroadvoice, 10);
+		//			SetTextBoxValue(txtDateOfBirth, 11);
+		//			SetTextBoxValue(dcUsername, 12);
+		//			SetTextBoxValue(dcPassword, 13);
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("FillUserProfile", empName, "User", txtIntID, ex);           //task.ExecutedbCollBackupCsv(empName);
+		//	}
+		//}
+		//
+
+
 		public void FillAdminUserProfile(
-			RadTextBox txtIDNumber,
-			RadTextBox EmpName,
-			RadTextBox RDWEbUsername,
-			RadTextBox RDWebPassword,
-			RadTextBox LytecUsername,
-			RadTextBox LytecPassword,
-			RadTextBox EmailAddress,
-			RadTextBox EmailPassword,
-			RadTextBox BVnumber,
-			RadTextBox BVUsername,
-			RadTextBox BvPassword,
-			RadTextBox PCName,
-			RadTextBox PCUsername,
-			RadTextBox PCPassword,
-			RadTextBoxControl Remarks,
-			RadTextBox DateOfBirth,
-			RadDropDownList cmbDirectReport,
-			RadDropDownList firstTimeLogin,
-			RadTextBox DCUsername,
-			RadTextBox DCPassword,
-			RadDropDownList cmbEmploymentStatus,
-			string empName,
-			RadTextBox empNoSelected)
+			string txtIDNumber,
+			string txtUsername,
+			string RDWebUsername,
+			string RDWebPassword,
+			string LytecUsername,
+			string LytecPassword,
+			string EmailAddress,
+			string EmailPassword,
+			string BVnumber,
+			string BVUsername,
+			string BVPassword,
+			string PCName,
+			string PCUsername,
+			string PCPassword,
+			string Remarks,
+			string DateOfBirth,
+			string cmbDirectReport,
+			string firstTimeLogin,
+			string DCUsername,
+			string DCPassword,
+			string cmbEmploymentStatus,
+			string empNoSelected,
+			string empName)
 		{
 			try
 			{
@@ -128,61 +206,138 @@ namespace PCMS_Lipa_General_Tool.Class
             WHERE 
                 [Employee ID] = @EmployeeID", con);
 
-				cmd.Parameters.AddWithValue("@EmployeeID", empNoSelected.Text);
+				cmd.Parameters.AddWithValue("@EmployeeID", txtIDNumber);
 
 				con.Open();
 				using var reader = cmd.ExecuteReader();
 
 				if (reader.Read())
 				{
-					// Use a helper method to populate the UI elements
-					void SetTextBoxValue(Control control, int columnIndex)
-					{
-						if (control != null && !reader.IsDBNull(columnIndex))
-						{
-							switch (control)
-							{
-								case RadTextBox textBox:
-									textBox.Text = reader.GetString(columnIndex);
-									break;
-								case RadDropDownList dropDownList:
-									dropDownList.Text = reader.GetString(columnIndex);
-									break;
-								case RadTextBoxControl textBoxControl:
-									textBoxControl.Text = reader.GetString(columnIndex);
-									break;
-							}
-						}
-					}
+					// Use GetOrdinal to map column names to indices once
+					int idxEmployeeID = reader.GetOrdinal("Employee ID");
+					int idxEmployeeName = reader.GetOrdinal("EMPLOYEE NAME");
+					int idxRDWebUsername = reader.GetOrdinal("RDWEB USERNAME");
+					int idxRDWebPassword = reader.GetOrdinal("RDWEB PASSWORD");
+					int idxLytecUsername = reader.GetOrdinal("LYTEC USERNAME");
+					int idxLytecPassword = reader.GetOrdinal("LYTEC PASSWORD");
+					int idxEmailAddress = reader.GetOrdinal("EMAIL ADDRESS");
+					int idxEmailPassword = reader.GetOrdinal("EMAIL PASSWORD");
+					int idxBroadvoiceNumber = reader.GetOrdinal("BROADVOICE NO.");
+					int idxBroadvoiceUsername = reader.GetOrdinal("Broadvoice Username");
+					int idxBroadvoicePassword = reader.GetOrdinal("Broadvoice Password");
+					int idxPCName = reader.GetOrdinal("PC Assigned");
+					int idxPCUsername = reader.GetOrdinal("PC USERNAME");
+					int idxPCPassword = reader.GetOrdinal("PC PASSWORD");
+					int idxRemarks = reader.GetOrdinal("REMARKS");
+					int idxDateOfBirth = reader.GetOrdinal("DATE OF BIRTH");
+					int idxEmploymentStatus = reader.GetOrdinal("Employment Status");
+					int idxFirstTimeLogin = reader.GetOrdinal("FIRST TIME LOGIN");
+					int idxDiscordUsername = reader.GetOrdinal("Discord Username");
+					int idxDiscordPassword = reader.GetOrdinal("Discord Password");
 
-					// Assign values to controls
-					SetTextBoxValue(txtIDNumber, 0);
-					SetTextBoxValue(EmpName, 1);
-					SetTextBoxValue(RDWEbUsername, 2);
-					SetTextBoxValue(RDWebPassword, 3);
-					SetTextBoxValue(LytecUsername, 4);
-					SetTextBoxValue(LytecPassword, 5);
-					SetTextBoxValue(EmailAddress, 6);
-					SetTextBoxValue(EmailPassword, 7);
-					SetTextBoxValue(BVnumber, 8);
-					SetTextBoxValue(BVUsername, 9);
-					SetTextBoxValue(BvPassword, 10);
-					SetTextBoxValue(PCName, 11);
-					SetTextBoxValue(PCUsername, 12);
-					SetTextBoxValue(PCPassword, 13);
-					SetTextBoxValue(cmbDirectReport, 14);
-					SetTextBoxValue(Remarks, 15);
-					SetTextBoxValue(DateOfBirth, 16);
-					SetTextBoxValue(cmbEmploymentStatus, 17);
-					SetTextBoxValue(firstTimeLogin, 18);
-					SetTextBoxValue(DCUsername, 19);
-					SetTextBoxValue(DCPassword, 20);
+					// Assign values to parameters
+					txtIDNumber = reader.GetString(idxEmployeeID);
+					empName = reader.GetString(idxEmployeeName);
+					RDWebUsername = reader.GetString(idxRDWebUsername);
+					RDWebPassword = reader.GetString(idxRDWebPassword);
+					LytecUsername = reader.GetString(idxLytecUsername);
+					LytecPassword = reader.GetString(idxLytecPassword);
+					EmailAddress = reader.GetString(idxEmailAddress);
+					EmailPassword = reader.GetString(idxEmailPassword);
+					BVnumber = reader.GetString(idxBroadvoiceNumber);
+					BVUsername = reader.GetString(idxBroadvoiceUsername);
+					BVPassword = reader.GetString(idxBroadvoicePassword);
+					PCName = reader.GetString(idxPCName);
+					PCUsername = reader.GetString(idxPCUsername);
+					PCPassword = reader.GetString(idxPCPassword);
+					Remarks = reader.GetString(idxRemarks);
+					DateOfBirth = reader.GetString(idxDateOfBirth);
+					cmbEmploymentStatus = reader.GetString(idxEmploymentStatus);
+					firstTimeLogin = reader.GetString(idxFirstTimeLogin);
+					DCUsername = reader.GetString(idxDiscordUsername);
+					DCPassword = reader.GetString(idxDiscordPassword);
 				}
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
+				task.LogError("FillAdminUserProfile", empName, "User", txtIDNumber, ex);
 			}
+
+			//try
+			//{
+			//	using var con = new SqlConnection(_dbConnection);
+			//	using var cmd = new SqlCommand(@"
+			//SELECT 
+			//    [Employee ID], [EMPLOYEE NAME], [RDWEB USERNAME], [RDWEB PASSWORD],
+			//    [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [EMAIL PASSWORD],
+			//    [BROADVOICE NO.], [Broadvoice Username], [Broadvoice Password],
+			//    [PC Assigned], [PC USERNAME], [PC PASSWORD], TEAM, REMARKS,
+			//    [DATE OF BIRTH], [Employment Status], [FIRST TIME LOGIN],
+			//    [Discord Username], [Discord Password]
+			//FROM 
+			//    [User Information]
+			//WHERE 
+			//    [Employee ID] = @EmployeeID", con);
+			//
+			//	cmd.Parameters.AddWithValue("@EmployeeID", empNoSelected.Text);
+			//
+			//	con.Open();
+			//	using var reader = cmd.ExecuteReader();
+			//
+			//	if (reader.Read())
+			//	{
+			//		// Use a helper method to populate the UI elements
+			//		void SetTextBoxValue(Control control, int columnIndex)
+			//		{
+			//			if (control != null && !reader.IsDBNull(columnIndex))
+			//			{
+			//				switch (control)
+			//				{
+			//					case RadTextBox textBox:
+			//						textBox.Text = reader.GetString(columnIndex);
+			//						break;
+			//					case RadDropDownList dropDownList:
+			//						dropDownList.Text = reader.GetString(columnIndex);
+			//						break;
+			//					case RadTextBoxControl textBoxControl:
+			//						textBoxControl.Text = reader.GetString(columnIndex);
+			//						break;
+			//				}
+			//			}
+			//		}
+			//
+			//		// Assign values to controls
+			//		SetTextBoxValue(txtIDNumber, 0);
+			//		SetTextBoxValue(EmpName, 1);
+			//		SetTextBoxValue(RDWEbUsername, 2);
+			//		SetTextBoxValue(RDWebPassword, 3);
+			//		SetTextBoxValue(LytecUsername, 4);
+			//		SetTextBoxValue(LytecPassword, 5);
+			//		SetTextBoxValue(EmailAddress, 6);
+			//		SetTextBoxValue(EmailPassword, 7);
+			//		SetTextBoxValue(BVnumber, 8);
+			//		SetTextBoxValue(BVUsername, 9);
+			//		SetTextBoxValue(BvPassword, 10);
+			//		SetTextBoxValue(PCName, 11);
+			//		SetTextBoxValue(PCUsername, 12);
+			//		SetTextBoxValue(PCPassword, 13);
+			//		SetTextBoxValue(cmbDirectReport, 14);
+			//		SetTextBoxValue(Remarks, 15);
+			//		SetTextBoxValue(DateOfBirth, 16);
+			//		SetTextBoxValue(cmbEmploymentStatus, 17);
+			//		SetTextBoxValue(firstTimeLogin, 18);
+			//		SetTextBoxValue(DCUsername, 19);
+			//		SetTextBoxValue(DCPassword, 20);
+			//	}
+			//}
+			//catch (Exception ex)
+			//{
+			//	task.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
+			//}
+			//catch (Exception ex)
+			//{
+			//	task.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
+			//}
 		}
 
 
@@ -237,43 +392,42 @@ namespace PCMS_Lipa_General_Tool.Class
 
 
 
-
-		public void FillUpEmpTxtBox(RadGridView dgproviderInfo, RadTextBox txtEmpID, RadTextBox txtEmpName, RadTextBox txtEmail, RadTextBox txtBroadvoice, RadDropDownList cmbDept, RadDropDownList cmbPosition, RadDropDownList txtOffice, RadDropDownList txtStatus, RadTextBoxControl txtRemarks, string empName)
-		{
-			using var con = new SqlConnection(_dbConnection);
-			try
-			{
-				con.Open();
-				using SqlCommand cmd = new("SELECT [EMPLOYEE ID], [EMPLOYEE NAME], [EMAIL ADDRESS], [BROADVOICE NO.], [DEPARTMENT], POSITION, OFFICE, STATUS, REMARKS FROM [User Information] WHERE STATUS = 'ACTIVE'", con);
-				cmd.ExecuteNonQuery();
-				if (dgproviderInfo.SelectedRows.Count > 0)
-				{
-					var row = dgproviderInfo.SelectedRows[0];
-					{
-						txtEmpID.Text = row.Cells[0].Value + string.Empty;
-						txtEmpName.Text = row.Cells[1].Value + string.Empty;
-						txtEmail.Text = row.Cells[2].Value + string.Empty;
-						txtBroadvoice.Text = row.Cells[3].Value + string.Empty;
-						cmbDept.Text = row.Cells[4].Value + string.Empty;
-						cmbPosition.Text = row.Cells[5].Value + string.Empty;
-						txtOffice.Text = row.Cells[6].Value + string.Empty;
-						txtStatus.Text = row.Cells[7].Value + string.Empty;
-						txtRemarks.Text = row.Cells[8].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("FillAdminUserProfile", empName, "User", null, ex);
-				//task.ExecutedbCollBackupCsv(empName);
-			}
-			finally
-			{
-				con.Close();
-			}
-
-		}
-
+		//public void FillUpEmpTxtBox(RadGridView dgproviderInfo, RadTextBox txtEmpID, RadTextBox txtEmpName, RadTextBox txtEmail, RadTextBox txtBroadvoice, RadDropDownList cmbDept, RadDropDownList cmbPosition, RadDropDownList txtOffice, RadDropDownList txtStatus, RadTextBoxControl txtRemarks, string empName)
+		//{
+		//	using var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		con.Open();
+		//		using SqlCommand cmd = new("SELECT [EMPLOYEE ID], [EMPLOYEE NAME], [EMAIL ADDRESS], [BROADVOICE NO.], [DEPARTMENT], POSITION, OFFICE, STATUS, REMARKS FROM [User Information] WHERE STATUS = 'ACTIVE'", con);
+		//		cmd.ExecuteNonQuery();
+		//		if (dgproviderInfo.SelectedRows.Count > 0)
+		//		{
+		//			var row = dgproviderInfo.SelectedRows[0];
+		//			{
+		//				txtEmpID.Text = row.Cells[0].Value + string.Empty;
+		//				txtEmpName.Text = row.Cells[1].Value + string.Empty;
+		//				txtEmail.Text = row.Cells[2].Value + string.Empty;
+		//				txtBroadvoice.Text = row.Cells[3].Value + string.Empty;
+		//				cmbDept.Text = row.Cells[4].Value + string.Empty;
+		//				cmbPosition.Text = row.Cells[5].Value + string.Empty;
+		//				txtOffice.Text = row.Cells[6].Value + string.Empty;
+		//				txtStatus.Text = row.Cells[7].Value + string.Empty;
+		//				txtRemarks.Text = row.Cells[8].Value + string.Empty;
+		//			}
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("FillAdminUserProfile", empName, "User", null, ex);
+		//		//task.ExecutedbCollBackupCsv(empName);
+		//	}
+		//	finally
+		//	{
+		//		con.Close();
+		//	}
+		//
+		//}
+		//
 		//public void FillUpUserTxtBox(
 		//	RadGridView dgUser,
 		//	RadTextBox txtIntID,
@@ -369,46 +523,46 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	
 		//}
 		//
-		public void FillUpUserTxtBox(RadGridView dgUser, RadTextBox txtIntID, RadTextBox txtName, RadTextBox txtUsername, RadDropDownList cmbUserAccess, RadDropDownList cmbPosition, RadDropDownList cmbUserDept, RadDropDownList cmbUserStatus, RadDropDownList cmbOffice, RadTextBox txtemail, RadTextBox bvNo, string empName)
-		{
-			//[Employee ID], [EMPLOYEE NAME], USERNAME, [GROUP], USERTYPE, ROLE, STATUS, OFFICE, [EMAIL ADDRESS]
-			var query = "SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS], [Broadvoice No.] FROM [User Information]";
-			using var con = new SqlConnection(_dbConnection);
-			try
-			{
-				con.Open();
-				using SqlCommand cmd = new(query, con);
-				cmd.ExecuteNonQuery();
-				var row = dgUser.SelectedRows[0];
-				if (dgUser.SelectedRows.Count > 0)
-				{
-					{
-						txtIntID.Text = row.Cells[0].Value + string.Empty;
-						txtName.Text = row.Cells[1].Value + string.Empty;
-						txtUsername.Text = row.Cells[2].Value + string.Empty;
-						cmbUserDept.Text = row.Cells[3].Value + string.Empty;
-						cmbUserAccess.Text = row.Cells[4].Value + string.Empty;
-						cmbPosition.Text = row.Cells[5].Value + string.Empty;
-						cmbUserStatus.Text = row.Cells[6].Value + string.Empty;
-						cmbOffice.Text = row.Cells[7].Value + string.Empty;
-						bvNo.Text = row.Cells[9].Value + string.Empty;
-						txtemail.Text = row.Cells[8].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				//MessageBox.Show("Error connecting Database \n \n" + ex + "\n \n" + "Inform the Programmer/Author/Developer \n Erwin Alcantara (Skype: aerwin0629; Email: Erwin@pcmsbilling.net", Global.ProgName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-				task.LogError("FillUpUserTxtBox", empName, "User", null, ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-
-		}
-
-		// Method to clear text boxes and combo boxes
+		//public void FillUpUserTxtBox(RadGridView dgUser, RadTextBox txtIntID, RadTextBox txtName, RadTextBox txtUsername, RadDropDownList cmbUserAccess, RadDropDownList cmbPosition, RadDropDownList cmbUserDept, RadDropDownList cmbUserStatus, RadDropDownList cmbOffice, RadTextBox txtemail, RadTextBox bvNo, string empName)
+		//{
+		//	//[Employee ID], [EMPLOYEE NAME], USERNAME, [GROUP], USERTYPE, ROLE, STATUS, OFFICE, [EMAIL ADDRESS]
+		//	var query = "SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS], [Broadvoice No.] FROM [User Information]";
+		//	using var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		con.Open();
+		//		using SqlCommand cmd = new(query, con);
+		//		cmd.ExecuteNonQuery();
+		//		var row = dgUser.SelectedRows[0];
+		//		if (dgUser.SelectedRows.Count > 0)
+		//		{
+		//			{
+		//				txtIntID.Text = row.Cells[0].Value + string.Empty;
+		//				txtName.Text = row.Cells[1].Value + string.Empty;
+		//				txtUsername.Text = row.Cells[2].Value + string.Empty;
+		//				cmbUserDept.Text = row.Cells[3].Value + string.Empty;
+		//				cmbUserAccess.Text = row.Cells[4].Value + string.Empty;
+		//				cmbPosition.Text = row.Cells[5].Value + string.Empty;
+		//				cmbUserStatus.Text = row.Cells[6].Value + string.Empty;
+		//				cmbOffice.Text = row.Cells[7].Value + string.Empty;
+		//				bvNo.Text = row.Cells[9].Value + string.Empty;
+		//				txtemail.Text = row.Cells[8].Value + string.Empty;
+		//			}
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		//MessageBox.Show("Error connecting Database \n \n" + ex + "\n \n" + "Inform the Programmer/Author/Developer \n Erwin Alcantara (Skype: aerwin0629; Email: Erwin@pcmsbilling.net", Global.ProgName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+		//		task.LogError("FillUpUserTxtBox", empName, "User", null, ex);
+		//	}
+		//	finally
+		//	{
+		//		con.Close();
+		//	}
+		//
+		//}
+		//
+		//// Method to clear text boxes and combo boxes
 	
 
 		
@@ -1519,6 +1673,91 @@ Employment Status: {employmentStatus}";
 			}
 		}
 
+		public DataTable GetAdminSearch(
+			string itemToSearch,
+			string statusColumn,
+			out string searchCount, string empName)
+		{
+			DataTable resultTable = new();
+
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+
+				// Define the base query
+				string query = $@"
+SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT],
+[USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS]
+FROM [User Information]
+WHERE USERNAME LIKE @itemToSearch";
+
+				// Add the STATUS filter only if statusColumn is not "All"
+				if (statusColumn != "All")
+				{
+					query += " AND STATUS LIKE @statusSearch";
+				}
+
+				using SqlCommand cmd = new(query, conn);
+				cmd.Parameters.AddWithValue("@itemToSearch", $"%{itemToSearch}%");
+
+				// Add the @statusSearch parameter only if statusColumn is not "All"
+				if (statusColumn != "All")
+				{
+					cmd.Parameters.AddWithValue("@statusSearch", $"%{statusColumn}%");
+				}
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				// Log the error and provide feedback
+				task.LogError("GetAdminSearch", empName, "CommonTask", "N/A", ex);
+				searchCount = "Error occurred while fetching records.";
+			}
+
+			return resultTable;
+		}
+
+		public DataTable SearchData(
+	string searchTerm,
+	out string searchCount,
+	string empName)
+		{
+			DataTable resultTable = new();
+
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+				string query = $@"
+SELECT *
+FROM [User Information]
+WHERE [Employee Name] LIKE @searchTerm
+OR [Broadvoice No.] LIKE @searchTerm
+OR [Remarks] LIKE @searchTerm";
+
+				using SqlCommand cmd = new(query, conn);
+				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				searchCount = "An error occurred while fetching records.";
+			}
+
+			return resultTable;
+		}
 
 		//public void MoreEmployeeDatabase(RadTextBox txtempID, RadTextBox txtempName, RadTextBox txtRDWebName, RadTextBox txtRDWebPassword, RadTextBox txtLytecUsername, RadTextBox txtLytecPassword, RadTextBox txtWorkEmail, RadTextBox txtEmailPassword, RadTextBox DateOfBirth, RadTextBox broadvoiceNo, RadTextBox broadvoiceUsername, RadTextBox broadvoicePassword, RadTextBox pcName, RadTextBox pcUN, RadTextBox pcPW, RadDropDownList team, RadTextBoxControl Remarks, RadDropDownList cmbFirstLogin, RadTextBox dcUsernaame, RadTextBox dcPassword, string empName, RadDropDownList cmbEmploymentStat)
 		//{

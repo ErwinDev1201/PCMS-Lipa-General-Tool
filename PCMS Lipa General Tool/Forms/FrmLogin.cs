@@ -48,28 +48,23 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void UserLogin()
 		{
-
-			// Initialize variables for login
 			string username = txtUsername.Text;
 			string password = txtPassword.Text;
 			bool isLoginPanelEnabled = true;
-			string alertMessage = string.Empty;
+			string alertMessage = string.Empty; // Initialize here to avoid the error
 
-			// Create an instance of the Login class
 			var loginManager = new Login();
+			loginManager.UserLogin(ref username, ref password, ref isLoginPanelEnabled, ref alertMessage);
 
-			// Call the UserLogin method
-			loginManager.UserLogin(ref username, ref password, ref isLoginPanelEnabled, ref alertMessage, "CurrentEmployeeName");
-
-			// Update the front-end UI based on the results
+			// Update the UI
 			loginPanel.Enabled = isLoginPanelEnabled;
 			lblalert.Text = alertMessage;
 
-			// If no alert message, proceed with hiding the login form
 			if (string.IsNullOrEmpty(alertMessage))
 			{
-				Hide();
+				Hide(); // Close the login form if successful
 			}
+
 		}
 
 		//private void btnLogin_Click(object sender, EventArgs e)
@@ -103,7 +98,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 					}
 					else
 					{
-						task.CheckIfExistinDB("[User Information]", "[Username]", txtUsername, "Login", "Login", lblalert);
+						string resultMessage = task.CheckIfExistinDB(txtUsername.Text, "Login", "Login");
+						if (!string.IsNullOrEmpty(resultMessage))
+						{
+							lblalert.Text = resultMessage;
+							lblalert.Visible = true;
+						}
+						else
+						{
+							lblalert.Visible = false;
+						}
+						//task.CheckIfExistinDB("[User Information]", "[Username]", txtUsername, "Login", "Login", lblalert);
+						
 					}
 				}
 			}
@@ -120,16 +126,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtPassword_TextChanged(object sender, EventArgs e)
 		{
-			if (txtPassword.Text.Length > 0 && txtUsername.Text.Length > 0)
-			{
-				btnLogin.Enabled = true;
-				lblalert.Text = "";
-			}
-			else
-			{
-				btnLogin.Enabled = false;
-				//lblalert.Text = "";
-			}
+			bool isInputValid = txtPassword.Text.Length > 0 && txtUsername.Text.Length > 0;
+			btnLogin.Enabled = isInputValid;
+			lblalert.Text = isInputValid ? "" : lblalert.Text;
+
+			//if (txtPassword.Text.Length > 0 && txtUsername.Text.Length > 0)
+			//{
+			//	btnLogin.Enabled = true;
+			//	lblalert.Text = "";
+			//}
+			//else
+			//{
+			//	btnLogin.Enabled = false;
+			//	//lblalert.Text = "";
+			//}
 		}
 
 		private void frmLogin_Load(object sender, EventArgs e)
@@ -166,11 +176,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 			string username = txtUsername.Text;
 			string password = txtPassword.Text;
 			bool isLoginPanelEnabled = true;
-			string alertMessage;
 
 			// Reset the login form using the refactored Login class
 			var loginManager = new Login();
-			loginManager.DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out alertMessage);
+			loginManager.DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out string alertMessage);
 
 			// Update the UI after resetting
 			txtUsername.Text = username;
@@ -196,8 +205,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtPassword_KeyDown(object sender, KeyEventArgs e)
 		{
-			UserLogin();
+			if (e.KeyCode == Keys.Enter)
+			{
+				UserLogin();
+			}
+			
 		}
-
 	}
 }

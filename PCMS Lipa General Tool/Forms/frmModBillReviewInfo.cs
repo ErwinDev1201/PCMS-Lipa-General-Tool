@@ -60,7 +60,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "BillReviewSeq", txtIntID, null, "BR-");
+			task.GetSequenceNo("textbox", "BillReviewSeq", txtIntID.Text, null, "BR-");
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)

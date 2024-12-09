@@ -100,12 +100,47 @@ namespace PCMS_Lipa_General_Tool.Class
 			catch (Exception ex)
 			{
 				task.LogError($"EmailFormatDBRequest - {request}", empName, "EmailFormatDB", formatID, ex);
-				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
 			finally
 			{
 				conn.Close();
 			}
+		}
+
+		public DataTable SearchData(
+	string searchTerm,
+	out string searchCount,
+	string empName)
+		{
+			DataTable resultTable = new();
+
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+				string query = $@"
+SELECT *
+FROM [Insurance Email Format]
+WHERE [Insurance] LIKE @searchTerm
+OR [Email Format] LIKE @searchTerm";
+
+				using SqlCommand cmd = new(query, conn);
+				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				task.LogError("SearchData", empName, "BillReviews", null, ex);
+				searchCount = "An error occurred while fetching records.";
+			}
+
+			return resultTable;
 		}
 
 		///public void EmailFormatDBRequest(string request, RadTextBox formatID, RadTextBox insuranceName, RadTextBox emailFormat, RadTextBoxControl remarks, string empName)

@@ -31,7 +31,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void frmRTFEditor_Load(object sender, EventArgs e)
 		{
 			SetErrorMode(ErrorModes.SEM_FAILCRITICALERRORS); // set on startup
-			editor ed = new editor();
+			editor ed = new();
 			ed.AllowDiscAccess = true;
 			ed.WindowTitle = "Quick Edit";
 			ed.StartingFont = new Font("Courier New", 12.0f, FontStyle.Regular);

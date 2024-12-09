@@ -29,7 +29,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "InsuranceInfoSeq", txtIntID, null, "INS-");
+			task.GetSequenceNo("textbox", "InsuranceInfoSeq", txtIntID.Text, null, "INS-");
 		}
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)

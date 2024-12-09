@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls;
 
@@ -117,7 +118,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void GetProvID()
 		{
-			task.GetSequenceNo("textbox", "ProvInfoSeq", txtNoProv, null, "PROV-");
+			task.GetSequenceNo("textbox", "ProvInfoSeq", txtNoProv.Text, null, "PROV-");
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)
@@ -131,7 +132,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (btnUpdateSave.Text == "Save")
 			{
-				provider.ProviderInfoDBRequest("Create", txtNoProv, txtProviderName, txtNPINo, txtPTANo, txtTaxID, txtPalPTANo, txtPhysicalAdd, txtBillingAdd, txtRemarks, EmpName);
+				provider.ProviderInfoDBRequest(
+					"Create",
+					txtNoProv.Text,
+					txtProviderName.Text,
+					txtNPINo.Text,
+					txtPTANo.Text,
+					txtTaxID.Text,
+					txtPalPTANo.Text,
+					txtPhysicalAdd.Text,
+					txtBillingAdd.Text,
+					txtRemarks.Text,
+					EmpName);
 				ClearProvInfo();
 				ShowProviderInfo();
 				ProvInDefault();
@@ -141,7 +153,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					provider.ProviderInfoDBRequest("Update", txtNoProv, txtProviderName, txtNPINo, txtPTANo, txtTaxID, txtPalPTANo, txtPhysicalAdd, txtBillingAdd, txtRemarks, EmpName);
+					provider.ProviderInfoDBRequest(
+					"Update",
+					txtNoProv.Text,
+					txtProviderName.Text,
+					txtNPINo.Text,
+					txtPTANo.Text,
+					txtTaxID.Text,
+					txtPalPTANo.Text,
+					txtPhysicalAdd.Text,
+					txtBillingAdd.Text,
+					txtRemarks.Text,
+					EmpName);
 					ClearProvInfo();
 					ProvInDefault();
 					ShowProviderInfo();
@@ -163,7 +186,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				provider.ProviderInfoDBRequest("Delete", txtNoProv, txtProviderName, txtNPINo, txtPTANo, txtTaxID, txtPalPTANo, txtPhysicalAdd, txtBillingAdd, txtRemarks, EmpName);
+				provider.ProviderInfoDBRequest(
+					"Delete",
+					txtNoProv.Text,
+					txtProviderName.Text,
+					txtNPINo.Text,
+					txtPTANo.Text,
+					txtTaxID.Text,
+					txtPalPTANo.Text,
+					txtPhysicalAdd.Text,
+					txtBillingAdd.Text,
+					txtRemarks.Text,
+					EmpName);
 				ProvInDefault();
 				ClearProvInfo();
 				ShowProviderInfo();
@@ -268,7 +302,22 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
-			task.SearchTwoColumnOneFieldText(dgProviderInfo, "[Provider Information]", "[Provider Name]", "REMARKS", txtSearch, lblSearchCount, EmpName);
+
+			try
+			{
+				DataTable resultTable = provider.SearchData(
+				txtSearch.Text,
+				out string searchcount, EmpName);
+
+				dgProviderInfo.DataSource = resultTable;
+				lblSearchCount.Text = searchcount;
+
+			}
+			catch (Exception ex)
+			{
+				task.LogError("txtSearch_TextChanged", EmpName, "frmProvider", null, ex);
+			}
+			//task.SearchTwoColumnOneFieldText(dgProviderInfo, "[Provider Information]", "[Provider Name]", "REMARKS", txtSearch, lblSearchCount, EmpName);
 		}
 
 		//private void txtSearch_TextChanged(object sender, EventArgs e)

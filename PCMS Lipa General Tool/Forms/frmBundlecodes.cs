@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 
@@ -112,7 +113,21 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
-			task.SearchTwoColumnOneFieldText(dgBundleCode, "[Bundle Codes]", "[CPT Code]", "[Bundle Codes]", txtSearch, lblbundeCode, EmpName);
+			try
+			{
+				DataTable resultTable = bundle.SearchData(
+				txtSearch.Text,
+				out string searchcount, EmpName);
+
+				dgBundleCode.DataSource = resultTable;
+				lblbundeCode.Text = searchcount;
+
+			}
+			catch (Exception ex)
+			{
+				task.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
+			}
+			//task.SearchTwoColumnOneFieldText(dgBundleCode, "[Bundle Codes]", "[CPT Code]", "[Bundle Codes]", txtSearch, lblbundeCode, EmpName);
 		}
 	}
 }

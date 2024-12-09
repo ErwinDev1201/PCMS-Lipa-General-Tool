@@ -271,7 +271,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBListID()
 		{
-			task.GetSequenceNo("label", "LeaveSeq", null, lblLeaveID, "LV-");
+			task.GetSequenceNo("label", "LeaveSeq", null, lblLeaveID.Text, "LV-");
 		}
 
 		private void frmModLeave_Load(object sender, EventArgs e)

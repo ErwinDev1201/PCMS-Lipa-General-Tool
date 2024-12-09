@@ -40,6 +40,41 @@ namespace PCMS_Lipa_General_Tool.Class
 			return data;
 		}
 
+		public DataTable SearchData(
+	string searchTerm,
+	out string searchCount,
+	string empName)
+		{
+			DataTable resultTable = new();
+
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+				string query = $@"
+SELECT *
+FROM [Bill Review Directory]
+WHERE [Insurance Name] LIKE @searchTerm
+OR [Remarks] LIKE @searchTerm";
+
+				using SqlCommand cmd = new(query, conn);
+				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				task.LogError("SearchData", empName, "BillReviews", null, ex);
+				searchCount = "An error occurred while fetching records.";
+			}
+
+			return resultTable;
+		}
+
 
 		//public void FillBillReview(RadGridView dgBillReview, RadTextBox txtIntID, RadTextBox txtInsuranceName, RadTextBox txtPhoneNo, RadTextBox txtFaxNo, RadTextBox txturPhoneNo, RadTextBox txturFaxNo, RadTextBox txtbrPhoneNo, RadTextBox txtbrFaxNo, RadTextBox txtOnlineEmail, RadTextBoxControl txtRemarks, string empName)
 		//{
@@ -80,35 +115,35 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//}
 
-		public void FillEmailInfo(RadGridView dgEmailInfo, RadTextBox txtIntID, RadTextBox txtInsuranceName, RadTextBox txtEmailFormat, RadTextBoxControl txtRemarks, string empName)
-		{
-			if (dgEmailInfo.SelectedRows.Count == 0)
-			{
-				RadMessageBox.Show("No row selected.", "Error", MessageBoxButtons.OK, RadMessageIcon.Info);
-				return;
-			}
-
-			var dgRow = dgEmailInfo.SelectedRows[0];
-
-			try
-			{
-				using SqlConnection con = new(_dbConnection);
-				using SqlCommand cmd = new("SELECT * FROM [Insurance Email Format]", con);
-				con.Open();
-
-				// Populate TextBoxes with selected row data
-				txtIntID.Text = dgRow.Cells[0].Value?.ToString() ?? string.Empty;
-				txtInsuranceName.Text = dgRow.Cells[1].Value?.ToString() ?? string.Empty;
-				txtEmailFormat.Text = dgRow.Cells[2].Value?.ToString() ?? string.Empty;
-				txtRemarks.Text = dgRow.Cells[3].Value?.ToString() ?? string.Empty;
-			}
-			catch (Exception ex)
-			{
-				task.LogError($"FillEmailInfo", empName, "BillReview", "N/A", ex);
-
-			}
-		}
-
+		//public void FillEmailInfo(RadGridView dgEmailInfo, RadTextBox txtIntID, RadTextBox txtInsuranceName, RadTextBox txtEmailFormat, RadTextBoxControl txtRemarks, string empName)
+		//{
+		//	if (dgEmailInfo.SelectedRows.Count == 0)
+		//	{
+		//		RadMessageBox.Show("No row selected.", "Error", MessageBoxButtons.OK, RadMessageIcon.Info);
+		//		return;
+		//	}
+		//
+		//	var dgRow = dgEmailInfo.SelectedRows[0];
+		//
+		//	try
+		//	{
+		//		using SqlConnection con = new(_dbConnection);
+		//		using SqlCommand cmd = new("SELECT * FROM [Insurance Email Format]", con);
+		//		con.Open();
+		//
+		//		// Populate TextBoxes with selected row data
+		//		txtIntID.Text = dgRow.Cells[0].Value?.ToString() ?? string.Empty;
+		//		txtInsuranceName.Text = dgRow.Cells[1].Value?.ToString() ?? string.Empty;
+		//		txtEmailFormat.Text = dgRow.Cells[2].Value?.ToString() ?? string.Empty;
+		//		txtRemarks.Text = dgRow.Cells[3].Value?.ToString() ?? string.Empty;
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError($"FillEmailInfo", empName, "BillReview", "N/A", ex);
+		//
+		//	}
+		//}
+		//
 		//public void FillEmailInfo(RadGridView dgEmailInfo, RadTextBox txtIntID, RadTextBox txtInsuranceName, RadTextBox txtEmailFormat, RadTextBoxControl txtRemarks, string empName)
 		//{
 		//	using (SqlConnection con = new SqlConnection(_dbConnection))
@@ -206,7 +241,8 @@ namespace PCMS_Lipa_General_Tool.Class
 			catch (Exception ex)
 			{
 				task.LogError("BillReviewDBRequest", empName, "BillReview", reviewerID, ex);
-				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
 			{

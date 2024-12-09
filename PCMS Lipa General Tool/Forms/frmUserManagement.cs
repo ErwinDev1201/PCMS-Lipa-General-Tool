@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
@@ -90,6 +91,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnNew.Visible = true;
 			btnNew.Enabled = true;
 			txtSearch.Clear();
+			lblResult.Visible = false;
 			cmbUserStatus.Enabled = false;
 			cmbEmployeeStat.Text = "Active";
 			cmbUserAccess.Items.Add("Administrator");
@@ -186,9 +188,35 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void PullDataFromTabletoTextBox()
 		{
-			DoubleClickEnable();
-			btnResetPassword.Text = "Reset Password";
-			user.FillUpUserTxtBox(dgEmployeeInfo, txtIntID, txtEmployeeName, txtUsername, cmbUserAccess, cmbPosition, cmbUserDept, cmbUserStatus, cmbOffice, txtWorkEmail, txtBVNo, empName);
+
+			try
+			{
+				if (dgEmployeeInfo.SelectedRows.Count > 0)
+				{
+					txtIntID.Text = dgEmployeeInfo.SelectedRows[0].Cells["Employee ID"].Value + string.Empty;
+					txtEmployeeName.Text = dgEmployeeInfo.SelectedRows[0].Cells["Employee Name"].Value + string.Empty;
+					txtUsername.Text = dgEmployeeInfo.SelectedRows[0].Cells["Username"].Value + string.Empty;
+					cmbUserAccess.Text = dgEmployeeInfo.SelectedRows[0].Cells["User Access"].Value + string.Empty;
+					cmbPosition.Text = dgEmployeeInfo.SelectedRows[0].Cells["Position"].Value + string.Empty;
+					cmbUserDept.Text = dgEmployeeInfo.SelectedRows[0].Cells["Department"].Value + string.Empty;
+					cmbUserStatus.Text = dgEmployeeInfo.SelectedRows[0].Cells["Status"].Value + string.Empty;
+					cmbOffice.Text = dgEmployeeInfo.SelectedRows[0].Cells["Office"].Value + string.Empty;
+					txtWorkEmail.Text = dgEmployeeInfo.SelectedRows[0].Cells["Email Address"].Value + string.Empty;
+					txtBVNo.Text = dgEmployeeInfo.SelectedRows[0].Cells["Broadvoice No."].Value + string.Empty;
+				}
+				DoubleClickEnable();
+				btnResetPassword.Text = "Reset Password";
+			}
+			catch (Exception ex)
+			{
+
+				task.LogError($"PullDataFromTabletoTextBox", empName, "frmUserManagement", txtIntID.Text, ex);
+				RadMessageBox.Show($@"
+Oops!
+We're having a little trouble retrieving the information right now. Please try again later, or feel free to reach out to the Software Developer if you need help.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+			}
+
+			//user.FillUpUserTxtBox(dgEmployeeInfo, txtIntID, txtEmployeeName, txtUsername, cmbUserAccess, cmbPosition, cmbUserDept, cmbUserStatus, cmbOffice, txtWorkEmail, txtBVNo, empName);
 		}
 
 		private void btnMoreInfo_Click(object sender, EventArgs e)
@@ -252,7 +280,30 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 			if (request == "Create")
 			{
-				user.FillAdminUserProfile(moreEmpInfo.txtEmpID, moreEmpInfo.txtEmpName, moreEmpInfo.txtRDWebUsername, moreEmpInfo.txtRDWebPassword, moreEmpInfo.txtLytecUsername, moreEmpInfo.txtLytecPassword, moreEmpInfo.txtWorkEmail, moreEmpInfo.txtWorkEmailPass, moreEmpInfo.txtBVNo, moreEmpInfo.txtBVUsername, moreEmpInfo.txtBVPassword, moreEmpInfo.txtPCName, moreEmpInfo.txtPCUsername, moreEmpInfo.txtPCPassword, moreEmpInfo.txtRemarks, moreEmpInfo.txtDateofBirth, moreEmpInfo.cmbManagement, moreEmpInfo.cmbFirstTime, moreEmpInfo.txtDCUsernaem, moreEmpInfo.txtDCPassword, moreEmpInfo.cmbEmploymentStatus, empName, txtIntID);
+				user.FillAdminUserProfile
+					(moreEmpInfo.txtEmpID.Text,
+					moreEmpInfo.txtEmpName.Text,
+					moreEmpInfo.txtRDWebUsername.Text,
+					moreEmpInfo.txtRDWebPassword.Text,
+					moreEmpInfo.txtLytecUsername.Text,
+					moreEmpInfo.txtLytecPassword.Text,
+					moreEmpInfo.txtWorkEmail.Text,
+					moreEmpInfo.txtWorkEmailPass.Text,
+					moreEmpInfo.txtBVNo.Text,
+					moreEmpInfo.txtBVUsername.Text,
+					moreEmpInfo.txtBVPassword.Text,
+					moreEmpInfo.txtPCName.Text,
+					moreEmpInfo.txtPCUsername.Text,
+					moreEmpInfo.txtPCPassword.Text,
+					moreEmpInfo.txtRemarks.Text,
+					moreEmpInfo.txtDateofBirth.Text,
+					moreEmpInfo.cmbFirstTime.Text,
+					moreEmpInfo.cmbManagement.Text,
+					moreEmpInfo.cmbFirstTime.Text,
+					moreEmpInfo.txtDCUsernaem.Text,
+					moreEmpInfo.txtDCPassword.Text,
+					moreEmpInfo.cmbEmploymentStatus.Text,
+					empName);
 				moreEmpInfo.Text = "View and Update Employee Detailed Information";
 				moreEmpInfo.txtRDWebUsername.Focus();
 				moreEmpInfo.EmpName = empName;
@@ -261,7 +312,30 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			else
 			{
-				user.FillAdminUserProfile(moreEmpInfo.txtEmpID, moreEmpInfo.txtEmpName, moreEmpInfo.txtRDWebUsername, moreEmpInfo.txtRDWebPassword, moreEmpInfo.txtLytecUsername, moreEmpInfo.txtLytecPassword, moreEmpInfo.txtWorkEmail, moreEmpInfo.txtWorkEmailPass, moreEmpInfo.txtBVNo, moreEmpInfo.txtBVUsername, moreEmpInfo.txtBVPassword, moreEmpInfo.txtPCName, moreEmpInfo.txtPCUsername, moreEmpInfo.txtPCPassword, moreEmpInfo.txtRemarks, moreEmpInfo.txtDateofBirth, moreEmpInfo.cmbManagement, moreEmpInfo.cmbFirstTime, moreEmpInfo.txtDCUsernaem, moreEmpInfo.txtDCPassword, moreEmpInfo.cmbEmploymentStatus, empName, txtIntID);
+				user.FillAdminUserProfile
+					(moreEmpInfo.txtEmpID.Text,
+					moreEmpInfo.txtEmpName.Text,
+					moreEmpInfo.txtRDWebUsername.Text,
+					moreEmpInfo.txtRDWebPassword.Text,
+					moreEmpInfo.txtLytecUsername.Text,
+					moreEmpInfo.txtLytecPassword.Text,
+					moreEmpInfo.txtWorkEmail.Text,
+					moreEmpInfo.txtWorkEmailPass.Text,
+					moreEmpInfo.txtBVNo.Text,
+					moreEmpInfo.txtBVUsername.Text,
+					moreEmpInfo.txtBVPassword.Text,
+					moreEmpInfo.txtPCName.Text,
+					moreEmpInfo.txtPCUsername.Text,
+					moreEmpInfo.txtPCPassword.Text,
+					moreEmpInfo.txtRemarks.Text,
+					moreEmpInfo.txtDateofBirth.Text,
+					moreEmpInfo.cmbFirstTime.Text,
+					moreEmpInfo.cmbManagement.Text,
+					moreEmpInfo.cmbFirstTime.Text,
+					moreEmpInfo.txtDCUsernaem.Text,
+					moreEmpInfo.txtDCPassword.Text,
+					moreEmpInfo.cmbEmploymentStatus.Text,
+					empName);
 				if (accessLevel == "Management")
 				{
 					moreEmpInfo.btnUpdate.Visible = false;
@@ -293,7 +367,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "UserInfoSeq", txtIntID, null, "PCMS-0");
+			task.GetSequenceNo("textbox", "UserInfoSeq", txtIntID.Text, null, "PCMS-0");
 		}
 
 		private void btnRemove_Click(object sender, EventArgs e)
@@ -439,7 +513,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 					}
 					else
 					{
-						task.CheckIfExistinDB("[User Information]", "[Username]", txtUsername, "UserMgmt", "Create", null);
+						string resultMessage = task.CheckIfExistinDB(txtUsername.Text, "UserMgmt", "Create");
+						if (!string.IsNullOrEmpty(resultMessage))
+						{
+							lblResult.Text = resultMessage;
+							lblResult.Visible = true;
+						}
+						else
+						{
+							lblResult.Visible = false;
+						}
+
 					}
 				}
 			}
@@ -456,35 +540,63 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
 
-			if (cmbEmployeeStat.Text == "Both")
+			LoadSearchandFilter();
+			//if (cmbEmployeeStat.Text == "Both")
+			//{
+			//	//var query = $"SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS] FROM [User Information] WHERE [EMPLOYEE NAME] LIKE '%{txtSearch.Text}%'";
+			//	//mainProcess.SearchDatagrid(dgEmployeeInfo, query);
+			//	task.SearchTwoColumnOneFieldText(dgEmployeeInfo, "[User Information]", "[Employee Name]", "[Broadvoice No.]", txtSearch, lblSearchCount, empName);
+			//}
+			//else
+			//{
+			//	//var query = $"SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS] FROM [User Information] WHERE [EMPLOYEE NAME] LIKE '%{txtSearch.Text}%' AND STATUS = '{cmbEmployeeStat.Text}'";
+			//	//mainProcess.SearchDatagrid(dgEmployeeInfo, query);
+			//	task.EmpSearchTwoColumnTwoFieldCombo(dgEmployeeInfo, "[User Information]", "[Employee Name]", "[Status]", txtSearch, cmbEmployeeStat, lblSearchCount, empName);
+			//}
+		}
+
+		private void LoadSearchandFilter()
+		{
+			try
 			{
-				//var query = $"SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS] FROM [User Information] WHERE [EMPLOYEE NAME] LIKE '%{txtSearch.Text}%'";
-				//mainProcess.SearchDatagrid(dgEmployeeInfo, query);
-				task.SearchTwoColumnOneFieldText(dgEmployeeInfo, "[User Information]", "[Employee Name]", "[Broadvoice No.]", txtSearch, lblSearchCount, empName);
+				// check what the dropdown is firing
+				Console.WriteLine($"Selected status: {cmbEmployeeStat.Text}");
+				// Input values for the search
+				// Call the back-end method to perform the search
+				DataTable resultTable = task.GetSearch(
+					txtSearch.Text,
+					cmbEmployeeStat.Text,
+					out string searchCountMessage);
+
+				// Bind the result to the RadGridView
+				dgEmployeeInfo.DataSource = resultTable;
+
+				// Display the search count in a label or message box
+				lblSearchCount.Text = searchCountMessage; // Ensure lblSearchCount is a valid label in your form
 			}
-			else
+			catch (Exception ex)
 			{
-				//var query = $"SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS] FROM [User Information] WHERE [EMPLOYEE NAME] LIKE '%{txtSearch.Text}%' AND STATUS = '{cmbEmployeeStat.Text}'";
-				//mainProcess.SearchDatagrid(dgEmployeeInfo, query);
-				task.EmpSearchTwoColumnTwoFieldCombo(dgEmployeeInfo, "[User Information]", "[Employee Name]", "[Status]", txtSearch, cmbEmployeeStat, lblSearchCount, empName);
+				task.LogError("LoadSearchFilter", empName, "frmUserManagement", null, ex);
 			}
 		}
 
 		private void cmbEmployeeStat_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
 		{
-			if (cmbEmployeeStat.Text == "Both")
-			{
-				//var bothquery = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS] FROM [User Information]";
-				//mainProcess.SearchDatagrid(dgEmployeeInfo, bothquery);
-				task.SearchEmpTwoColumnOneFieldText(dgEmployeeInfo, "[User Information]", "[Employee Name]", "[Employee Name]", txtSearch, lblSearchCount, empName);
-			}
-			else
-			{
-				//var query = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS] FROM [User Information] WHERE STATUS = '" + cmbEmployeeStat.Text + "'";
-				//mainProcess.SearchDatagrid(dgEmployeeInfo, query);
-				task.SearchEmpTwoColumnTwoFieldText(dgEmployeeInfo, "[User Information]", "[Employee Name]", "[Status]", txtSearch, cmbEmployeeStat, lblSearchCount, empName);
-			}
+			LoadSearchandFilter();
 			
+			//if (cmbEmployeeStat.Text == "All")
+			//{
+			//	//var bothquery = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS] FROM [User Information]";
+			//	//mainProcess.SearchDatagrid(dgEmployeeInfo, bothquery);
+			//	//task.SearchEmpTwoColumnOneFieldText(dgEmployeeInfo, "[User Information]", "[Employee Name]", "[Employee Name]", txtSearch, lblSearchCount, empName);
+			//}
+			//else
+			//{
+			//	//var query = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS] FROM [User Information] WHERE STATUS = '" + cmbEmployeeStat.Text + "'";
+			//	//mainProcess.SearchDatagrid(dgEmployeeInfo, query);
+			//	task.SearchEmpTwoColumnTwoFieldText(dgEmployeeInfo, "[User Information]", "[Employee Name]", "[Status]", txtSearch, cmbEmployeeStat, lblSearchCount, empName);
+			//}
+
 		}
 
 		private void cmbUserAccess_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)

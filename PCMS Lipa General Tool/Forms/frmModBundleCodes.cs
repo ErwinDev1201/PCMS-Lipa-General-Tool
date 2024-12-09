@@ -57,7 +57,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "BundleCodeSeq", txtIntID, null, "TX-");
+			task.GetSequenceNo("textbox", "BundleCodeSeq", txtIntID.Text, null, "TX-");
 		}
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)
@@ -76,7 +76,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					{
 						indicator = "N";
 					}
-					bundle.BundleCodesDBRequest("Update", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks, empName);
+					bundle.BundleCodesDBRequest("Update", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks.Text, empName);
 				}
 			}
 			else
@@ -89,7 +89,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					indicator = "N";
 				}
-				bundle.BundleCodesDBRequest("Create", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks, empName);
+				bundle.BundleCodesDBRequest("Create", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks.Text, empName);
 			}
 			DefaultItem();
 			Close();
@@ -109,7 +109,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					indicator = "No";
 				}
-				bundle.BundleCodesDBRequest("Delete", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks, empName);
+				bundle.BundleCodesDBRequest("Delete", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks.Text, empName);
 			}
 			DefaultItem();
 			Close();

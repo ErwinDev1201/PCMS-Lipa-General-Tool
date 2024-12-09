@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 
@@ -105,7 +106,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
-			task.SearchTwoColumnOneFieldText(dgEmail, "[Insurance Email Format]", "[Insurance]", "[Email Format]", txtSearch, lblSearchCount, EmpName);
+			try
+			{
+				DataTable resultTable = emailDB.SearchData(
+				txtSearch.Text,
+				out string searchcount, EmpName);
+
+				dgEmail.DataSource = resultTable;
+				lblSearchCount.Text = searchcount;
+
+			}
+			catch (Exception ex)
+			{
+				task.LogError("txtSearch_TextChanged", EmpName, "frmEmailFormat", null, ex);
+			}
 		}
 	}
 }

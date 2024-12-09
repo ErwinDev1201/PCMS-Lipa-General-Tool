@@ -1,6 +1,6 @@
-﻿
-using PCMS_Lipa_General_Tool.Class;
+﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
@@ -115,7 +115,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void GetDBListID()
 		{
-			task.GetSequenceNo("textbox", "PantryProdSeq", txtIntID, null, "PD -");
+			task.GetSequenceNo("textbox", "PantryProdSeq", txtIntID.Text, null, "PD -");
 		}
 
 		private void btnSave_Click(object sender, EventArgs e)
@@ -125,7 +125,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					pantry.PantryProductDBRequest("Update", txtIntID, txtProductName, txtPrice, txtRemarks, empName);
+					pantry.PantryProductDBRequest("Update", txtIntID.Text, txtProductName.Text, txtPrice.Text, txtRemarks.Text, empName);
 				
 				}
 			}
@@ -141,8 +141,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				else
 				{
-					var querycheck = $"SELECT [Product Name] FROM [Pantry Product] WHERE [Product Name] = '{txtProductName.Text}'";
-					pantry.CheckProductExist(querycheck, txtIntID, txtProductName, txtPrice, txtRemarks, empName);
+
+					pantry.CheckProductExist(txtIntID.Text, txtProductName.Text, txtPrice.Text, txtRemarks.Text, empName);
 				}
 			}
 			ShowAllUserAccess();
@@ -156,7 +156,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			DisableInput();
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				pantry.PantryProductDBRequest("Delete", txtIntID, txtProductName, txtPrice, txtRemarks, empName);
+				pantry.PantryProductDBRequest("Delete", txtIntID.Text, txtProductName.Text, txtPrice.Text, txtRemarks.Text, empName);
 			}
 			Clear();
 			ShowAllUserAccess();
@@ -177,11 +177,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void AutoFill()
 		{
+			
+			if (dgPantryProduct.SelectedRows.Count == 0)
+				return;
+
+			var selectedRow = dgPantryProduct.SelectedRows[0];
+			txtIntID.Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty;
+			txtProductName.Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty;
+			txtPrice.Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty;
+			txtRemarks.Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
 			DoubleClickEnable();
-			if (dgPantryProduct.SelectedRows.Count > 0)
-			{
-				pantry.FillProductInfo(dgPantryProduct, txtIntID, txtProductName, txtPrice, txtRemarks, empName);
-			}
 		}
 
 		//private void txtSearch_TextChanged(object sender, EventArgs e)
@@ -212,8 +217,23 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
-			task.SearchTwoColumnOneFieldText(dgPantryProduct, "[Pantry Product]", "[Product Name]", "[Remarks]", txtSearch, lblSearchCount, empName);
-		
+
+			try
+			{
+				DataTable resultTable = pantry.SearchData(
+				txtSearch.Text,
+				out string searchcount, empName);
+
+				dgPantryProduct.DataSource = resultTable;
+				lblSearchCount.Text = searchcount;
+
+			}
+			catch (Exception ex)
+			{
+				task.LogError("txtSearch_TextChanged", empName, "frmAdjusterInfo", null, ex);
+			}
+			//task.SearchTwoColumnOneFieldText(dgPantryProduct, "[Pantry Product]", "[Product Name]", "[Remarks]", txtSearch, lblSearchCount, empName);
+
 		}
 	}
 }

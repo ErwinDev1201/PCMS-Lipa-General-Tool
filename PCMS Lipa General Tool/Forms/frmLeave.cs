@@ -85,7 +85,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			modleave.dtpStartdate.Text = DateTime.Now.ToString();
 			modleave.txtEmpID.Text = empID;
 			modleave.GetDBListID();
-			leave.FillUpSupportLeaveForm(modleave.txtEmpID, modleave.txtEmployeeName, modleave.txtPosition, modleave.txtEmploymentStatus, EmpName);
+			leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
 			modleave.ShowDialog();
 			ShowLeaveList();
 
@@ -134,7 +134,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				modLeave.txtRemarks,
 				EmpName
 			);
-			leave.FillUpSupportLeaveForm(modLeave.txtEmpID, modLeave.txtEmployeeName, modLeave.txtPosition, modLeave.txtEmploymentStatus, EmpName);
+			leave.FillUpSupportLeaveForm(modLeave.txtEmpID.Text, modLeave.txtEmployeeName.Text, modLeave.txtPosition.Text, modLeave.txtEmploymentStatus.Text, EmpName);
 
 
 			if (accessLevel is "User" or "Power User")

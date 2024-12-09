@@ -120,6 +120,42 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
+		public DataTable SearchData(
+	string searchTerm,
+	out string searchCount,
+	string empName)
+		{
+			DataTable resultTable = new();
+
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+				string query = $@"
+SELECT *
+FROM [Adjuster Information]
+WHERE [Insurance Name] LIKE @searchTerm
+OR [Remarks] LIKE @searchTerm
+OR [Adjuster Name] LIKE @searchTerm";
+
+				using SqlCommand cmd = new (query, conn);
+				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				searchCount = "An error occurred while fetching records.";
+			}
+
+			return resultTable;
+		}
+
 
 
 		//public void AdjusterInfo(string request, RadTextBox adjID, RadTextBox insuranceName, RadTextBox adjusterName, RadTextBox phoneNo, RadTextBox ext, RadTextBox faxNo, RadTextBox email, RadTextBox supervisorName, RadTextBoxControl remarks, string empName)

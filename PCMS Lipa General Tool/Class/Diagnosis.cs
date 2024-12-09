@@ -40,6 +40,54 @@ namespace PCMS_Lipa_General_Tool.Class
 			return data;
 		}
 
+		public DataTable SearchData(
+			string searchItem,
+			string bodyParts,
+			out string searchCount, string empName)
+		{
+			DataTable resultTable = new();
+
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+
+				// Define the base query
+				string query = $@"
+SELECT *
+FROM [Diagnosis]
+WHERE Diagnosis LIKE @searchItem";
+
+				// Add the STATUS filter only if statusColumn is not "All"
+				if (bodyParts != "All")
+				{
+					query += " AND [Body Parts] LIKE @bodyParts";
+				}
+
+				using SqlCommand cmd = new(query, conn);
+				cmd.Parameters.AddWithValue("@bodyParts", $"%{bodyParts}%");
+
+				// Add the @statusSearch parameter only if statusColumn is not "All"
+				if (bodyParts == "")
+				{
+					cmd.Parameters.AddWithValue("@searchItem", $"%{searchItem}%");
+				}
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				// Log the error and provide feedback
+				task.LogError("SearchEmpTwoColumnOneFieldText", empName, "CommonTask", "N/A", ex);
+				searchCount = "Error occurred while fetching records.";
+			}
+
+			return resultTable;
+		}
 
 		public void DiagnosisDBRequest(
 			string request,

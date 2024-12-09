@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
@@ -473,7 +474,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		private void mnuInsBRDir_Click(object sender, EventArgs e)
 		{
-			var wcMisc = new frmInsBillReviewDirectory();
+			var wcMisc = new frmBillReviewDirectory();
 			if (accessLevel == "User" || accessLevel == "Power User")
 			{
 				wcMisc.btnNew.Visible = false;
@@ -758,11 +759,16 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		private void mnuPersonaReminders_Click(object sender, EventArgs e)
 		{
-			var dlgRTFEditor = new frmRTFEditor
+			if (!File.Exists(_personalreminderPath))
+			{
+				task.CreateRtfFile(_personalreminderPath);
+
+			}
+			var editor = new frmRTFEditor
 			{
 				file = _personalreminderPath
 			};
-			dlgRTFEditor.Show();
+			editor.Show();
 		}
 
 		private void mnuDevAccountAccess_Click(object sender, EventArgs e)
@@ -788,30 +794,64 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			modleave.dtpStartdate.Text = DateTime.Now.ToString();
 			modleave.txtEmpID.Text = employeeID;
 			modleave.GetDBListID();
-			leave.FillUpSupportLeaveForm(modleave.txtEmpID, modleave.txtEmployeeName, modleave.txtPosition, modleave.txtEmploymentStatus, EmpName);
+			leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
 			modleave.ShowDialog();
 		}
 
 		private void mnuViewLeave_Click(object sender, EventArgs e)
 		{
+			var leave = new frmLeave
+			{
+				Text = "Leave",
+				EmpName = EmpName,
+				accessLevel = accessLevel,
+				empID = employeeID
+			};
 
-			var leave = new frmLeave();
-			if (accessLevel == "User" || accessLevel == "Power User")
+			// Configure `cmbFilterName` and `cmbFilterStatus` based on access level.
+			switch (accessLevel)
 			{
-				leave.cmbFilterName.Enabled = false;
-				leave.cmbFilterName.Text = EmpName;
+				case "User":
+				case "Power User":
+					leave.cmbFilterName.Enabled = false;
+					leave.cmbFilterName.Text = EmpName;
+					break;
+
+				case "Management":
+				case "Administrator":
+				case "Programmer":
+					leave.cmbFilterName.Enabled = true;
+					leave.cmbFilterName.Text = EmpName;
+					leave.cmbFilterStatus.Text = "FOR APPROVAL";
+					leave.ShowLeaveList(); 
+					break;
 			}
-			else if (accessLevel == "Management")
-			{
-				leave.cmbFilterName.Enabled = true;
-				leave.cmbFilterName.Text = EmpName;
-			}
-			leave.Text = "Leave";
-			leave.EmpName = EmpName;
-			leave.accessLevel = accessLevel;
-			leave.empID = employeeID;
-			leave.ShowLeaveList();
+
+			// Show the leave form and leave list.
 			leave.ShowDialog();
+			leave.ShowLeaveList();
+
+
+
+			//var leave = new frmLeave();
+			//if (accessLevel == "User" || accessLevel == "Power User")
+			//{
+			//	leave.cmbFilterName.Enabled = false;
+			//	leave.cmbFilterName.Text = EmpName;
+			//}
+			//else if (accessLevel == "Management")
+			//{
+			//	leave.cmbFilterName.Enabled = true;
+			//	leave.cmbFilterName.Text = EmpName;
+			//	leave.cmbFilterStatus.Text = "FOR APPROVAL";
+			//}
+			//else if 
+			//leave.Text = "Leave";
+			//leave.EmpName = EmpName;
+			//leave.accessLevel = accessLevel;
+			//leave.empID = employeeID;
+			//leave.ShowDialog();
+			//leave.ShowLeaveList();
 		}
 
 		private void mnuBVAvailablity_Click(object sender, EventArgs e)

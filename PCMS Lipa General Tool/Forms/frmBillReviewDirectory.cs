@@ -1,13 +1,14 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
 using System.Configuration;
+using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmInsBillReviewDirectory : Telerik.WinControls.UI.RadForm
+	public partial class frmBillReviewDirectory : Telerik.WinControls.UI.RadForm
 	{
 		private static readonly string wcsupport = ConfigurationManager.AppSettings["wcsupportpath"];
 		private readonly CommonTask task = new();
@@ -17,7 +18,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public string accessLevel;
 		public string EmpName;
 
-		public frmInsBillReviewDirectory()
+		public frmBillReviewDirectory()
 		{
 			InitializeComponent();
 			ShowInsuranceInfo();
@@ -115,9 +116,28 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		}
 
+		private void LoadSearchandFilter()
+		{
+			try
+			{
+				DataTable resultTable = bill.SearchData(
+				txtSearch.Text,
+				out string searchcount, EmpName);
+
+				dgBillReview.DataSource = resultTable;
+				lblSearchCount.Text = searchcount;
+
+			}
+			catch (Exception ex)
+			{
+				task.LogError("txtSearch_TextChanged", EmpName, "frmBillReviewDirectory", null, ex);
+			}
+		}
+
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
-			task.SearchTwoColumnOneFieldText(dgBillReview, "[Bill Review Directory]", "[Insurance]", ",[Remarks]", txtSearch, lblSearchCount, EmpName);
+			LoadSearchandFilter();
+			//task.	(dgBillReview, "[Bill Review Directory]", "[Insurance]", ",[Remarks]", txtSearch, lblSearchCount, EmpName);
 		}
 	}
 }

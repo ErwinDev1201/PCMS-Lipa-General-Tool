@@ -23,7 +23,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public void GetDBID()
 		{
 			var query = "SELECT NEXT VALUE FOR EasyPrintSeq";
-			task.GetSequenceNo("textbox", query, txtIntID, null, "EP-");
+			task.GetSequenceNo("textbox", query, txtIntID.Text, null, "EP-");
 		}
 
 		public void ClearData()

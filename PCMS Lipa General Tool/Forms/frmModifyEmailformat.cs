@@ -24,7 +24,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "EmailFormatSeq", txtIntID, null, "EF-");
+			task.GetSequenceNo("textbox", "EmailFormatSeq", txtIntID.Text, null, "EF-");
 		}
 
 		private void ClearData()

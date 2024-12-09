@@ -57,7 +57,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "AttyInfo", txtIntID, null, "ATTY-");
+			task.GetSequenceNo("textbox", "AttyInfo", txtIntID.Text, null, "ATTY-");
 		}
 
 

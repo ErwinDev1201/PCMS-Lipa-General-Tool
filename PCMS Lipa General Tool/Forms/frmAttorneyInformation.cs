@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 
@@ -9,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmAttorneyInformation : Telerik.WinControls.UI.RadForm
 	{
 		private readonly Attorney atty = new();
-		private readonly CommonTask task = new CommonTask();
+		private readonly CommonTask task = new();
 		public string accessLevel;
 		public string EmpName;
 
@@ -23,8 +24,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ListAtty()
 		{
-			string lblCount;
-			var dataTable = atty.ViewAttorneyList(EmpName, out lblCount);
+			var dataTable = atty.ViewAttorneyList(EmpName, out string lblCount);
 
 			dgDefAtty.DataSource = dataTable;
 
@@ -111,28 +111,48 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
+			LoadSearchFilter();
+			///task.SearchTwoColumnOneFieldText(dgDefAtty, "[Attorney Information]", "[Attorney Name]", "[Attorney Name]", txtSearch, lblDefSearchCount, EmpName);
+		}
 
-			task.SearchTwoColumnOneFieldText(dgDefAtty, "[Attorney Information]", "[Attorney Name]", "[Attorney Name]", txtSearch, lblDefSearchCount, EmpName);
+		private void LoadSearchFilter()
+		{
+			try
+			{
+				DataTable resultTable = atty.SearchData(
+					txtSearch.Text,
+					cmbAttorneyOption.Text,
+				out string searchcount, EmpName);
+
+				dgDefAtty.DataSource = resultTable;
+				lblDefSearchCount.Text = searchcount;
+
+			}
+			catch (Exception ex)
+			{
+				task.LogError("LoadSearchFilter", EmpName, "frmAttorneyInformation", null, ex);
+			}
 		}
 
 		private void cmbAttorneyOption_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
 		{
-			if (cmbAttorneyOption.Text == "All" || txtSearch.Text == null)
-			{
-				ListAtty();
-			}
-			else if (cmbAttorneyOption.Text == "All" && txtSearch.Text != "")
-			{
-				task.SearchTwoColumnOneFieldText(dgDefAtty, "[Attorney Information]", "[Attorney Name]", "[Attorney Name]", txtSearch, lblDefSearchCount, EmpName);
-			}
-			if (txtSearch.Text != null && cmbAttorneyOption.Text != null)
-			{
-				task.SearchTwoColumnTwoFieldCombo(dgDefAtty, "[Attorney Information]", "[Attorney Name]", "[Attorney Type]", txtSearch, cmbAttorneyOption, lblDefSearchCount, EmpName);
-			}
-			else if (txtSearch.Text == null && cmbAttorneyOption.Text != null)
-			{
-				task.SearchTwoColumnOneFieldCombo(dgDefAtty, "[Attorney Information]", "[Attorney Type]", "[Attorney Type]", cmbAttorneyOption, lblDefSearchCount, EmpName);
-			}
+			LoadSearchFilter();
+			//if (cmbAttorneyOption.Text == "All" || txtSearch.Text == null)
+			//{
+			//	ListAtty();
+			//}
+			//else if (cmbAttorneyOption.Text == "All" && txtSearch.Text != "")
+			//{
+			//	task.(dgDefAtty, "[Attorney Information]", "[Attorney Name]", "[Attorney Name]", txtSearch, lblDefSearchCount, EmpName);
+			//}
+			//if (txtSearch.Text != null && cmbAttorneyOption.Text != null)
+			//{
+			//	task.SearchTwoColumnTwoFieldCombo(dgDefAtty, "[Attorney Information]", "[Attorney Name]", "[Attorney Type]", txtSearch, cmbAttorneyOption, lblDefSearchCount, EmpName);
+			//}
+			//else if (txtSearch.Text == null && cmbAttorneyOption.Text != null)
+			//{
+			//	task.SearchTwoColumnOneFieldCombo(dgDefAtty, "[Attorney Information]", "[Attorney Type]", "[Attorney Type]", cmbAttorneyOption, lblDefSearchCount, EmpName);
+			//}
 		}
 
 		//private void cmbAttorneyOption_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)

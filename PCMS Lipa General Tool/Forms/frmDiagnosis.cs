@@ -1,5 +1,7 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
+using System.Data;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 
@@ -22,8 +24,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ShowMePTDxCodes()
 		{
-			string lblCount;
-			var dataTable = dx.ViewDxList(EmpName, out lblCount);
+			var dataTable = dx.ViewDxList(EmpName, out string lblCount);
 
 			dgBillDiagnosis.DataSource = dataTable;
 
@@ -133,29 +134,42 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 		}
 
+		private void LoadSearchandFilter()
+		{
+			try
+			{
+				DataTable resultTable = dx.SearchData(
+				txtDiagnosis.Text,
+				txtBodyParts.Text,
+				out string searchcount, EmpName);
+
+				dgBillDiagnosis.DataSource = resultTable;
+				lblSearchCount.Text = searchcount;
+
+			}
+			catch (Exception ex)
+			{
+				task.LogError("LoadSearchandFilter", EmpName, "frmDiagnosis", null, ex);
+			}
+		}
+
 		private void txtDiagnosis_TextChanged(object sender, EventArgs e)
 		{
-			if (txtBodyParts.Text != "")
-			{
-				task.SearchTwoColumnTwoFieldText(dgBillDiagnosis, "Diagnosis", "[Diagnosis]", "[Body Parts]", txtBodyParts, txtDiagnosis, lblSearchCount, EmpName);
-			}
-			else
-			{
-				task.SearchTwoColumnOneFieldText(dgBillDiagnosis, "Diagnosis", "[Diagnosis]", "[Remarks]", txtBodyParts, lblSearchCount, EmpName);
-			}
+			LoadSearchandFilter();
 		}
 
 
 		private void txtBodyParts_TextChanged(object sender, EventArgs e)
 		{
-			if (txtDiagnosis.Text != "")
-			{
-				task.SearchTwoColumnTwoFieldText(dgBillDiagnosis, "Diagnosis", "[Diagnosis]", "[Body Parts]", txtBodyParts, txtDiagnosis, lblSearchCount, EmpName);
-			}
-			else
-			{
-				task.SearchTwoColumnOneFieldText(dgBillDiagnosis, "Diagnosis", "[Diagnosis]", "[Remarks]", txtBodyParts, lblSearchCount, EmpName);
-			}
+			LoadSearchandFilter();
+			//if (txtDiagnosis.Text != "")
+			//{
+			//	task.SearchTwoColumnTwoFieldText(dgBillDiagnosis, "Diagnosis", "[Diagnosis]", "[Body Parts]", txtBodyParts, txtDiagnosis, lblSearchCount, EmpName);
+			//}
+			//else
+			//{
+			//	task.SearchTwoColumnOneFieldText(dgBillDiagnosis, "Diagnosis", "[Diagnosis]", "[Remarks]", txtBodyParts, lblSearchCount, EmpName);
+			//}
 		}
 	}
 }

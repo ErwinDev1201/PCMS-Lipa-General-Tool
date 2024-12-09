@@ -27,7 +27,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "AssignProvider", txtIntID, null, "AP-");
+			task.GetSequenceNo("textbox", "AssignProvider", txtIntID.Text, null, "AP-");
 		}
 
 		public void LoadDefaults()

@@ -3,6 +3,7 @@ using PCMS_Lipa_General_Tool.Class;
 using System;
 using System.Data;
 using System.Diagnostics;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
@@ -218,9 +219,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//mainProcess.CreateDbId(txtlogID, auditID, @"AL-");
 		}
 
-		
-
-
 		private void AutoFill()
 		{
 			try
@@ -279,7 +277,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void GetDBLoginID()
 		{
-			task.GetSequenceNo("textbox", "OnlineLoginSeq", txtLoginID, null, "OL-");
+			task.GetSequenceNo("textbox", "OnlineLoginSeq", txtLoginID.Text, null, "OL-");
 		}
 
 		private void btnSave_Click(object sender, EventArgs e)
@@ -582,42 +580,57 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void txtSearchOnlineLogins_TextChanged(object sender, EventArgs e)
 		{
 			ClearforSearchFunc();
-			if (txtSearchOnlineLogins.TextLength > 0)
-			{
-				dgOnlineLogins.Enabled = true;
-				task.SearchTwoColumnOneFieldText(dgOnlineLogins, "[ONLINE LOGINS]", "[Insurance Name]", "[Remarks]", txtSearchOnlineLogins, lblSearchCount, empName);
-			}
-		}
-
-		private void dgOnlineLogins_CellDoubleClick(object sender, GridViewCellEventArgs e)
-		{
 			try
 			{
-				// Ensure the clicked cell is valid
-				if (e.Row == null || e.Column == null)
-					return;
+				DataTable resultTable = onlineLogin.SearchData(
+				txtSearchOnlineLogins.Text,
+				out string searchcount, empName);
 
-				// Get the clicked row
-				var selectedRow = e.Row;
+				dgOnlineLogins.DataSource = resultTable;
+				lblSearchCount.Text = searchcount;
+				dgOnlineLogins.Enabled = true;
 
-				// Populate the fields with data from the selected row
-				txtLoginID.Text = selectedRow.Cells["LoginID"].Value?.ToString() ?? string.Empty;
-				txtInsuranceName.Text = selectedRow.Cells["InsuranceName"].Value?.ToString() ?? string.Empty;
-				txtWebLink.Text = selectedRow.Cells["WebLink"].Value?.ToString() ?? string.Empty;
-				txtUsername.Text = selectedRow.Cells["Username"].Value?.ToString() ?? string.Empty;
-				txtPassword.Text = selectedRow.Cells["Password"].Value?.ToString() ?? string.Empty;
-				txtaccntOwner.Text = selectedRow.Cells["AccountOwner"].Value?.ToString() ?? string.Empty;
-				txtRemarks.Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty;
-				cmbBrowser.Text = selectedRow.Cells["Browser"].Value?.ToString() ?? string.Empty;
-
-				// Trigger any additional logic you need
-				DoubleClickEnable();
 			}
 			catch (Exception ex)
 			{
-				// Display an error message if something goes wrong
-				MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				task.LogError("txtSearch_TextChanged", empName, "frmAdjusterInfo", null, ex);
 			}
+			//if (txtSearchOnlineLogins.TextLength > 0)
+			//{
+			//	task.SearchTwoColumnOneFieldText(dgOnlineLogins, "[ONLINE LOGINS]", "[Insurance Name]", "[Remarks]", txtSearchOnlineLogins, lblSearchCount, empName);
+			//	dgOnlineLogins.Enabled = true;
+			//}
 		}
+
+		//private void dgOnlineLogins_CellDoubleClick(object sender, GridViewCellEventArgs e)
+		//{
+		//	try
+		//	{
+		//		// Ensure the clicked cell is valid
+		//		if (e.Row == null || e.Column == null)
+		//			return;
+		//
+		//		// Get the clicked row
+		//		var selectedRow = e.Row;
+		//
+		//		// Populate the fields with data from the selected row
+		//		txtLoginID.Text = selectedRow.Cells["LoginID"].Value?.ToString() ?? string.Empty;
+		//		txtInsuranceName.Text = selectedRow.Cells["InsuranceName"].Value?.ToString() ?? string.Empty;
+		//		txtWebLink.Text = selectedRow.Cells["WebLink"].Value?.ToString() ?? string.Empty;
+		//		txtUsername.Text = selectedRow.Cells["Username"].Value?.ToString() ?? string.Empty;
+		//		txtPassword.Text = selectedRow.Cells["Password"].Value?.ToString() ?? string.Empty;
+		//		txtaccntOwner.Text = selectedRow.Cells["AccountOwner"].Value?.ToString() ?? string.Empty;
+		//		txtRemarks.Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty;
+		//		cmbBrowser.Text = selectedRow.Cells["Browser"].Value?.ToString() ?? string.Empty;
+		//
+		//		// Trigger any additional logic you need
+		//		DoubleClickEnable();
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		// Display an error message if something goes wrong
+		//		MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		//	}
+		//}
 	}
 }

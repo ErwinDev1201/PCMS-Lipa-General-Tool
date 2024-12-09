@@ -1,6 +1,6 @@
 ﻿namespace PCMS_Lipa_General_Tool.Forms
 {
-	partial class frmInsBillReviewDirectory
+	partial class frmBillReviewDirectory
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInsBillReviewDirectory));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBillReviewDirectory));
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
 			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();

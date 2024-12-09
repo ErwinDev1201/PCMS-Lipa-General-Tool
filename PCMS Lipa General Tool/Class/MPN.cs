@@ -42,7 +42,16 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 
-		public void MPNDBRequest(string request, RadTextBox mpnID, RadTextBox insuranceName, RadTextBox mpn, RadTextBox userName, RadTextBox passWord, RadTextBox webSite, RadTextBoxControl remarks, string empName)
+		public void MPNDBRequest(
+			string request,
+			string mpnID,
+			string insuranceName,
+			string mpn,
+			string userName,
+			string passWord,
+			string webSite,
+			string remarks,
+			string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -75,37 +84,72 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@MPNID", mpnID.Text);
-					cmd.Parameters.AddWithValue("@INSURANCENAME", insuranceName.Text);
-					cmd.Parameters.AddWithValue("@MPN", mpn.Text);
-					cmd.Parameters.AddWithValue("@USERNAME", userName.Text);
-					cmd.Parameters.AddWithValue("@PASSWORD", passWord.Text);
-					cmd.Parameters.AddWithValue("@WEBSITE", webSite.Text);
-					cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
+					cmd.Parameters.AddWithValue("@MPNID", mpnID);
+					cmd.Parameters.AddWithValue("@INSURANCENAME", insuranceName);
+					cmd.Parameters.AddWithValue("@MPN", mpn);
+					cmd.Parameters.AddWithValue("@USERNAME", userName);
+					cmd.Parameters.AddWithValue("@PASSWORD", passWord);
+					cmd.Parameters.AddWithValue("@WEBSITE", webSite);
+					cmd.Parameters.AddWithValue("@REMARKS", remarks);
 
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@MPNID", mpnID.Text);
-
+				cmd.Parameters.AddWithValue("@MPNID", mpnID);
+					
 				// Execute query
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				logs = $"{empName} {request.ToLower()}d MPN ID: {mpnID.Text}";
-				message = $"Done! {mpnID.Text} has been successfully {request.ToLower()}d.";
+				logs = $"{empName} {request.ToLower()}d MPN ID: {mpnID}";
+				message = $"Done! {mpnID} has been successfully {request.ToLower()}d.";
 				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} MPN INUSURANCE INFORMATION");
 				task.SendToastNotifDesktop(logs);
 			}
 			catch (Exception ex)
 			{
-				task.LogError("MPNDBRequest", empName, "MPN", mpnID.Text, ex);
-				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+				task.LogError("MPNDBRequest", empName, "MPN", mpnID, ex);
+				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
 			finally
 			{
 				conn.Close();
 			}
+		}
+
+		public DataTable SearchData(
+	string searchTerm,
+	out string searchCount,
+	string empName)
+		{
+			DataTable resultTable = new();
+
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+				string query = $@"
+SELECT *
+FROM [MPN Information]
+WHERE [Insurance Name] LIKE @searchTerm
+OR [Remarks] LIKE @searchTerm";
+
+				using SqlCommand cmd = new(query, conn);
+				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				task.LogError("SearchData", empName, "MPN", null, ex);
+				searchCount = "An error occurred while fetching records.";
+			}
+
+			return resultTable;
 		}
 
 	}

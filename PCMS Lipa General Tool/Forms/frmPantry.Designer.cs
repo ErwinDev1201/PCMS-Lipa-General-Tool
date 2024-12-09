@@ -43,7 +43,6 @@
 			this.btnCancel = new Telerik.WinControls.UI.RadButton();
 			this.txtTotalPrice = new Telerik.WinControls.UI.RadTextBoxControl();
 			this.radLabel5 = new Telerik.WinControls.UI.RadLabel();
-			this.txtSummary = new Telerik.WinControls.UI.RadTextBoxControl();
 			this.txtQuantity = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
 			this.cmbProductList = new Telerik.WinControls.UI.RadDropDownList();
@@ -67,6 +66,7 @@
 			this.radLabelElement1 = new Telerik.WinControls.UI.RadLabelElement();
 			this.lblstatus = new Telerik.WinControls.UI.RadLabelElement();
 			this.radThemeManager1 = new Telerik.WinControls.RadThemeManager();
+			this.txtSummary = new Telerik.WinControls.UI.RadTextBoxControl();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.grpItems)).BeginInit();
@@ -81,7 +81,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.btnCancel)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtTotalPrice)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel5)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtSummary)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtQuantity)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbProductList)).BeginInit();
@@ -105,6 +104,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel6)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dtpFrom)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtSummary)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -125,6 +125,7 @@
 			this.grpItems.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
 			this.grpItems.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpItems.Controls.Add(this.txtSummary);
 			this.grpItems.Controls.Add(this.radLabel4);
 			this.grpItems.Controls.Add(this.txtRemarks);
 			this.grpItems.Controls.Add(this.cmbItemEmpList);
@@ -135,7 +136,6 @@
 			this.grpItems.Controls.Add(this.btnCancel);
 			this.grpItems.Controls.Add(this.txtTotalPrice);
 			this.grpItems.Controls.Add(this.radLabel5);
-			this.grpItems.Controls.Add(this.txtSummary);
 			this.grpItems.Controls.Add(this.txtQuantity);
 			this.grpItems.Controls.Add(this.radLabel2);
 			this.grpItems.Controls.Add(this.cmbProductList);
@@ -154,10 +154,10 @@
 			// 
 			// radLabel4
 			// 
-			this.radLabel4.Font = new System.Drawing.Font("Roboto SemiBold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel4.Location = new System.Drawing.Point(193, 409);
+			this.radLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.radLabel4.Location = new System.Drawing.Point(193, 264);
 			this.radLabel4.Name = "radLabel4";
-			this.radLabel4.Size = new System.Drawing.Size(29, 29);
+			this.radLabel4.Size = new System.Drawing.Size(27, 26);
 			this.radLabel4.TabIndex = 31;
 			this.radLabel4.Text = "₱ ";
 			this.radLabel4.ThemeName = "Crystal";
@@ -214,7 +214,7 @@
 			this.txtIntID.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtIntID.Location = new System.Drawing.Point(22, 60);
 			this.txtIntID.Name = "txtIntID";
-			this.txtIntID.Size = new System.Drawing.Size(74, 24);
+			this.txtIntID.Size = new System.Drawing.Size(74, 23);
 			this.txtIntID.TabIndex = 27;
 			this.txtIntID.ThemeName = "Crystal";
 			// 
@@ -223,7 +223,7 @@
 			this.radLabel9.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel9.Location = new System.Drawing.Point(22, 38);
 			this.radLabel9.Name = "radLabel9";
-			this.radLabel9.Size = new System.Drawing.Size(54, 20);
+			this.radLabel9.Size = new System.Drawing.Size(53, 19);
 			this.radLabel9.TabIndex = 28;
 			this.radLabel9.Text = "Item ID:";
 			this.radLabel9.ThemeName = "Crystal";
@@ -243,12 +243,11 @@
 			// 
 			this.txtTotalPrice.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtTotalPrice.Font = new System.Drawing.Font("Roboto SemiBold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtTotalPrice.Location = new System.Drawing.Point(223, 399);
+			this.txtTotalPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtTotalPrice.Location = new System.Drawing.Point(223, 254);
 			this.txtTotalPrice.Name = "txtTotalPrice";
 			this.txtTotalPrice.Size = new System.Drawing.Size(165, 47);
 			this.txtTotalPrice.TabIndex = 23;
-			this.txtTotalPrice.Text = "200";
 			this.txtTotalPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.txtTotalPrice.ThemeName = "Crystal";
 			this.txtTotalPrice.WordWrap = false;
@@ -256,28 +255,12 @@
 			// radLabel5
 			// 
 			this.radLabel5.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel5.Location = new System.Drawing.Point(114, 412);
+			this.radLabel5.Location = new System.Drawing.Point(114, 267);
 			this.radLabel5.Name = "radLabel5";
-			this.radLabel5.Size = new System.Drawing.Size(80, 20);
+			this.radLabel5.Size = new System.Drawing.Size(78, 19);
 			this.radLabel5.TabIndex = 22;
 			this.radLabel5.Text = "Total Price: ";
 			this.radLabel5.ThemeName = "Crystal";
-			// 
-			// txtSummary
-			// 
-			this.txtSummary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtSummary.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSummary.HorizontalScrollBarState = Telerik.WinControls.UI.ScrollState.AlwaysShow;
-			this.txtSummary.IsReadOnly = true;
-			this.txtSummary.Location = new System.Drawing.Point(22, 253);
-			this.txtSummary.Multiline = true;
-			this.txtSummary.Name = "txtSummary";
-			this.txtSummary.Size = new System.Drawing.Size(366, 126);
-			this.txtSummary.TabIndex = 21;
-			this.txtSummary.Text = "dfasdf";
-			this.txtSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.txtSummary.ThemeName = "Crystal";
 			// 
 			// txtQuantity
 			// 
@@ -286,7 +269,7 @@
 			this.txtQuantity.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtQuantity.Location = new System.Drawing.Point(22, 179);
 			this.txtQuantity.Name = "txtQuantity";
-			this.txtQuantity.Size = new System.Drawing.Size(60, 24);
+			this.txtQuantity.Size = new System.Drawing.Size(60, 23);
 			this.txtQuantity.TabIndex = 18;
 			this.txtQuantity.ThemeName = "Crystal";
 			this.txtQuantity.TextChanged += new System.EventHandler(this.txtQuantity_TextChanged);
@@ -297,7 +280,7 @@
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel2.Location = new System.Drawing.Point(22, 153);
 			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(64, 20);
+			this.radLabel2.Size = new System.Drawing.Size(60, 19);
 			this.radLabel2.TabIndex = 19;
 			this.radLabel2.Text = "Quantity:";
 			this.radLabel2.ThemeName = "Crystal";
@@ -324,7 +307,7 @@
 			this.txtPrice.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtPrice.Location = new System.Drawing.Point(22, 117);
 			this.txtPrice.Name = "txtPrice";
-			this.txtPrice.Size = new System.Drawing.Size(60, 24);
+			this.txtPrice.Size = new System.Drawing.Size(60, 23);
 			this.txtPrice.TabIndex = 10;
 			this.txtPrice.ThemeName = "Crystal";
 			// 
@@ -333,7 +316,7 @@
 			this.radLabel3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel3.Location = new System.Drawing.Point(142, 96);
 			this.radLabel3.Name = "radLabel3";
-			this.radLabel3.Size = new System.Drawing.Size(64, 20);
+			this.radLabel3.Size = new System.Drawing.Size(63, 19);
 			this.radLabel3.TabIndex = 15;
 			this.radLabel3.Text = "Remarks:";
 			this.radLabel3.ThemeName = "Crystal";
@@ -343,7 +326,7 @@
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(22, 96);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(42, 20);
+			this.radLabel1.Size = new System.Drawing.Size(40, 19);
 			this.radLabel1.TabIndex = 11;
 			this.radLabel1.Text = "Price:";
 			this.radLabel1.ThemeName = "Crystal";
@@ -457,7 +440,7 @@
 			this.radLabel8.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel8.Location = new System.Drawing.Point(18, 115);
 			this.radLabel8.Name = "radLabel8";
-			this.radLabel8.Size = new System.Drawing.Size(115, 20);
+			this.radLabel8.Size = new System.Drawing.Size(111, 19);
 			this.radLabel8.TabIndex = 11;
 			this.radLabel8.Text = "Employee Name: ";
 			this.radLabel8.ThemeName = "Crystal";
@@ -480,7 +463,7 @@
 			this.radLabel7.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel7.Location = new System.Drawing.Point(18, 75);
 			this.radLabel7.Name = "radLabel7";
-			this.radLabel7.Size = new System.Drawing.Size(29, 20);
+			this.radLabel7.Size = new System.Drawing.Size(29, 19);
 			this.radLabel7.TabIndex = 3;
 			this.radLabel7.Text = "To: ";
 			this.radLabel7.ThemeName = "Crystal";
@@ -491,7 +474,7 @@
 			this.dtpTo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.dtpTo.Location = new System.Drawing.Point(136, 75);
 			this.dtpTo.Name = "dtpTo";
-			this.dtpTo.Size = new System.Drawing.Size(238, 24);
+			this.dtpTo.Size = new System.Drawing.Size(238, 23);
 			this.dtpTo.TabIndex = 2;
 			this.dtpTo.TabStop = false;
 			this.dtpTo.Text = "Wednesday, June 21, 2023";
@@ -503,7 +486,7 @@
 			this.radLabel6.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel6.Location = new System.Drawing.Point(18, 38);
 			this.radLabel6.Name = "radLabel6";
-			this.radLabel6.Size = new System.Drawing.Size(46, 20);
+			this.radLabel6.Size = new System.Drawing.Size(45, 19);
 			this.radLabel6.TabIndex = 1;
 			this.radLabel6.Text = "From: ";
 			this.radLabel6.ThemeName = "Crystal";
@@ -514,7 +497,7 @@
 			this.dtpFrom.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.dtpFrom.Location = new System.Drawing.Point(136, 38);
 			this.dtpFrom.Name = "dtpFrom";
-			this.dtpFrom.Size = new System.Drawing.Size(238, 24);
+			this.dtpFrom.Size = new System.Drawing.Size(238, 23);
 			this.dtpFrom.TabIndex = 0;
 			this.dtpFrom.TabStop = false;
 			this.dtpFrom.Text = "Wednesday, June 21, 2023";
@@ -552,6 +535,21 @@
 			this.lblstatus.Text = "Readyasalajsdflajsdflasdjkf;alsdkfjasdfasdfadsfads";
 			this.lblstatus.TextWrap = true;
 			// 
+			// txtSummary
+			// 
+			this.txtSummary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtSummary.Font = new System.Drawing.Font("Roboto Medium", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtSummary.IsReadOnly = true;
+			this.txtSummary.Location = new System.Drawing.Point(34, 322);
+			this.txtSummary.Multiline = true;
+			this.txtSummary.Name = "txtSummary";
+			this.txtSummary.Size = new System.Drawing.Size(354, 126);
+			this.txtSummary.TabIndex = 32;
+			this.txtSummary.Text = "dfasdf";
+			this.txtSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.txtSummary.ThemeName = "Crystal";
+			// 
 			// frmPantry
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -584,7 +582,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.btnCancel)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtTotalPrice)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel5)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtSummary)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtQuantity)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbProductList)).EndInit();
@@ -610,6 +607,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel6)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dtpFrom)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtSummary)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -632,7 +630,6 @@
 		public Telerik.WinControls.UI.RadTextBox txtQuantity;
 		public Telerik.WinControls.UI.RadLabel radLabel2;
 		public Telerik.WinControls.UI.RadTextBoxControl txtRemarks;
-		public Telerik.WinControls.UI.RadTextBoxControl txtSummary;
 		public Telerik.WinControls.UI.RadTextBoxControl txtTotalPrice;
 		public Telerik.WinControls.UI.RadLabel radLabel5;
 		public Telerik.WinControls.UI.RadButton btnAdditem;
@@ -655,5 +652,6 @@
 		private Telerik.WinControls.RadThemeManager radThemeManager1;
 		public Telerik.WinControls.UI.RadDropDownList cmbEmployee;
 		private Telerik.WinControls.UI.RadLabel lblsearchCount;
+		public Telerik.WinControls.UI.RadTextBoxControl txtSummary;
 	}
 }
