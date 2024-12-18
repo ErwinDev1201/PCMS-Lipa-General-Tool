@@ -29,7 +29,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "CollectorNotesSeq", txtIntID.Text, null, "CX -");
+			string nextSequence = task.GetSequenceNo("CollectorNotesSeq", "CX-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtIntID.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetDBID", empName, "frmModifyNotes", "N/A", ex);
+			}
+			//task.GetSequenceNo("textbox", "CollectorNotesSeq", txtIntID.Text, null, "CX -");
 		}
 
 		private void ClearData()

@@ -277,7 +277,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void GetDBLoginID()
 		{
-			task.GetSequenceNo("textbox", "OnlineLoginSeq", txtLoginID.Text, null, "OL-");
+			string nextSequence = task.GetSequenceNo("OnlineLoginSeq", "INS-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtLoginID.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetDBID", empName, "frmOnlineLogins", "N/A", ex);
+			}
+			//task.GetSequenceNo("textbox", "OnlineLoginSeq", txtLoginID.Text, null, "OL-");
 		}
 
 		private void btnSave_Click(object sender, EventArgs e)

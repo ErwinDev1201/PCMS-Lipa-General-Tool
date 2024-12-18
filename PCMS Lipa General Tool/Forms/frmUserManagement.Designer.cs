@@ -39,13 +39,10 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmUserManagement));
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
-			this.lblResult = new Telerik.WinControls.UI.RadLabel();
 			this.cmbUserDept = new Telerik.WinControls.UI.RadDropDownList();
 			this.radLabel5 = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel13 = new Telerik.WinControls.UI.RadLabel();
 			this.txtBVNo = new Telerik.WinControls.UI.RadTextBox();
-			this.txtUsername = new Telerik.WinControls.UI.RadTextBox();
-			this.btnResetPassword = new Telerik.WinControls.UI.RadButton();
 			this.cmbUserAccess = new Telerik.WinControls.UI.RadDropDownList();
 			this.btnUpdateSave = new Telerik.WinControls.UI.RadButton();
 			this.btnNew = new Telerik.WinControls.UI.RadButton();
@@ -62,12 +59,9 @@
 			this.radLabel10 = new Telerik.WinControls.UI.RadLabel();
 			this.txtWorkEmail = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel8 = new Telerik.WinControls.UI.RadLabel();
-			this.radLabel3 = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel7 = new Telerik.WinControls.UI.RadLabel();
 			this.txtEmployeeName = new Telerik.WinControls.UI.RadTextBox();
-			this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel6 = new Telerik.WinControls.UI.RadLabel();
-			this.txtPassword = new Telerik.WinControls.UI.RadTextBox();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.radGroupBox1 = new Telerik.WinControls.UI.RadGroupBox();
 			this.radLabel12 = new Telerik.WinControls.UI.RadLabel();
@@ -76,15 +70,18 @@
 			this.radLabel11 = new Telerik.WinControls.UI.RadLabel();
 			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
 			this.dgEmployeeInfo = new Telerik.WinControls.UI.RadGridView();
+			this.lblResult = new Telerik.WinControls.UI.RadLabel();
+			this.txtUsername = new Telerik.WinControls.UI.RadTextBox();
+			this.btnResetPassword = new Telerik.WinControls.UI.RadButton();
+			this.radLabel3 = new Telerik.WinControls.UI.RadLabel();
+			this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
+			this.txtPassword = new Telerik.WinControls.UI.RadTextBox();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.lblResult)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbUserDept)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel5)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel13)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtBVNo)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtUsername)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.btnResetPassword)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbUserAccess)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnUpdateSave)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
@@ -101,12 +98,9 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel10)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtWorkEmail)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel8)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel7)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtEmployeeName)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel6)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtPassword)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).BeginInit();
 			this.radGroupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel12)).BeginInit();
@@ -116,6 +110,12 @@
 			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgEmployeeInfo)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgEmployeeInfo.MasterTemplate)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblResult)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtUsername)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.btnResetPassword)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtPassword)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -123,13 +123,16 @@
 			// 
 			this.radPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+			this.radPanel1.Controls.Add(this.txtUsername);
+			this.radPanel1.Controls.Add(this.btnResetPassword);
+			this.radPanel1.Controls.Add(this.radLabel3);
+			this.radPanel1.Controls.Add(this.radLabel4);
+			this.radPanel1.Controls.Add(this.txtPassword);
 			this.radPanel1.Controls.Add(this.lblResult);
 			this.radPanel1.Controls.Add(this.cmbUserDept);
 			this.radPanel1.Controls.Add(this.radLabel5);
 			this.radPanel1.Controls.Add(this.radLabel13);
 			this.radPanel1.Controls.Add(this.txtBVNo);
-			this.radPanel1.Controls.Add(this.txtUsername);
-			this.radPanel1.Controls.Add(this.btnResetPassword);
 			this.radPanel1.Controls.Add(this.cmbUserAccess);
 			this.radPanel1.Controls.Add(this.btnUpdateSave);
 			this.radPanel1.Controls.Add(this.btnNew);
@@ -146,28 +149,14 @@
 			this.radPanel1.Controls.Add(this.radLabel10);
 			this.radPanel1.Controls.Add(this.txtWorkEmail);
 			this.radPanel1.Controls.Add(this.radLabel8);
-			this.radPanel1.Controls.Add(this.radLabel3);
 			this.radPanel1.Controls.Add(this.radLabel7);
 			this.radPanel1.Controls.Add(this.txtEmployeeName);
-			this.radPanel1.Controls.Add(this.radLabel4);
 			this.radPanel1.Controls.Add(this.radLabel6);
-			this.radPanel1.Controls.Add(this.txtPassword);
 			this.radPanel1.Location = new System.Drawing.Point(12, 25);
 			this.radPanel1.Name = "radPanel1";
 			this.radPanel1.Size = new System.Drawing.Size(446, 662);
 			this.radPanel1.TabIndex = 11;
 			this.radPanel1.ThemeName = "Crystal";
-			// 
-			// lblResult
-			// 
-			this.lblResult.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblResult.ForeColor = System.Drawing.Color.Red;
-			this.lblResult.Location = new System.Drawing.Point(143, 156);
-			this.lblResult.Name = "lblResult";
-			this.lblResult.Size = new System.Drawing.Size(74, 19);
-			this.lblResult.TabIndex = 78;
-			this.lblResult.Text = "radLabel12";
-			this.lblResult.ThemeName = "Crystal";
 			// 
 			// cmbUserDept
 			// 
@@ -219,27 +208,6 @@
 			this.txtBVNo.Size = new System.Drawing.Size(280, 23);
 			this.txtBVNo.TabIndex = 75;
 			this.txtBVNo.ThemeName = "Crystal";
-			// 
-			// txtUsername
-			// 
-			this.txtUsername.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtUsername.Location = new System.Drawing.Point(144, 177);
-			this.txtUsername.Name = "txtUsername";
-			this.txtUsername.Size = new System.Drawing.Size(280, 23);
-			this.txtUsername.TabIndex = 73;
-			this.txtUsername.ThemeName = "Crystal";
-			this.txtUsername.TextChanged += new System.EventHandler(this.txtUsername_TextChanged);
-			// 
-			// btnResetPassword
-			// 
-			this.btnResetPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnResetPassword.Location = new System.Drawing.Point(143, 218);
-			this.btnResetPassword.Name = "btnResetPassword";
-			this.btnResetPassword.Size = new System.Drawing.Size(281, 33);
-			this.btnResetPassword.TabIndex = 1;
-			this.btnResetPassword.Text = "&Reset Password";
-			this.btnResetPassword.ThemeName = "Crystal";
-			this.btnResetPassword.Click += new System.EventHandler(this.btnResetPassword_Click);
 			// 
 			// cmbUserAccess
 			// 
@@ -412,7 +380,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel2.Location = new System.Drawing.Point(20, 132);
+			this.radLabel2.Location = new System.Drawing.Point(19, 229);
 			this.radLabel2.Name = "radLabel2";
 			this.radLabel2.Size = new System.Drawing.Size(49, 19);
 			this.radLabel2.TabIndex = 62;
@@ -457,19 +425,6 @@
 			this.radLabel8.Text = "User Status: ";
 			this.radLabel8.ThemeName = "Crystal";
 			// 
-			// radLabel3
-			// 
-			this.radLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.radLabel3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel3.Location = new System.Drawing.Point(20, 177);
-			this.radLabel3.Name = "radLabel3";
-			this.radLabel3.Size = new System.Drawing.Size(71, 19);
-			this.radLabel3.TabIndex = 54;
-			this.radLabel3.Text = "Username:";
-			this.radLabel3.ThemeName = "Crystal";
-			// 
 			// radLabel7
 			// 
 			this.radLabel7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -489,24 +444,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtEmployeeName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtEmployeeName.Location = new System.Drawing.Point(144, 131);
+			this.txtEmployeeName.Location = new System.Drawing.Point(143, 228);
 			this.txtEmployeeName.Name = "txtEmployeeName";
 			this.txtEmployeeName.Size = new System.Drawing.Size(280, 23);
 			this.txtEmployeeName.TabIndex = 65;
 			this.txtEmployeeName.ThemeName = "Crystal";
-			// 
-			// radLabel4
-			// 
-			this.radLabel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.radLabel4.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel4.Location = new System.Drawing.Point(22, 221);
-			this.radLabel4.Name = "radLabel4";
-			this.radLabel4.Size = new System.Drawing.Size(69, 19);
-			this.radLabel4.TabIndex = 55;
-			this.radLabel4.Text = "Password:";
-			this.radLabel4.ThemeName = "Crystal";
 			// 
 			// radLabel6
 			// 
@@ -520,18 +462,6 @@
 			this.radLabel6.TabIndex = 57;
 			this.radLabel6.Text = "User Access";
 			this.radLabel6.ThemeName = "Crystal";
-			// 
-			// txtPassword
-			// 
-			this.txtPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtPassword.Location = new System.Drawing.Point(144, 223);
-			this.txtPassword.Name = "txtPassword";
-			this.txtPassword.Size = new System.Drawing.Size(211, 23);
-			this.txtPassword.TabIndex = 67;
-			this.txtPassword.ThemeName = "Crystal";
 			// 
 			// radGroupBox1
 			// 
@@ -640,6 +570,74 @@
 			this.dgEmployeeInfo.ThemeName = "Crystal";
 			this.dgEmployeeInfo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgEmployeeInfo_MouseDoubleClick);
 			// 
+			// lblResult
+			// 
+			this.lblResult.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblResult.ForeColor = System.Drawing.Color.Red;
+			this.lblResult.Location = new System.Drawing.Point(146, 160);
+			this.lblResult.Name = "lblResult";
+			this.lblResult.Size = new System.Drawing.Size(74, 19);
+			this.lblResult.TabIndex = 78;
+			this.lblResult.Text = "radLabel12";
+			this.lblResult.ThemeName = "Crystal";
+			// 
+			// txtUsername
+			// 
+			this.txtUsername.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtUsername.Location = new System.Drawing.Point(143, 131);
+			this.txtUsername.Name = "txtUsername";
+			this.txtUsername.Size = new System.Drawing.Size(280, 23);
+			this.txtUsername.TabIndex = 83;
+			this.txtUsername.ThemeName = "Crystal";
+			// 
+			// btnResetPassword
+			// 
+			this.btnResetPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnResetPassword.Location = new System.Drawing.Point(142, 185);
+			this.btnResetPassword.Name = "btnResetPassword";
+			this.btnResetPassword.Size = new System.Drawing.Size(281, 33);
+			this.btnResetPassword.TabIndex = 79;
+			this.btnResetPassword.Text = "&Reset Password";
+			this.btnResetPassword.ThemeName = "Crystal";
+			// 
+			// radLabel3
+			// 
+			this.radLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.radLabel3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.radLabel3.Location = new System.Drawing.Point(19, 131);
+			this.radLabel3.Name = "radLabel3";
+			this.radLabel3.Size = new System.Drawing.Size(71, 19);
+			this.radLabel3.TabIndex = 80;
+			this.radLabel3.Text = "Username:";
+			this.radLabel3.ThemeName = "Crystal";
+			// 
+			// radLabel4
+			// 
+			this.radLabel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.radLabel4.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.radLabel4.Location = new System.Drawing.Point(21, 188);
+			this.radLabel4.Name = "radLabel4";
+			this.radLabel4.Size = new System.Drawing.Size(69, 19);
+			this.radLabel4.TabIndex = 81;
+			this.radLabel4.Text = "Password:";
+			this.radLabel4.ThemeName = "Crystal";
+			// 
+			// txtPassword
+			// 
+			this.txtPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtPassword.Location = new System.Drawing.Point(143, 190);
+			this.txtPassword.Name = "txtPassword";
+			this.txtPassword.Size = new System.Drawing.Size(211, 23);
+			this.txtPassword.TabIndex = 82;
+			this.txtPassword.ThemeName = "Crystal";
+			// 
 			// frmUserManagement
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -657,13 +655,10 @@
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
 			this.radPanel1.ResumeLayout(false);
 			this.radPanel1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.lblResult)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbUserDept)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel5)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel13)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtBVNo)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtUsername)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.btnResetPassword)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbUserAccess)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnUpdateSave)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
@@ -680,12 +675,9 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel10)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtWorkEmail)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel8)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel7)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtEmployeeName)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel6)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtPassword)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).EndInit();
 			this.radGroupBox1.ResumeLayout(false);
 			this.radGroupBox1.PerformLayout();
@@ -696,6 +688,12 @@
 			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgEmployeeInfo.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgEmployeeInfo)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblResult)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtUsername)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.btnResetPassword)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtPassword)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 
@@ -710,9 +708,7 @@
 		private Telerik.WinControls.UI.RadLabel radLabel2;
 		private Telerik.WinControls.UI.RadLabel radLabel10;
 		private Telerik.WinControls.UI.RadLabel radLabel8;
-		private Telerik.WinControls.UI.RadLabel radLabel3;
 		private Telerik.WinControls.UI.RadLabel radLabel7;
-		private Telerik.WinControls.UI.RadLabel radLabel4;
 		private Telerik.WinControls.UI.RadLabel radLabel6;
 		private Telerik.WinControls.Themes.CrystalTheme crystalTheme1;
 		private Telerik.WinControls.UI.RadGroupBox radGroupBox1;
@@ -726,13 +722,10 @@
 		public Telerik.WinControls.UI.RadDropDownList cmbOffice;
 		public Telerik.WinControls.UI.RadTextBox txtWorkEmail;
 		public Telerik.WinControls.UI.RadTextBox txtEmployeeName;
-		public Telerik.WinControls.UI.RadTextBox txtPassword;
 		public Telerik.WinControls.UI.RadDropDownList cmbUserAccess;
 		public Telerik.WinControls.UI.RadDropDownList cmbPosition;
 		public Telerik.WinControls.UI.RadDropDownList cmbUserStatus;
-		public Telerik.WinControls.UI.RadButton btnResetPassword;
 		public Telerik.WinControls.UI.RadGridView dgEmployeeInfo;
-		public Telerik.WinControls.UI.RadTextBox txtUsername;
 		private Telerik.WinControls.UI.RadTextBox txtSearch;
 		private Telerik.WinControls.UI.RadLabel radLabel11;
 		private Telerik.WinControls.UI.RadDropDownList cmbEmployeeStat;
@@ -742,5 +735,10 @@
 		public Telerik.WinControls.UI.RadDropDownList cmbUserDept;
 		private Telerik.WinControls.UI.RadLabel radLabel5;
 		private Telerik.WinControls.UI.RadLabel lblResult;
+		public Telerik.WinControls.UI.RadTextBox txtUsername;
+		public Telerik.WinControls.UI.RadButton btnResetPassword;
+		private Telerik.WinControls.UI.RadLabel radLabel3;
+		private Telerik.WinControls.UI.RadLabel radLabel4;
+		public Telerik.WinControls.UI.RadTextBox txtPassword;
 	}
 }

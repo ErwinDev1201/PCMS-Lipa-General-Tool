@@ -85,7 +85,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 			modleave.dtpStartdate.Text = DateTime.Now.ToString();
 			modleave.txtEmpID.Text = empID;
 			modleave.GetDBListID();
-			leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
+
+			//string empID = modLeave.txtEmpID.Text;
+			string employeeName = modleave.txtEmployeeName.Text;
+			string position = modleave.txtPosition.Text;
+			string empStat = modleave.txtEmploymentStatus.Text;
+			string empName = EmpName;
+
+			leave.FillUpSupportLeaveForm(empID, ref position, ref empStat, empName);
+
+			modleave.txtEmployeeName.Text = employeeName;
+			modleave.txtPosition.Text = position;
+			modleave.txtEmploymentStatus.Text = empStat;
+			//leave.FillUpSupportLeaveForm(modLeave.txtEmpI
+			//leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
 			modleave.ShowDialog();
 			ShowLeaveList();
 
@@ -107,61 +120,226 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 		}
 
+		//private void PopulateLeaveDetails(RadGridView dgLeave)
+		//{
+		//	if (dgLeave.SelectedRows.Count == 0)
+		//	{
+		//		MessageBox.Show("Please select a leave entry from the grid.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+		//		return;
+		//	}
+		//
+		//	var modleave = new frmModLeave();
+		//	// Extract selected Leave ID
+		//	var selectedRow = dgLeave.SelectedRows[0];
+		//	string selectedLeaveID = selectedRow.Cells["Leave ID"].Value.ToString();
+		//
+		//	// Output variables
+		//
+		//	try
+		//	{
+		//		// Call FillUpLeaveFields to retrieve data
+		//		leave.FillUpLeaveFields(
+		//			out string leaveID,
+		//			out string employeeID,
+		//			out string employeeName,
+		//			out DateTime? startDate,
+		//			out DateTime? endDate,
+		//			out string reason,
+		//			out bool isWithPay,
+		//			out string leaveType,
+		//			out string approvalStatus,
+		//			out string remarks,
+		//			selectedLeaveID);
+		//
+		//		// Populate Telerik controls
+		//		modleave.lblLeaveID.Text = leaveID;
+		//		modleave.txtEmpID.Text = employeeID;
+		//		modleave.txtEmployeeName.Text = employeeName;
+		//
+		//		if (startDate.HasValue)
+		//			modleave.dtpStartdate.Value = startDate.Value;
+		//		else
+		//			modleave.dtpStartdate.ResetText();
+		//
+		//		if (endDate.HasValue)
+		//			modleave.dtpEndDate.Value = endDate.Value;
+		//		else
+		//			modleave.dtpEndDate.ResetText();
+		//
+		//		modleave.txtReason.Text = reason;
+		//		modleave.cmbApproval.Text = approvalStatus;
+		//		modleave.txtRemarks.Text = remarks;
+		//
+		//		// Set radio buttons
+		//		modleave.rdoWPay.IsChecked = isWithPay;
+		//		modleave.rdoWOPay.IsChecked = !isWithPay;
+		//
+		//		// Display leave type
+		//		modleave.rdoSick.IsChecked = leaveType == "Sick";
+		//		modleave.rdoVacation.IsChecked = leaveType == "Vacation";
+		//		modleave.rdoPaternity.IsChecked = leaveType == "Paternity";
+		//		modleave.rdoMaternity.IsChecked = leaveType == "Maternity";
+		//		modleave.rdoBirthday.IsChecked = leaveType == "Birthday";
+		//		modleave.rdoBereavement.IsChecked = leaveType == "Bereavement";
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		MessageBox.Show($"Error while populating leave details: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		//	}
+		//}
+
+
 		private void dgLeave_DoubleClick(object sender, EventArgs e)
 		{
-			var modLeave = new frmModLeave
+			
+			if (dgLeave.SelectedRows.Count == 0)
 			{
-				txtEmpID = { Text = empID }
-			};
-
-			leave.FillUpLeaveFields(
-				dgLeave,
-				modLeave.lblLeaveID,
-				modLeave.txtEmpID,
-				modLeave.txtEmployeeName,
-				modLeave.dtpStartdate,
-				modLeave.dtpEndDate,
-				modLeave.txtReason,
-				modLeave.rdoWPay,
-				modLeave.rdoWOPay,
-				modLeave.rdoSick,
-				modLeave.rdoVacation,
-				modLeave.rdoPaternity,
-				modLeave.rdoMaternity,
-				modLeave.rdoBirthday,
-				modLeave.rdoBereavement,
-				modLeave.cmbApproval,
-				modLeave.txtRemarks,
-				EmpName
-			);
-			leave.FillUpSupportLeaveForm(modLeave.txtEmpID.Text, modLeave.txtEmployeeName.Text, modLeave.txtPosition.Text, modLeave.txtEmploymentStatus.Text, EmpName);
-
-
-			if (accessLevel is "User" or "Power User")
-			{
-				modLeave.ReadOnlyAccess();
+				MessageBox.Show("Please select a leave entry from the grid.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
 			}
-			else
+
+
+			var modleave = new frmModLeave();// Extract selected Leave ID
+			var selectedRow = dgLeave.SelectedRows[0];
+			string selectedLeaveID = selectedRow.Cells["Leave ID"].Value.ToString();
+
+			// Output variables
+
+			try
 			{
-				if (accessLevel == "Management")
+				// Call FillUpLeaveFields to retrieve data
+				leave.FillUpLeaveFields(
+					//string leaveID,
+					out string employeeID,
+					out string employeeName,
+					out DateTime? startDate,
+					out DateTime? endDate,
+					out string reason,
+					out bool isWithPay,
+					out string leaveType,
+					out string approvalStatus,
+					out string remarks,
+					selectedLeaveID,
+					EmpName);
+
+				// Populate Telerik controls
+				modleave.lblLeaveID.Text = selectedLeaveID;
+				modleave.txtEmpID.Text = employeeID;
+				modleave.txtEmployeeName.Text = employeeName;
+
+				if (startDate.HasValue)
+					modleave.dtpStartdate.Value = startDate.Value;
+				else
+					modleave.dtpStartdate.ResetText();
+
+				if (endDate.HasValue)
+					modleave.dtpEndDate.Value = endDate.Value;
+				else
+					modleave.dtpEndDate.ResetText();
+
+				modleave.txtReason.Text = reason;
+				modleave.cmbApproval.Text = approvalStatus;
+				modleave.txtRemarks.Text = remarks;
+
+				// Set radio buttons
+				modleave.rdoWPay.IsChecked = isWithPay;
+				modleave.rdoWOPay.IsChecked = !isWithPay;
+
+				// Display leave type
+				modleave.rdoSick.IsChecked = leaveType == "Sick";
+				modleave.rdoVacation.IsChecked = leaveType == "Vacation";
+				modleave.rdoPaternity.IsChecked = leaveType == "Paternity";
+				modleave.rdoMaternity.IsChecked = leaveType == "Maternity";
+				modleave.rdoBirthday.IsChecked = leaveType == "Birthday";
+				modleave.rdoBereavement.IsChecked = leaveType == "Bereavement";
+
+				if (accessLevel is "User" or "Power User")
 				{
-					modLeave.ReadOnlyAccess();
-					modLeave.btnSaveUpdate.Visible = true;
+					modleave.ReadOnlyAccess();
+				}
+				else
+				{
+					if (accessLevel == "Management")
+					{
+						modleave.ReadOnlyAccess();
+						modleave.btnSaveUpdate.Visible = true;
+					}
+
+					modleave.grpApprovalStatus.Enabled = true;
+					modleave.btnSaveUpdate.Text = "Update";
 				}
 
-				modLeave.grpApprovalStatus.Enabled = true;
-				modLeave.btnSaveUpdate.Text = "Update";
+				string position = modleave.txtPosition.Text;
+				string empStat = modleave.txtEmploymentStatus.Text;
+				string empName = EmpName;
+				Console.WriteLine(empStat);
+				
+				leave.FillUpSupportLeaveForm(employeeID, ref position, ref empStat, empName);
+
+				//modLeave.txtEmployeeName.Text = employeeName;
+				modleave.txtPosition.Text = position;
+				modleave.txtEmploymentStatus.Text = empStat;
+
+				modleave.EmpName = EmpName;
+				modleave.ShowDialog();
+
+				if (accessLevel is "User" or "Power User")
+				{
+					cmbFilterName.Text = EmpName;
+				}
+
+				ShowLeaveList();
 			}
-
-			modLeave.EmpName = EmpName;
-			modLeave.ShowDialog();
-
-			if (accessLevel is "User" or "Power User")
+			catch (Exception ex)
 			{
-				cmbFilterName.Text = EmpName;
+				task.LogError("dgLeave_DoubleClick", EmpName, "frmLeave", selectedLeaveID, ex);
 			}
 
-			ShowLeaveList();
+
+			//var modLeave = new frmModLeave
+			//{
+			//	txtEmpID = { Text = empID }
+			//};
+			//
+			//leave.FillUpLeaveFields(
+			//	dgLeave,
+			//	modLeave.lblLeaveID,
+			//	modLeave.txtEmpID,
+			//	modLeave.txtEmployeeName,
+			//	modLeave.dtpStartdate,
+			//	modLeave.dtpEndDate,
+			//	modLeave.txtReason,
+			//	modLeave.rdoWPay,
+			//	modLeave.rdoWOPay,
+			//	modLeave.rdoSick,
+			//	modLeave.rdoVacation,
+			//	modLeave.rdoPaternity,
+			//	modLeave.rdoMaternity,
+			//	modLeave.rdoBirthday,
+			//	modLeave.rdoBereavement,
+			//	modLeave.cmbApproval,
+			//	modLeave.txtRemarks,
+			//	EmpName
+			//);
+			//
+			//Console.WriteLine(empID);
+			//
+			////string empID = modLeave.txtEmpID.Text;
+			////string employeeName = modLeave.txtEmployeeName.Text;
+			//string position = modLeave.txtPosition.Text;
+			//string empStat = modLeave.txtEmploymentStatus.Text;
+			//string empName = EmpName;
+			//Console.WriteLine(empStat);
+			//
+			//leave.FillUpSupportLeaveForm(empID, ref position, ref empStat, empName);
+			//
+			////modLeave.txtEmployeeName.Text = employeeName;
+			//modLeave.txtPosition.Text = position;
+			//modLeave.txtEmploymentStatus.Text = empStat;
+			////leave.FillUpSupportLeaveForm(modLeave.txtEmpID.Text, modLeave.txtEmployeeName.Text, modLeave.txtPosition.Text, modLeave.txtEmploymentStatus.Text, EmpName);
+			//
+
+
 			//if (accessLevel == "User" || accessLevel == "Power User")
 			//{
 			//	try

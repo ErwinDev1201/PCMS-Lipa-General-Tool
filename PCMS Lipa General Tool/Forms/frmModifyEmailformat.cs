@@ -7,7 +7,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmModifyEmailformat : Telerik.WinControls.UI.RadForm
 	{
-		private const string Sql = @"SELECT MAX(NO+1) FROM [ADJUSTERS EMAIL FORMAT]";
 		private readonly CommonTask task = new();
 		private readonly EmailFormatDB emailDB = new();
 		//private readonly MailSender mailSender = new MailSender();
@@ -24,7 +23,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "EmailFormatSeq", txtIntID.Text, null, "EF-");
+			string nextSequence = task.GetSequenceNo("EmailFormatSeq", "EF-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtIntID.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetDBID", empName, "frmModifyEmailFormat", "N/A", ex);
+			}
+			//task.GetSequenceNo("textbox", "EmailFormatSeq", txtIntID.Text, null, "EF-");
 		}
 
 		private void ClearData()

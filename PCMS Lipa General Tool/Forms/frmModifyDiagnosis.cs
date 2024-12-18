@@ -23,7 +23,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "DiagSeq", txtIntID.Text, null, "DX-");
+			string nextSequence = task.GetSequenceNo("DiagSeq", "DX-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtIntID.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetDBID", empName, "frmDiagnosis", "N/A", ex);
+			}
+			/////task.GetSequenceNo("textbox", "DiagSeq", txtIntID.Text, null, "DX-");
 		}
 
 		private void ClearData()

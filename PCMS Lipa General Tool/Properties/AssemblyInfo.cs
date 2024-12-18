@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PCMS Lipa General Tool")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Developed by Erwin Alcantara")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Primary Care Management")]
 [assembly: AssemblyProduct("PCMS_Lipa_General_Tool")]
 [assembly: AssemblyCopyright("Copyright ©  2024")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Yourmee")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.5.4.3")]
-[assembly: AssemblyFileVersion("0.5.4.3")]
+[assembly: AssemblyVersion("0.5.4.4")]
+[assembly: AssemblyFileVersion("0.5.4.4")]

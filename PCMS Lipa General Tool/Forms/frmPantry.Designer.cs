@@ -33,6 +33,7 @@
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
 			this.grpItems = new Telerik.WinControls.UI.RadGroupBox();
+			this.txtSummary = new Telerik.WinControls.UI.RadTextBoxControl();
 			this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
 			this.txtRemarks = new Telerik.WinControls.UI.RadTextBoxControl();
 			this.cmbItemEmpList = new Telerik.WinControls.UI.RadDropDownList();
@@ -66,11 +67,11 @@
 			this.radLabelElement1 = new Telerik.WinControls.UI.RadLabelElement();
 			this.lblstatus = new Telerik.WinControls.UI.RadLabelElement();
 			this.radThemeManager1 = new Telerik.WinControls.RadThemeManager();
-			this.txtSummary = new Telerik.WinControls.UI.RadTextBoxControl();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.grpItems)).BeginInit();
 			this.grpItems.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.txtSummary)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtRemarks)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbItemEmpList)).BeginInit();
@@ -104,7 +105,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel6)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dtpFrom)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtSummary)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -151,6 +151,21 @@
 			this.grpItems.TabIndex = 0;
 			this.grpItems.Text = "Add Items";
 			this.grpItems.ThemeName = "Crystal";
+			// 
+			// txtSummary
+			// 
+			this.txtSummary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtSummary.Font = new System.Drawing.Font("Roboto Medium", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtSummary.IsReadOnly = true;
+			this.txtSummary.Location = new System.Drawing.Point(34, 322);
+			this.txtSummary.Multiline = true;
+			this.txtSummary.Name = "txtSummary";
+			this.txtSummary.Size = new System.Drawing.Size(354, 126);
+			this.txtSummary.TabIndex = 32;
+			this.txtSummary.Text = "dfasdf";
+			this.txtSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.txtSummary.ThemeName = "Crystal";
 			// 
 			// radLabel4
 			// 
@@ -528,27 +543,12 @@
 			// 
 			this.lblstatus.AutoSize = false;
 			this.lblstatus.AutoSizeMode = Telerik.WinControls.RadAutoSizeMode.FitToAvailableSize;
-			this.lblstatus.Bounds = new System.Drawing.Rectangle(0, 0, 1208, 18);
+			this.lblstatus.Bounds = new System.Drawing.Rectangle(0, 0, 1000, 18);
 			this.lblstatus.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblstatus.Name = "lblstatus";
 			this.radStatusStrip1.SetSpring(this.lblstatus, true);
 			this.lblstatus.Text = "Readyasalajsdflajsdflasdjkf;alsdkfjasdfasdfadsfads";
 			this.lblstatus.TextWrap = true;
-			// 
-			// txtSummary
-			// 
-			this.txtSummary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtSummary.Font = new System.Drawing.Font("Roboto Medium", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSummary.IsReadOnly = true;
-			this.txtSummary.Location = new System.Drawing.Point(34, 322);
-			this.txtSummary.Multiline = true;
-			this.txtSummary.Name = "txtSummary";
-			this.txtSummary.Size = new System.Drawing.Size(354, 126);
-			this.txtSummary.TabIndex = 32;
-			this.txtSummary.Text = "dfasdf";
-			this.txtSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.txtSummary.ThemeName = "Crystal";
 			// 
 			// frmPantry
 			// 
@@ -572,6 +572,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.grpItems)).EndInit();
 			this.grpItems.ResumeLayout(false);
 			this.grpItems.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.txtSummary)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtRemarks)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbItemEmpList)).EndInit();
@@ -607,7 +608,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel6)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dtpFrom)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtSummary)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

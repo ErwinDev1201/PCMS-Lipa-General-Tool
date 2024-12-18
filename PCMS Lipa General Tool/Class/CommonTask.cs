@@ -234,6 +234,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			string emailAddress;
 			string mailSubject;
 			string ccEmail1;
+			string machineName;
 			//string ccEmail2;
 
 			try
@@ -243,10 +244,19 @@ namespace PCMS_Lipa_General_Tool.Class
 				//emailAddress = "Edimson@pcmsbilling.net";
 				//ccEmail1 = "Angeline@pcmsbilling.net";
 				//ccEmail2 = "Shalah@pcmsbilling.net";
-
+				machineName = Environment.MachineName;
+				if (machineName == "ERWIN-PC")
+				{
+					emailAddress = "Edimson@yopmail.com";
+					ccEmail1 = "Angeline@yopmail.com";
+				}
+				else
+				{
+					emailAddress = "Edimson@pcmsbilling.net";
+					ccEmail1 = "Angeline@pcmsbilling.net";
+				}
 				//yopmail use for testing to avoid sending spam/test email in activate account and comment when building release
-				emailAddress = "Edimson@yopmail.com";
-				ccEmail1 = "Angeline@yopmail.com";
+
 				//ccEmail2 = "Shalah@yopmail.com";
 
 				if (request == "file")
@@ -661,9 +671,8 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 		}
 
-		public void GetSequenceNo(string inputType, string sequenceName, string txtnextSequence, string lblnextSequnce, string preID)
+		public string GetSequenceNo(string sequenceName, string preID)
 		{
-			//int Price;
 			var query = "SELECT NEXT VALUE FOR " + sequenceName;
 			var con = new SqlConnection(_dbConnection);
 			try
@@ -671,38 +680,104 @@ WHERE USERNAME LIKE @itemToSearch";
 				con.Open();
 				SqlCommand cmd = new(query, con);
 				SqlDataReader reader = cmd.ExecuteReader();
-				while (reader.Read())
+
+				if (reader.Read())
 				{
 					int currSeq = reader.GetInt32(0);
-					if (inputType == "label")
-					{
-						lblnextSequnce = preID + (currSeq + 1).ToString();
-					}
-					else
-					{
-						txtnextSequence = preID + (currSeq + 1).ToString();
-					}
-					//nextSequence.Text = preID + currSeq;// + ToString();
+					string result = preID + (currSeq + 1).ToString();
+
+					// Return the formatted sequence string
+					return result;
 				}
-				con.Close();
+
+				// If no sequence value is found, return null or an empty string
+				return null;
 			}
 			catch (Exception ex)
 			{
-				LogError($"GetSequenceNo", "N/A", "CommonTask", "N/A", ex);
+				LogError("GetSequenceNo", "N/A", "CommonTask", "N/A", ex);
+				return null; // Return null in case of an error
+			}
+			finally
+			{
+				con.Close();
 			}
 		}
 
+		//public void GetSequenceNo(string inputType, string sequenceName, string txtnextSequence, string lblnextSequnce, string preID)
+		//{
+		//	//int Price;
+		//	var query = "SELECT NEXT VALUE FOR " + sequenceName;
+		//	var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		con.Open();
+		//		SqlCommand cmd = new(query, con);
+		//		SqlDataReader reader = cmd.ExecuteReader();
+		//		while (reader.Read())
+		//		{
+		//			int currSeq = reader.GetInt32(0);
+		//			if (inputType == "label")
+		//			{
+		//				lblnextSequnce = preID + (currSeq + 1).ToString();
+		//			}
+		//			else
+		//			{
+		//				txtnextSequence = preID + (currSeq + 1).ToString();
+		//			}
+		//			//nextSequence.Text = preID + currSeq;// + ToString();
+		//		}
+		//		con.Close();
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		LogError($"GetSequenceNo", "N/A", "CommonTask", "N/A", ex);
+		//	}
+		//}
+		//
 
-		public void ExportTabletoExcel(RadGridView dgGridView, string filename, string empName)
+
+		//public void ExportTabletoExcel(RadGridView dgGridView, string filename, string empName)
+		//{
+		//	try
+		//	{
+		//		// Path to save the file on the desktop
+		//		string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+		//		string filePath = Path.Combine(desktopPath, filename + ".xlsx");
+		//
+		//		// Convert RadGridView data to a DataTable
+		//		DataTable dataTable = GetDataTableFromRadGridView(dgGridView);
+		//
+		//		// Export to Excel using ClosedXML
+		//		using (XLWorkbook workbook = new())
+		//		{
+		//			workbook.Worksheets.Add(dataTable, filename);
+		//			workbook.SaveAs(filePath);
+		//		}
+		//
+		//		// Notify the user
+		//		RadMessageBox.Show($"Export successful! File saved to:\n{filePath}", "Export Complete", MessageBoxButtons.OK, RadMessageIcon.Info);
+		//
+		//		// Open the file after export (optional)
+		//		if (RadMessageBox.Show("Would you like to open the file?", "Open File", MessageBoxButtons.YesNo, RadMessageIcon.Question) == DialogResult.Yes)
+		//		{
+		//			System.Diagnostics.Process.Start(filePath);
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		LogError($"ExportTabletoExcel", empName, "CommonTask", "N/A", ex);
+		//		RadMessageBox.Show($"An error occurred during export:\n{ex.Message}", "Export Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+		//	}
+		//}
+
+		public void ExportTableToExcel(DataTable dataTable, string filename, string empName)
 		{
 			try
 			{
 				// Path to save the file on the desktop
 				string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-				string filePath = Path.Combine(desktopPath, filename + ".xlsx");
-
-				// Convert RadGridView data to a DataTable
-				DataTable dataTable = GetDataTableFromRadGridView(dgGridView);
+				string filePath = Path.Combine(desktopPath, $"{filename}.xlsx");
 
 				// Export to Excel using ClosedXML
 				using (XLWorkbook workbook = new())
@@ -711,50 +786,18 @@ WHERE USERNAME LIKE @itemToSearch";
 					workbook.SaveAs(filePath);
 				}
 
-				// Notify the user
-				RadMessageBox.Show($"Export successful! File saved to:\n{filePath}", "Export Complete", MessageBoxButtons.OK, RadMessageIcon.Info);
-
-				// Open the file after export (optional)
-				if (RadMessageBox.Show("Would you like to open the file?", "Open File", MessageBoxButtons.YesNo, RadMessageIcon.Question) == DialogResult.Yes)
-				{
-					System.Diagnostics.Process.Start(filePath);
-				}
+				// Log success
+				Console.WriteLine($"Export successful! File saved to: {filePath}");
 			}
 			catch (Exception ex)
 			{
-				LogError($"ExportTabletoExcel", empName, "CommonTask", "N/A", ex);
-				RadMessageBox.Show($"An error occurred during export:\n{ex.Message}", "Export Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+				LogError("ExportTableToExcel", empName, "CommonTask", "N/A", ex);
+				throw new Exception("An error occurred during the export process.", ex);
 			}
 		}
 
-		private DataTable GetDataTableFromRadGridView(RadGridView gridView)
-		{
-			DataTable dataTable = new();
 
-			foreach (GridViewColumn column in gridView.Columns)
-			{
-				if (column.IsVisible)
-				{
-					dataTable.Columns.Add(column.HeaderText);
-				}
-			}
-
-			// Add rows
-			foreach (GridViewRowInfo row in gridView.Rows)
-			{
-				DataRow dataRow = dataTable.NewRow();
-				for (int i = 0; i < gridView.Columns.Count; i++)
-				{
-					if (gridView.Columns[i].IsVisible)
-					{
-						dataRow[i] = row.Cells[i].Value ?? DBNull.Value;
-					}
-				}
-				dataTable.Rows.Add(dataRow);
-			}
-
-			return dataTable;
-		}
+		
 
 
 		public void LogError(string processName, string empName, string module, string ID, Exception ex)

@@ -57,7 +57,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "BundleCodeSeq", txtIntID.Text, null, "TX-");
+			string nextSequence = task.GetSequenceNo("BundleCodeSeq", "PROV-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtIntID.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetProvID", empName, "frmModBundleCodes", "N/A", ex);
+			}
+			//task.GetSequenceNo("textbox", "BundleCodeSeq", txtIntID.Text, null, "TX-");
 		}
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)

@@ -115,7 +115,21 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void GetDBListID()
 		{
-			task.GetSequenceNo("textbox", "PantryProdSeq", txtIntID.Text, null, "PD -");
+
+			string nextSequence = task.GetSequenceNo("PantryProdSeq", "PD-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtIntID.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetDBListID", empName, "frmManageProduct", "N/A", ex);
+			}
+			///task.GetSequenceNo("textbox", "PantryProdSeq", txtIntID.Text, null, "PD -");
 		}
 
 		private void btnSave_Click(object sender, EventArgs e)

@@ -118,7 +118,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void GetProvID()
 		{
-			task.GetSequenceNo("textbox", "ProvInfoSeq", txtNoProv.Text, null, "PROV-");
+			string nextSequence = task.GetSequenceNo("ProvInfoSeq", "PROV-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtNoProv.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetProvID", EmpName, "fromProvider", "N/A", ex);
+			}
+			//task.GetSequenceNo("textbox", "ProvInfoSeq", txtNoProv.Text, null, "PROV-");
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)

@@ -3,6 +3,7 @@ using PCMS_Lipa_General_Tool.Forms;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -523,24 +524,40 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		private void mnuUserProfile_Click(object sender, EventArgs e)
 		{
 			var userProfile = new frmUserProfile();
-			var queryUserProfile = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [USER ACCESS], POSITION, [RDWEB USERNAME], [RDWEB PASSWORD], [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [Broadvoice No.], [DATE OF BIRTH], [Discord Username], [Discord Password] FROM [User Information] WHERE USERNAME='" + userName + "'";
-			user.FillUserProfile(
-				userProfile.txtIntID.Text,
-				userProfile.txtEmpName.Text,
-				userProfile.txtUsername.Text,
-				userProfile.txtUserAccess.Text,
-				userProfile.txtUserPosition.Text,
-				userProfile.txtRDWebUsername.Text,
-				userProfile.txtRDWebPassword.Text,
-				userProfile.txtLytecUsername.Text,
-				userProfile.txtLytecPassword.Text,
-				userProfile.txtWorkEmail.Text,
-				userProfile.txtBVNo.Text,
-				userProfile.txtDateofBirth.Text,
-				userProfile.txtDiscordUsername.Text,
-				userProfile.txtDiscordPassword.Text, EmpName);
-			userProfile.Text = "User Profile Information";
+			user.FillUserProfile
+				(
+				employeeID,
+				out string txtName,
+	out string txtUsername,
+	out string cmbLevel,
+	out string cmbRole,
+	out string txtRDWebUsername,
+	out string txtRDWebPassword,
+	out string txtLytecUsername,
+	out string txtLytecPassword,
+	out string txtEmail,
+	out string txtBroadvoice,
+	out string txtDateOfBirth,
+	out string dcUsername,
+	out string dcPassword,
+	EmpName);
+
+			userProfile.txtIntID.Text = employeeID.ToString();
+			userProfile.txtEmpName.Text = txtName;
+			userProfile.txtUsername.Text = txtUsername;
+			userProfile.txtUserAccess.Text = cmbLevel;
+			userProfile.txtUserPosition.Text = cmbRole;
+			userProfile.txtRDWebUsername.Text = txtRDWebUsername;
+			userProfile.txtRDWebPassword.Text = txtRDWebPassword;
+			userProfile.txtLytecUsername.Text = txtLytecUsername;
+			userProfile.txtLytecPassword.Text = txtLytecPassword;
+			userProfile.txtWorkEmail.Text = txtEmail;
+			userProfile.txtBVNo.Text = txtBroadvoice;
+			userProfile.txtDateofBirth.Text = txtDateOfBirth;
+			userProfile.txtDiscordUsername.Text = dcUsername;
+			userProfile.txtDiscordPassword.Text = dcPassword;
 			userProfile.empName = EmpName;
+			userProfile.Text = "My Profile";
 			userProfile.ShowDialog();
 		}
 
@@ -794,7 +811,17 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			modleave.dtpStartdate.Text = DateTime.Now.ToString();
 			modleave.txtEmpID.Text = employeeID;
 			modleave.GetDBListID();
-			leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
+			string position = modleave.txtPosition.Text;
+			string empStat = modleave.txtEmploymentStatus.Text;
+			//string empName = EmpName;
+
+			leave.FillUpSupportLeaveForm(employeeID, ref position, ref empStat, EmpName);
+
+			modleave.txtEmployeeName.Text = EmpName;
+			modleave.txtPosition.Text = position;
+			modleave.txtEmploymentStatus.Text = empStat;
+			modleave.dtpStartdate.Focus();
+			///leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
 			modleave.ShowDialog();
 		}
 
@@ -821,7 +848,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 				case "Administrator":
 				case "Programmer":
 					leave.cmbFilterName.Enabled = true;
-					leave.cmbFilterName.Text = EmpName;
+					//leave.cmbFilterName.Text = EmpName;
 					leave.cmbFilterStatus.Text = "FOR APPROVAL";
 					leave.ShowLeaveList(); 
 					break;
@@ -900,7 +927,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 				Text = "Assing Provider to Employee",
 				empName = EmpName,
 			};
-			assignProvider.GetDBID();
+			assignProvider.GetDBListID();
 			assignProvider.ShowDialog();
 
 		}
@@ -1044,7 +1071,56 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		private void btnExportExcel_Click(object sender, EventArgs e)
 		{
-			task.ExportTabletoExcel(dgallNotesView, "CollectorNotes-" + EmpName, EmpName);
+
+			try
+			{
+				// Convert RadGridView to DataTable
+				DataTable dataTable = GetDataTableFromRadGridView(dgallNotesView);
+
+				// Call the export method
+				task.ExportTableToExcel(dataTable, "Collector Notes", EmpName);
+
+				// Optionally notify the user and open the file
+				string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+				string filePath = Path.Combine(desktopPath, "EmployeeData.xlsx");
+
+				MessageBox.Show($"Export successful! File saved to:\n{filePath}", "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+				if (MessageBox.Show("Would you like to open the file?", "Open File", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+				{
+					System.Diagnostics.Process.Start(filePath);
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"An error occurred during export:\n{ex.Message}", "Export Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			//task.ExportTabletoExcel(dgallNotesView, "CollectorNotes-" + EmpName, EmpName);
+		}
+
+		public DataTable GetDataTableFromRadGridView(RadGridView gridView)
+		{
+			DataTable dataTable = new();
+
+			// Add columns
+			foreach (GridViewDataColumn column in gridView.Columns)
+			{
+				dataTable.Columns.Add(column.HeaderText, column.DataType);
+			}
+
+			// Add rows
+			foreach (GridViewRowInfo row in gridView.Rows)
+			{
+				if (!row.IsVisible) continue; // Skip hidden rows
+				DataRow dataRow = dataTable.NewRow();
+				foreach (GridViewDataColumn column in gridView.Columns)
+				{
+					dataRow[column.HeaderText] = row.Cells[column.Name].Value ?? DBNull.Value;
+				}
+				dataTable.Rows.Add(dataRow);
+			}
+
+			return dataTable;
 		}
 
 		private void dgCurrentNotes_MouseDoubleClick(object sender, MouseEventArgs e)

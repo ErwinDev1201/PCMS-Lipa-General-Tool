@@ -371,22 +371,39 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void mnuUseProfile_Click(object sender, EventArgs e)
 		{
-			var userProfile = new frmUserProfile();        
-			user.FillUserProfile(
-				userProfile.txtIntID.Text,
-				userProfile.txtEmpName.Text,
-				userProfile.txtUsername.Text,
-				userProfile.txtUserAccess.Text,
-				userProfile.txtUserPosition.Text,
-				userProfile.txtRDWebUsername.Text,
-				userProfile.txtRDWebPassword.Text,
-				userProfile.txtLytecUsername.Text,
-				userProfile.txtLytecPassword.Text,
-				userProfile.txtWorkEmail.Text,
-				userProfile.txtBVNo.Text,
-				userProfile.txtDateofBirth.Text,
-				userProfile.txtDiscordUsername.Text,
-				userProfile.txtDiscordPassword.Text, EmpName);
+			var userProfile = new frmUserProfile();      
+			user.FillUserProfile
+				(
+				employeeID,
+				out string txtName,
+	out string txtUsername,
+	out string cmbLevel,
+	out string cmbRole,
+	out string txtRDWebUsername,
+	out string txtRDWebPassword,
+	out string txtLytecUsername,
+	out string txtLytecPassword,
+	out string txtEmail,
+	out string txtBroadvoice,
+	out string txtDateOfBirth,
+	out string dcUsername,
+	out string dcPassword,
+	EmpName);
+
+			userProfile.txtIntID.Text = employeeID.ToString();
+			userProfile.txtEmpName.Text = txtName;
+			userProfile.txtUsername.Text = txtUsername;
+				userProfile.txtUserAccess.Text = cmbLevel;
+				userProfile.txtUserPosition.Text = cmbRole;
+			userProfile.txtRDWebUsername.Text = txtRDWebUsername;
+			userProfile.txtRDWebPassword.Text = txtRDWebPassword;
+			userProfile.txtLytecUsername.Text = txtLytecUsername;
+			userProfile.txtLytecPassword.Text = txtLytecPassword;
+			userProfile.txtWorkEmail.Text = txtEmail;
+			userProfile.txtBVNo.Text = txtBroadvoice;
+				userProfile.txtDateofBirth.Text = txtDateOfBirth;
+			userProfile.txtDiscordUsername.Text = dcUsername;
+			userProfile.txtDiscordPassword.Text = dcPassword;  
 			userProfile.empName = EmpName;
 			userProfile.Text = "My Profile";
 			userProfile.ShowDialog();
@@ -418,7 +435,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 			modleave.dtpStartdate.Text = DateTime.Now.ToString();
 			modleave.txtEmpID.Text = employeeID;
 			modleave.GetDBListID();
-			leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
+			string employeeName = modleave.txtEmployeeName.Text;
+			string position = modleave.txtPosition.Text;
+			string empStat = modleave.txtEmploymentStatus.Text;
+			string empName = EmpName;
+
+			leave.FillUpSupportLeaveForm(employeeID, ref position, ref empStat, empName);
+
+			modleave.txtEmployeeName.Text = employeeName;
+			modleave.txtPosition.Text = position;
+			modleave.txtEmploymentStatus.Text = empStat;
+			///leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
 			modleave.ShowDialog();
 		}
 

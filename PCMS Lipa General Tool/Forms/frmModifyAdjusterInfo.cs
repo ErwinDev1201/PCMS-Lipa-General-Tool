@@ -61,7 +61,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "AdjusterInfo", txtIntID.Text, null, "ADJ-");
+			string nextSequence = task.GetSequenceNo("AdjusterInfo", "ADJ-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtIntID.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetDBID", empName, "frmModifyAdjusterInfo", "N/A", ex);
+			}
+			////task.GetSequenceNo("textbox", "AdjusterInfo", txtIntID.Text, null, "ADJ-");
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)

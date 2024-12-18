@@ -57,7 +57,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "AttyInfo", txtIntID.Text, null, "ATTY-");
+			string nextSequence = task.GetSequenceNo("AttyInfo", "ATTY-0");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtIntID.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetDBID", empName, "frmAttorneyInformation", "N/A", ex);
+			}
+			//task.GetSequenceNo("textbox", "AttyInfo", txtIntID.Text, null, "ATTY-");
 		}
 
 

@@ -4,7 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
+using System.Data;
 using System.IO;
+using System.Threading.Tasks;
+using System.Web.Mail;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
@@ -15,14 +18,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmPantry : Telerik.WinControls.UI.RadForm
 	{
-		string emailAddress;
 		public string EmpName;
 		public string accessLevel;
-		private static readonly string dbBackupcoll = ConfigurationManager.AppSettings["StoragePath"];
+		//private static readonly string dbBackupcoll = ConfigurationManager.AppSettings["StoragePath"];
 		private readonly Pantry pantry = new();
 		private readonly CommonTask task = new();
 		private readonly User user = new();
-		readonly emailSender mailSender = new();
+		/// <summary>
+		///readonly emailSender mailSender = new();
+		/// </summary>
 
 
 		public frmPantry()
@@ -172,7 +176,21 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void GetDBListID()
 		{
-			task.GetSequenceNo("textbox", "PantryListSeq", txtIntID.Text, null, "PL-");
+			string nextSequence = task.GetSequenceNo("PantryListSeq", "PL-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtIntID.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetDBListID", EmpName, "frmPantry", "N/A", ex);
+			}
+
+			//task.GetSequenceNo("textbox", "PantryListSeq", txtIntID.Text, null, "PL-");
 		}
 
 		private void Clear()
@@ -426,49 +444,290 @@ of
 			dlgManageProduct.ShowDialog();
 		}
 
-		private void btnExport_Click(object sender, EventArgs e)
+		private void LoadExportXcel(out string filePath)
 		{
 			try
 			{
-				var dtpfrom = dtpFrom.Value;
-				var dtpto = dtpTo.Value;
-				var pathFile = dbBackupcoll;
+				// Convert RadGridView to DataTable
+				DataTable dataTable = GetDataTableFromRadGridView(dgPantryList);
+
+				// Generate a valid sheet name
+				string sheetName = GenerateValidSheetName($"Pantry List {dtpFrom.Value:MM.dd.yy}-{dtpTo.Value:MM.dd.yy}");
+
+				// Show sheetname
+				Console.WriteLine(sheetName);
+
+				// Call the export method with the validated sheet name
+				task.ExportTableToExcel(dataTable, sheetName, EmpName);
+
+				// Optionally notify the user and open the file
+				string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+				filePath = Path.Combine(desktopPath, $"{sheetName}.xlsx");
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"An error occurred during export:\n{ex.Message}", "Export Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				filePath = string.Empty; // Ensure filePath is assigned even on error
+			}
+			//try
+			//{
+			//	// Convert RadGridView to DataTable
+			//	DataTable dataTable = GetDataTableFromRadGridView(dgPantryList);
+			//	string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+			//	filePath = Path.Combine(desktopPath, $"Pantry List {dtpFrom.Value:yyyy-MM-dd} - {dtpTo.Value:yyyy-MM-dd}.xlsx");
+			//
+			//	// Call the export method
+			//		task.ExportTableToExcel(dataTable, $"Pantry List {dtpFrom.Value:yyyy-MM-dd} - {dtpTo.Value:yyyy-MM-dd}", EmpName);
+			//
+			//	// Optionally notify the user and open the file
+			//
+			//
+			//	// MessageBox or file open can be uncommented if needed
+			//}
+			//catch (Exception ex)
+			//{
+			//	MessageBox.Show($"An error occurred during export:\n{ex.Message}", "Export Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			//	filePath = string.Empty; // Ensure filePath is assigned even on error
+			//}
+		}   //
+
+		private string GenerateValidSheetName(string input)
+		{
+			// Replace invalid characters
+			string validSheetName = input;
+			char[] invalidChars = new[] { ':', '\\', '/', '?', '*', '[', ']' };
+			foreach (char invalidChar in invalidChars)
+			{
+				validSheetName = validSheetName.Replace(invalidChar.ToString(), "");
+			}
+
+			// Trim to 31 characters max
+			if (validSheetName.Length > 31)
+			{
+				validSheetName = validSheetName.Substring(0, 31);
+			}
+
+			return validSheetName;
+		}
+
+
+
+		public DataTable GetDataTableFromRadGridView(RadGridView gridView)
+		{
+			DataTable dataTable = new();
+
+			// Add columns
+			foreach (GridViewDataColumn column in gridView.Columns)
+			{
+				if (!string.IsNullOrEmpty(column.HeaderText))
+				{
+					dataTable.Columns.Add(column.HeaderText, column.DataType);
+				}
+			}
+
+			// Add rows
+			foreach (GridViewRowInfo row in gridView.Rows)
+			{
+				if (!row.IsVisible) continue; // Skip hidden rows
+
+				DataRow dataRow = dataTable.NewRow();
+				foreach (GridViewDataColumn column in gridView.Columns)
+				{
+					if (!string.IsNullOrEmpty(column.HeaderText) && dataTable.Columns.Contains(column.HeaderText))
+					{
+						dataRow[column.HeaderText] = row.Cells[column.Name]?.Value ?? DBNull.Value;
+					}
+				}
+				dataTable.Rows.Add(dataRow);
+			}
+
+			return dataTable;
+		}
+
+		private async void btnExport_Click(object sender, EventArgs e)
+		{
+			try
+			{
 				DisableAll();
 				lblstatus.Text = "Creating Spreadsheets and Collecting Data...";
-				string fileName = "Pantry List " + dtpfrom.ToString("MM.dd.yy") + "-" + dtpto.ToString("MM.dd.yy") + ".xls";
-				string mailAttachment = Path.Combine(pathFile, fileName);
-				task.ExportTabletoExcel(dgPantryList, fileName, EmpName);
-				System.Threading.Thread.Sleep(3000);
-				emailSender mail = new();
-				string mailContent = "Hi, \n\nAttached is the Extracted Pantry List from " + dtpfrom.ToShortDateString() + " - " + dtpto.ToShortDateString() + "\n\n Regards, \n System Administrator";
-				string mailSubject = "Pantry List from " + dtpfrom.ToShortDateString() + "-" + dtpto.ToShortDateString();
-				System.Threading.Thread.Sleep(3000);
+
+				await Task.Delay(3000); // Export data to Excel
+				LoadExportXcel(out string filePath);
+				if (string.IsNullOrEmpty(filePath)) throw new Exception("Failed to generate export file.");
+
+				await Task.Delay(3000);
 				lblstatus.Text = "Preparing Email Content and checking attachment...";
-				if (EmpName == "Erwin Alcantara")
-				{
-					emailAddress = "mr.erwinalcantara@gmail.com";
-					string mailSub = mailSubject;
-					System.Threading.Thread.Sleep(3000);
-					mail.SendEmail("yesAttach", mailContent, mailAttachment, mailSubject, emailAddress, "TM Pantry Store", null, null);
-				}
-				else
-				{
-					emailAddress = "edimson@pcmsbilling.net";
-					string mailSub = mailSubject;
-					System.Threading.Thread.Sleep(3000);
-					mail.SendEmail("yesAttach", mailContent, mailAttachment, mailSubject, emailAddress, "TM Pantry Store", null, null);
-				}
-				RadMessageBox.Show("Hi\n\n" +
-					"Email Sent was sent to " + emailAddress, "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
+				 // Simulate delay without freezing UI
+
+				string dtpFromValue = dtpFrom.Value.ToShortDateString();
+				string dtpToValue = dtpTo.Value.ToShortDateString();
+				string mailContent = $"Hi,\n\nAttached is the Extracted Pantry List from {dtpFromValue} - {dtpToValue}\n\nRegards,\nSystem Administrator";
+				string mailSubject = $"Pantry List from {dtpFromValue} - {dtpToValue}";
+				string recipientEmail = EmpName == "Erwin Alcantara" ? "mr.erwinalcantara@gmail.com" : "edimson@pcmsbilling.net";
+
+				lblstatus.Text = $"Sending email to {recipientEmail}...";
+				await Task.Delay(3000); ; // Simulate delay for email
+
+				emailSender mail = new();
+				mail.SendEmail("yesAttach", mailContent, filePath, mailSubject, recipientEmail, "TM Pantry Store");
+
+				task.SendToastNotifDesktop($"Email sent to {recipientEmail}");
+				//RadMessageBox.Show, "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
+				await Task.Delay(3000);
+				lblstatus.Text = $"Spreadsheet attached and sent to {recipientEmail}.";
+
 				LoadPantryListwithFilter();
+				EnableAll();
 				DefaultFields();
 			}
 			catch (Exception ex)
 			{
 				task.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
+				//MessageBox.Show($"An error occurred:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
+
+
+		//private void DisableAll(Control parent)
+		//{
+		//	// Disable all controls in the form dynamically
+		//	foreach (Control control in this.Controls)
+		//	{
+		//		if (control is TextBox textBox)
+		//		{
+		//			textBox.Enabled = false;
+		//			textBox.Text = string.Empty; // Clear the text
+		//		}
+		//		else if (control is ComboBox comboBox)
+		//		{
+		//			comboBox.Enabled = false;
+		//			comboBox.Text = string.Empty; // Clear the selection
+		//		}
+		//		else if (control is Button button) // Leave btnNew visible
+		//		{
+		//			button.Enabled = false;
+		//		}
+		//		else if (control is DateTimePicker dateTimePicker)
+		//		{
+		//			dateTimePicker.Enabled = false;
+		//		}
+		//		else if (control is RadGridView gridView)
+		//		{
+		//			gridView.ReadOnly = true;
+		//			gridView.Enabled = false;
+		//		}
+		//		else if (control is GroupBox groupBox)
+		//		{
+		//			groupBox.Enabled = false;
+		//		}
+		//	}
+		//
+		//	// Ensure specific properties for btnNew
+		//	///btnNew.Enabled = true;
+		//	//btnNew.Visible = true;
+		//}
+
+
+
+		//private void LoadExportXcel(out string filePath)
+		//{
+		//	try
+		//	{
+		//		// Convert RadGridView to DataTable
+		//		DataTable dataTable = GetDataTableFromRadGridView(dgPantryList);
+		//
+		//		// Call the export method
+		//		task.ExportTableToExcel(dataTable, "Pantry", EmpName);
+		//
+		//		// Optionally notify the user and open the file
+		//		string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+		//		filePath = Path.Combine(desktopPath, $"Pantry List {dtpFrom:MM.dd.yy} - {dtpTo:MM.dd.yy}.xlsx");
+		//
+		//		return filePath;
+		//
+		//		//MessageBox.Show($"Export successful! File saved to:\n{filePath}", "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		//		//
+		//		//if (MessageBox.Show("Would you like to open the file?", "Open File", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+		//		//{
+		//		//	System.Diagnostics.Process.Start(filePath);
+		//		//}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		MessageBox.Show($"An error occurred during export:\n{ex.Message}", "Export Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		//	}
+		//}
+		//
+		//public DataTable GetDataTableFromRadGridView(RadGridView gridView)
+		//{
+		//	DataTable dataTable = new();
+		//
+		//	// Add columns
+		//	foreach (GridViewDataColumn column in gridView.Columns)
+		//	{
+		//		dataTable.Columns.Add(column.HeaderText, column.DataType);
+		//	}
+		//
+		//	// Add rows
+		//	foreach (GridViewRowInfo row in gridView.Rows)
+		//	{
+		//		if (!row.IsVisible) continue; // Skip hidden rows
+		//		DataRow dataRow = dataTable.NewRow();
+		//		foreach (GridViewDataColumn column in gridView.Columns)
+		//		{
+		//			dataRow[column.HeaderText] = row.Cells[column.Name].Value ?? DBNull.Value;
+		//		}
+		//		dataTable.Rows.Add(dataRow);
+		//	}
+		//
+		//	return dataTable;
+		//}
+		//private void btnExport_Click(object sender, EventArgs e)
+		//{
+		//	try
+		//	{
+		//		var dtpfrom = dtpFrom.Value;
+		//		var dtpto = dtpTo.Value;
+		//		//var pathFile = dbBackupcoll;
+		//		DisableAll();
+		//		//string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+		//		lblstatus.Text = "Creating Spreadsheets and Collecting Data...";
+		//		LoadExportXcel(out string filePath);
+		//		string mailAttachment = filePath;
+		//		//DataTable dataTable = GetDataTableFromRadGridView(dgPantryList);
+		//		//task.ExportTableToExcel(dataTable, fileName, EmpName);
+		//		System.Threading.Thread.Sleep(3000);
+		//		emailSender mail = new();
+		//		string mailContent = "Hi, \n\nAttached is the Extracted Pantry List from " + dtpfrom.ToShortDateString() + " - " + dtpto.ToShortDateString() + "\n\n Regards, \n System Administrator";
+		//		string mailSubject = "Pantry List from " + dtpfrom.ToShortDateString() + "-" + dtpto.ToShortDateString();
+		//		System.Threading.Thread.Sleep(3000);
+		//		lblstatus.Text = "Preparing Email Content and checking attachment...";
+		//		if (EmpName == "Erwin Alcantara")
+		//		{
+		//			emailAddress = "mr.erwinalcantara@gmail.com";
+		//			string mailSub = mailSubject;
+		//			System.Threading.Thread.Sleep(3000);
+		//			mail.SendEmail("yesAttach", mailContent, mailAttachment, mailSubject, emailAddress, "TM Pantry Store", null, null);
+		//		}
+		//		else
+		//		{
+		//			emailAddress = "edimson@pcmsbilling.net";
+		//			string mailSub = mailSubject;
+		//			System.Threading.Thread.Sleep(3000);
+		//			mail.SendEmail("yesAttach", mailContent, mailAttachment, mailSubject, emailAddress, "TM Pantry Store", null, null);
+		//		}
+		//		RadMessageBox.Show("Hi\n\n" +
+		//			"Email Sent was sent to " + emailAddress, "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
+		//		LoadPantryListwithFilter();
+		//		DefaultFields();
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
+		//	}
+		//}
+		//
 		private void DisableAll()
 		{
 			btnNew.Enabled = false;
@@ -489,6 +748,7 @@ of
 			btnExport.Enabled = false;
 			dtpFrom.Enabled = false;
 			dtpTo.Enabled = false;
+			btnCancel.Enabled = false;
 			txtSummary.Text = "";
 			txtQuantity.Text = "";
 			txtRemarks.Text = "";
@@ -497,6 +757,36 @@ of
 			btnNew.Visible = true;
 		}
 
+		private void EnableAll()
+		{
+			btnNew.Enabled = true;
+			dgPantryList.ReadOnly = false;
+			grpItems.Enabled = true;
+			dgPantryList.Enabled = true;
+			btnAdditem.Enabled = true;
+			btnCancel.Enabled = true;
+			cmbProductList.Enabled = true;
+			txtPrice.Enabled = true;
+			txtRemarks.Enabled = true;
+			txtSummary.Enabled = true;
+			txtQuantity.Enabled = true;
+			txtTotalPrice.Enabled = true;
+			btnRemove.Enabled = true;
+			btnAdditem.Enabled = true;
+			btnRemove.Enabled = true;
+			btnExport.Enabled = true;
+			dtpFrom.Enabled = true;
+			dtpTo.Enabled = true;
+			btnCancel.Enabled = true;
+			txtSummary.Text = "";
+			txtQuantity.Text = "";
+			txtRemarks.Text = "";
+			cmbProductList.Text = "";
+			cmbEmployee.Enabled = true;
+			btnNew.Visible = true;
+		}
+
+		//
 		private void btnRemove_Click(object sender, EventArgs e)
 		{
 			//var query = "DELETE FROM [Pantry Listahan] WHERE [INT ID]='" + txtIntID.Text + "'";

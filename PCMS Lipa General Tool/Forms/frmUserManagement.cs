@@ -65,6 +65,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//chkshowpw.IsChecked = true;			
 			cmbUserStatus.Enabled = true;
 			btnMoreInfo.Visible = true;
+			lblResult.Visible = false;
 			btnMoreInfo.Text = "View More Information";
 		}
 
@@ -184,6 +185,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			cmbUserDept.Enabled = false;
 			btnResetPassword.Enabled = false;
 			cmbUserDept.Enabled = false;
+			lblResult.Visible = false;
 		}
 
 		private void PullDataFromTabletoTextBox()
@@ -280,30 +282,51 @@ We're having a little trouble retrieving the information right now. Please try a
 
 			if (request == "Create")
 			{
-				user.FillAdminUserProfile
-					(moreEmpInfo.txtEmpID.Text,
-					moreEmpInfo.txtEmpName.Text,
-					moreEmpInfo.txtRDWebUsername.Text,
-					moreEmpInfo.txtRDWebPassword.Text,
-					moreEmpInfo.txtLytecUsername.Text,
-					moreEmpInfo.txtLytecPassword.Text,
-					moreEmpInfo.txtWorkEmail.Text,
-					moreEmpInfo.txtWorkEmailPass.Text,
-					moreEmpInfo.txtBVNo.Text,
-					moreEmpInfo.txtBVUsername.Text,
-					moreEmpInfo.txtBVPassword.Text,
-					moreEmpInfo.txtPCName.Text,
-					moreEmpInfo.txtPCUsername.Text,
-					moreEmpInfo.txtPCPassword.Text,
-					moreEmpInfo.txtRemarks.Text,
-					moreEmpInfo.txtDateofBirth.Text,
-					moreEmpInfo.cmbFirstTime.Text,
-					moreEmpInfo.cmbManagement.Text,
-					moreEmpInfo.cmbFirstTime.Text,
-					moreEmpInfo.txtDCUsernaem.Text,
-					moreEmpInfo.txtDCPassword.Text,
-					moreEmpInfo.cmbEmploymentStatus.Text,
-					empName);
+				moreEmpInfo.txtEmpID.Text = txtIntID.Text;
+				moreEmpInfo.txtEmpName.Text = txtEmployeeName.Text;
+				moreEmpInfo.txtWorkEmail.Text = txtWorkEmail.Text;
+				moreEmpInfo.txtBVNo.Text = txtBVNo.Text;
+				user.FillAdminUserProfile(
+					txtIntID.Text,
+					out string RDWebUsername,
+			out string RDWebPassword,
+			out string LytecUsername,
+			out string LytecPassword,
+			out string EmailPassword,
+			out string BVUsername,
+			out string BVPassword,
+			out string PCName,
+			out string PCUsername,
+			out string PCPassword,
+			out string Remarks,
+			out string DateOfBirth,
+			out string cmbDirectReport,
+			out string firstTimeLogin,
+			out string DCUsername,
+			out string DCPassword,
+			out string cmbEmploymentStatus,
+			empName,
+			"usermgmt");
+				//user.FillAdminUserProfile
+				//	(
+				moreEmpInfo.txtRDWebUsername.Text = RDWebUsername;
+				moreEmpInfo.txtRDWebPassword.Text = RDWebPassword;
+				moreEmpInfo.txtLytecUsername.Text = LytecUsername;
+				moreEmpInfo.txtLytecPassword.Text = LytecPassword;
+				moreEmpInfo.txtWorkEmailPass.Text = EmailPassword;
+				moreEmpInfo.txtBVUsername.Text = BVUsername;
+				moreEmpInfo.txtBVPassword.Text = BVPassword;
+				moreEmpInfo.txtPCName.Text = PCName;
+				moreEmpInfo.txtPCUsername.Text = PCUsername;
+				moreEmpInfo.txtPCPassword.Text = PCPassword;
+				moreEmpInfo.txtRemarks.Text = Remarks;
+				moreEmpInfo.txtDateofBirth.Text = DateOfBirth;
+				moreEmpInfo.cmbFirstTime.Text = firstTimeLogin;
+				moreEmpInfo.cmbManagement.Text = cmbDirectReport;
+				moreEmpInfo.txtDCUsernaem.Text = DCUsername;
+				moreEmpInfo.txtDCPassword.Text = DCPassword;
+				moreEmpInfo.cmbEmploymentStatus.Text = cmbEmploymentStatus;
+				//	empName);
 				moreEmpInfo.Text = "View and Update Employee Detailed Information";
 				moreEmpInfo.txtRDWebUsername.Focus();
 				moreEmpInfo.EmpName = empName;
@@ -312,30 +335,50 @@ We're having a little trouble retrieving the information right now. Please try a
 			}
 			else
 			{
-				user.FillAdminUserProfile
-					(moreEmpInfo.txtEmpID.Text,
-					moreEmpInfo.txtEmpName.Text,
-					moreEmpInfo.txtRDWebUsername.Text,
-					moreEmpInfo.txtRDWebPassword.Text,
-					moreEmpInfo.txtLytecUsername.Text,
-					moreEmpInfo.txtLytecPassword.Text,
-					moreEmpInfo.txtWorkEmail.Text,
-					moreEmpInfo.txtWorkEmailPass.Text,
-					moreEmpInfo.txtBVNo.Text,
-					moreEmpInfo.txtBVUsername.Text,
-					moreEmpInfo.txtBVPassword.Text,
-					moreEmpInfo.txtPCName.Text,
-					moreEmpInfo.txtPCUsername.Text,
-					moreEmpInfo.txtPCPassword.Text,
-					moreEmpInfo.txtRemarks.Text,
-					moreEmpInfo.txtDateofBirth.Text,
-					moreEmpInfo.cmbFirstTime.Text,
-					moreEmpInfo.cmbManagement.Text,
-					moreEmpInfo.cmbFirstTime.Text,
-					moreEmpInfo.txtDCUsernaem.Text,
-					moreEmpInfo.txtDCPassword.Text,
-					moreEmpInfo.cmbEmploymentStatus.Text,
-					empName);
+				moreEmpInfo.txtEmpID.Text = txtIntID.Text;
+				moreEmpInfo.txtEmpName.Text = txtEmployeeName.Text;
+				moreEmpInfo.txtWorkEmail.Text = txtWorkEmail.Text;
+				moreEmpInfo.txtBVNo.Text = txtBVNo.Text;
+				user.FillAdminUserProfile(
+					txtIntID.Text,
+					out string RDWebUsername,
+			out string RDWebPassword,
+			out string LytecUsername,
+			out string LytecPassword,
+			out string EmailPassword,
+			out string BVUsername,
+			out string BVPassword,
+			out string PCName,
+			out string PCUsername,
+			out string PCPassword,
+			out string Remarks,
+			out string DateOfBirth,
+			out string cmbDirectReport,
+			out string firstTimeLogin,
+			out string DCUsername,
+			out string DCPassword,
+			out string cmbEmploymentStatus,
+			empName,
+			"usermgmt");
+				//user.FillAdminUserProfile
+				//	(
+				moreEmpInfo.txtRDWebUsername.Text = RDWebUsername;
+				moreEmpInfo.txtRDWebPassword.Text = RDWebPassword;
+				moreEmpInfo.txtLytecUsername.Text = LytecUsername;
+				moreEmpInfo.txtLytecPassword.Text = LytecPassword;
+				moreEmpInfo.txtWorkEmailPass.Text = EmailPassword;
+				moreEmpInfo.txtBVUsername.Text = BVUsername;
+				moreEmpInfo.txtBVPassword.Text = BVPassword;
+				moreEmpInfo.txtPCName.Text = PCName;
+				moreEmpInfo.txtPCUsername.Text = PCUsername;
+				moreEmpInfo.txtPCPassword.Text = PCPassword;
+				moreEmpInfo.txtRemarks.Text = Remarks;
+				moreEmpInfo.txtDateofBirth.Text = DateOfBirth;
+				moreEmpInfo.cmbFirstTime.Text = firstTimeLogin;
+				moreEmpInfo.cmbManagement.Text = cmbDirectReport;
+				moreEmpInfo.txtDCUsernaem.Text = DCUsername;
+				moreEmpInfo.txtDCPassword.Text = DCPassword;
+				moreEmpInfo.cmbEmploymentStatus.Text = cmbEmploymentStatus;
 				if (accessLevel == "Management")
 				{
 					moreEmpInfo.btnUpdate.Visible = false;
@@ -367,7 +410,20 @@ We're having a little trouble retrieving the information right now. Please try a
 
 		public void GetDBID()
 		{
-			task.GetSequenceNo("textbox", "UserInfoSeq", txtIntID.Text, null, "PCMS-0");
+			string nextSequence = task.GetSequenceNo("UserInfoSeq", "PCMS-0");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtIntID.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetDBID", empName, "frmUserManagement", "N/A", ex);
+			}
+			////task.GetSequenceNo("textbox", "UserInfoSeq", txtIntID.Text, null, "PCMS-0");
 		}
 
 		private void btnRemove_Click(object sender, EventArgs e)

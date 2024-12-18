@@ -24,18 +24,36 @@ namespace PCMS_Lipa_General_Tool.Forms
 			LoadDefaults();
 		}
 
-
-		public void GetDBID()
+		public void GetDBListID()
 		{
-			task.GetSequenceNo("textbox", "AssignProvider", txtIntID.Text, null, "AP-");
+			string nextSequence = task.GetSequenceNo("AssignProvider", "AP-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					txtIntID.Text = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				task.LogError("GetDBListID", empName, "frmAssignProvider", "N/A", ex);
+			}
+
+			//task.GetSequenceNo("textbox", "PantryListSeq", txtIntID.Text, null, "PL-");
 		}
+		//public void GetDBID()
+		//{
+		//
+		//	task.GetSequenceNo("textbox", "AssignProvider", txtIntID.Text, null, "AP-");
+		//}
 
 		public void LoadDefaults()
 		{
 			ClearData();
 			PullValueforDropdown();
 			LoadDatabasetoTable();
-			GetDBID();
+			GetDBListID();
 
 		}
 
@@ -54,7 +72,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			cmbEmployeeName.Text = "Select Employee";
 			cmbProviderName.Text = "Select Provider";
 			txtRemarks.Clear();
-			GetDBID();
+			GetDBListID();
 		}
 
 

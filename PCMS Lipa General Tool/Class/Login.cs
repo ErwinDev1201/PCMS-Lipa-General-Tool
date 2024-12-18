@@ -317,7 +317,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		private void HandleInvalidPassword(ref string alertMessage, ref string password, ref string username, ref bool isLoginPanelEnabled)
 		{
 			alertMessage = "PASSWORD IS INCORRECT";
-			task.AddActivityLog($"Incorrect password used for {username}", "", "Incorrect password used for {username}", "INCORRECT PASSWORD");
+			task.AddActivityLog($"Incorrect password used for {username}", "", $"Incorrect password used for {username}", "INCORRECT PASSWORD");
 			isLoginPanelEnabled = true;
 			password = string.Empty;
 		}

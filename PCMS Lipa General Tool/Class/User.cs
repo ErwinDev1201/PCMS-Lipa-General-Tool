@@ -25,36 +25,40 @@ namespace PCMS_Lipa_General_Tool.Class
 
 
 		public void FillUserProfile(
-			string txtIntID,
-			string txtName,
-			string txtUsername,
-			string cmbLevel,
-			string cmbRole,
-			string txtRDWebUsername,
-			string txtRDWebPassword,
-			string txtLytecUsername,
-			string txtLytecPassword,
-			string txtEmail,
-			string txtBroadvoice,
-			string txtDateOfBirth,
-			string dcUsername,
-			string dcPassword,
-			string empName)
+	string txtIntID,
+	out string txtName,
+	out string txtUsername,
+	out string cmbLevel,
+	out string cmbRole,
+	out string txtRDWebUsername,
+	out string txtRDWebPassword,
+	out string txtLytecUsername,
+	out string txtLytecPassword,
+	out string txtEmail,
+	out string txtBroadvoice,
+	out string txtDateOfBirth,
+	out string dcUsername,
+	out string dcPassword,
+	string empName)
 		{
+			// Initialize all out parameters with default values
+			txtIntID = txtName = txtUsername = cmbLevel = cmbRole = txtRDWebUsername = txtRDWebPassword = string.Empty;
+			txtLytecUsername = txtLytecPassword = txtEmail = txtBroadvoice = txtDateOfBirth = dcUsername = dcPassword = string.Empty;
+
 			try
 			{
 				using var con = new SqlConnection(_dbConnection);
 				using var cmd = new SqlCommand(@"
-			SELECT
-				[Employee ID], [EMPLOYEE NAME], USERNAME,
-				[USER ACCESS], [POSITION], [RDWEB USERNAME],
-				[RDWEB PASSWORD], [LYTEC USERNAME], [LYTEC PASSWORD],
-				[EMAIL ADDRESS], [Broadvoice No.], [DATE OF BIRTH],
-				[Discord Username], [Discord Password]
-			FROM
-				[User Information]
-			WHERE 
-				[EMPLOYEE NAME] = @EmployeeName", con);
+        SELECT
+            [Employee ID], [EMPLOYEE NAME], USERNAME,
+            [USER ACCESS], [POSITION], [RDWEB USERNAME],
+            [RDWEB PASSWORD], [LYTEC USERNAME], [LYTEC PASSWORD],
+            [EMAIL ADDRESS], [Broadvoice No.], [DATE OF BIRTH],
+            [Discord Username], [Discord Password]
+        FROM
+            [User Information]
+        WHERE 
+            [EMPLOYEE NAME] = @EmployeeName", con);
 
 				cmd.Parameters.AddWithValue("@EmployeeName", empName);
 
@@ -63,43 +67,27 @@ namespace PCMS_Lipa_General_Tool.Class
 
 				if (reader.Read())
 				{
-					// Use GetOrdinal to map column names to indices once
-					int idxEmployeeID = reader.GetOrdinal("Employee ID");
-					int idxEmployeeName = reader.GetOrdinal("EMPLOYEE NAME");
-					int idxUserName = reader.GetOrdinal("USERNAME");
-					int idxUserAccess = reader.GetOrdinal("USER ACCESS");
-					int idxUserPosition = reader.GetOrdinal("POSITION");
-					int idxRDWebUsername = reader.GetOrdinal("RDWEB USERNAME");
-					int idxRDWebPassword = reader.GetOrdinal("RDWEB PASSWORD");
-					int idxLytecUsername = reader.GetOrdinal("LYTEC USERNAME");
-					int idxLytecPassword = reader.GetOrdinal("LYTEC PASSWORD");
-					int idxEmailAddress = reader.GetOrdinal("EMAIL ADDRESS");
-					int idxBroadvoiceNumber = reader.GetOrdinal("BROADVOICE NO.");
-					int idxDateOfBirth = reader.GetOrdinal("DATE OF BIRTH");
-					int idxDiscordUsername = reader.GetOrdinal("Discord Username");
-					int idxDiscordPassword = reader.GetOrdinal("Discord Password");
-
-					// Assign values to parameters
-					txtIntID = reader.GetString(idxEmployeeID);
-					txtName = reader.GetString(idxEmployeeName);
-					txtUsername = reader.GetString(idxUserName);
-					cmbLevel = reader.GetString(idxUserAccess);
-					cmbRole = reader.GetString(idxUserPosition);
-					txtRDWebUsername = reader.GetString(idxRDWebUsername);
-					txtRDWebPassword = reader.GetString(idxRDWebPassword);
-					txtLytecUsername = reader.GetString(idxLytecUsername);
-					txtLytecPassword = reader.GetString(idxLytecPassword);
-					txtEmail = reader.GetString(idxEmailAddress);
-					txtBroadvoice = reader.GetString(idxBroadvoiceNumber);
-					txtDateOfBirth = reader.GetString(idxDateOfBirth);
-					dcUsername= reader.GetString(idxDiscordUsername);
-					dcPassword = reader.GetString(idxDiscordPassword);
+					// Safely assign values to out parameters
+					txtIntID = reader["Employee ID"]?.ToString() ?? string.Empty;
+					txtName = reader["EMPLOYEE NAME"]?.ToString() ?? string.Empty;
+					txtUsername = reader["USERNAME"]?.ToString() ?? string.Empty;
+					cmbLevel = reader["USER ACCESS"]?.ToString() ?? string.Empty;
+					cmbRole = reader["POSITION"]?.ToString() ?? string.Empty;
+					txtRDWebUsername = reader["RDWEB USERNAME"]?.ToString() ?? string.Empty;
+					txtRDWebPassword = reader["RDWEB PASSWORD"]?.ToString() ?? string.Empty;
+					txtLytecUsername = reader["LYTEC USERNAME"]?.ToString() ?? string.Empty;
+					txtLytecPassword = reader["LYTEC PASSWORD"]?.ToString() ?? string.Empty;
+					txtEmail = reader["EMAIL ADDRESS"]?.ToString() ?? string.Empty;
+					txtBroadvoice = reader["Broadvoice No."]?.ToString() ?? string.Empty;
+					txtDateOfBirth = reader["DATE OF BIRTH"]?.ToString() ?? string.Empty;
+					dcUsername = reader["Discord Username"]?.ToString() ?? string.Empty;
+					dcPassword = reader["Discord Password"]?.ToString() ?? string.Empty;
 				}
 			}
 			catch (Exception ex)
 			{
 				// Handle exceptions appropriately
-				Console.WriteLine($"An error occurred: {ex.Message}");
+				task.LogError("FillAdminUserProfile", empName, "User", txtIntID, ex);
 			}
 		}
 
@@ -166,30 +154,32 @@ namespace PCMS_Lipa_General_Tool.Class
 
 
 		public void FillAdminUserProfile(
-			string txtIDNumber,
-			string txtUsername,
-			string RDWebUsername,
-			string RDWebPassword,
-			string LytecUsername,
-			string LytecPassword,
-			string EmailAddress,
-			string EmailPassword,
-			string BVnumber,
-			string BVUsername,
-			string BVPassword,
-			string PCName,
-			string PCUsername,
-			string PCPassword,
-			string Remarks,
-			string DateOfBirth,
-			string cmbDirectReport,
-			string firstTimeLogin,
-			string DCUsername,
-			string DCPassword,
-			string cmbEmploymentStatus,
-			string empNoSelected,
-			string empName)
+	string EmpID,
+	out string RDWebUsername,
+	out string RDWebPassword,
+	out string LytecUsername,
+	out string LytecPassword,
+	out string EmailPassword,
+	out string BVUsername,
+	out string BVPassword,
+	out string PCName,
+	out string PCUsername,
+	out string PCPassword,
+	out string Remarks,
+	out string DateOfBirth,
+	out string cmbDirectReport,
+	out string firstTimeLogin,
+	out string DCUsername,
+	out string DCPassword,
+	out string cmbEmploymentStatus,
+	string empName,
+	string popupfrom)
 		{
+			// Initialize out parameters with default values
+			RDWebUsername = RDWebPassword = LytecUsername = LytecPassword = EmailPassword = string.Empty;
+			BVUsername = BVPassword = PCName = PCUsername = PCPassword = Remarks = string.Empty;
+			DateOfBirth = cmbDirectReport = firstTimeLogin = DCUsername = DCPassword = cmbEmploymentStatus = string.Empty;
+
 			try
 			{
 				using var con = new SqlConnection(_dbConnection);
@@ -206,7 +196,7 @@ namespace PCMS_Lipa_General_Tool.Class
             WHERE 
                 [Employee ID] = @EmployeeID", con);
 
-				cmd.Parameters.AddWithValue("@EmployeeID", txtIDNumber);
+				cmd.Parameters.AddWithValue("@EmployeeID", EmpID);
 
 				con.Open();
 				using var reader = cmd.ExecuteReader();
@@ -214,54 +204,30 @@ namespace PCMS_Lipa_General_Tool.Class
 				if (reader.Read())
 				{
 					// Use GetOrdinal to map column names to indices once
-					int idxEmployeeID = reader.GetOrdinal("Employee ID");
-					int idxEmployeeName = reader.GetOrdinal("EMPLOYEE NAME");
-					int idxRDWebUsername = reader.GetOrdinal("RDWEB USERNAME");
-					int idxRDWebPassword = reader.GetOrdinal("RDWEB PASSWORD");
-					int idxLytecUsername = reader.GetOrdinal("LYTEC USERNAME");
-					int idxLytecPassword = reader.GetOrdinal("LYTEC PASSWORD");
-					int idxEmailAddress = reader.GetOrdinal("EMAIL ADDRESS");
-					int idxEmailPassword = reader.GetOrdinal("EMAIL PASSWORD");
-					int idxBroadvoiceNumber = reader.GetOrdinal("BROADVOICE NO.");
-					int idxBroadvoiceUsername = reader.GetOrdinal("Broadvoice Username");
-					int idxBroadvoicePassword = reader.GetOrdinal("Broadvoice Password");
-					int idxPCName = reader.GetOrdinal("PC Assigned");
-					int idxPCUsername = reader.GetOrdinal("PC USERNAME");
-					int idxPCPassword = reader.GetOrdinal("PC PASSWORD");
-					int idxRemarks = reader.GetOrdinal("REMARKS");
-					int idxDateOfBirth = reader.GetOrdinal("DATE OF BIRTH");
-					int idxEmploymentStatus = reader.GetOrdinal("Employment Status");
-					int idxFirstTimeLogin = reader.GetOrdinal("FIRST TIME LOGIN");
-					int idxDiscordUsername = reader.GetOrdinal("Discord Username");
-					int idxDiscordPassword = reader.GetOrdinal("Discord Password");
-
-					// Assign values to parameters
-					txtIDNumber = reader.GetString(idxEmployeeID);
-					empName = reader.GetString(idxEmployeeName);
-					RDWebUsername = reader.GetString(idxRDWebUsername);
-					RDWebPassword = reader.GetString(idxRDWebPassword);
-					LytecUsername = reader.GetString(idxLytecUsername);
-					LytecPassword = reader.GetString(idxLytecPassword);
-					EmailAddress = reader.GetString(idxEmailAddress);
-					EmailPassword = reader.GetString(idxEmailPassword);
-					BVnumber = reader.GetString(idxBroadvoiceNumber);
-					BVUsername = reader.GetString(idxBroadvoiceUsername);
-					BVPassword = reader.GetString(idxBroadvoicePassword);
-					PCName = reader.GetString(idxPCName);
-					PCUsername = reader.GetString(idxPCUsername);
-					PCPassword = reader.GetString(idxPCPassword);
-					Remarks = reader.GetString(idxRemarks);
-					DateOfBirth = reader.GetString(idxDateOfBirth);
-					cmbEmploymentStatus = reader.GetString(idxEmploymentStatus);
-					firstTimeLogin = reader.GetString(idxFirstTimeLogin);
-					DCUsername = reader.GetString(idxDiscordUsername);
-					DCPassword = reader.GetString(idxDiscordPassword);
+					RDWebUsername = reader["RDWEB USERNAME"]?.ToString() ?? string.Empty;
+					RDWebPassword = reader["RDWEB PASSWORD"]?.ToString() ?? string.Empty;
+					LytecUsername = reader["LYTEC USERNAME"]?.ToString() ?? string.Empty;
+					LytecPassword = reader["LYTEC PASSWORD"]?.ToString() ?? string.Empty;
+					EmailPassword = reader["EMAIL PASSWORD"]?.ToString() ?? string.Empty;
+					BVUsername = reader["Broadvoice Username"]?.ToString() ?? string.Empty;
+					BVPassword = reader["Broadvoice Password"]?.ToString() ?? string.Empty;
+					PCName = reader["PC Assigned"]?.ToString() ?? string.Empty;
+					PCUsername = reader["PC USERNAME"]?.ToString() ?? string.Empty;
+					PCPassword = reader["PC PASSWORD"]?.ToString() ?? string.Empty;
+					Remarks = reader["REMARKS"]?.ToString() ?? string.Empty;
+					DateOfBirth = reader["DATE OF BIRTH"]?.ToString() ?? string.Empty;
+					cmbEmploymentStatus = reader["Employment Status"]?.ToString() ?? string.Empty;
+					firstTimeLogin = reader["FIRST TIME LOGIN"]?.ToString() ?? string.Empty;
+					DCUsername = reader["Discord Username"]?.ToString() ?? string.Empty;
+					DCPassword = reader["Discord Password"]?.ToString() ?? string.Empty;
 				}
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillAdminUserProfile", empName, "User", txtIDNumber, ex);
+				task.LogError("FillAdminUserProfile", empName, "User", EmpID, ex);
 			}
+		}
+
 
 			//try
 			//{
@@ -338,7 +304,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			//{
 			//	task.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
 			//}
-		}
+		
 
 
 		//public void FillAdminUserProfile(RadTextBox txtIDNumber, RadTextBox EmpName, RadTextBox RDWEbUsername, RadTextBox RDWebPassword, RadTextBox LytecUsername, RadTextBox LytecPassword, RadTextBox EmailAddress, RadTextBox EmailPassword, RadTextBox BVnumber, RadTextBox BVUsername, RadTextBox BvPassword, RadTextBox PCName, RadTextBox PCUsername, RadTextBox PCPassword, RadTextBoxControl Remarks, RadTextBox DateOfBirth, RadDropDownList cmbDirectReport, RadDropDownList firstTimeLogin, RadTextBox DCUsername, RadTextBox DCPassword, RadDropDownList cmbEmploymentStatus, string empName, RadTextBox empNoSelected)

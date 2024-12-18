@@ -17,26 +17,23 @@ namespace PCMS_Lipa_General_Tool.Class
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
 		private readonly CommonTask task = new();
 
-
-
-		public void FillUpSupportLeaveForm(string empID, string employeeName, string position, string empStat, string empName)
+		public void FillUpSupportLeaveForm(string empID, ref string position, ref string empStat, string empName)
 		{
 			using var con = new SqlConnection(_dbConnection);
 			try
 			{
 				con.Open();
-				var query = "SELECT [Employee Name], Position, [Employment Status] FROM [User Information] WHERE [Employee ID] = @empID";
+				var query = "SELECT Position, [Employment Status] FROM [User Information] WHERE [Employee ID] = @empID";
 				using var cmd = new SqlCommand(query, con);
 
-				// Use the Text property of RadTextBox for the parameter value
 				cmd.Parameters.AddWithValue("@empID", empID);
 
 				using var reader = cmd.ExecuteReader();
 				if (reader.Read())
 				{
-					employeeName = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
-					position = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
-					empStat = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+					//employeeName = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
+					position = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
+					empStat = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
 				}
 			}
 			catch (Exception ex)
@@ -45,6 +42,33 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
+
+		//public void FillUpSupportLeaveForm(string empID, string employeeName, string position, string empStat, string empName)
+		//{
+		//	using var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		con.Open();
+		//		var query = "SELECT [Employee Name], Position, [Employment Status] FROM [User Information] WHERE [Employee ID] = @empID";
+		//		using var cmd = new SqlCommand(query, con);
+		//
+		//		// Use the Text property of RadTextBox for the parameter value
+		//		cmd.Parameters.AddWithValue("@empID", empID);
+		//
+		//		using var reader = cmd.ExecuteReader();
+		//		if (reader.Read())
+		//		{
+		//			employeeName = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
+		//			position = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+		//			empStat = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("FillUpSupportLeaveForm", empName, "Leave", empID, ex);
+		//	}
+		//}
+		//
 
 		//public void FillUpSupportLeaveForm(RadTextBox empID, RadTextBox employeeName, RadTextBox position, RadTextBox empStat, string empName)
 		//{
@@ -73,175 +97,181 @@ namespace PCMS_Lipa_General_Tool.Class
 		//}
 		//
 
-	//	public void FillUpLeaveFields(
-	//List<Dictionary<string, object>> leaveData, string leaveID,
-	//string employeeID, string employeeName, DateTime? startDate, DateTime? endDate, string reason,
-	//out bool rdowithPay, out bool withOutPay, out string leaveType, out string cmbApproval, out string remarks, string empName)
-	//	{
-	//		rdowithPay = false;
-	//		withOutPay = false;
-	//		leaveType = string.Empty;
-	//		cmbApproval = string.Empty;
-	//		remarks = string.Empty;
-	//
-	//		if (leaveData == null || leaveData.Count == 0) return;
-	//
-	//		var selectedLeave = leaveData.FirstOrDefault(ld => ld.ContainsKey("Leave ID") && ld["Leave ID"].ToString() == leaveID);
-	//
-	//		if (selectedLeave != null)
-	//		{
-	//			leaveID = selectedLeave["Leave ID"].ToString();
-	//			employeeID = selectedLeave["Employee ID"].ToString() ?? string.Empty;
-	//			employeeName = selectedLeave["Employee Name"].ToString();
-	//
-	//			startDate = selectedLeave["Start Date"] is DBNull ? (DateTime?)null : Convert.ToDateTime(selectedLeave["Start Date"]);
-	//			endDate = selectedLeave["End Date"] is DBNull ? (DateTime?)null : Convert.ToDateTime(selectedLeave["End Date"]);
-	//
-	//			reason = selectedLeave["Reason"].ToString();
-	//			cmbApproval = selectedLeave["Status"].ToString();
-	//			remarks = selectedLeave["Remarks"].ToString();
-	//
-	//			rdowithPay = selectedLeave["Payment"].ToString() == "With Pay";
-	//			withOutPay = !rdowithPay;
-	//
-	//			leaveType = selectedLeave["Applied Leave"].ToString();
-	//
-	//			SetLeaveTypeRadioButton(leaveType, out bool isSick, out bool isVacation, out bool isPaternity, out bool isMaternity, out bool isBirthday, out bool isBereavement);
-	//		}
-	//	}
-	//
-	//	private void SetLeaveTypeRadioButton(string typeOfLeave, out bool isSick, out bool isVacation, out bool isPaternity, out bool isMaternity, out bool isBirthday, out bool isBereavement)
-	//	{
-	//		isSick = (typeOfLeave == "Sick");
-	//		isVacation = (typeOfLeave == "Vacation");
-	//		isPaternity = (typeOfLeave == "Paternity");
-	//		isMaternity = (typeOfLeave == "Maternity");
-	//		isBirthday = (typeOfLeave == "Birthday");
-	//		isBereavement = (typeOfLeave == "Bereavement");
-	//	}
-	//
-	//	public string GetLeaveQuery(string filterName, string filterStatus, bool isElevatedAccess)
-	//	{
-	//		return (filterName, filterStatus, isElevatedAccess) switch
-	//		{
-	//			// Both filters provided
-	//			(var name, var status, _) when !string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(status) =>
-	//				$"SELECT * FROM [Leave] WHERE [Employee Name] = '{name}' AND Status = '{status}'",
-	//
-	//			// Name filter provided only
-	//			(var name, _, _) when !string.IsNullOrWhiteSpace(name) =>
-	//				$"SELECT * FROM [Leave] WHERE [Employee Name] = '{name}'",
-	//
-	//			// Status filter provided only
-	//			(_, var status, _) when !string.IsNullOrWhiteSpace(status) =>
-	//				$"SELECT * FROM [Leave] WHERE Status = '{status}'",
-	//
-	//			// No filters and elevated access (fetch all records)
-	//			(_, _, true) => "SELECT * FROM [Leave]",
-	//
-	//			// Default case (non-elevated access with no filters)
-	//			_ => "SELECT * FROM [Leave] WHERE 1 = 0" // Prevents fetching all data for non-elevated users
-	//		};
-	//	}
-	//
+		//	public void FillUpLeaveFields(
+		//List<Dictionary<string, object>> leaveData, string leaveID,
+		//string employeeID, string employeeName, DateTime? startDate, DateTime? endDate, string reason,
+		//out bool rdowithPay, out bool withOutPay, out string leaveType, out string cmbApproval, out string remarks, string empName)
+		//	{
+		//		rdowithPay = false;
+		//		withOutPay = false;
+		//		leaveType = string.Empty;
+		//		cmbApproval = string.Empty;
+		//		remarks = string.Empty;
+		//
+		//		if (leaveData == null || leaveData.Count == 0) return;
+		//
+		//		var selectedLeave = leaveData.FirstOrDefault(ld => ld.ContainsKey("Leave ID") && ld["Leave ID"].ToString() == leaveID);
+		//
+		//		if (selectedLeave != null)
+		//		{
+		//			leaveID = selectedLeave["Leave ID"].ToString();
+		//			employeeID = selectedLeave["Employee ID"].ToString() ?? string.Empty;
+		//			employeeName = selectedLeave["Employee Name"].ToString();
+		//
+		//			startDate = selectedLeave["Start Date"] is DBNull ? (DateTime?)null : Convert.ToDateTime(selectedLeave["Start Date"]);
+		//			endDate = selectedLeave["End Date"] is DBNull ? (DateTime?)null : Convert.ToDateTime(selectedLeave["End Date"]);
+		//
+		//			reason = selectedLeave["Reason"].ToString();
+		//			cmbApproval = selectedLeave["Status"].ToString();
+		//			remarks = selectedLeave["Remarks"].ToString();
+		//
+		//			rdowithPay = selectedLeave["Payment"].ToString() == "With Pay";
+		//			withOutPay = !rdowithPay;
+		//
+		//			leaveType = selectedLeave["Applied Leave"].ToString();
+		//
+		//			SetLeaveTypeRadioButton(leaveType, out bool isSick, out bool isVacation, out bool isPaternity, out bool isMaternity, out bool isBirthday, out bool isBereavement);
+		//		}
+		//	}
+		//
+		//	private void SetLeaveTypeRadioButton(string typeOfLeave, out bool isSick, out bool isVacation, out bool isPaternity, out bool isMaternity, out bool isBirthday, out bool isBereavement)
+		//	{
+		//		isSick = (typeOfLeave == "Sick");
+		//		isVacation = (typeOfLeave == "Vacation");
+		//		isPaternity = (typeOfLeave == "Paternity");
+		//		isMaternity = (typeOfLeave == "Maternity");
+		//		isBirthday = (typeOfLeave == "Birthday");
+		//		isBereavement = (typeOfLeave == "Bereavement");
+		//	}
+		//
+		//	public string GetLeaveQuery(string filterName, string filterStatus, bool isElevatedAccess)
+		//	{
+		//		return (filterName, filterStatus, isElevatedAccess) switch
+		//		{
+		//			// Both filters provided
+		//			(var name, var status, _) when !string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(status) =>
+		//				$"SELECT * FROM [Leave] WHERE [Employee Name] = '{name}' AND Status = '{status}'",
+		//
+		//			// Name filter provided only
+		//			(var name, _, _) when !string.IsNullOrWhiteSpace(name) =>
+		//				$"SELECT * FROM [Leave] WHERE [Employee Name] = '{name}'",
+		//
+		//			// Status filter provided only
+		//			(_, var status, _) when !string.IsNullOrWhiteSpace(status) =>
+		//				$"SELECT * FROM [Leave] WHERE Status = '{status}'",
+		//
+		//			// No filters and elevated access (fetch all records)
+		//			(_, _, true) => "SELECT * FROM [Leave]",
+		//
+		//			// Default case (non-elevated access with no filters)
+		//			_ => "SELECT * FROM [Leave] WHERE 1 = 0" // Prevents fetching all data for non-elevated users
+		//		};
+		//	}
+		//
 
 		public void FillUpLeaveFields(
-			RadGridView dgLeave, RadLabel leaveID,
-			RadTextBox employeeID, RadTextBox employeeName, RadDateTimePicker startDate, RadDateTimePicker endDate, RadTextBoxControl reason,
-									  RadRadioButton rdowithPay, RadRadioButton withOutPay, RadRadioButton sick, RadRadioButton vacation, RadRadioButton paternity,
-									  RadRadioButton maternity, RadRadioButton birthday, RadRadioButton bereavement, RadDropDownList cmbApproval, RadTextBoxControl remarks, string empName)
+	//string leaveID,
+	out string employeeID,
+	out string employeeName,
+	out DateTime? startDate,
+	out DateTime? endDate,
+	out string reason,
+	out bool isWithPay,
+	out string leaveType,
+	out string approvalStatus,
+	out string remarks,
+	string selectedLeaveID,
+	string empName)
 		{
-			if (dgLeave.SelectedRows.Count == 0) return;
-		
+			// Initialize output variables
+			employeeID = string.Empty;
+			employeeName = string.Empty;
+			startDate = null;
+			endDate = null;
+			reason = string.Empty;
+			isWithPay = false;
+			leaveType = string.Empty;
+			approvalStatus = string.Empty;
+			remarks = string.Empty;
+
 			using var con = new SqlConnection(_dbConnection);
 			try
 			{
 				con.Open();
-		
+
 				var query = "SELECT [Leave ID], [Employee ID], [Employee Name], [Start Date], [End Date], Payment, [Applied Leave], Reason, Status, Remarks FROM Leave WHERE [Leave ID] = @leaveID";
 				using var cmd = new SqlCommand(query, con);
-				var row = dgLeave.SelectedRows[0];
-				string selectedLeaveID = row.Cells[0].Value.ToString();
 				cmd.Parameters.AddWithValue("@leaveID", selectedLeaveID);
-		
+
 				using var reader = cmd.ExecuteReader();
 				if (reader.Read())
 				{
-		
-					leaveID.Text = reader["Leave ID"].ToString();
-					employeeID.Text = reader["Employee ID"].ToString() ?? string.Empty;
-					employeeName.Text = reader["Employee Name"].ToString();
-		
-					if (!reader.IsDBNull(reader.GetOrdinal("Start Date")) && DateTime.TryParse(reader.GetString(reader.GetOrdinal("Start Date")), out DateTime parsedStartDate))
+					//leaveID = reader["Leave ID"].ToString();
+					employeeID = reader["Employee ID"].ToString() ?? string.Empty;
+					employeeName = reader["Employee Name"].ToString();
+
+					if (!reader.IsDBNull(reader.GetOrdinal("Start Date")))
 					{
-						startDate.Value = parsedStartDate;
+						var startDateValue = reader["Start Date"];
+						if (startDateValue is DateTime)
+						{
+							startDate = (DateTime)startDateValue;
+						}
+						else if (DateTime.TryParse(startDateValue.ToString(), out DateTime parsedStartDate))
+						{
+							startDate = parsedStartDate;
+						}
+						else
+						{
+							startDate = null; // Or set a default value if appropriate
+						}
 					}
-					else
+
+					if (!reader.IsDBNull(reader.GetOrdinal("End Date")))
 					{
-						startDate.Value = DateTime.MinValue; // or null if your control supports it
+						var endDateValue = reader["End Date"];
+						if (endDateValue is DateTime)
+						{
+							endDate = (DateTime)endDateValue;
+						}
+						else if (DateTime.TryParse(endDateValue.ToString(), out DateTime parsedEndDate))
+						{
+							endDate = parsedEndDate;
+						}
+						else
+						{
+							endDate = null; // Or set a default value if appropriate
+						}
 					}
-		
-					if (!reader.IsDBNull(reader.GetOrdinal("End Date")) &&
-						DateTime.TryParse(reader.GetString(reader.GetOrdinal("End Date")), out DateTime parsedEndDate))
-					{
-						endDate.Value = parsedEndDate;
-					}
-					else
-					{
-						endDate.Value = DateTime.MinValue; // or null if your control supports it
-					}
-					if (!reader.IsDBNull(reader.GetOrdinal("Start Date")) && DateTime.TryParse(reader.GetString(reader.GetOrdinal("Start Date")), out parsedStartDate))
-					{
-						startDate.Value = parsedStartDate;
-					}
-					else
-					{
-						startDate.Value = DateTime.MinValue; // or null if your control supports it
-					}
-		
-					if (!reader.IsDBNull(reader.GetOrdinal("End Date")) &&
-						DateTime.TryParse(reader.GetString(reader.GetOrdinal("End Date")), out parsedEndDate))
-					{
-						endDate.Value = parsedEndDate;
-					}
-					else
-					{
-						endDate.Value = DateTime.MinValue;
-					}
-					//startDate.Value = reader.GetDateTime(reader.GetOrdinal("Start Date"));
-					//startDate.Value = reader.IsDBNull(reader.GetOrdinal("Start Date")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("Start Date"));
-					//endDate.Value = reader.IsDBNull(reader.GetOrdinal("End Date")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("End Date"));
-		
-					reason.Text = reader["Reason"].ToString();
-					cmbApproval.Text = reader["Status"].ToString();
-					remarks.Text = reader["Remarks"].ToString();
-		
+					//if (!reader.IsDBNull(reader.GetOrdinal("Start Date")))
+					//{
+					//	startDate = reader.GetDateTime(reader.GetOrdinal("Start Date"));
+					//}
+					//
+					//if (!reader.IsDBNull(reader.GetOrdinal("End Date")))
+					//{
+					//	endDate = reader.GetDateTime(reader.GetOrdinal("End Date"));
+					//}
+
+					reason = reader["Reason"].ToString();
+					approvalStatus = reader["Status"].ToString();
+					remarks = reader["Remarks"].ToString();
+
 					// Set Payment Option
-					bool isPaidLeave = reader["Payment"].ToString() == "With Pay";
-					rdowithPay.IsChecked = isPaidLeave;
-					withOutPay.IsChecked = !isPaidLeave;
-		
+					isWithPay = reader["Payment"].ToString() == "With Pay";
+
 					// Set Type of Leave
-					string typeOfLeave = reader["Applied Leave"].ToString();
-					SetLeaveTypeRadioButton(typeOfLeave, sick, vacation, paternity, maternity, birthday, bereavement);
+					leaveType = GetLeaveType(reader["Applied Leave"].ToString());
 				}
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillUpLeaveFields", empName, "Leave", leaveID.Text, ex);
+				// Log error (adjust the logging mechanism as needed)
+				task.LogError("FillUpLeaveFields", empName, "Leave", selectedLeaveID, ex);
+				//throw; // Re-throw the exception if necessary
 			}
 		}
 
-		private void SetLeaveTypeRadioButton(string typeOfLeave, RadRadioButton sick, RadRadioButton vacation, RadRadioButton paternity, RadRadioButton maternity, RadRadioButton birthday, RadRadioButton bereavement)
-		{
-			sick.IsChecked = (typeOfLeave == "Sick");
-			vacation.IsChecked = (typeOfLeave == "Vacation");
-			paternity.IsChecked = (typeOfLeave == "Paternity");
-			maternity.IsChecked = (typeOfLeave == "Maternity");
-			birthday.IsChecked = (typeOfLeave == "Birthday");
-			bereavement.IsChecked = (typeOfLeave == "Bereavement");
-		}
-		
 		public string GetLeaveQuery(string filterName, string filterStatus, bool isElevatedAccess)
 		{
 			return (filterName, filterStatus, isElevatedAccess) switch
@@ -249,23 +279,154 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Both filters provided
 				(var name, var status, _) when !string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(status) =>
 					$"SELECT * FROM [Leave] WHERE [Employee Name] = '{name}' AND Status = '{status}'",
-		
+
 				// Name filter provided only
 				(var name, _, _) when !string.IsNullOrWhiteSpace(name) =>
 					$"SELECT * FROM [Leave] WHERE [Employee Name] = '{name}'",
-		
+
 				// Status filter provided only
 				(_, var status, _) when !string.IsNullOrWhiteSpace(status) =>
 					$"SELECT * FROM [Leave] WHERE Status = '{status}'",
-		
+
 				// No filters and elevated access (fetch all records)
 				(_, _, true) => "SELECT * FROM [Leave]",
-		
+
 				// Default case (non-elevated access with no filters)
 				_ => "SELECT * FROM [Leave] WHERE 1 = 0" // Prevents fetching all data for non-elevated users
 			};
 		}
 
+		private string GetLeaveType(string typeOfLeave)
+		{
+			// Simply return the type of leave as is or apply any necessary validation
+			return typeOfLeave switch
+			{
+				"Sick" or "Vacation" or "Paternity" or "Maternity" or "Birthday" or "Bereavement" => typeOfLeave,
+				_ => "Unknown",// Return a default or invalid leave type if necessary
+			};
+		}
+
+		//public void FillUpLeaveFields(
+		//	RadGridView dgLeave, RadLabel leaveID,
+		//	RadTextBox employeeID, RadTextBox employeeName, RadDateTimePicker startDate, RadDateTimePicker endDate, RadTextBoxControl reason,
+		//							  RadRadioButton rdowithPay, RadRadioButton withOutPay, RadRadioButton sick, RadRadioButton vacation, RadRadioButton paternity,
+		//							  RadRadioButton maternity, RadRadioButton birthday, RadRadioButton bereavement, RadDropDownList cmbApproval, RadTextBoxControl remarks, string empName)
+		//{
+		//	if (dgLeave.SelectedRows.Count == 0) return;
+		//
+		//	using var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		con.Open();
+		//
+		//		var query = "SELECT [Leave ID], [Employee ID], [Employee Name], [Start Date], [End Date], Payment, [Applied Leave], Reason, Status, Remarks FROM Leave WHERE [Leave ID] = @leaveID";
+		//		using var cmd = new SqlCommand(query, con);
+		//		var row = dgLeave.SelectedRows[0];
+		//		string selectedLeaveID = row.Cells[0].Value.ToString();
+		//		cmd.Parameters.AddWithValue("@leaveID", selectedLeaveID);
+		//
+		//		using var reader = cmd.ExecuteReader();
+		//		if (reader.Read())
+		//		{
+		//
+		//			leaveID.Text = reader["Leave ID"].ToString();
+		//			employeeID.Text = reader["Employee ID"].ToString() ?? string.Empty;
+		//			employeeName.Text = reader["Employee Name"].ToString();
+		//
+		//			if (!reader.IsDBNull(reader.GetOrdinal("Start Date")) && DateTime.TryParse(reader.GetString(reader.GetOrdinal("Start Date")), out DateTime parsedStartDate))
+		//			{
+		//				startDate.Value = parsedStartDate;
+		//			}
+		//			else
+		//			{
+		//				startDate.Value = DateTime.MinValue; // or null if your control supports it
+		//			}
+		//
+		//			if (!reader.IsDBNull(reader.GetOrdinal("End Date")) &&
+		//				DateTime.TryParse(reader.GetString(reader.GetOrdinal("End Date")), out DateTime parsedEndDate))
+		//			{
+		//				endDate.Value = parsedEndDate;
+		//			}
+		//			else
+		//			{
+		//				endDate.Value = DateTime.MinValue; // or null if your control supports it
+		//			}
+		//			if (!reader.IsDBNull(reader.GetOrdinal("Start Date")) && DateTime.TryParse(reader.GetString(reader.GetOrdinal("Start Date")), out parsedStartDate))
+		//			{
+		//				startDate.Value = parsedStartDate;
+		//			}
+		//			else
+		//			{
+		//				startDate.Value = DateTime.MinValue; // or null if your control supports it
+		//			}
+		//
+		//			if (!reader.IsDBNull(reader.GetOrdinal("End Date")) &&
+		//				DateTime.TryParse(reader.GetString(reader.GetOrdinal("End Date")), out parsedEndDate))
+		//			{
+		//				endDate.Value = parsedEndDate;
+		//			}
+		//			else
+		//			{
+		//				endDate.Value = DateTime.MinValue;
+		//			}
+		//			//startDate.Value = reader.GetDateTime(reader.GetOrdinal("Start Date"));
+		//			//startDate.Value = reader.IsDBNull(reader.GetOrdinal("Start Date")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("Start Date"));
+		//			//endDate.Value = reader.IsDBNull(reader.GetOrdinal("End Date")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("End Date"));
+		//
+		//			reason.Text = reader["Reason"].ToString();
+		//			cmbApproval.Text = reader["Status"].ToString();
+		//			remarks.Text = reader["Remarks"].ToString();
+		//
+		//			// Set Payment Option
+		//			bool isPaidLeave = reader["Payment"].ToString() == "With Pay";
+		//			rdowithPay.IsChecked = isPaidLeave;
+		//			withOutPay.IsChecked = !isPaidLeave;
+		//
+		//			// Set Type of Leave
+		//			string typeOfLeave = reader["Applied Leave"].ToString();
+		//			SetLeaveTypeRadioButton(typeOfLeave, sick, vacation, paternity, maternity, birthday, bereavement);
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		task.LogError("FillUpLeaveFields", empName, "Leave", leaveID.Text, ex);
+		//	}
+		//}
+		//
+		//private void SetLeaveTypeRadioButton(string typeOfLeave, RadRadioButton sick, RadRadioButton vacation, RadRadioButton paternity, RadRadioButton maternity, RadRadioButton birthday, RadRadioButton bereavement)
+		//{
+		//	sick.IsChecked = (typeOfLeave == "Sick");
+		//	vacation.IsChecked = (typeOfLeave == "Vacation");
+		//	paternity.IsChecked = (typeOfLeave == "Paternity");
+		//	maternity.IsChecked = (typeOfLeave == "Maternity");
+		//	birthday.IsChecked = (typeOfLeave == "Birthday");
+		//	bereavement.IsChecked = (typeOfLeave == "Bereavement");
+		//}
+		//
+		//public string GetLeaveQuery(string filterName, string filterStatus, bool isElevatedAccess)
+		//{
+		//	return (filterName, filterStatus, isElevatedAccess) switch
+		//	{
+		//		// Both filters provided
+		//		(var name, var status, _) when !string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(status) =>
+		//			$"SELECT * FROM [Leave] WHERE [Employee Name] = '{name}' AND Status = '{status}'",
+		//
+		//		// Name filter provided only
+		//		(var name, _, _) when !string.IsNullOrWhiteSpace(name) =>
+		//			$"SELECT * FROM [Leave] WHERE [Employee Name] = '{name}'",
+		//
+		//		// Status filter provided only
+		//		(_, var status, _) when !string.IsNullOrWhiteSpace(status) =>
+		//			$"SELECT * FROM [Leave] WHERE Status = '{status}'",
+		//
+		//		// No filters and elevated access (fetch all records)
+		//		(_, _, true) => "SELECT * FROM [Leave]",
+		//
+		//		// Default case (non-elevated access with no filters)
+		//		_ => "SELECT * FROM [Leave] WHERE 1 = 0" // Prevents fetching all data for non-elevated users
+		//	};
+		//}
+		//
 		//public void FillUpSupportLeaveForm(string empID, RadTextBox employeeName, RadTextBox position, RadTextBox empStat, string empName)
 		//{
 		//	using (var con = new SqlConnection(_dbConnection))
