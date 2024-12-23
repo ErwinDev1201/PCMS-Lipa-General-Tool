@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -9,7 +10,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmManageproduct : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly FEWinForm fe = new();
+		private readonly Database db = new();
 		private readonly Pantry pantry = new();
 
 		public string empName;
@@ -116,7 +120,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void GetDBListID()
 		{
 
-			string nextSequence = task.GetSequenceNo("PantryProdSeq", "PD-");
+			string nextSequence = db.GetSequenceNo("PantryProdSeq", "PD-");
 
 			try
 			{
@@ -127,9 +131,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("GetDBListID", empName, "frmManageProduct", "N/A", ex);
+				error.LogError("GetDBListID", empName, "frmManageProduct", "N/A", ex);
 			}
-			///task.GetSequenceNo("textbox", "PantryProdSeq", txtIntID.Text, null, "PD -");
+			///db.GetSequenceNo("textbox", "PantryProdSeq", txtIntID.Text, null, "PD -");
 		}
 
 		private void btnSave_Click(object sender, EventArgs e)
@@ -139,8 +143,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					pantry.PantryProductDBRequest("Update", txtIntID.Text, txtProductName.Text, txtPrice.Text, txtRemarks.Text, empName);
-				
+					bool isSuccess = pantry.PantryProductDBRequest("Update", txtIntID.Text, txtProductName.Text, txtPrice.Text, txtRemarks.Text, empName, out string message);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					}
+
 				}
 			}
 			else
@@ -155,8 +167,27 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				else
 				{
+					pantry.CheckProductExist(txtProductName.Text, empName, out string checkmessage);
+					if (checkmessage != null)
+					{
+						fe.SendToastNotifDesktop(checkmessage, "Warning");
+					}
+					else
+					{
+						bool isSuccess = pantry.PantryProductDBRequest("Create", txtIntID.Text, txtProductName.Text, txtPrice.Text, txtRemarks.Text, empName, out string message);
+						if (isSuccess)
+						{
+							fe.SendToastNotifDesktop(message, "Success");
+						}
+						else
+						{
+							fe.SendToastNotifDesktop(message, "Error");
+						}
 
-					pantry.CheckProductExist(txtIntID.Text, txtProductName.Text, txtPrice.Text, txtRemarks.Text, empName);
+					}
+					
+
+					//pantry.CheckProductExist(txtIntID.Text, txtProductName.Text, txtPrice.Text, txtRemarks.Text, empName);
 				}
 			}
 			ShowAllUserAccess();
@@ -170,7 +201,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 			DisableInput();
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				pantry.PantryProductDBRequest("Delete", txtIntID.Text, txtProductName.Text, txtPrice.Text, txtRemarks.Text, empName);
+				bool isSuccess = pantry.PantryProductDBRequest("Delete", txtIntID.Text, txtProductName.Text, txtPrice.Text, txtRemarks.Text, empName, out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 			}
 			Clear();
 			ShowAllUserAccess();
@@ -244,10 +283,19 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", empName, "frmAdjusterInfo", null, ex);
+				error.LogError("txtSearch_TextChanged", empName, "frmAdjusterInfo", null, ex);
 			}
 			//task.SearchTwoColumnOneFieldText(dgPantryProduct, "[Pantry Product]", "[Product Name]", "[Remarks]", txtSearch, lblSearchCount, empName);
 
+		}
+
+		private void txtProductName_TextChanged(object sender, EventArgs e)
+		{
+			if (txtProductName.TextLength > 5)
+			{
+				pantry.CheckProductExist(txtProductName.Text, empName, out string message);
+				fe.SendToastNotifDesktop(message, "Warning");
+			}
 		}
 	}
 }

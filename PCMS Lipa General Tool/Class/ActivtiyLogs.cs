@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -10,7 +11,8 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
 
-		readonly CommonTask task = new();
+		readonly WinDiscordAPI dc = new();
+		readonly Error error = new();
 
 		public DataTable ViewActivityLogs(string empName, out string lblCount)
 		{
@@ -31,7 +33,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewActivityLogs", empName, "ActivityLogs", "N/A", ex);
+				error.LogError("ViewActivityLogs", empName, "ActivityLogs", "N/A", ex);
 			}
 
 			return data;
@@ -80,7 +82,7 @@ OR Message LIKE @itemToSearch";
 			catch (Exception ex)
 			{
 				// Log the error and provide feedback
-				task.LogError("GetSearch", empName, "CommonTask", "N/A", ex);
+				error.LogError("GetSearch", empName, "CommonTask", "N/A", ex);
 				searchCount = "Error occurred while fetching records.";
 			}
 
@@ -105,9 +107,43 @@ OR Message LIKE @itemToSearch";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("GetListofAction", empName, "ActivityLogs", "N/A", ex);
+				error.LogError("GetListofAction", empName, "ActivityLogs", "N/A", ex);
 			}
 			return items;
 		}
+
+		public void AddActivityLog(string TextContent, string empName, string DCLog, string actionLog)
+		{
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+
+				string logdate = DateTime.Now.ToString("yyyyMMdd-HHmmss");
+				using (SqlCommand cmd = new("INSERT INTO [Activity Logs] ([TIME STAMP], NAME, ACTION, MESSAGE, [DISCORD LOGS])" +
+					"VALUES (@TIMESTAMP, @EMPNAME, @ACTION, @MESSAGE, @DCLOGS)", conn))
+				{
+					cmd.Parameters.AddWithValue("@TIMESTAMP", logdate);
+					cmd.Parameters.AddWithValue("@EMPNAME", empName);
+					cmd.Parameters.AddWithValue("@ACTION", actionLog);
+					cmd.Parameters.AddWithValue("@MESSAGE", TextContent);
+					cmd.Parameters.AddWithValue("@DCLOGS", DCLog);
+					cmd.ExecuteNonQuery();
+				}
+				dc.PublishtoDiscord(Global.AppLogger, "", DCLog, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
+			}
+			catch (Exception ex)
+			{
+
+				error.LogError("AddActivityLog", empName, "ActivtiyLogs", "N/A", ex);
+
+			}
+			finally
+			{
+				conn.Close();
+			}
+		}
 	}
+
+
 }

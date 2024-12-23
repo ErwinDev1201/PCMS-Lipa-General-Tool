@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -10,6 +11,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	{
 
 		private readonly User user = new();
+		private readonly FEWinForm fe = new();
 		public string cmbLevel;
 		public string empName;
 		public string changePassword;
@@ -43,22 +45,53 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnOK_Click(object sender, EventArgs e)
 		{
-			string adminMessage = "Password successfully updated, and the password is sent to the provided email.";
+			//string adminMessage = "Password successfully updated, and the password is sent to the provided email.";
 			//string nonadminMessage = "Please log in with the new password the next time. A copy of your new password is sent via email";
 			radPanel1.Enabled = false;
 			//btnOK.Enabled = false;
 			if (changePassword == "forgot")
 			{
-				user.UpdateUserPassword(txtEmpID.Text, txtWorkEmail.Text, adminMessage, txtNewPassword.Text, "forgot", empName);
+				bool isSuccess = user.UpdateUserPassword(
+					txtEmpID.Text,
+					txtWorkEmail.Text,
+					txtNewPassword.Text,
+					"forgot",
+					empName,
+					out string message,
+					out string Status);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 				radPanel1.Enabled = true;
 				Hide();
 			}
 
 			else if (changePassword == "Yes")
 			{
-				user.UpdateUserPassword(txtEmpID.Text, txtWorkEmail.Text, adminMessage, txtNewPassword.Text, "change", empName);
-				Hide();
+				bool isSuccess = user.UpdateUserPassword(
+					txtEmpID.Text,
+					txtWorkEmail.Text,
+					txtNewPassword.Text,
+					"Yes",
+					empName,
+					out string message,
+					out string Status);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 				radPanel1.Enabled = true;
+				Hide();
+				radPanel1.Enabled =  true;
 			}
 			var login = new FrmLogin();
 			login.txtPassword.Clear();

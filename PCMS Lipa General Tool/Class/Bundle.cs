@@ -1,10 +1,8 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
-using Telerik.WinControls.UI;
 
 
 
@@ -13,8 +11,31 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class Bundle
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
 
-		private static readonly CommonTask task = new();
+		public void GetDBID(out string ID, string empName)
+		{
+			ID = string.Empty;
+
+			string nextSequence = db.GetSequenceNo("BundleCodeSeq", "PR-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					ID = nextSequence;
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetProvID", empName, "Bundle", "N/A", ex);
+			}
+			//db.GetSequenceNo("textbox", "BundleCodeSeq", txtIntID.Text, null, "TX-");
+		}
+
 
 		public DataTable ViewBundleCodes(string empName, out string lblCount)
 		{
@@ -35,7 +56,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewBundleCodes", empName, "Bundle", "N/A", ex);
+				error.LogError("ViewBundleCodes", empName, "Bundle", "N/A", ex);
 			}
 
 			return data;
@@ -70,7 +91,7 @@ OR [Adjuster Name] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "Bundle", null, ex);
+				error.LogError("SearchData", empName, "Bundle", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -78,7 +99,7 @@ OR [Adjuster Name] LIKE @searchTerm";
 		}	
 
 
-		public void BundleCodesDBRequest(
+		public bool BundleCodesDBRequest(
 			string request,
 			string treatmentID,
 			string cptCode,
@@ -86,7 +107,8 @@ OR [Adjuster Name] LIKE @searchTerm";
 			string Description, 
 			string indicator,
 			string remarks,
-			string empName)
+			string empName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -97,7 +119,7 @@ OR [Adjuster Name] LIKE @searchTerm";
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				cmd.CommandText = request switch
 				{
@@ -119,7 +141,7 @@ OR [Adjuster Name] LIKE @searchTerm";
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@TREAMENTID", treatmentID);
+					//cmd.Parameters.AddWithValue("@TREAMENTID", treatmentID);
 					cmd.Parameters.AddWithValue("@CPTCODE", cptCode);
 					cmd.Parameters.AddWithValue("@BUNDLECODE", bundleCodes);
 					cmd.Parameters.AddWithValue("@DESCRIPTION", Description);
@@ -136,13 +158,15 @@ OR [Adjuster Name] LIKE @searchTerm";
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Treatment ID: {treatmentID}";
 				message = $"Done! {treatmentID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} BUNDLE CODES INFORMATION");
-				task.SendToastNotifDesktop(logs);
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} BUNDLE CODES INFORMATION");
+				//fe.SendToastNotifDesktop(message, "Success");
+				return true;
 			}
 			catch (Exception ex)
 			{
-				task.LogError("BundleCodesDBRequest", empName, "Bundle", treatmentID, ex);
-				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				error.LogError("BundleCodesDBRequest", empName, "Bundle", treatmentID, ex);
+				message = $"Failed to {request.ToLower()} {treatmentID}, Please try again later";
+				return false;
 				//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally

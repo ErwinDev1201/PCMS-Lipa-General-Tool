@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Configuration;
 using System.Data;
@@ -10,9 +11,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmBillReviewDirectory : Telerik.WinControls.UI.RadForm
 	{
-		private static readonly string wcsupport = ConfigurationManager.AppSettings["wcsupportpath"];
-		private readonly CommonTask task = new();
 		private readonly BillReview bill = new();
+		private static readonly Error error = new();
 
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
@@ -77,7 +77,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
+				error.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
 			}
 		}
 
@@ -98,7 +98,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				empName = EmpName
 
 			};
-			dlgBillReview.GetDBID();
+			bill.GetDBID(out string ID, EmpName);
+			dlgBillReview.txtIntID.Text = ID;
 			dlgBillReview.ShowDialog();
 			ShowInsuranceInfo();
 		}
@@ -130,7 +131,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", EmpName, "frmBillReviewDirectory", null, ex);
+				error.LogError("txtSearch_TextChanged", EmpName, "frmBillReviewDirectory", null, ex);
 			}
 		}
 

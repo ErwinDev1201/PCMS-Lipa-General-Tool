@@ -8,8 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
 
 namespace PCMS_Lipa_General_Tool.Class
@@ -20,26 +18,50 @@ namespace PCMS_Lipa_General_Tool.Class
 		private static readonly string EmailHost = ConfigurationManager.AppSettings["smtpserver"];
 
 		readonly SecurityEncryption sec = new();
-		private readonly CommonTask task = new();
 		readonly emailSender mailSender = new();
+		readonly ActivtiyLogs log = new();
+		readonly Error error = new();
+		readonly Database db = new();
+		
+		private string email;
 
+		public void GetDBID(out string ID, string empName)
+		{
+
+			ID = string.Empty;
+
+			string nextSequence = db.GetSequenceNo("UserInfoSeq", "PCMS-0");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					ID = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBID", empName, "User", "N/A", ex);
+			}
+			////db.GetSequenceNo("textbox", "UserInfoSeq", txtIntID.Text, null, "PCMS-0");
+		}
 
 		public void FillUserProfile(
-	string txtIntID,
-	out string txtName,
-	out string txtUsername,
-	out string cmbLevel,
-	out string cmbRole,
-	out string txtRDWebUsername,
-	out string txtRDWebPassword,
-	out string txtLytecUsername,
-	out string txtLytecPassword,
-	out string txtEmail,
-	out string txtBroadvoice,
-	out string txtDateOfBirth,
-	out string dcUsername,
-	out string dcPassword,
-	string empName)
+				string txtIntID,
+				out string txtName,
+				out string txtUsername,
+				out string cmbLevel,
+				out string cmbRole,
+				out string txtRDWebUsername,
+				out string txtRDWebPassword,
+				out string txtLytecUsername,
+				out string txtLytecPassword,
+				out string txtEmail,
+				out string txtBroadvoice,
+				out string txtDateOfBirth,
+				out string dcUsername,
+				out string dcPassword,
+				string empName)
 		{
 			// Initialize all out parameters with default values
 			txtIntID = txtName = txtUsername = cmbLevel = cmbRole = txtRDWebUsername = txtRDWebPassword = string.Empty;
@@ -87,7 +109,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			catch (Exception ex)
 			{
 				// Handle exceptions appropriately
-				task.LogError("FillAdminUserProfile", empName, "User", txtIntID, ex);
+				error.LogError("FillAdminUserProfile", empName, "User", txtIntID, ex);
 			}
 		}
 
@@ -147,33 +169,33 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("FillUserProfile", empName, "User", txtIntID, ex);           //task.ExecutedbCollBackupCsv(empName);
+		//		error.LogError("FillUserProfile", empName, "User", txtIntID, ex);           //task.ExecutedbCollBackupCsv(empName);
 		//	}
 		//}
 		//
 
 
 		public void FillAdminUserProfile(
-	string EmpID,
-	out string RDWebUsername,
-	out string RDWebPassword,
-	out string LytecUsername,
-	out string LytecPassword,
-	out string EmailPassword,
-	out string BVUsername,
-	out string BVPassword,
-	out string PCName,
-	out string PCUsername,
-	out string PCPassword,
-	out string Remarks,
-	out string DateOfBirth,
-	out string cmbDirectReport,
-	out string firstTimeLogin,
-	out string DCUsername,
-	out string DCPassword,
-	out string cmbEmploymentStatus,
-	string empName,
-	string popupfrom)
+			string EmpID,
+			out string RDWebUsername,
+			out string RDWebPassword,
+			out string LytecUsername,
+			out string LytecPassword,
+			out string EmailPassword,
+			out string BVUsername,
+			out string BVPassword,
+			out string PCName,
+			out string PCUsername,
+			out string PCPassword,
+			out string Remarks,
+			out string DateOfBirth,
+			out string cmbDirectReport,
+			out string firstTimeLogin,
+			out string DCUsername,
+			out string DCPassword,
+			out string cmbEmploymentStatus,
+			string empName,
+			string popupfrom)
 		{
 			// Initialize out parameters with default values
 			RDWebUsername = RDWebPassword = LytecUsername = LytecPassword = EmailPassword = string.Empty;
@@ -224,87 +246,87 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillAdminUserProfile", empName, "User", EmpID, ex);
+				error.LogError("FillAdminUserProfile", empName, "User", EmpID, ex);
 			}
 		}
 
 
-			//try
-			//{
-			//	using var con = new SqlConnection(_dbConnection);
-			//	using var cmd = new SqlCommand(@"
-			//SELECT 
-			//    [Employee ID], [EMPLOYEE NAME], [RDWEB USERNAME], [RDWEB PASSWORD],
-			//    [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [EMAIL PASSWORD],
-			//    [BROADVOICE NO.], [Broadvoice Username], [Broadvoice Password],
-			//    [PC Assigned], [PC USERNAME], [PC PASSWORD], TEAM, REMARKS,
-			//    [DATE OF BIRTH], [Employment Status], [FIRST TIME LOGIN],
-			//    [Discord Username], [Discord Password]
-			//FROM 
-			//    [User Information]
-			//WHERE 
-			//    [Employee ID] = @EmployeeID", con);
-			//
-			//	cmd.Parameters.AddWithValue("@EmployeeID", empNoSelected.Text);
-			//
-			//	con.Open();
-			//	using var reader = cmd.ExecuteReader();
-			//
-			//	if (reader.Read())
-			//	{
-			//		// Use a helper method to populate the UI elements
-			//		void SetTextBoxValue(Control control, int columnIndex)
-			//		{
-			//			if (control != null && !reader.IsDBNull(columnIndex))
-			//			{
-			//				switch (control)
-			//				{
-			//					case RadTextBox textBox:
-			//						textBox.Text = reader.GetString(columnIndex);
-			//						break;
-			//					case RadDropDownList dropDownList:
-			//						dropDownList.Text = reader.GetString(columnIndex);
-			//						break;
-			//					case RadTextBoxControl textBoxControl:
-			//						textBoxControl.Text = reader.GetString(columnIndex);
-			//						break;
-			//				}
-			//			}
-			//		}
-			//
-			//		// Assign values to controls
-			//		SetTextBoxValue(txtIDNumber, 0);
-			//		SetTextBoxValue(EmpName, 1);
-			//		SetTextBoxValue(RDWEbUsername, 2);
-			//		SetTextBoxValue(RDWebPassword, 3);
-			//		SetTextBoxValue(LytecUsername, 4);
-			//		SetTextBoxValue(LytecPassword, 5);
-			//		SetTextBoxValue(EmailAddress, 6);
-			//		SetTextBoxValue(EmailPassword, 7);
-			//		SetTextBoxValue(BVnumber, 8);
-			//		SetTextBoxValue(BVUsername, 9);
-			//		SetTextBoxValue(BvPassword, 10);
-			//		SetTextBoxValue(PCName, 11);
-			//		SetTextBoxValue(PCUsername, 12);
-			//		SetTextBoxValue(PCPassword, 13);
-			//		SetTextBoxValue(cmbDirectReport, 14);
-			//		SetTextBoxValue(Remarks, 15);
-			//		SetTextBoxValue(DateOfBirth, 16);
-			//		SetTextBoxValue(cmbEmploymentStatus, 17);
-			//		SetTextBoxValue(firstTimeLogin, 18);
-			//		SetTextBoxValue(DCUsername, 19);
-			//		SetTextBoxValue(DCPassword, 20);
-			//	}
-			//}
-			//catch (Exception ex)
-			//{
-			//	task.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
-			//}
-			//catch (Exception ex)
-			//{
-			//	task.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
-			//}
-		
+		//try
+		//{
+		//	using var con = new SqlConnection(_dbConnection);
+		//	using var cmd = new SqlCommand(@"
+		//SELECT 
+		//    [Employee ID], [EMPLOYEE NAME], [RDWEB USERNAME], [RDWEB PASSWORD],
+		//    [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [EMAIL PASSWORD],
+		//    [BROADVOICE NO.], [Broadvoice Username], [Broadvoice Password],
+		//    [PC Assigned], [PC USERNAME], [PC PASSWORD], TEAM, REMARKS,
+		//    [DATE OF BIRTH], [Employment Status], [FIRST TIME LOGIN],
+		//    [Discord Username], [Discord Password]
+		//FROM 
+		//    [User Information]
+		//WHERE 
+		//    [Employee ID] = @EmployeeID", con);
+		//
+		//	cmd.Parameters.AddWithValue("@EmployeeID", empNoSelected.Text);
+		//
+		//	con.Open();
+		//	using var reader = cmd.ExecuteReader();
+		//
+		//	if (reader.Read())
+		//	{
+		//		// Use a helper method to populate the UI elements
+		//		void SetTextBoxValue(Control control, int columnIndex)
+		//		{
+		//			if (control != null && !reader.IsDBNull(columnIndex))
+		//			{
+		//				switch (control)
+		//				{
+		//					case RadTextBox textBox:
+		//						textBox.Text = reader.GetString(columnIndex);
+		//						break;
+		//					case RadDropDownList dropDownList:
+		//						dropDownList.Text = reader.GetString(columnIndex);
+		//						break;
+		//					case RadTextBoxControl textBoxControl:
+		//						textBoxControl.Text = reader.GetString(columnIndex);
+		//						break;
+		//				}
+		//			}
+		//		}
+		//
+		//		// Assign values to controls
+		//		SetTextBoxValue(txtIDNumber, 0);
+		//		SetTextBoxValue(EmpName, 1);
+		//		SetTextBoxValue(RDWEbUsername, 2);
+		//		SetTextBoxValue(RDWebPassword, 3);
+		//		SetTextBoxValue(LytecUsername, 4);
+		//		SetTextBoxValue(LytecPassword, 5);
+		//		SetTextBoxValue(EmailAddress, 6);
+		//		SetTextBoxValue(EmailPassword, 7);
+		//		SetTextBoxValue(BVnumber, 8);
+		//		SetTextBoxValue(BVUsername, 9);
+		//		SetTextBoxValue(BvPassword, 10);
+		//		SetTextBoxValue(PCName, 11);
+		//		SetTextBoxValue(PCUsername, 12);
+		//		SetTextBoxValue(PCPassword, 13);
+		//		SetTextBoxValue(cmbDirectReport, 14);
+		//		SetTextBoxValue(Remarks, 15);
+		//		SetTextBoxValue(DateOfBirth, 16);
+		//		SetTextBoxValue(cmbEmploymentStatus, 17);
+		//		SetTextBoxValue(firstTimeLogin, 18);
+		//		SetTextBoxValue(DCUsername, 19);
+		//		SetTextBoxValue(DCPassword, 20);
+		//	}
+		//}
+		//catch (Exception ex)
+		//{
+		//	error.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
+		//}
+		//catch (Exception ex)
+		//{
+		//	error.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
+		//}
+
 
 
 		//public void FillAdminUserProfile(RadTextBox txtIDNumber, RadTextBox EmpName, RadTextBox RDWEbUsername, RadTextBox RDWebPassword, RadTextBox LytecUsername, RadTextBox LytecPassword, RadTextBox EmailAddress, RadTextBox EmailPassword, RadTextBox BVnumber, RadTextBox BVUsername, RadTextBox BvPassword, RadTextBox PCName, RadTextBox PCUsername, RadTextBox PCPassword, RadTextBoxControl Remarks, RadTextBox DateOfBirth, RadDropDownList cmbDirectReport, RadDropDownList firstTimeLogin, RadTextBox DCUsername, RadTextBox DCPassword, RadDropDownList cmbEmploymentStatus, string empName, RadTextBox empNoSelected)
@@ -384,7 +406,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("FillAdminUserProfile", empName, "User", null, ex);
+		//		error.LogError("FillAdminUserProfile", empName, "User", null, ex);
 		//		//task.ExecutedbCollBackupCsv(empName);
 		//	}
 		//	finally
@@ -519,7 +541,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	catch (Exception ex)
 		//	{
 		//		//MessageBox.Show("Error connecting Database \n \n" + ex + "\n \n" + "Inform the Programmer/Author/Developer \n Erwin Alcantara (Skype: aerwin0629; Email: Erwin@pcmsbilling.net", Global.ProgName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-		//		task.LogError("FillUpUserTxtBox", empName, "User", null, ex);
+		//		error.LogError("FillUpUserTxtBox", empName, "User", null, ex);
 		//	}
 		//	finally
 		//	{
@@ -529,9 +551,9 @@ namespace PCMS_Lipa_General_Tool.Class
 		//}
 		//
 		//// Method to clear text boxes and combo boxes
-	
 
-		
+
+
 		//public void FillUpUserTxtBox(RadGridView dgUser, RadTextBox txtIntID, RadTextBox txtName, RadTextBox txtUsername, RadDropDownList cmbUserAccess, RadDropDownList cmbPosition, RadDropDownList cmbUserDept, RadDropDownList cmbUserStatus, RadDropDownList cmbOffice, RadTextBox txtemail, RadTextBox bvNo, string empName)
 		//{
 		//	//[Employee ID], [EMPLOYEE NAME], USERNAME, [GROUP], USERTYPE, ROLE, STATUS, OFFICE, [EMAIL ADDRESS]
@@ -577,15 +599,212 @@ namespace PCMS_Lipa_General_Tool.Class
 		//
 		//}
 		//
-		public void UpdateUserPassword(string userName, string email, string adminMessage, string password, string reason, string empName)
+
+		public DataTable GetSearch(
+			string itemToSearch,
+			string statusColumn,
+			out string searchCount, string empName)
+		{
+			DataTable resultTable = new();
+
+			using SqlConnection conn = new(_dbConnection);
+			try
+			{
+				conn.Open();
+
+				// Define the base query
+				string query = $@"
+SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT],
+[USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS]
+FROM [User Information]
+WHERE USERNAME LIKE @itemToSearch";
+
+				// Add the STATUS filter only if statusColumn is not "All"
+				if (statusColumn != "All")
+				{
+					query += " AND STATUS LIKE @statusSearch";
+				}
+
+				using SqlCommand cmd = new(query, conn);
+				cmd.Parameters.AddWithValue("@itemToSearch", $"%{itemToSearch}%");
+
+				// Add the @statusSearch parameter only if statusColumn is not "All"
+				if (statusColumn != "All")
+				{
+					cmd.Parameters.AddWithValue("@statusSearch", $"%{statusColumn}%");
+				}
+
+				using SqlDataAdapter adapter = new(cmd);
+				adapter.Fill(resultTable);
+
+				// Calculate the search count
+				searchCount = $"Total records: {resultTable.Rows.Count}";
+			}
+			catch (Exception ex)
+			{
+				// Log the error and provide feedback
+				error.LogError("SearchEmpTwoColumnOneFieldText", empName, "User", "N/A", ex);
+				searchCount = "Error occurred while fetching records.";
+			}
+
+			return resultTable;
+		}
+
+		public string CheckIfExistinDB(string username, string modLoc, string request)
+		{
+			using SqlConnection conn = new(_dbConnection);
+			conn.Open();
+			try
+			{
+				using SqlCommand command = new(
+					@"SELECT COUNT(*) FROM [User Information] WHERE USERNAME = @username", conn);
+				command.Parameters.AddWithValue("@username", username);
+
+				int userCount = (int)command.ExecuteScalar();
+
+				if (userCount > 0)
+				{
+					if (modLoc == "UserMgmt" && request == "Create")
+					{
+						return "Username already exists.";
+					}
+				}
+				else
+				{
+					if (request == "Login" && modLoc == "Login")
+					{
+						return "Username not found.";
+					}
+				}
+
+				return string.Empty; // No issues found
+			}
+			catch (SqlException sqlEx)
+			{
+				error.LogError("CheckIfExistinDB", "N/A", "CommonTask", "SQL Exception", sqlEx);
+				return "A database error occurred. Please try again later.";
+			}
+			catch (Exception ex)
+			{
+				error.LogError("CheckIfExistinDB", "N/A", "CommonTask", "General Exception", ex);
+				return "An unexpected error occurred. Please contact support.";
+			}
+			finally
+			{
+				if (conn.State == ConnectionState.Open)
+				{
+					conn.Close();
+				}
+			}
+		}
+
+		public void GetUsersEmail(string name, string empName)
+		{
+			using var con = new SqlConnection(_dbConnection);
+			try
+			{
+				con.Open();
+				using SqlCommand cmd = new("SELECT [Employee Name], [Email Address] FROM [User Information] WHERE [Employee Name] = '" + name + "'", con);
+				using var reader = cmd.ExecuteReader();
+				if (reader.Read())
+				{
+					email = reader.IsDBNull(1) ? null : reader.GetString(1);
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
+			}
+			finally
+			{
+				con.Close();
+			}
+		}
+
+		public bool UpdateFirstLoginInfo(string query, string userName, string empName, out string message)
+		{
+			message = string.Empty;
+
+			try
+			{
+				using var con = new SqlConnection(_dbConnection);
+				con.Open();
+
+				using var command = new SqlCommand(query, con);
+				// Add the parameter for @UserName with explicit type and size (adjust SqlDbType and size as needed)
+				var parameter = new SqlParameter("@UserName", SqlDbType.NVarChar, 50)
+				{
+					Value = userName
+				};
+				command.Parameters.Add(parameter);
+
+				int rowsAffected = command.ExecuteNonQuery();
+				if (rowsAffected > 0)
+				{
+					message = "First login info updated successfully.";
+					return true;
+				}
+				else
+				{
+					message = "No records were updated.";
+					return false;
+				}
+			}
+			catch (SqlException sqlEx)
+			{
+				error.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", sqlEx);
+				message = $"SQL Error: {sqlEx.Message}";
+				return false;
+			}
+			catch (Exception ex)
+			{
+				error.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", ex);
+				message = $"An error occurred: {ex.Message}";
+				return false;
+			}
+		}
+
+
+		//public bool UpdateFirstLoginInfo(string query, string userName, string empName, out string message)
+		//{
+		//	try
+		//	{
+		//		using (var con = new SqlConnection(_dbConnection))
+		//		{
+		//			con.Open();
+		//			using var command = new SqlCommand(query, con);
+		//			// Add the parameter for @UserName
+		//			command.Parameters.AddWithValue("@UserName", userName);
+		//
+		//			command.ExecuteNonQuery();
+		//		}
+		//
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		error.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", ex);
+		//		message = $"Failed to Update FirstLoginInfo";
+		//		return false;
+		//	}
+		//}
+
+		public bool UpdateUserPassword
+			(string userName,
+			string email,
+			string password,
+			string reason,
+			string empName,
+			out string message,
+			out string status)
 		{
 			try
 			{
 				// Early validation for critical inputs
 				if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
 				{
-					ShowMessage("Username and Password should not be empty", "Error", RadMessageIcon.Error);
-					return;
+					message = "Username and Password should not be empty";
+					status = "Warning";
+					return true;
 				}
 
 				string query = "SELECT USERNAME, PASSWORD, [EMAIL ADDRESS] FROM [User Information] WHERE USERNAME = @UserName";
@@ -598,8 +817,9 @@ namespace PCMS_Lipa_General_Tool.Class
 				using var reader = cmd.ExecuteReader();
 				if (!reader.Read())
 				{
-					ShowMessage("Your username does not match our records", "Notification", RadMessageIcon.Info);
-					return;
+					message = "Your username does not match our records";
+					status = "Warning";
+					return true;
 				}
 
 				string userNameDB = reader.GetString(0);
@@ -607,18 +827,26 @@ namespace PCMS_Lipa_General_Tool.Class
 
 				if (!emailDB.Equals(email, StringComparison.OrdinalIgnoreCase))
 				{
-					ShowMessage("The email provided didn't match the username. Ensure you have the correct email or ask your administrator to reset it.", "Error", RadMessageIcon.Error);
-					return;
+					message = "The email provided didn't match the username. Ensure you have the correct email or ask your administrator to reset it.";
+					status = "Warning";
+					return true;
 				}
 
 				UpdatePassword(password, userNameDB, empName);
 				LogPasswordChange(userName, reason, empName);
 
-				NotifyUser(userName, email, password, reason, adminMessage);
+				NotifyUser(userName, email, password, reason);
+
+				message = "Password updated successfully.";
+				status = "Success";
+				return true;
 			}
 			catch (Exception ex)
 			{
-				task.LogError("UpdateUserPassword", empName, "User", "N/A", ex);
+				error.LogError("UpdateUserPassword", empName, "User", "N/A", ex);
+				message = "An error occurred while updating the user password.";
+				status = "Error";
+				return false;
 			}
 		}
 
@@ -635,7 +863,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				con.Open();
 				cmd.ExecuteNonQuery();
 			}
-			task.AddActivityLog($"{empName} Password Update", empName, "${empName} Password Update", "UPDATE PASSWORD");
+			log.AddActivityLog($"{empName} Password Update", empName, "${empName} Password Update", "UPDATE PASSWORD");
 		}
 
 		private void LogPasswordChange(string userName, string reason, string empName)
@@ -646,23 +874,23 @@ namespace PCMS_Lipa_General_Tool.Class
 			{
 				case "forgot":
 					logMessage = $"{userName} updated their password due to a forgotten password.";
-					task.AddActivityLog(logMessage, userName, logMessage, "FORGOT PASSWORD UPDATE");
+					log.AddActivityLog(logMessage, userName, logMessage, "FORGOT PASSWORD UPDATE");
 					break;
 
 				case "change":
 					logMessage = $"{userName} updated their password due to a system requirement.";
-					task.AddActivityLog(logMessage, userName, "System required password change", "CHANGE PASSWORD UPDATE");
-					task.UpdateFirstLoginInfo("UPDATE [User Information] SET [FIRST TIME LOGIN] = 'NO' WHERE USERNAME = @UserName", userName, empName, "Password successfully updated");
+					log.AddActivityLog(logMessage, userName, "System required password change", "CHANGE PASSWORD UPDATE");
+					UpdateFirstLoginInfo("UPDATE [User Information] SET [FIRST TIME LOGIN] = 'NO' WHERE USERNAME = @UserName", userName, empName, out string message);
 					break;
 
 				default:
 					logMessage = $"{userName} (Admin) updated the password for another user.";
-					task.AddActivityLog(logMessage, userName, userName, "ADMIN PASSWORD RESET");
+					log.AddActivityLog(logMessage, userName, userName, "ADMIN PASSWORD RESET");
 					break;
 			}
 		}
 
-		private void NotifyUser(string userName, string email, string password, string reason, string adminMessage)
+		private void NotifyUser(string userName, string email, string password, string reason)
 		{
 			string emailSubject = reason == "forgot" ? "Password Reset Request" : "Password Change Confirmation";
 			string emailContent = $"Your new password for PCMS Lipa General Tool is: {password}\n\nPlease do not share this email or your password.";
@@ -670,14 +898,14 @@ namespace PCMS_Lipa_General_Tool.Class
 			mailSender.SendEmail("noAttach", emailContent, null, emailSubject, email, "PCMS Lipa General Tool - noreply", null, null);
 
 			string discordMessage = $"{userName} updated their password.";
-			task.AddActivityLog(discordMessage, userName, discordMessage, "USER PASSWORD UPDATED");
-			task.SendToastNotifDesktop(adminMessage);
+			log.AddActivityLog(discordMessage, userName, discordMessage, "USER PASSWORD UPDATED");
+			
 		}
 
-		private void ShowMessage(string message, string caption, RadMessageIcon icon)
-		{
-			RadMessageBox.Show(message, caption, MessageBoxButtons.OK, icon);
-		}
+		///private void ShowMessage(string message, string caption, RadMessageIcon icon)
+		///{
+		///	RadMessageBox.Show(message, caption, MessageBoxButtons.OK, icon);
+		
 
 		//public void UpdatePassword(string password, string username, string empName)
 		//{
@@ -772,17 +1000,17 @@ namespace PCMS_Lipa_General_Tool.Class
 		//
 		//				if (reason == "forgot")
 		//				{
-		//					task.AddActivityLog($"{userName} updated their password", userName, $"{userName} did a password reset", "FORGOT PASSWORD UPDATE");
+		//					log.AddActivityLog($"{userName} updated their password", userName, $"{userName} did a password reset", "FORGOT PASSWORD UPDATE");
 		//				}
 		//				else if (reason == "change")
 		//				{
-		//					task.AddActivityLog($"{userName} updated their password", userName, "System required password change", "CHANGE PASSWORD UPDATE");
+		//					log.AddActivityLog($"{userName} updated their password", userName, "System required password change", "CHANGE PASSWORD UPDATE");
 		//					task.UpdateFirstLoginInfo("UPDATE [User Information] SET [FIRST TIME LOGIN] = 'NO' WHERE USERNAME = @UserName", userName, empName, "Password successfully updated");
 		//					//task.UpdateValues("UPDATE [User Information] SET [FIRST TIME LOGIN] = 'NO' WHERE USERNAME = " + userName + ,  empName, "Password successfully updated");
 		//				}
 		//				else
 		//				{
-		//					task.AddActivityLog($"{userName} (Admin) updated the password for {userName}", userName, userName, "ADMIN PASSWORD RESET");
+		//					log.AddActivityLog($"{userName} (Admin) updated the password for {userName}", userName, userName, "ADMIN PASSWORD RESET");
 		//				}
 		//
 		//				winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", $"{userName} updated their password", "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
@@ -790,7 +1018,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//				string emailContent = $"Your new password for PCMS Lipa General Tool is: {password}\n\nPlease do not share this email or your password.";
 		//				emailSender.SendPasswordEmail(emailContent, email, reason == "forgot" ? "Password Reset Request" : "Password Change Confirmation");
 		//
-		//				task.SendToastNotifDesktop(adminMessage);
+		//				fe.SendToastNotifDesktop(adminMessage);
 		//			}
 		//		}
 		//	}
@@ -831,11 +1059,11 @@ namespace PCMS_Lipa_General_Tool.Class
 		//										UpdatePassword(password, userNameDB, empName);
 		//										if (reason == "forgot")
 		//										{
-		//											task.AddActivityLog(userName + " updated the password for " + userName, userName, userName + " did some password update on his/her account", "FORGOT PASSWORD UPDATE");
+		//											log.AddActivityLog(userName + " updated the password for " + userName, userName, userName + " did some password update on his/her account", "FORGOT PASSWORD UPDATE");
 		//										}
 		//										else if (reason == "change")
 		//										{
-		//											task.AddActivityLog(userName + " updated the password for " + userName, userName, userName + " System required to change password", "CHANGE PASSWORD UPDATE");
+		//											log.AddActivityLog(userName + " updated the password for " + userName, userName, userName + " System required to change password", "CHANGE PASSWORD UPDATE");
 		//											task.UpdateValues(firstTimeLogin, empName, "Password successfully updated");
 		//										}
 		//										winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", userName + " did some password update on his/her account", "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
@@ -847,12 +1075,12 @@ namespace PCMS_Lipa_General_Tool.Class
 		//									{
 		//										//string updatequery = "UPDATE [User Information] SET PASSWORD='" + secEnc.PassHash(password) + "' WHERE [USERNAME]='" + userName + "'";
 		//										UpdatePassword(password, userNameDB, empName);
-		//										task.AddActivityLog(userName + "(Admin) updated the password for " + userName, userName, userName, "ADMIN PASSWORD RESET");
+		//										log.AddActivityLog(userName + "(Admin) updated the password for " + userName, userName, userName, "ADMIN PASSWORD RESET");
 		//										winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", userName + " did some password update on his/her account", "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
 		//										var content = "We have received a request to reset your password for your PCMS Lipa General Tool Account.<br/> Your new Password is: " + password + "\n\n <br/><br/><b>Do not share this email or your password to anyone.";
 		//										emailSender.SendPasswordEmail(content, email, "Password Reset Request");
 		//									}
-		//									task.SendToastNotifDesktop(adminMessage);
+		//									fe.SendToastNotifDesktop(adminMessage);
 		//								}
 		//								else
 		//								{
@@ -902,7 +1130,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
+				error.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
 			}
 			return items;
 		}
@@ -926,7 +1154,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
+				error.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
 			}
 			return items;
 		}
@@ -969,7 +1197,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		public void EmployeeDatabase(
+		public bool EmployeeDatabase(
 			string request,
 			string empID,
 			string empName,
@@ -984,7 +1212,8 @@ namespace PCMS_Lipa_General_Tool.Class
 			string office,
 			string newEmp,
 			string theme,
-			string authorName)
+			string authorName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -996,7 +1225,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				// Determine the SQL command based on the request type
 				cmd.CommandText = request switch
@@ -1063,13 +1292,16 @@ namespace PCMS_Lipa_General_Tool.Class
 				message = $"Done! {empID} has been successfully {request.ToLower()}d.";
 				SendCredentialstoEmail(workEmail.Trim(), userName.Trim(), empName.Trim());
 
-				task.AddActivityLog(message, authorName, logs, $"{request.ToUpper()} USER INFORMATION");
-				task.SendToastNotifDesktop(message);
+				log.AddActivityLog(message, authorName, logs, $"{request.ToUpper()} USER INFORMATION");
+				return true;
+				//fe.SendToastNotifDesktop(message, "Success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"EmployeeDatabase {request}", authorName, "User", newEmp, ex);
-				MessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				error.LogError($"EmployeeDatabase {request}", authorName, "User", newEmp, ex);
+				message = $"Failed to {request.ToLower()} {empID}, Please try again later";
+				return false;
+				//MessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			finally
 			{
@@ -1171,12 +1403,12 @@ namespace PCMS_Lipa_General_Tool.Class
 		//		message = $"Done! {txtempID.Text} has been successfully {request.ToLower()}d.";
 		//		SendCredentialstoEmail(txtWorkEmail.Text.Trim(), txtuserName.Text.Trim(), txtempName.Text.Trim());
 		//
-		//		task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} USER INFORMATION");
-		//		task.SendToastNotifDesktop(message);
+		//		log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} USER INFORMATION");
+		//		fe.SendToastNotifDesktop(message, "Success");
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError($"EmployeeDatabase {request}", empName, "Adjuster", newEmp, ex);
+		//		error.LogError($"EmployeeDatabase {request}", empName, "Adjuster", newEmp, ex);
 		//		RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//	}
 		//	finally
@@ -1209,7 +1441,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"SendCredentialstoEmail", empName,"User", recipientEmail, ex);
+				error.LogError($"SendCredentialstoEmail", empName,"User", recipientEmail, ex);
 				//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);/ ShowNotification($"Error sending email: {ex.Message}", NotificationType.Error);
 			}
 		}
@@ -1244,7 +1476,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					};
 					mail.IsBodyHtml = true;	
 					mail.To.Add(recipient);
-					mail.CC.Add("edimson@yopmail.com");
+					mail.CC.Add("edimson@pcmsbilling.net");
 					mail.Bcc.Add("mr.erwinalcantara@gmail.com");
 					smtpClient.Send(mail);
 				}
@@ -1252,7 +1484,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				{
 					if (attempt == retryCount)
 					{
-						task.LogError("SendEmail", null, "User", recipient, ex);
+						error.LogError("SendEmail", null, "User", recipient, ex);
 						return;
 					}
 
@@ -1267,12 +1499,6 @@ namespace PCMS_Lipa_General_Tool.Class
 			const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 			var random = new Random();
 			return new string(Enumerable.Range(1, 12).Select(_ => chars[random.Next(chars.Length)]).ToArray());
-		}
-
-		private enum NotificationType
-		{
-			Success,
-			Error
 		}
 
 
@@ -1303,7 +1529,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewEmployeeInformationUser", empName, "User", "N/A", ex);
+				error.LogError("ViewEmployeeInformationUser", empName, "User", "N/A", ex);
 			}
 
 			return data;
@@ -1311,7 +1537,7 @@ namespace PCMS_Lipa_General_Tool.Class
 
 	
 
-		public void UpdateUserTheme(string empName, string menuItem)
+		public void UpdateUserTheme(string empName, string menuItem, out string message)
 		{
 			var query = "UPDATE [User Information] SET [THEME] = '" + menuItem + "' WHERE [EMPLOYEE NAME] ='" + empName + "'";
 			try
@@ -1323,11 +1549,13 @@ namespace PCMS_Lipa_General_Tool.Class
 					command.ExecuteNonQuery();
 				}
 				//RadMessageBox.Show("Theme successfully updated", "Information", MessageBoxButtons.OK, RadMessageIcon.Info);
-				task.SendToastNotifDesktop("Theme sucessfully updated and applied");
+				message = "Theme sucessfully updated and applied";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("UpdateUserTheme", empName, "User", "N/A", ex);
+				error.LogError("UpdateUserTheme", empName, "User", "N/A", ex);
+				message = $"Failed to update theme for {empName}, Please try again later";
+				//return false;
 			}
 		}
 
@@ -1386,9 +1614,9 @@ namespace PCMS_Lipa_General_Tool.Class
 		//								cmd.ExecuteNonQuery();
 		//							}
 		//							string logs = empName + " updated information Employee ID: " + txtempID.Text;
-		//							task.AddActivityLog(message, empName, logs, "UPDATED EMPLOYEE INFORMATION");
+		//							log.AddActivityLog(message, empName, logs, "UPDATED EMPLOYEE INFORMATION");
 		//							winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		//							task.SendToastNotifDesktop(logs);
+		//							fe.SendToastNotifDesktop(logs);
 		//							//RadMessageBox.Show("Record successfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//						}
 		//						catch (Exception ex)
@@ -1444,9 +1672,9 @@ namespace PCMS_Lipa_General_Tool.Class
 		//							}
 		//							string logs = empName + " added Employee ID: " + txtempID.Text;
 		//							SendCredentialstoEmail(txtempName.Text, txtWorkEmail.Text, empName, txtuserName.Text);
-		//							task.AddActivityLog(message, empName, logs, "ADDED EMPLOYEE INFORMATION");
+		//							log.AddActivityLog(message, empName, logs, "ADDED EMPLOYEE INFORMATION");
 		//							winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		//							task.SendToastNotifDesktop(logs);
+		//							fe.SendToastNotifDesktop(logs);
 		//							//RadMessageBox.Show("Record successfully Added", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//						}
 		//
@@ -1486,9 +1714,9 @@ namespace PCMS_Lipa_General_Tool.Class
 		//								cmd.ExecuteNonQuery();
 		//							}
 		//							string logs = empName + " deleted Employee ID: " + txtempID.Text;
-		//							task.AddActivityLog(message, empName, logs, "DELETED EMPLOYEE INFORMATION");
+		//							log.AddActivityLog(message, empName, logs, "DELETED EMPLOYEE INFORMATION");
 		//							winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		//							task.SendToastNotifDesktop(logs);
+		//							fe.SendToastNotifDesktop(logs);
 		//							//RadMessageBox.Show("Record successfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//						}
 		//						catch (Exception ex)
@@ -1519,7 +1747,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//}
 		//
 
-		public void MoreEmployeeDatabase(
+		public bool MoreEmployeeDatabase(
 	string empID,
 	string empName,
 	string rdWebUsername,
@@ -1541,7 +1769,8 @@ namespace PCMS_Lipa_General_Tool.Class
 	string discordUsername,
 	string discordPassword,
 	string employmentStatus,
-	string authorName)
+	string authorName,
+	out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -1549,7 +1778,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				conn.Open();
 
 				// Generate activity message
-				string message = $@"I added an update for {empName}. Check the details below.
+				string logs = $@"I added an update for {empName}. Check the details below.
 
 Employee ID: {empID}
 Employee Name: {empName}
@@ -1624,14 +1853,17 @@ Employment Status: {employmentStatus}";
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				string logs = $"{authorName} updated Employee ID: {empID}";
-				task.AddActivityLog(message, authorName, logs, "UPDATED MORE EMPLOYEE INFORMATION");
-				task.SendToastNotifDesktop(logs);
+				message = $"{authorName} updated Employee ID: {empID}";
+				log.AddActivityLog(message, authorName, logs, "UPDATED MORE EMPLOYEE INFORMATION");
+				return true;
+				///fe.SendToastNotifDesktop(message, "success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError("MoreEmployeeDatabase", authorName, "User", empID, ex);
-				MessageBox.Show($"{ex.Message} {empID}", "Failed to Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				error.LogError("MoreEmployeeDatabase", authorName, "User", empID, ex);
+				message = $"Failed to update {empID}, Please try again later";
+				return false;
+				///MessageBox.Show($"{ex.Message} {empID}", "Failed to Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			finally
 			{
@@ -1682,7 +1914,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			catch (Exception ex)
 			{
 				// Log the error and provide feedback
-				task.LogError("GetAdminSearch", empName, "CommonTask", "N/A", ex);
+				error.LogError("GetAdminSearch", empName, "CommonTask", "N/A", ex);
 				searchCount = "Error occurred while fetching records.";
 			}
 
@@ -1718,7 +1950,7 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				error.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -1786,13 +2018,13 @@ OR [Remarks] LIKE @searchTerm";
 		//			cmd.ExecuteNonQuery();
 		//		}
 		//		string logs = empName + " updated Employee ID: " + txtempID.Text;
-		//		task.AddActivityLog(message, empName, logs, "UPDATED MORE EMPLOYEE INFORMATION");
-		//		task.SendToastNotifDesktop(logs);
+		//		log.AddActivityLog(message, empName, logs, "UPDATED MORE EMPLOYEE INFORMATION");
+		//		fe.SendToastNotifDesktop(logs);
 		//		//RadMessageBox.Show("Record successfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("MoreEmployeeDatabase", empName, "User", "N/A", ex);
+		//		error.LogError("MoreEmployeeDatabase", empName, "User", "N/A", ex);
 		//		RadMessageBox.Show($@"{ex.Message} {txtempID.Text}", "Failed to Update", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//	}
 		//	finally

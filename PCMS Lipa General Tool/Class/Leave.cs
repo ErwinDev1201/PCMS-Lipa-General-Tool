@@ -1,12 +1,8 @@
-﻿
+﻿using PCMS_Lipa_General_Tool.HelperClass;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Windows.Forms;
-using Telerik.WinControls;
 using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Class
@@ -16,6 +12,34 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
 		private readonly CommonTask task = new();
+		private readonly User user = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
+		readonly emailSender mail = new();
+		private readonly string email;
+
+		public void GetDBListID(out string ID, string empName)
+		{
+			ID = string.Empty;
+
+			string nextSequence = db.GetSequenceNo("LeaveSeq", "LV-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					ID = nextSequence;
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBListID", empName, "Leave", "ID", ex);
+			}
+			//db.GetSequenceNo("label", "LeaveSeq", null, lblLeaveID.Text, "LV-");
+		}
+
 
 		public void FillUpSupportLeaveForm(string empID, ref string position, ref string empStat, string empName)
 		{
@@ -38,7 +62,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillUpSupportLeaveForm", empName, "Leave", empID, ex);
+				error.LogError("FillUpSupportLeaveForm", empName, "Leave", empID, ex);
 			}
 		}
 
@@ -65,7 +89,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("FillUpSupportLeaveForm", empName, "Leave", empID, ex);
+		//		error.LogError("FillUpSupportLeaveForm", empName, "Leave", empID, ex);
 		//	}
 		//}
 		//
@@ -213,9 +237,9 @@ namespace PCMS_Lipa_General_Tool.Class
 					if (!reader.IsDBNull(reader.GetOrdinal("Start Date")))
 					{
 						var startDateValue = reader["Start Date"];
-						if (startDateValue is DateTime)
+						if (startDateValue is DateTime time)
 						{
-							startDate = (DateTime)startDateValue;
+							startDate = time;
 						}
 						else if (DateTime.TryParse(startDateValue.ToString(), out DateTime parsedStartDate))
 						{
@@ -230,9 +254,9 @@ namespace PCMS_Lipa_General_Tool.Class
 					if (!reader.IsDBNull(reader.GetOrdinal("End Date")))
 					{
 						var endDateValue = reader["End Date"];
-						if (endDateValue is DateTime)
+						if (endDateValue is DateTime time)
 						{
-							endDate = (DateTime)endDateValue;
+							endDate = time;
 						}
 						else if (DateTime.TryParse(endDateValue.ToString(), out DateTime parsedEndDate))
 						{
@@ -267,7 +291,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			catch (Exception ex)
 			{
 				// Log error (adjust the logging mechanism as needed)
-				task.LogError("FillUpLeaveFields", empName, "Leave", selectedLeaveID, ex);
+				error.LogError("FillUpLeaveFields", empName, "Leave", selectedLeaveID, ex);
 				//throw; // Re-throw the exception if necessary
 			}
 		}
@@ -389,7 +413,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("FillUpLeaveFields", empName, "Leave", leaveID.Text, ex);
+		//		error.LogError("FillUpLeaveFields", empName, "Leave", leaveID.Text, ex);
 		//	}
 		//}
 		//
@@ -554,7 +578,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewDatagrid", empName, "CommonTask", "N/A", ex);
+				error.LogError("ViewDatagrid", empName, "CommonTask", "N/A", ex);
 			}
 			finally
 			{
@@ -562,7 +586,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		public void LeaveFiling(
+		public bool LeaveFiling(
 			string request,
 			string leaveID,
 			string empID,
@@ -575,7 +599,8 @@ namespace PCMS_Lipa_General_Tool.Class
 			string approvalStatus,
 			string remarks,
 			string empName,
-			string approverPosition)
+			string approverPosition,
+			out string notifmessage)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -586,7 +611,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					Connection = conn
 				};
 
-				string logs, message, notifmessage, mailContent;
+				string logs, message, mailContent;
 				string emailRequestType = request.Equals("Create", StringComparison.OrdinalIgnoreCase) ? "file" : "response";
 
 				cmd.CommandText = request switch
@@ -629,22 +654,27 @@ namespace PCMS_Lipa_General_Tool.Class
 				message = GenerateMessage(request, leaveID, EmployeeName, startDate, endDate, paymentOption, typeofLeave, reason, approvalStatus, remarks);
 				mailContent = GenerateEmailContent(EmployeeName, startDate, endDate, paymentOption, typeofLeave, reason, emailRequestType, approvalStatus, approverPosition, empName, remarks);
 				// Determine the request type and notify via email
-				task.NotifyEmail(emailRequestType, mailContent, EmployeeName, empName, approverPosition);
+				NotifyEmail(emailRequestType, mailContent, EmployeeName, empName, approverPosition);
 				logs = $"{empName} {request.ToLower()}d leave ID: {leaveID}";
 				notifmessage = $"Done! {leaveID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} ADJUSTER INFORMATION");
-				task.SendToastNotifDesktop(notifmessage);
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} ADJUSTER INFORMATION");
+				return true;
+				////fe.SendToastNotifDesktop(notifmessage, "Success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"LeaveFiling ({request})", empName, "Leave", leaveID, ex);
-				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				error.LogError($"LeaveFiling ({request})", empName, "Leave", leaveID, ex);
+				notifmessage = $"Failed to {request.ToLower()} {leaveID}, Please try again later";
+				return false;
+				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
 			finally
 			{
 				conn.Close();
 			}
 		}
+
+		
 
 		private string GenerateMessage(string request, string leaveID, string employeeName, string startDate, string endDate, string paymentOption, string typeofLeave, string reason, string approvalStatus, string remarks)
 		{
@@ -759,6 +789,67 @@ namespace PCMS_Lipa_General_Tool.Class
 			return leaveMessage;
 
 		}
+
+
+		public void NotifyEmail(string request, string mailContent, string employeeName, string empName, string position)
+		{
+			string emailAddress;
+			string mailSubject;
+			string ccEmail1;
+			string machineName;
+			//string ccEmail2;
+
+			try
+			{
+				//support pdf attachment in next build. - 03222024
+				// uncomment when building release
+				//emailAddress = "Edimson@pcmsbilling.net";
+				//ccEmail1 = "Angeline@pcmsbilling.net";
+				//ccEmail2 = "Shalah@pcmsbilling.net";
+				machineName = Environment.MachineName;
+				if (machineName == "ERWIN-PC")
+				{
+					emailAddress = "Edimson@yopmail.com";
+					ccEmail1 = "Angeline@yopmail.com";
+				}
+				else
+				{
+					emailAddress = "Edimson@pcmsbilling.net";
+					ccEmail1 = "Angeline@pcmsbilling.net";
+				}
+				//yopmail use for testing to avoid sending spam/test email in activate account and comment when building release
+
+				//ccEmail2 = "Shalah@yopmail.com";
+
+				if (request == "file")
+				{
+					user.GetUsersEmail(employeeName, empName);
+					mailSubject = "Filed Leave from " + employeeName;
+					if (position == "Management")
+					{
+
+						mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", null, null);
+					}
+					else
+					{
+						mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", ccEmail1, null);
+						//emailSender.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", );
+					}
+
+				}
+				else if (request == "response")
+				{
+					user.GetUsersEmail(employeeName, empName);
+					emailAddress = email;
+					mailSubject = "File Leave Update for " + employeeName;
+					mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Leave Update Notification (via PCMS Lipa General Tool)", null, null);
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
+			}
+		}
 		//private string GenerateEmailContent(string employeeName, string startDate, string endDate, string paymentOption, string typeofLeave, string reason)
 		//{
 		//	return typeofLeave switch
@@ -815,7 +906,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//							string mailcontent = "Hi " + EmployeeName.Text + ", <br/><br/>I regret to inform you that we are unable to approve your leave request at this time due to operational constraints. We understand the importance of your request and apologize for any inconvenience caused. Please feel free to discuss alternative dates or options, and we will do our best to accommodate your needs.<br/><br/>Best Regards, <br/>" + empName + "<br/>" + position.Text;
 		//							task.NotifyEmail("response", mailcontent, EmployeeName.Text, empName, position.Text);
 		//							string logs = empName + " updated file leave information: " + leaveID.Text;
-		//							task.AddActivityLog(message, empName, logs, "USER UPDATED A FILE LEAVE");
+		//							log.AddActivityLog(message, empName, logs, "USER UPDATED A FILE LEAVE");
 		//							winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
 		//						}
 		//						else
@@ -823,7 +914,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//							string mailcontent = "Hi " + EmployeeName.Text + ", <br/><br/>This is to inform you that your leave request has been approved. You are authorized to take time off from work starting on " + startDate.Text + "  and end on " + endDate.Text + ". Please ensure that all essential work is completed and continued in your absence.<br/><br/>If you have any questions or concerns, please do not hesitate to contact me. Iâ€™m happy to discuss this further with you if needed. <br/><br/>Best Regards, <br/>" + empName + "<br/>" + position.Text;
 		//							task.NotifyEmail("response", mailcontent, EmployeeName.Text, empName, position.Text);
 		//							string logs = empName + " updated file leave information: " + leaveID.Text;
-		//							task.AddActivityLog(message, empName, logs, "USER UPDATED A FILE LEAVE");
+		//							log.AddActivityLog(message, empName, logs, "USER UPDATED A FILE LEAVE");
 		//							winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
 		//						}
 		//						RadMessageBox.Show("Record successfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
@@ -891,7 +982,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//							task.NotifyEmail("file", mailcontent, EmployeeName.Text, empName, position.Text);
 		//						}
 		//						string logs = empName + " file a leave with leave ID: " + leaveID.Text;
-		//						task.AddActivityLog(message, empName, logs, "USER FILED A LEAVE");
+		//						log.AddActivityLog(message, empName, logs, "USER FILED A LEAVE");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
 		//						RadMessageBox.Show("Record successfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//					}
@@ -931,7 +1022,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//							cmd.ExecuteNonQuery();
 		//						}
 		//						string logs = empName + " deleted filed leave ID: " + leaveID.Text;
-		//						task.AddActivityLog(message, empName, logs, "USER DELETED FILED LEAVED");
+		//						log.AddActivityLog(message, empName, logs, "USER DELETED FILED LEAVED");
 		//						winDiscordAPI.PublishtoDiscord("PCMS Lipa 9General Tool - Activity Logger", "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
 		//						RadMessageBox.Show("Record successfully Deleted", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//					}

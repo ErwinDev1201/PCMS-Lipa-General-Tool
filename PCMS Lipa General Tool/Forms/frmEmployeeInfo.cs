@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -9,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmEmployeeInfo : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
 		private readonly User user = new();
 		public string EmpName;
 		public string accessLevel;
@@ -48,7 +49,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("AutoFillEmp", EmpName, "frmEmployeeInfo", txtEmpID.Text, ex);
+				error.LogError("AutoFillEmp", EmpName, "frmEmployeeInfo", txtEmpID.Text, ex);
 			}
 			//user.FillEmployeeData(dgEmpInfo, txtEmpID, txtEmpName, txtemailAdd, txtBVNo, cmbUserDept, cmbUserPosition, cmbOfficeLoc, cmbempStatus, txtRemarks, EmpName);
 		}
@@ -100,7 +101,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
+				error.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
 			}
 			//if (txtSearch.Text == "")
 			//{

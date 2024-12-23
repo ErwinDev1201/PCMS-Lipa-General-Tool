@@ -89,7 +89,7 @@
 			this.txtSearch.Location = new System.Drawing.Point(112, 18);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
-			this.txtSearch.Size = new System.Drawing.Size(249, 24);
+			this.txtSearch.Size = new System.Drawing.Size(249, 23);
 			this.txtSearch.TabIndex = 9;
 			this.txtSearch.ThemeName = "Crystal";
 			this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
@@ -99,7 +99,7 @@
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(20, 21);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(90, 20);
+			this.radLabel1.Size = new System.Drawing.Size(84, 19);
 			this.radLabel1.TabIndex = 8;
 			this.radLabel1.Text = "Search here: ";
 			this.radLabel1.ThemeName = "Crystal";
@@ -109,7 +109,7 @@
 			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblSearchCount.Location = new System.Drawing.Point(18, 409);
 			this.lblSearchCount.Name = "lblSearchCount";
-			this.lblSearchCount.Size = new System.Drawing.Size(69, 20);
+			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
 			this.lblSearchCount.TabIndex = 3;
 			this.lblSearchCount.Text = "radLabel5";
 			this.lblSearchCount.ThemeName = "Crystal";
@@ -164,7 +164,7 @@
 			this.txtIntID.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtIntID.Location = new System.Drawing.Point(24, 112);
 			this.txtIntID.Name = "txtIntID";
-			this.txtIntID.Size = new System.Drawing.Size(84, 24);
+			this.txtIntID.Size = new System.Drawing.Size(84, 23);
 			this.txtIntID.TabIndex = 3;
 			this.txtIntID.ThemeName = "Crystal";
 			// 
@@ -227,7 +227,7 @@
 			this.radLabel4.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel4.Location = new System.Drawing.Point(152, 156);
 			this.radLabel4.Name = "radLabel4";
-			this.radLabel4.Size = new System.Drawing.Size(68, 20);
+			this.radLabel4.Size = new System.Drawing.Size(66, 19);
 			this.radLabel4.TabIndex = 6;
 			this.radLabel4.Text = "Remarks: ";
 			this.radLabel4.ThemeName = "Crystal";
@@ -237,7 +237,7 @@
 			this.radLabel3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel3.Location = new System.Drawing.Point(24, 156);
 			this.radLabel3.Name = "radLabel3";
-			this.radLabel3.Size = new System.Drawing.Size(45, 20);
+			this.radLabel3.Size = new System.Drawing.Size(44, 19);
 			this.radLabel3.TabIndex = 5;
 			this.radLabel3.Text = "Price: ";
 			this.radLabel3.ThemeName = "Crystal";
@@ -247,7 +247,7 @@
 			this.txtPrice.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtPrice.Location = new System.Drawing.Point(24, 180);
 			this.txtPrice.Name = "txtPrice";
-			this.txtPrice.Size = new System.Drawing.Size(98, 24);
+			this.txtPrice.Size = new System.Drawing.Size(98, 23);
 			this.txtPrice.TabIndex = 4;
 			this.txtPrice.ThemeName = "Crystal";
 			this.txtPrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPrice_KeyPress);
@@ -257,7 +257,7 @@
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel2.Location = new System.Drawing.Point(24, 88);
 			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(99, 20);
+			this.radLabel2.Size = new System.Drawing.Size(96, 19);
 			this.radLabel2.TabIndex = 3;
 			this.radLabel2.Text = "Product Name:";
 			this.radLabel2.ThemeName = "Crystal";
@@ -267,9 +267,10 @@
 			this.txtProductName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtProductName.Location = new System.Drawing.Point(114, 112);
 			this.txtProductName.Name = "txtProductName";
-			this.txtProductName.Size = new System.Drawing.Size(195, 24);
+			this.txtProductName.Size = new System.Drawing.Size(195, 23);
 			this.txtProductName.TabIndex = 2;
 			this.txtProductName.ThemeName = "Crystal";
+			this.txtProductName.TextChanged += new System.EventHandler(this.txtProductName_TextChanged);
 			// 
 			// frmManageproduct
 			// 

@@ -1,5 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.Forms;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -24,21 +25,33 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		private readonly string _genR = privSupport + @"\Private_GenReminder.rtf";
 
 		private static readonly string privSupport = ConfigurationManager.AppSettings["privsupportpath"];
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly FEWinForm fe = new();
 		private readonly User user = new();
 		private readonly Leave leave = new();
 		private readonly CollectorNotes collnotes = new();
 		private readonly Provider provider = new();
+		private readonly OfficeFiles office = new();
 		private readonly string _personalreminderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\PersonalReminder.rtf";
 
 
-		public string EmpName;
+		//public string EmpName;
 		public string accessLevel;
 		public string userName;
 		public string employeeID;
 		public string officeLoc;
 		public string themeName;
 		public string position;
+
+		private string _empName;
+
+		public string EmpName
+		{
+			get => _empName;
+			set => _empName = value;
+		}
+
 
 		public frmMainApp()
 		{
@@ -139,7 +152,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		private void mnuLogout_Click(object sender, EventArgs e)
 		{
-			task.AddActivityLog($"User logout in the Application \n Time Logged Out: {DateTime.Now.ToShortDateString()} - {DateTime.Now.ToShortTimeString()}", EmpName, $"{EmpName} logged out", "USER LOG OUT");
+			log.AddActivityLog($"User logout in the Application \n Time Logged Out: {DateTime.Now.ToShortDateString()} - {DateTime.Now.ToShortTimeString()}", EmpName, $"{EmpName} logged out", "USER LOG OUT");
 			Hide();
 			var dlglogin = new FrmLogin();
 			dlglogin.txtUsername.Focus();
@@ -150,7 +163,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to exit?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				task.AddActivityLog($"User Exit the Application \n Time Exit: {DateTime.Now.ToShortDateString()} - {DateTime.Now.ToShortTimeString()}", EmpName, $"{EmpName} exit the app", "USER CLOSE THE APP");
+				log.AddActivityLog($"User Exit the Application \n Time Exit: {DateTime.Now.ToShortDateString()} - {DateTime.Now.ToShortTimeString()}", EmpName, $"{EmpName} exit the app", "USER CLOSE THE APP");
 				Application.Exit();
 			}
 		}
@@ -204,7 +217,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				task.LogError("mnuInsBilCollection_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuInsBilCollection_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show("Unable to open the file, please check with the developer/programmer", "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -219,7 +232,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnMedimedi_Click \n\n Detailed Error: " + ex.ToString());
-				task.LogError("mnuMedimedi_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuMedimedi_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -234,7 +247,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnMemoCollection_Click \n\n Detailed Error: " + ex.ToString());
-				task.LogError("mnuMemoColl_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuMemoColl_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -250,7 +263,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnInsPolicies_Click \n\n Detailed Error: " + ex.ToString());
-				task.LogError("mnuUnInsPolicies_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuUnInsPolicies_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -265,7 +278,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnmodRef_Click \n\n Detailed Error: " + ex.ToString());
-				task.LogError("mnuModRefGuide_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuModRefGuide_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -280,7 +293,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnRejectClaims_Click \n\n Detailed Error: " + ex.ToString());
-				task.LogError("mnuRejClaims_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuRejClaims_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -295,7 +308,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnEvalCodes_Click \n\n Detailed Error: " + ex.ToString());
-				task.LogError("mnuEvalCodes_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuEvalCodes_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -309,7 +322,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				task.LogError("mnuPPOvsHMO_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuPPOvsHMO_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show("Unable to open the file, please check with the developer/programmer", "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -324,7 +337,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnPTCodes_Click \n\n Detailed Error: " + ex.ToString());
-				task.LogError("mnuListofPT_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuListofPT_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -337,7 +350,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				task.LogError("mnuICD10_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuICD10_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open link", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -357,7 +370,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				task.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -377,7 +390,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				task.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex);
+				error.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open link", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -398,7 +411,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail(ex.Message +"\n\n Name: " + EmpName + "\n Module: CollectorWindows \n Process: btnDelCodesDx_Click \n\n Detailed Error: " + ex.ToString());
-				task.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex); ;
+				error.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex); ;
 				RadMessageBox.Show(ex.Message, "Failed to Open link", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -670,7 +683,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				task.LogError("PopulateTelerikThemes", EmpName, "frmMainApp", null, ex);
+				error.LogError("PopulateTelerikThemes", EmpName, "frmMainApp", null, ex);
 			}
 		}
 
@@ -685,7 +698,8 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		{
 			RadMenuItem menuItem = sender as RadMenuItem;
 			ThemeResolutionService.ApplicationThemeName = menuItem.Tag as string;
-			user.UpdateUserTheme(EmpName, menuItem.Tag.ToString());
+			user.UpdateUserTheme(EmpName, menuItem.Tag.ToString(), out string message);
+			fe.SendToastNotifDesktop(message, "success");
 		}
 
 		private void mnuSuggestion_Click(object sender, EventArgs e)
@@ -778,7 +792,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		{
 			if (!File.Exists(_personalreminderPath))
 			{
-				task.CreateRtfFile(_personalreminderPath);
+				office.CreateRtfFile(_personalreminderPath);
 
 			}
 			var editor = new frmRTFEditor
@@ -810,7 +824,9 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			modleave.dtpEndDate.Text = DateTime.Now.AddDays(1).ToString();
 			modleave.dtpStartdate.Text = DateTime.Now.ToString();
 			modleave.txtEmpID.Text = employeeID;
-			modleave.GetDBListID();
+			leave.GetDBListID(out string ID, EmpName);
+			modleave.lblLeaveID.Text = ID;
+			//modleave.GetDBListID();
 			string position = modleave.txtPosition.Text;
 			string empStat = modleave.txtEmploymentStatus.Text;
 			//string empName = EmpName;
@@ -914,7 +930,8 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			};
 			notesTran.btnDelete.Visible = false;
 			notesTran.btnUpdateSave.Text = "Save";
-			notesTran.GetDBID();
+			collnotes.GetDBID(out string ID, EmpName);
+			notesTran.txtIntID.Text = ID;
 			notesTran.ShowDialog();
 			viewNotesTab();
 		}
@@ -1078,7 +1095,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 				DataTable dataTable = GetDataTableFromRadGridView(dgallNotesView);
 
 				// Call the export method
-				task.ExportTableToExcel(dataTable, "Collector Notes", EmpName);
+				office.ExportTableToExcel(dataTable, "Collector Notes", EmpName);
 
 				// Optionally notify the user and open the file
 				string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);

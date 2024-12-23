@@ -3,13 +3,12 @@ using GemBox.Document;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
-using System.Windows.Forms;
-using Telerik.WinControls;
 using Telerik.WinControls.UI;
+using Color = GemBox.Document.Color;
+using DataTable = System.Data.DataTable;
 using HorizontalAlignment = GemBox.Document.HorizontalAlignment;
 
 
@@ -21,46 +20,18 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
 		readonly RadDesktopAlert alert = new();
+		FEWinForm fehelper = new();
 		private readonly string alercaption = Assembly.GetExecutingAssembly().GetName().Name.ToString();
 
 		readonly WinDiscordAPI dc = new();
 		readonly emailSender mail = new();
+		readonly Error error = new();
 
 
-		private string email;
+		
 
 
-		public void CreateRtfFile(string filename)
-		{
-			ComponentInfo.SetLicense("FREE-LIMITED-KEY");
-
-			// Create a new document
-			var document = new DocumentModel();
-
-			// Add a section to the document
-			var section = new Section(document);
-			document.Sections.Add(section);
-
-			// Add a title "Personal Reminder" in bold format
-			section.Blocks.Add(new Paragraph(document, new Run(document, "Personal Reminder")
-			{
-				CharacterFormat = new CharacterFormat
-				{
-					Bold = true,
-					Size = 16, // Optional: Adjust font size for emphasis
-					FontColor = Color.Black // Optional: Ensure black font color for clarity
-				}
-			})
-			{
-				ParagraphFormat = new ParagraphFormat
-				{
-					Alignment = HorizontalAlignment.Center // Center-align the title
-				}
-			});
-
-			// Save the document as an RTF file
-			document.Save(filename);
-		}
+		
 
 		//public void ExecutedbCollBackupCsv(string empName)
 		//{
@@ -132,212 +103,62 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				LogError("SQLToCSV", empName, "CommonTask", null, ex);
+				error.LogError("SQLToCSV", empName, "CommonTask", null, ex);
 			}
 		}
 
 
-		public void AddActivityLog(string TextContent, string empName, string DCLog, string actionLog)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				conn.Open();
+		
 
-				string logdate = DateTime.Now.ToString("yyyyMMdd-HHmmss");
-				using (SqlCommand cmd = new("INSERT INTO [Activity Logs] ([TIME STAMP], NAME, ACTION, MESSAGE, [DISCORD LOGS])" +
-					"VALUES (@TIMESTAMP, @EMPNAME, @ACTION, @MESSAGE, @DCLOGS)", conn))
-				{
-					cmd.Parameters.AddWithValue("@TIMESTAMP", logdate);
-					cmd.Parameters.AddWithValue("@EMPNAME", empName);
-					cmd.Parameters.AddWithValue("@ACTION", actionLog);
-					cmd.Parameters.AddWithValue("@MESSAGE", TextContent);
-					cmd.Parameters.AddWithValue("@DCLOGS", DCLog);
-					cmd.ExecuteNonQuery();
-				}
-				dc.PublishtoDiscord(Global.AppLogger, "", DCLog, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-			}
-			catch (Exception ex)
-			{
+		
 
-				LogError("AddActivityLog", empName, "CommonTask", "N/A", ex);
 
-			}
-			finally
-			{
-				conn.Close();
-			}
-		}
+			//alert.AutoClose = true;
+			//alert.AutoCloseDelay = 5000;
+			//alert.CaptionText = alercaption;
+			//alert.ContentText = message;
+			//alert.ShowOptionsButton = false;
+			//alert.AutoSize = true;
+			//alert.ShowCloseButton = false;
+			//alert.Opacity = 0.9f;
+			//alert.ScreenPosition = AlertScreenPosition.BottomRight;
+			//
+			//Bitmap icon = null;
+			//
+			//icon = alertType switch
+			//{
+			//	"Success" => SystemIcons.Information.ToBitmap(),
+			//	"Warning" => SystemIcons.Warning.ToBitmap(),
+			//	"Error" => SystemIcons.Error.ToBitmap(),
+			//	_ => SystemIcons.Application.ToBitmap(),
+			//};
+			//if (icon != null)
+			//{
+			//	RadLabelElement imageElement = new()
+			//	{
+			//		Image = icon,
+			//		ImageAlignment = ContentAlignment.MiddleLeft,
+			//		TextAlignment = ContentAlignment.MiddleRight,
+			//		Text = message,
+			//		StretchHorizontally = true
+			//	};
+			//
+			//	// Replace the content of the popup with a custom layout
+			//	alert.Popup.AlertElement.ContentElement.Children.Clear();
+			//	alert.Popup.AlertElement.ContentElement.Children.Add(imageElement);
+			//}
+			//alert.Show();
+		
 
-		public void SendToastNotifDesktop(string message)
-		{
-
-			alert.AutoClose = true;
-			alert.AutoCloseDelay = 20;
-			alert.CaptionText = alercaption;
-			alert.ContentText = message;
-			alert.ShowOptionsButton = false;
-			alert.AutoSize = true;
-			alert.ShowCloseButton = false;
-			alert.Opacity = 90;
-			alert.Show();
-		}
-
-		public void UpdateFirstLoginInfo(string query, string userName, string empName, string message)
-		{
-			try
-			{
-				using (var con = new SqlConnection(_dbConnection))
-				{
-					con.Open();
-					using var command = new SqlCommand(query, con);
-					// Add the parameter for @UserName
-					command.Parameters.AddWithValue("@UserName", userName);
-
-					command.ExecuteNonQuery();
-				}
-				SendToastNotifDesktop(message);
-			}
-			catch (Exception ex)
-			{
-				LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", ex);
-			}
-		}
+		
 
 
 
-		private void GetUsersEmail(string name, string empName)
-		{
-			using var con = new SqlConnection(_dbConnection);
-			try
-			{
-				con.Open();
-				using SqlCommand cmd = new("SELECT [Employee Name], [Email Address] FROM [User Information] WHERE [Employee Name] = '" + name + "'", con);
-				using var reader = cmd.ExecuteReader();
-				if (reader.Read())
-				{
-					email = reader.IsDBNull(1) ? null : reader.GetString(1);
-				}
-			}
-			catch (Exception ex)
-			{
-				LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
+		
 
-		public void NotifyEmail(string request, string mailContent, string employeeName, string empName, string position)
-		{
-			string emailAddress;
-			string mailSubject;
-			string ccEmail1;
-			string machineName;
-			//string ccEmail2;
+		
 
-			try
-			{
-				//support pdf attachment in next build. - 03222024
-				// uncomment when building release
-				//emailAddress = "Edimson@pcmsbilling.net";
-				//ccEmail1 = "Angeline@pcmsbilling.net";
-				//ccEmail2 = "Shalah@pcmsbilling.net";
-				machineName = Environment.MachineName;
-				if (machineName == "ERWIN-PC")
-				{
-					emailAddress = "Edimson@yopmail.com";
-					ccEmail1 = "Angeline@yopmail.com";
-				}
-				else
-				{
-					emailAddress = "Edimson@pcmsbilling.net";
-					ccEmail1 = "Angeline@pcmsbilling.net";
-				}
-				//yopmail use for testing to avoid sending spam/test email in activate account and comment when building release
-
-				//ccEmail2 = "Shalah@yopmail.com";
-
-				if (request == "file")
-				{
-					GetUsersEmail(employeeName, empName);
-					mailSubject = "Filed Leave from " + employeeName;
-					if (position == "Management")
-					{
-
-						mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", null, null);
-					}
-					else
-					{
-						mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", ccEmail1, null);
-						//emailSender.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", );
-					}
-
-				}
-				else if (request == "response")
-				{
-					GetUsersEmail(employeeName, empName);
-					emailAddress = email;
-					mailSubject = "File Leave Update for " + employeeName;
-					mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Leave Update Notification (via PCMS Lipa General Tool)", null, null);
-				}
-			}
-			catch (Exception ex)
-			{
-				LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
-			}
-
-
-		}
-
-		public string CheckIfExistinDB(string username, string modLoc, string request)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			conn.Open();
-			try
-			{
-				using SqlCommand command = new(
-					@"SELECT COUNT(*) FROM [User Information] WHERE USERNAME = @username", conn);
-				command.Parameters.AddWithValue("@username", username);
-
-				int userCount = (int)command.ExecuteScalar();
-
-				if (userCount > 0)
-				{
-					if (modLoc == "UserMgmt" && request == "Create")
-					{
-						return "Username already exists.";
-					}
-				}
-				else
-				{
-					if (request == "Login" && modLoc == "Login")
-					{
-						return "Username not found.";
-					}
-				}
-
-				return string.Empty; // No issues found
-			}
-			catch (SqlException sqlEx)
-			{
-				LogError("CheckIfExistinDB", "N/A", "CommonTask", "SQL Exception", sqlEx);
-				return "A database error occurred. Please try again later.";
-			}
-			catch (Exception ex)
-			{
-				LogError("CheckIfExistinDB", "N/A", "CommonTask", "General Exception", ex);
-				return "An unexpected error occurred. Please contact support.";
-			}
-			finally
-			{
-				if (conn.State == ConnectionState.Open)
-				{
-					conn.Close();
-				}
-			}
-		}
+		
 
 
 		//public void CheckIfExistinDB(string username, string modLoc, string request, RadLabel lblalert)
@@ -385,55 +206,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//}
 		//
 
-		public DataTable GetSearch(
-			string itemToSearch,
-			string statusColumn,
-			out string searchCount)
-		{
-			DataTable resultTable = new();
-
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				conn.Open();
-
-				// Define the base query
-				string query = $@"
-SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT],
-[USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS]
-FROM [User Information]
-WHERE USERNAME LIKE @itemToSearch";
-
-				// Add the STATUS filter only if statusColumn is not "All"
-				if (statusColumn != "All")
-				{
-					query += " AND STATUS LIKE @statusSearch";
-				}
-
-				using SqlCommand cmd = new(query, conn);
-				cmd.Parameters.AddWithValue("@itemToSearch", $"%{itemToSearch}%");
-
-				// Add the @statusSearch parameter only if statusColumn is not "All"
-				if (statusColumn != "All")
-				{
-					cmd.Parameters.AddWithValue("@statusSearch", $"%{statusColumn}%");
-				}
-
-				using SqlDataAdapter adapter = new(cmd);
-				adapter.Fill(resultTable);
-
-				// Calculate the search count
-				searchCount = $"Total records: {resultTable.Rows.Count}";
-			}
-			catch (Exception ex)
-			{
-				// Log the error and provide feedback
-				LogError("SearchEmpTwoColumnOneFieldText", "N/A", "CommonTask", "N/A", ex);
-				searchCount = "Error occurred while fetching records.";
-			}
-
-			return resultTable;
-		}
+		
 
 
 
@@ -627,82 +400,7 @@ WHERE USERNAME LIKE @itemToSearch";
 		//	}
 		//}
 
-		public void AlterDBSequece(RadTextBox sequence, RadDropDownList databaseTable, string empName)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				conn.Open();
-				using SqlCommand cmd = new("ALTER SEQUENCE " + databaseTable.Text + " RESTART WITH " + sequence.Text, conn);
-				cmd.ExecuteNonQuery();
-			}
-			catch (Exception ex)
-			{
-				LogError($"AlterDBSequece", empName, "CommonTask", "N/A", ex);
-			}
-			finally
-			{
-				conn.Close();
-			}
-		}
-
-		public void GetSequenceNoPre(string query, RadLabel nextSequence)
-		{
-			//int Price;
-			var con = new SqlConnection(_dbConnection);
-			try
-			{
-				con.Open();
-				SqlCommand cmd = new(query, con);
-				SqlDataReader reader = cmd.ExecuteReader();
-				while (reader.Read())
-				{
-					int currSeq = reader.GetInt32(0);
-					//nextSequence.Text = preID + (currSeq + 1).ToString();
-					nextSequence.Text = currSeq.ToString();// + ToString();
-				}
-				con.Close();
-
-
-			}
-			catch (Exception ex)
-			{
-				LogError($"GetSequenceNoPre", "N/A", "CommonTask", "N/A", ex);
-			}
-		}
-
-		public string GetSequenceNo(string sequenceName, string preID)
-		{
-			var query = "SELECT NEXT VALUE FOR " + sequenceName;
-			var con = new SqlConnection(_dbConnection);
-			try
-			{
-				con.Open();
-				SqlCommand cmd = new(query, con);
-				SqlDataReader reader = cmd.ExecuteReader();
-
-				if (reader.Read())
-				{
-					int currSeq = reader.GetInt32(0);
-					string result = preID + (currSeq + 1).ToString();
-
-					// Return the formatted sequence string
-					return result;
-				}
-
-				// If no sequence value is found, return null or an empty string
-				return null;
-			}
-			catch (Exception ex)
-			{
-				LogError("GetSequenceNo", "N/A", "CommonTask", "N/A", ex);
-				return null; // Return null in case of an error
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
+		
 
 		//public void GetSequenceNo(string inputType, string sequenceName, string txtnextSequence, string lblnextSequnce, string preID)
 		//{
@@ -771,60 +469,13 @@ WHERE USERNAME LIKE @itemToSearch";
 		//	}
 		//}
 
-		public void ExportTableToExcel(DataTable dataTable, string filename, string empName)
-		{
-			try
-			{
-				// Path to save the file on the desktop
-				string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-				string filePath = Path.Combine(desktopPath, $"{filename}.xlsx");
-
-				// Export to Excel using ClosedXML
-				using (XLWorkbook workbook = new())
-				{
-					workbook.Worksheets.Add(dataTable, filename);
-					workbook.SaveAs(filePath);
-				}
-
-				// Log success
-				Console.WriteLine($"Export successful! File saved to: {filePath}");
-			}
-			catch (Exception ex)
-			{
-				LogError("ExportTableToExcel", empName, "CommonTask", "N/A", ex);
-				throw new Exception("An error occurred during the export process.", ex);
-			}
-		}
+		
 
 
 		
 
 
-		public void LogError(string processName, string empName, string module, string ID, Exception ex)
-		{
-			int maxlengthforDC = 399;
-
-			// Ensure the substring length does not exceed the actual string length
-			string detailedError = ex.ToString().Length > maxlengthforDC
-				? ex.ToString().Substring(0, maxlengthforDC)
-				: ex.ToString();
-
-			var errorMessage = $@"
-				Error: {ex.Message}
-				Name: {empName}
-				Module: {module}
-				Process: {processName}
-				ID: {ID}
-				Detailed Error: {detailedError}";
-
-			dc.PublishtoDiscord(
-				Global.errorNameSender,
-				string.Empty,
-				errorMessage,
-				empName,
-				Global.DCErrorWebHook,
-				Global.DCErrorInvite);
-		}
+		
 
 
 

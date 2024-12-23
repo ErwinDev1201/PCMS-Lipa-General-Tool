@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -10,15 +11,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmBundlecodes : Telerik.WinControls.UI.RadForm
 	{
 		private readonly Bundle bundle = new();
-		private readonly CommonTask task = new();
 		public string accessLevel;
 		public string EmpName;
+		private static readonly Error error = new();
 
 		public frmBundlecodes()
 		{
 			InitializeComponent();
 			ShowBundleCodes();
 		}
+
+		
 
 		private void ShowBundleCodes()
 		{
@@ -49,6 +52,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtDescription = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
 					txtBundleCodes = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
 					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty },
+					empName = EmpName
 				};
 				bundleOptions = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
 				if (bundleOptions == "Y")
@@ -77,7 +81,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgBundleCode_MouseDoubleClick", EmpName, "frmBundleCodes", null, ex);
+				error.LogError("dgBundleCode_MouseDoubleClick", EmpName, "frmBundleCodes", null, ex);
 			}
 		}
 
@@ -90,7 +94,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				Text = "New Bundle Codes",
 				empName = EmpName
 			};
-			dlg.GetDBID();
+			bundle.GetDBID(out string ID, EmpName);
+			dlg.txtIntID.Text = ID;
 			dlg.txtCPTCode.Focus();
 			dlg.ShowDialog();
 			ShowBundleCodes();
@@ -125,7 +130,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
+				error.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
 			}
 			//task.SearchTwoColumnOneFieldText(dgBundleCode, "[Bundle Codes]", "[CPT Code]", "[Bundle Codes]", txtSearch, lblbundeCode, EmpName);
 		}

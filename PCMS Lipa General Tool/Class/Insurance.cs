@@ -1,9 +1,8 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
 
 
@@ -13,8 +12,8 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
 
 		public DataTable ViewInsuraceList(string empName, out string lblCount)
 		{
@@ -35,14 +34,14 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewInsuraceList", empName, "Insurance", "N/A", ex);
+				error.LogError("ViewInsuraceList", empName, "Insurance", "N/A", ex);
 			}
 
 			return data;
 		}
 
 
-		public void InsuranceInfoDBRequest(
+		public bool InsuranceInfoDBRequest(
 			string request, 
 			string insID, 
 			string insuranceName,
@@ -50,7 +49,8 @@ namespace PCMS_Lipa_General_Tool.Class
 			string address,
 			string payerID,
 			string remarks, 
-			string empName)
+			string empName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -61,7 +61,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				cmd.CommandText = request switch
 				{
@@ -83,7 +83,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@INSID", insID);
+					//cmd.Parameters.AddWithValue("@INSID", insID);
 					cmd.Parameters.AddWithValue("@INSURANCENAME", insuranceName);
 					cmd.Parameters.AddWithValue("@INSCODE", insCode);
 					cmd.Parameters.AddWithValue("@ADDRESS", address);
@@ -101,13 +101,16 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Insurance ID: {insID}";
 				message = $"Done! {insID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} INSURANCE INFORMATION");
-				task.SendToastNotifDesktop(logs);
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} INSURANCE INFORMATION");
+				return true;
+				//fe.SendToastNotifDesktop(message, "Success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"InsuranceInfoDBRequest - {request}", empName, "Insurance", insID, ex);
-				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				error.LogError($"InsuranceInfoDBRequest - {request}", empName, "Insurance", insID, ex);
+				message = $"Failed to {request.ToLower()} {insID}, Please try again later";
+				return false;
+				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
 			finally
 			{
@@ -143,7 +146,7 @@ OR [Address] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				error.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 

@@ -1,5 +1,6 @@
 ﻿
 using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -8,7 +9,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmModMPN : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly FEWinForm fe = new();
+		private readonly Database db = new();
 		private readonly MPN mpn = new();
 		public string txtID;
 		public string empName;
@@ -32,29 +36,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		}
 
-		public void GetDBID()
-		{
-			string nextSequence = task.GetSequenceNo("MPNInfoSeq", "MPN-");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					txtIntID.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetDBListID", empName, "frmMODMPN", "N/A", ex);
-			}
-			///task.GetSequenceNo("textbox", "MPNInfoSeq", txtIntID.Text, null, "MPN-");
-		}
+		
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)
 		{
+			//string operation = btnUpdateSave.Text == "Update" ? "Update" : "Create";
 			if (btnUpdateSave.Text == "Save")
 			{
-				mpn.MPNDBRequest(
+				bool isSuccess = mpn.MPNDBRequest(
 					"Create",
 					txtIntID.Text,
 					txtInsuranceName.Text,
@@ -63,9 +52,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtPassword.Text,
 					txtWebLink.Text,
 					txtRemarks.Text,
-					empName
-				);
-				ClearData();
+					empName,
+						out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 			}
 			else if (RadMessageBox.Show(
 				"Are you sure you want to update this record?",
@@ -74,8 +70,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 				RadMessageIcon.Question
 			) == DialogResult.Yes)
 			{
-				mpn.MPNDBRequest(
-						"Update",
+
+				bool isSuccess = mpn.MPNDBRequest(
+					"Update",
 					txtIntID.Text,
 					txtInsuranceName.Text,
 					txtMPNName.Text,
@@ -83,11 +80,19 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtPassword.Text,
 					txtWebLink.Text,
 					txtRemarks.Text,
-					empName
-				);
-				ClearData();
+					empName,
+						out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
+				
 			}
-
+			ClearData();
 			Close();
 
 		}
@@ -96,7 +101,26 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				mpn.MPNDBRequest("Delete", txtIntID.Text, txtInsuranceName.Text, txtMPNName.Text, txtMPNUserName.Text, txtPassword.Text, txtWebLink.Text, txtRemarks.Text, empName);
+
+				bool isSuccess = mpn.MPNDBRequest(
+					"Delete",
+					txtIntID.Text,
+					txtInsuranceName.Text,
+					txtMPNName.Text,
+					txtMPNUserName.Text,
+					txtPassword.Text,
+					txtWebLink.Text,
+					txtRemarks.Text,
+					empName,
+					out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 				ClearData();
 				Close();
 			}

@@ -1,43 +1,31 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmModifyEmailformat : Telerik.WinControls.UI.RadForm
+	public partial class frmModEmailformat : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly FEWinForm fe = new();
+		private readonly Database db = new();
 		private readonly EmailFormatDB emailDB = new();
 		//private readonly MailSender mailSender = new MailSender();
 		public string txtID;
 		public string empName;
 
 
-		public frmModifyEmailformat()
+		public frmModEmailformat()
 		{
 			InitializeComponent();
 			txtIntID.ReadOnly = true;
 		}
 
 
-		public void GetDBID()
-		{
-			string nextSequence = task.GetSequenceNo("EmailFormatSeq", "EF-");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					txtIntID.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetDBID", empName, "frmModifyEmailFormat", "N/A", ex);
-			}
-			//task.GetSequenceNo("textbox", "EmailFormatSeq", txtIntID.Text, null, "EF-");
-		}
+		
 
 		private void ClearData()
 		{
@@ -50,7 +38,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtEmailFormat.Enabled = true;
 			txtRemarks.Enabled = true;
 			btnSave.Enabled = true;
-			GetDBID();
+			emailDB.GetDBID(out string ID, empName);
+			txtIntID.Text = ID;
 		}
 
 
@@ -62,6 +51,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnSave.Enabled = false;
 		}
 
+		private void EnableInput()
+		{
+			txtInsuranceName.Enabled = true;
+			txtEmailFormat.Enabled = true;
+			txtRemarks.Enabled = true;
+			btnSave.Enabled = true;
+		}
+
 		private void btnSave_Click(object sender, EventArgs e)
 		{
 
@@ -71,8 +68,25 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			else
 			{
-				emailDB.EmailFormatDBRequest("Create", txtIntID.Text, txtInsuranceName.Text, txtEmailFormat.Text, txtRemarks.Text, empName);
+				DsisableInput();
+				bool isSuccess = emailDB.EmailFormatDBRequest(
+					"Create", 
+					txtIntID.Text, 
+					txtInsuranceName.Text, 
+					txtEmailFormat.Text, 
+					txtRemarks.Text, 
+					empName,
+					out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 				ClearData();
+				EnableInput();
 			}
 			Close();
 		}

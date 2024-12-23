@@ -1,9 +1,8 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
 
 
@@ -14,7 +13,29 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 		
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
+
+
+		public void GetDBID(out string ID, string empName)
+		{
+			ID = string.Empty;
+
+			string nextSequence = db.GetSequenceNo("EasyPrintSeq", "EP-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					ID = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBID", empName, "EasyPrint", "N/A", ex);
+			}
+		}
 
 		public DataTable ViewEasyPrintList(string empName, out string lblCount)
 		{
@@ -35,7 +56,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewEasyPrintList", empName, "EasyPrint", "N/A", ex);
+				error.LogError("ViewEasyPrintList", empName, "EasyPrint", "N/A", ex);
 			}
 
 			return data;
@@ -69,14 +90,14 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				error.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
 			return resultTable;
 		}
 
-		public void EPDenialDBRequest(
+		public bool EPDenialDBRequest(
 			string request,
 			string epdenialID,
 			string easyprintCode,
@@ -84,7 +105,8 @@ OR [Remarks] LIKE @searchTerm";
 			string Description,
 			string possibleResolution,
 			string remarks,
-			string empName)
+			string empName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -95,7 +117,7 @@ OR [Remarks] LIKE @searchTerm";
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				cmd.CommandText = request switch
 				{
@@ -115,7 +137,7 @@ OR [Remarks] LIKE @searchTerm";
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@EPDENIALCODE", epdenialID);
+					//cmd.Parameters.AddWithValue("@EPDENIALCODE", epdenialID);
 					cmd.Parameters.AddWithValue("@EPCODE", easyprintCode);
 					cmd.Parameters.AddWithValue("@INSURANCENAME", insuranceName);
 					cmd.Parameters.AddWithValue("@DESCRIPTION", Description);
@@ -132,13 +154,16 @@ OR [Remarks] LIKE @searchTerm";
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Denial ID: {epdenialID}";
 				message = $"Done! {epdenialID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} EASYPRINT INFORMATION");
-				task.SendToastNotifDesktop(logs);
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} EASYPRINT INFORMATION");
+				//fe.SendToastNotifDesktop(message, "Success");
+				return true;
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"EPDenialDBRequest - {request}", empName, "EasyPrint", epdenialID, ex);
-				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				error.LogError($"EPDenialDBRequest - {request}", empName, "EasyPrint", epdenialID, ex);
+				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				message = $"Failed to {request.ToLower()} {epdenialID}, Please try again later";
+				return false;
 			}
 			finally
 			{

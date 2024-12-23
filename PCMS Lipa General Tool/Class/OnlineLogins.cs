@@ -3,17 +3,37 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
 namespace PCMS_Lipa_General_Tool.Class
 {
 	public class OnlineLogins
 	{
 
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private readonly CommonTask task = new();
 		readonly WinDiscordAPI dc = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
 
+
+		public void GetDBLoginID(out string ID, string empName)
+		{
+			ID = string.Empty;
+
+			string nextSequence = db.GetSequenceNo("OnlineLoginSeq", "OL-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					ID = nextSequence;
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBID", empName, "OnlineLogins", ID, ex);
+			}
+		}
 
 		//public void FillPasswordDGTextBox(string query, RadTextBox txtPassword, string empName)
 		//{
@@ -31,7 +51,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("OnlineLoginDB", empName, "OnlineLogins", "", ex);
+		//		error.LogError("OnlineLoginDB", empName, "OnlineLogins", "", ex);
 		//	}
 		//}
 
@@ -54,7 +74,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("FetchOnlineLoginsData", empName, "OnlineLogins", string.Empty, ex);
+		//		error.LogError("FetchOnlineLoginsData", empName, "OnlineLogins", string.Empty, ex);
 		//		throw;
 		//	}
 		//
@@ -78,7 +98,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("GetOnlineLoginInfo", "N/A", "OnlineLogins", "N/A", ex);
+		//		error.LogError("GetOnlineLoginInfo", "N/A", "OnlineLogins", "N/A", ex);
 		//		throw new Exception("Error fetching online logins information.", ex);
 		//	}
 		//
@@ -108,7 +128,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("ExtractOnlineLoginInfoFromRow", "N/A", "Attorney", "N/A", ex);
+		//		error.LogError("ExtractOnlineLoginInfoFromRow", "N/A", "Attorney", "N/A", ex);
 		//		throw new Exception("Error extracting online login information from the selected row.", ex);
 		//	}
 		//}
@@ -156,7 +176,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	catch (Exception ex)
 		//	{
 		//
-		//		task.LogError("FillAttyEmpInfo", empName, "OnlineLogins", intID, ex);
+		//		error.LogError("FillAttyEmpInfo", empName, "OnlineLogins", intID, ex);
 		//	}
 		//}
 		//
@@ -187,7 +207,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("NewFillUpTextBoxwcmb", empName, "OnlineLogins", "", ex);
+		//		error.LogError("NewFillUpTextBoxwcmb", empName, "OnlineLogins", "", ex);
 		//	}
 		//	finally
 		//	{
@@ -208,10 +228,10 @@ namespace PCMS_Lipa_General_Tool.Class
 			{
 				conn.Open();
 				string query = $@"
-SELECT *
-FROM [ONLINE LOGINS]
-WHERE [Insurance Name] LIKE @searchTerm
-OR [Remarks] LIKE @searchTerm";
+					SELECT *
+					FROM [ONLINE LOGINS]
+					WHERE [Insurance Name] LIKE @searchTerm
+					OR [Remarks] LIKE @searchTerm";
 
 				using SqlCommand cmd = new(query, conn);
 				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
@@ -224,14 +244,14 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				error.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
 			return resultTable;
 		}
 
-		public void OnlineLoginDB(
+		public bool OnlineLoginDB(
 			string request,
 			string insID,
 			string insName,
@@ -242,7 +262,8 @@ OR [Remarks] LIKE @searchTerm";
 			string owner,
 			string browser,
 			bool updateDC,
-			string empName)
+			string empName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -253,7 +274,7 @@ OR [Remarks] LIKE @searchTerm";
 					Connection = conn
 				};
 
-				string logs, message, dcmessage;
+				string logs, dcmessage;
 
 				cmd.CommandText = request switch
 				{
@@ -292,7 +313,7 @@ OR [Remarks] LIKE @searchTerm";
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				dcmessage = $@"Hi, I just {request}d the a online access for {insName}. Here are the details you might want to check:
+				dcmessage = $@"Hi, I just {request.ToLower()}d the a online access for {insName}. Here are the details you might want to check:
 
                 Insurance Name: {insName}
                 Website Link: {webLink}
@@ -311,13 +332,16 @@ OR [Remarks] LIKE @searchTerm";
 				}
 
 				// Add activity log and send a toast notification
-				task.AddActivityLog(dcmessage, empName, logs, $"{request.ToUpper()} ONLINE LOGIN INFORMATION");
-				task.SendToastNotifDesktop(message);
+				log.AddActivityLog(dcmessage, empName, logs, $"{request.ToUpper()} ONLINE LOGIN INFORMATION");
+				return true;
+				///fe.SendToastNotifDesktop(message, "Success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError("OnlineLoginDB", empName, "OnlineLogins", insID, ex);
-				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				error.LogError("OnlineLoginDB", empName, "OnlineLogins", insID, ex);
+				message = $"Failed to {request.ToLower()} {insID}, Please try again later";
+				return false;
+				///throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
 			finally
 			{
@@ -395,12 +419,12 @@ OR [Remarks] LIKE @searchTerm";
 		//			dc.PublishtoDiscord(Global.ProgName, $"Online Logins Access {request}d - {insName.Text}", dcmessage, empName, Global.Onloginwebhook, Global.onlogininvite);
 		//		}
 		//		
-		//		task.AddActivityLog(dcmessage, empName, logs, $"{request.ToUpper()} ONLINE LOGIN INFORMATION");
-		//		task.SendToastNotifDesktop(message);
+		//		log.AddActivityLog(dcmessage, empName, logs, $"{request.ToUpper()} ONLINE LOGIN INFORMATION");
+		//		fe.SendToastNotifDesktop(message, "Success");
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("OnlineLoginDB", empName, "OnlineLogins", insID.Text, ex);
+		//		error.LogError("OnlineLoginDB", empName, "OnlineLogins", insID.Text, ex);
 		//		RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//	}
 		//	finally
@@ -428,7 +452,7 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewOnlineLogins", empName, "OnlineLogins", "N/A", ex);
+				error.LogError("ViewOnlineLogins", empName, "OnlineLogins", "N/A", ex);
 			}
 
 			return data;
@@ -467,13 +491,13 @@ OR [Remarks] LIKE @searchTerm";
 		//							cmd.Parameters.AddWithValue("@BROWSER", browser.Text);
 		//							cmd.ExecuteNonQuery();
 		//						}
-		//						task.AddActivityLog(message, empName, logs, "UPDATED ONLINE LOGIN");
+		//						log.AddActivityLog(message, empName, logs, "UPDATED ONLINE LOGIN");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
 		//						if (updateDC.IsChecked == true)
 		//						{
 		//							winDiscordAPI.PublishtoDiscord("PCMS Lipa General Tool", "Online Access Updated - " + insName.Text, message, empName, "https://discord.com/api/webhooks/1069052004271407235/X1u8oGuPi9RJoMK2TP3B2sUW2ABTZfOYt0AqHGA4K04e4PSKwL21mtJdi3MRelH2Kbq_", "https://discord.gg/cx3zY9XF");
 		//						}
-		//						task.SendToastNotifDesktop(logs);
+		//						fe.SendToastNotifDesktop(logs);
 		//						///RadMessageBox.Show("Online Login Access successfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//					}
 		//					catch (Exception ex)
@@ -516,13 +540,13 @@ OR [Remarks] LIKE @searchTerm";
 		//							cmd.Parameters.AddWithValue("@BROWSER", browser.Text);
 		//							cmd.ExecuteNonQuery();
 		//						}
-		//						task.AddActivityLog(message, empName, logs, "ADDED ONLINE LOGIN");
+		//						log.AddActivityLog(message, empName, logs, "ADDED ONLINE LOGIN");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
 		//						if (updateDC.IsChecked == true)
 		//						{
 		//							winDiscordAPI.PublishtoDiscord("PCMS Lipa General Tool", "Online Access Updated - " + insName.Text, message, empName, "https://discord.com/api/webhooks/1069052004271407235/X1u8oGuPi9RJoMK2TP3B2sUW2ABTZfOYt0AqHGA4K04e4PSKwL21mtJdi3MRelH2Kbq_", "https://discord.gg/cx3zY9XF");
 		//						}
-		//						task.SendToastNotifDesktop(logs);
+		//						fe.SendToastNotifDesktop(logs);
 		//						//RadMessageBox.Show("Online Login Access successfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//					}
 		//					catch (Exception ex)
@@ -557,13 +581,13 @@ OR [Remarks] LIKE @searchTerm";
 		//							cmd.Parameters.AddWithValue("@INSID", insID.Text);
 		//							cmd.ExecuteNonQuery();
 		//						}
-		//						task.AddActivityLog(message, empName, logs, "DELETED ONLINE LOGIN");
+		//						log.AddActivityLog(message, empName, logs, "DELETED ONLINE LOGIN");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
 		//						if (updateDC.IsChecked == true)
 		//						{
 		//							winDiscordAPI.PublishtoDiscord("PCMS Lipa General Tool", "Online Access Updated - " + insName.Text, message, empName, "https://discord.com/api/webhooks/1069052004271407235/X1u8oGuPi9RJoMK2TP3B2sUW2ABTZfOYt0AqHGA4K04e4PSKwL21mtJdi3MRelH2Kbq_", "https://discord.gg/cx3zY9XF");
 		//						}
-		//						task.SendToastNotifDesktop(logs);
+		//						fe.SendToastNotifDesktop(logs);
 		//						RadMessageBox.Show("Online Login Access successfully Deleted", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//					}
 		//					catch (Exception ex)

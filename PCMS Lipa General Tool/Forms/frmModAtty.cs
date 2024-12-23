@@ -1,21 +1,22 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmModifyAtty : Telerik.WinControls.UI.RadForm
+	public partial class frmModAtty : Telerik.WinControls.UI.RadForm
 	{
 
+		private static readonly Error error = new();
+		private static readonly FEWinForm fe = new();
+		private readonly Database db = new();
 		private readonly Attorney atty = new();
-		private readonly CommonTask task = new();
-		private const string Def = @"SELECT MAX(NO+1) FROM [DEF ATTORNEY INFO]";
-		private const string App = @"SELECT MAX(NO+1) FROM [APP ATTORNEY INFO]";
 		public string whatAttorney;
 		public string empName;
 
-		public frmModifyAtty()
+		public frmModAtty()
 		{
 			InitializeComponent();
 			txtIntID.ReadOnly = true;
@@ -38,7 +39,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtRemarks.Enabled = true;
 			btnDelete.Enabled = true;
 			btnUpdateSave.Enabled = true;
-			GetDBID();
+			atty.GetDBID(out string ID, empName);
+			txtIntID.Text = ID;
 
 		}
 
@@ -52,26 +54,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtRemarks.Enabled = false;
 			btnDelete.Enabled = false;
 			btnUpdateSave.Enabled = false;
-			GetDBID();
 		}
 
-		public void GetDBID()
-		{
-			string nextSequence = task.GetSequenceNo("AttyInfo", "ATTY-0");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					txtIntID.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetDBID", empName, "frmAttorneyInformation", "N/A", ex);
-			}
-			//task.GetSequenceNo("textbox", "AttyInfo", txtIntID.Text, null, "ATTY-");
-		}
+		
 
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)
@@ -81,12 +66,48 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Would you like to go ahead and update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					atty.AttorneyDBRequest("Update", txtIntID.Text, cmbAttyType.Text, txtAttyName.Text, txtPhoneNo.Text, txtFaxNo.Text, txtEmailAdd.Text, txtRemarks.Text, empName);
+					bool isSuccess = atty.AttorneyDBRequest(
+						"Update", 
+						txtIntID.Text, 
+						cmbAttyType.Text, 
+						txtAttyName.Text, 
+						txtPhoneNo.Text, 
+						txtFaxNo.Text, 
+						txtEmailAdd.Text, 
+						txtRemarks.Text, 
+						empName,
+						out string message);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					}
 				}
 			}
 			else
 			{
-				atty.AttorneyDBRequest("Create", txtIntID.Text, cmbAttyType.Text, txtAttyName.Text, txtPhoneNo.Text, txtFaxNo.Text, txtEmailAdd.Text, txtRemarks.Text, empName);
+				bool isSuccess = atty.AttorneyDBRequest(
+						"Create",
+						txtIntID.Text,
+						cmbAttyType.Text,
+						txtAttyName.Text,
+						txtPhoneNo.Text,
+						txtFaxNo.Text,
+						txtEmailAdd.Text,
+						txtRemarks.Text,
+						empName,
+						out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 			}
 			ClearData();
 			Close();
@@ -97,9 +118,25 @@ namespace PCMS_Lipa_General_Tool.Forms
 			DisableInput();
 			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				atty.AttorneyDBRequest("Delete", txtIntID.Text, cmbAttyType.Text, txtAttyName.Text, txtPhoneNo.Text, txtFaxNo.Text, txtEmailAdd.Text, txtRemarks.Text, empName);
-				ClearData();
-				Close();
+				bool isSuccess = atty.AttorneyDBRequest(
+						"Delete",
+						txtIntID.Text,
+						cmbAttyType.Text,
+						txtAttyName.Text,
+						txtPhoneNo.Text,
+						txtFaxNo.Text,
+						txtEmailAdd.Text,
+						txtRemarks.Text,
+						empName,
+						out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 			}
 		}
 

@@ -1,4 +1,4 @@
-﻿using Org.BouncyCastle.Asn1.Ocsp;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -10,7 +10,8 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly FEWinForm fe = new();
 
 
 		public void UpdateDevPasswordAccess(string empName, string password)
@@ -26,11 +27,11 @@ namespace PCMS_Lipa_General_Tool.Class
 					command.ExecuteNonQuery();
 				}
 				//RadMessageBox.Show("Theme successfully updated", "Information", MessageBoxButtons.OK, RadMessageIcon.Info);
-				task.SendToastNotifDesktop("Password successfully updated");
+				fe.SendToastNotifDesktop("Password successfully updated", "Success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError("UpdateDevPasswordAccess", empName, "DeveloperAccess", "N/A", ex);
+				error.LogError("UpdateDevPasswordAccess", empName, "DeveloperAccess", "N/A", ex);
 				throw new InvalidOperationException($"Error during update operation. Please try again later.");
 			}
 		}
@@ -54,7 +55,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillComboDropdown", empName, "CommonTask", "N/A", ex);
+				error.LogError("FillComboDropdown", empName, "CommonTask", "N/A", ex);
 			}
 			return items;
 		}

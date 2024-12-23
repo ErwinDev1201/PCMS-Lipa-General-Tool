@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -10,7 +11,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmMPN : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
 		private readonly MPN mpn = new();
 		public string accessLevel;
 		public string EmpName;
@@ -87,7 +88,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgMPN_MouseDoubleClick", EmpName, "frmMPN", null, ex);
+				error.LogError("dgMPN_MouseDoubleClick", EmpName, "frmMPN", null, ex);
 			}
 			
 		}
@@ -101,8 +102,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 				btnUpdateSave = { Text = "Save" },
 				Text = "New MPN"
 			};
+			mpn.GetDBID(out string ID, EmpName);
+			dlgModMPN.txtIntID.Text = ID;
 			dlgModMPN.txtInsuranceName.Focus();
-			dlgModMPN.GetDBID();
 			dlgModMPN.ShowDialog();
 			ShowMpnList();
 		}
@@ -137,7 +139,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
+				error.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
 			}
 			///task.SearchTwoColumnOneFieldText(dgMPN, "[MPN Information]", "[Insurance Name]", "[Remarks]", txtSearch, lblSearchCount, EmpName);
 		}

@@ -1,7 +1,7 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
 
@@ -11,9 +11,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmDiagnosis : Telerik.WinControls.UI.RadForm
 	{
 		private readonly Diagnosis dx = new();
-		private readonly CommonTask task = new();
 		public string EmpName;
 		public string accessLevel;
+		private static readonly Error error = new();
+
 
 		public frmDiagnosis()
 		{
@@ -59,14 +60,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnNew_Click(object sender, EventArgs e)
 		{
-			var diagnosis = new frmModifyDiagnosis
+			var diagnosis = new frmModDiagnosis
 			{
 				btnDelete = { Visible = false },
 				btnUpdateSave = { Text = "Save" },
 				Text = "New Diagnosis",
 				empName = EmpName
 			};
-			diagnosis.GetDBID();
+			dx.GetDBID(out string ID, EmpName);
+			diagnosis.txtIntID.Text = ID;
 			diagnosis.txtICD10.Focus();
 			diagnosis.ShowDialog();
 			ShowMePTDxCodes();
@@ -80,7 +82,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					return;
 
 				var selectedRow = dgBillDiagnosis.SelectedRows[0];
-				var modDx = new frmModifyDiagnosis
+				var modDx = new frmModDiagnosis
 				{
 					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
 					txtDiagnosis = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
@@ -107,7 +109,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgBillDiagnosis_MouseDoubleClick", EmpName, "frmDiagnosis", null, ex);
+				error.LogError("dgBillDiagnosis_MouseDoubleClick", EmpName, "frmDiagnosis", null, ex);
 			}
 			
 		}
@@ -149,7 +151,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("LoadSearchandFilter", EmpName, "frmDiagnosis", null, ex);
+				error.LogError("LoadSearchandFilter", EmpName, "frmDiagnosis", null, ex);
 			}
 		}
 

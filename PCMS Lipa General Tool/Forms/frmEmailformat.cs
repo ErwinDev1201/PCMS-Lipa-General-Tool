@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -8,8 +9,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmEmailFormat : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
 		private readonly EmailFormatDB emailDB = new();
+		private static readonly Error error = new();
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
 		public string EmpName;
@@ -39,13 +40,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnNew_Click(object sender, EventArgs e)
 		{
-			var dlgEmailFormat = new frmModifyEmailformat
+			var dlgEmailFormat = new frmModEmailformat
 			{
 				Text = "New Email Format",
 				btnSave = { Text = "Save " },
 				empName = EmpName
 			};
-			dlgEmailFormat.GetDBID();
+
+			//dlgEmailFormat.GetDBID();
+			emailDB.GetDBID(out string ID, EmpName);
+			dlgEmailFormat.txtIntID.Text = ID;
 			dlgEmailFormat.txtEmailFormat.Focus();
 			dlgEmailFormat.ShowDialog();
 			ViewEmailFormat();
@@ -67,7 +71,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					return;
 
 				var selectedRow = dgEmail.SelectedRows[0];
-				var modEmail = new frmModifyEmailformat
+				var modEmail = new frmModEmailformat
 				{
 					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
 					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
@@ -91,7 +95,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgEmail_MouseDoubleClick", EmpName, "frmEmailormat", null, ex);
+				error.LogError("dgEmail_MouseDoubleClick", EmpName, "frmEmailormat", null, ex);
 			}
 			
 		}
@@ -118,7 +122,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", EmpName, "frmEmailFormat", null, ex);
+				error.LogError("txtSearch_TextChanged", EmpName, "frmEmailFormat", null, ex);
 			}
 		}
 	}

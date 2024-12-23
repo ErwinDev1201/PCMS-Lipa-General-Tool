@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,8 +14,33 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class CollectorNotes
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
 
+
+		public void GetDBID(out string intID, string empName)
+		{
+			// Default assignment for the out parameter
+			intID = string.Empty;
+
+			string nextSequence = db.GetSequenceNo("CollectorNotesSeq", "CX-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					intID = nextSequence;
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBID", empName, "CollectorNotes", "intID", ex);
+			}
+
+			// If we reach here, the out parameter already has a default value (string.Empty).
+		}
 
 
 		public void FillNotesInfo(RadGridView dgCurrentNotes, RadTextBox txtIntID, RadDropDownList cmbProviderList, RadTextBox txtChartNo, RadTextBox txtPatientName, RadTextBoxControl txtNotes, RadTextBoxControl txtRemarks, string empName)
@@ -39,7 +65,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillNotesInfo", empName, "ModifyNotes", "N/A", ex);
+				error.LogError("FillNotesInfo", empName, "ModifyNotes", "N/A", ex);
 			}
 			finally
 			{
@@ -119,12 +145,11 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Collector Notes ID: {noteID}";
 				message = $"Done! {noteID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} COLLECTOR NOTES INFORMATION");
-				task.SendToastNotifDesktop(message);
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} COLLECTOR NOTES INFORMATION");
 			}
 			catch (Exception ex)
 			{
-				task.LogError("CollectorNotes", empName, "NoteDBRequest", noteID, ex);
+				error.LogError("CollectorNotes", empName, "NoteDBRequest", noteID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
@@ -151,7 +176,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError($"ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
+		//		error.LogError($"ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
 		//	}
 		//	finally
 		//	{
@@ -178,7 +203,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
+				error.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
 			}
 
 			return data;
@@ -218,7 +243,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"ViewNotesMonth", empName, "CollectorNotes", "N/A", ex);
+				error.LogError($"ViewNotesMonth", empName, "CollectorNotes", "N/A", ex);
 			}
 			finally
 			{
@@ -254,7 +279,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
+				error.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
 			}
 
 			return data;
@@ -287,7 +312,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError($"ViewNotes", empName, "CollectorNotes", "N/A", ex);
+		//		error.LogError($"ViewNotes", empName, "CollectorNotes", "N/A", ex);
 		//	}
 		//	finally
 		//	{
@@ -325,7 +350,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"SearchTextAcrossColumns", empName, "CollectorNotes", "N/A", ex);
+				error.LogError($"SearchTextAcrossColumns", empName, "CollectorNotes", "N/A", ex);
 			}
 		}
 
@@ -395,7 +420,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"filterCollectorNotes", empName, "CollectorNotes", "N/A", ex);
+				error.LogError($"filterCollectorNotes", empName, "CollectorNotes", "N/A", ex);
 			}
 		}
 

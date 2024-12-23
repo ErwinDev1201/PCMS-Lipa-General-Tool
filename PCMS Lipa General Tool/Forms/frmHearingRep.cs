@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Configuration;
 using System.Data;
@@ -10,8 +11,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmHearingRep : Telerik.WinControls.UI.RadForm
 	{
-		private static readonly string wcsupport = ConfigurationManager.AppSettings["wcsupportpath"];
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
 		private readonly HearingRep hearing = new();
 		public string accessLevel;
 		public string EmpName;
@@ -73,7 +73,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgHearingRep_MouseDoubleClick", EmpName, "frmHearingRep", null, ex);
+				error.LogError("dgHearingRep_MouseDoubleClick", EmpName, "frmHearingRep", null, ex);
 			}
 		}
 
@@ -92,7 +92,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 				btnDelete = { Visible = false },
 				empName = EmpName
 			};
-			dlgModEPHearing.GetDBID();
+			hearing.GetDBID(out string ID, EmpName);
+			dlgModEPHearing.txtIntID.Text = ID;
+			//dlgModEPHearing.GetDBID();
 			dlgModEPHearing.ShowDialog();
 			ShowHearingRepList();
 		}
@@ -120,7 +122,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", EmpName, "frmHearingRep", null, ex);
+				error.LogError("txtSearch_TextChanged", EmpName, "frmHearingRep", null, ex);
 			}
 			//task.SearchTwoColumnOneFieldText(dgHearingRep, "[Hearing Representative]", "[Name]", "[Remarks]", txtSearch, lblSearchCount, EmpName);
 		}

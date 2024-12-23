@@ -1,6 +1,6 @@
 ﻿namespace PCMS_Lipa_General_Tool.Forms
 {
-	partial class frmModifyAtty
+	partial class frmModAtty
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -30,7 +30,7 @@
 		{
 			Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
 			Telerik.WinControls.UI.RadListDataItem radListDataItem2 = new Telerik.WinControls.UI.RadListDataItem();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmModifyAtty));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmModAtty));
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
 			this.cmbAttyType = new Telerik.WinControls.UI.RadDropDownList();
 			this.radLabel7 = new Telerik.WinControls.UI.RadLabel();

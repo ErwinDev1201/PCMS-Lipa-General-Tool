@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Configuration;
 using System.Diagnostics;
@@ -9,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmWCTool : Telerik.WinControls.UI.RadForm
 	{
 		private static readonly string wcsupport = ConfigurationManager.AppSettings["wcsupportpath"];
-		private static readonly CommonTask task = new();
+		private static readonly Error error = new();
 
 		public string empName;
 		public string accessLevel;
@@ -71,7 +72,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("btnFeeSched_Click", empName, "frmWCTool", "N/A", ex);
+				error.LogError("btnFeeSched_Click", empName, "frmWCTool", "N/A", ex);
 			}
 		}
 
@@ -99,7 +100,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("btnApproveMPN_Click", empName, "frmWCTool", "N/A", ex);
+				error.LogError("btnApproveMPN_Click", empName, "frmWCTool", "N/A", ex);
 			}
 		}
 

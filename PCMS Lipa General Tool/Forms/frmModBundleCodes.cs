@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -8,10 +9,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmModBundleCodes : Telerik.WinControls.UI.RadForm
 	{
 		//private readonly MailSender mailSender = new MailSender();
-		private readonly CommonTask task = new();
+		private static readonly FEWinForm fe = new();
 		private readonly Bundle bundle = new();
 		public string empName;
 		public string bundleOptions;
+		//RadDesktopAlert alert = new();
 
 		public frmModBundleCodes()
 		{
@@ -31,13 +33,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 			rdoYes.Enabled = true;
 			btnDelete.Enabled = true;
 			btnUpdateSave.Enabled = true;
-
 			txtBundleCodes.Clear();
 			txtCPTCode.Clear();
 			txtDescription.Clear();
 			txtIntID.ReadOnly = true;
 			txtRemarks.Clear();
-			GetDBID();
+			bundle.GetDBID(out string ID, empName);
+			txtIntID.Text = ID;
 		}
 
 
@@ -55,64 +57,58 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnUpdateSave.Enabled = false;
 		}
 
-		public void GetDBID()
-		{
-			string nextSequence = task.GetSequenceNo("BundleCodeSeq", "PROV-");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					txtIntID.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetProvID", empName, "frmModBundleCodes", "N/A", ex);
-			}
-			//task.GetSequenceNo("textbox", "BundleCodeSeq", txtIntID.Text, null, "TX-");
-		}
+		
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)
 		{
 			DisableInputs();
-			string indicator;
-			if (btnUpdateSave.Text == "Update")
+
+			// Determine the action type ("Update" or "Create") and the indicator ("Y" or "N")
+			string actionType = btnUpdateSave.Text == "Update" ? "Update" : "Create";
+			string indicator = rdoYes.IsChecked ? "Y" : "N";
+
+			// Confirm update if action is "Update"
+			if (actionType == "Update" &&
+				DialogResult.Yes != RadMessageBox.Show("Would you like to go ahead and update this record?",
+													   "Confirmation",
+													   MessageBoxButtons.YesNo,
+													   RadMessageIcon.Question))
 			{
-				if (DialogResult.Yes == RadMessageBox.Show("Would you like to go ahead and update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
-				{
-					if (rdoYes.IsChecked == true)
-					{
-						indicator = "Y";
-					}
-					else
-					{
-						indicator = "N";
-					}
-					bundle.BundleCodesDBRequest("Update", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks.Text, empName);
-				}
+				return; // Exit if user does not confirm
+			}
+
+			// Perform the database request
+			bool isSuccess = bundle.BundleCodesDBRequest(actionType,
+										txtIntID.Text,
+										txtCPTCode.Text,
+										txtBundleCodes.Text,
+										txtDescription.Text,
+										indicator,
+										txtRemarks.Text,
+										this.empName,
+										out string message);
+			if (isSuccess)
+			{
+				fe.SendToastNotifDesktop(message, "Success");
 			}
 			else
 			{
-				if (rdoYes.IsChecked == true)
-				{
-					indicator = "Y";
-				}
-				else
-				{
-					indicator = "N";
-				}
-				bundle.BundleCodesDBRequest("Create", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks.Text, empName);
+				fe.SendToastNotifDesktop(message, "Failed");
 			}
+			// Reset the form and close
 			DefaultItem();
 			Close();
+			
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
 			DisableInputs();
 			string indicator;
-			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
+			if (DialogResult.Yes == RadMessageBox.Show(
+				"Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation",
+				MessageBoxButtons.YesNo,
+				RadMessageIcon.Question))
 			{
 				if (rdoYes.IsChecked == true)
 				{
@@ -122,7 +118,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					indicator = "No";
 				}
-				bundle.BundleCodesDBRequest("Delete", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks.Text, empName);
+				bool isSuccess = bundle.BundleCodesDBRequest("Delete", txtIntID.Text, txtCPTCode.Text, txtBundleCodes.Text, txtDescription.Text, indicator, txtRemarks.Text, empName, out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 			}
 			DefaultItem();
 			Close();

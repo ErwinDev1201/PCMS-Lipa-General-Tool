@@ -1,10 +1,8 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
-using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -12,8 +10,30 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
 
-		private static readonly CommonTask task = new();
+		public void GetDBID(out string ID, string empName)
+		{
+			ID = string.Empty;
+
+			string nextSequence = db.GetSequenceNo("BillReviewSeq", "BR-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					ID = nextSequence;
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBID", empName, "BillReview", "N/A", ex);
+			}
+			//db.GetSequenceNo("textbox", "BillReviewSeq", txtIntID.Text, null, "BR-");
+		}
 
 		public DataTable ViewBillReviewList(string empName, out string lblCount)
 		{
@@ -34,7 +54,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewBillReviewList", empName, "BillReview", "N/A", ex);
+				error.LogError("ViewBillReviewList", empName, "BillReview", "N/A", ex);
 			}
 
 			return data;
@@ -68,7 +88,7 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "BillReviews", null, ex);
+				error.LogError("SearchData", empName, "BillReviews", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -139,7 +159,7 @@ OR [Remarks] LIKE @searchTerm";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError($"FillEmailInfo", empName, "BillReview", "N/A", ex);
+		//		error.LogError($"FillEmailInfo", empName, "BillReview", "N/A", ex);
 		//
 		//	}
 		//}
@@ -177,10 +197,10 @@ OR [Remarks] LIKE @searchTerm";
 		//	}
 		//}
 
-		public void BillReviewDBRequest(
+		public bool BillReviewDBRequest(
 			string request, string reviewerID, string insuranceName, string phoneNo, string faxNo,
 			string urphoneNO, string urfaxNo, string brphoneNo, string brfaxNo,
-			string email, string remarks, string empName)
+			string email, string remarks, string empName, out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -191,7 +211,7 @@ OR [Remarks] LIKE @searchTerm";
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				cmd.CommandText = request switch
 				{
@@ -235,13 +255,15 @@ OR [Remarks] LIKE @searchTerm";
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Bill Reviewer ID: {reviewerID}";
 				message = $"Done! {reviewerID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} BILL REVIEW INFORMATION");
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} BILL REVIEW INFORMATION");
+				return true;
 
 			}
 			catch (Exception ex)
 			{
-				task.LogError("BillReviewDBRequest", empName, "BillReview", reviewerID, ex);
-				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				error.LogError("BillReviewDBRequest", empName, "BillReview", reviewerID, ex);
+				message = $"Failed to {request.ToLower()} {reviewerID}, Please try again later";
+				return false;
 				//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
@@ -294,9 +316,9 @@ OR [Remarks] LIKE @searchTerm";
 		//							cmd.ExecuteNonQuery();
 		//						}
 		//						string logs = empName + " updated Reviewer ID: " + reviewerID.Text;
-		//						task.AddActivityLog(message, empName, logs, "UPDATED BILL REVIEWER INFORMATION");
+		//						log.AddActivityLog(message, empName, logs, "UPDATED BILL REVIEWER INFORMATION");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		//						task.SendToastNotifDesktop(logs);
+		//						fe.SendToastNotifDesktop(logs);
 		//						//RadMessageBox.Show("Record successfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//					}
 		//					catch (Exception ex)
@@ -351,9 +373,9 @@ OR [Remarks] LIKE @searchTerm";
 		//							cmd.ExecuteNonQuery();
 		//						}
 		//						string logs = empName + " added Reviewer ID: " + reviewerID.Text;
-		//						task.AddActivityLog(message, empName, logs, "ADDED BILL REVIEWER INFORMATION");
+		//						log.AddActivityLog(message, empName, logs, "ADDED BILL REVIEWER INFORMATION");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		//						task.SendToastNotifDesktop(logs);
+		//						fe.SendToastNotifDesktop(logs);
 		//						//RadMessageBox.Show("Record successfully added", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//
 		//					}
@@ -396,9 +418,9 @@ OR [Remarks] LIKE @searchTerm";
 		//							cmd.ExecuteNonQuery();
 		//						}
 		//						string logs = empName + " deleted Reviewer ID: " + reviewerID.Text;
-		//						task.AddActivityLog(message, empName, logs, "DELETED BILL REVIEWER INFORMATION");
+		//						log.AddActivityLog(message, empName, logs, "DELETED BILL REVIEWER INFORMATION");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		//						task.SendToastNotifDesktop(logs);
+		//						fe.SendToastNotifDesktop(logs);
 		//						//RadMessageBox.Show("Record successfully Deleted", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//					}
 		//					catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -9,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmInsuranceInfo : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
 		private readonly Insurance insurance = new();
 		//private readonly MailSender mailSender = new MailSender();				
 		public string txtID;
@@ -80,7 +81,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgInsuranceInfo_MouseDoubleClick", EmpName, "frmInsuranceInfo", null, ex);
+				error.LogError("dgInsuranceInfo_MouseDoubleClick", EmpName, "frmInsuranceInfo", null, ex);
 			}
 		}
 
@@ -121,7 +122,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", EmpName, "frmHearingRep", null, ex);
+				error.LogError("txtSearch_TextChanged", EmpName, "frmHearingRep", null, ex);
 			}
 			//task.SearchTwoColumnOneFieldText(dgInsuranceInfo, "[Insurance Info]", "[Insurance Name]", "[Address]", txtSearch, lblcountSearchResult, EmpName);
 		}

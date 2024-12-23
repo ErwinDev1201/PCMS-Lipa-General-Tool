@@ -404,29 +404,29 @@
     <Compile Include="Forms\frmModHearingRep.Designer.cs">
       <DependentUpon>frmModHearingRep.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmModifyAdjusterInfo.cs">
+    <Compile Include="Forms\frmModAdjusterInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmModifyAdjusterInfo.Designer.cs">
-      <DependentUpon>frmModifyAdjusterInfo.cs</DependentUpon>
+    <Compile Include="Forms\frmModAdjusterInfo.Designer.cs">
+      <DependentUpon>frmModAdjusterInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmModifyAtty.cs">
+    <Compile Include="Forms\frmModAtty.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmModifyAtty.Designer.cs">
-      <DependentUpon>frmModifyAtty.cs</DependentUpon>
+    <Compile Include="Forms\frmModAtty.Designer.cs">
+      <DependentUpon>frmModAtty.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmModifyDiagnosis.cs">
+    <Compile Include="Forms\frmModDiagnosis.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmModifyDiagnosis.Designer.cs">
-      <DependentUpon>frmModifyDiagnosis.cs</DependentUpon>
+    <Compile Include="Forms\frmModDiagnosis.Designer.cs">
+      <DependentUpon>frmModDiagnosis.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmModifyEmailformat.cs">
+    <Compile Include="Forms\frmModEmailformat.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmModifyEmailformat.Designer.cs">
-      <DependentUpon>frmModifyEmailformat.cs</DependentUpon>
+    <Compile Include="Forms\frmModEmailformat.Designer.cs">
+      <DependentUpon>frmModEmailformat.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmModifyNotes.cs">
       <SubType>Form</SubType>
@@ -548,8 +548,11 @@
     <Compile Include="Forms\frmWCTrainingtools.Designer.cs">
       <DependentUpon>frmWCTrainingtools.cs</DependentUpon>
     </Compile>
-    <Compile Include="HelperClass\DBConStatus.cs" />
+    <Compile Include="HelperClass\Database.cs" />
+    <Compile Include="HelperClass\OfficeFiles.cs" />
     <Compile Include="HelperClass\emailSender.cs" />
+    <Compile Include="HelperClass\Error.cs" />
+    <Compile Include="HelperClass\FEWinForm.cs" />
     <Compile Include="HelperClass\SecurityEncryption.cs" />
     <Compile Include="HelperClass\WinDiscordAPI.cs" />
     <EmbeddedResource Include="Forms\frmAIAssistant.resx">
@@ -633,17 +636,17 @@
     <EmbeddedResource Include="Forms\frmModHearingRep.resx">
       <DependentUpon>frmModHearingRep.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmModifyAdjusterInfo.resx">
-      <DependentUpon>frmModifyAdjusterInfo.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmModAdjusterInfo.resx">
+      <DependentUpon>frmModAdjusterInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmModifyAtty.resx">
-      <DependentUpon>frmModifyAtty.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmModAtty.resx">
+      <DependentUpon>frmModAtty.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmModifyDiagnosis.resx">
-      <DependentUpon>frmModifyDiagnosis.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmModDiagnosis.resx">
+      <DependentUpon>frmModDiagnosis.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmModifyEmailformat.resx">
-      <DependentUpon>frmModifyEmailformat.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmModEmailformat.resx">
+      <DependentUpon>frmModEmailformat.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmModifyNotes.resx">
       <DependentUpon>frmModifyNotes.cs</DependentUpon>
@@ -734,13 +737,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <!--sirinie -->
-    <ProjectReference Include="..\..\..\..\ActiveX\editform\editform\editform.csproj">
-      <Project>{9f6d7943-8df2-44f2-9e5b-1a11511640d7}</Project>
-      <Name>editform</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Images\analytics.png" />
     <None Include="Images\discord-hero-1.jpg" />
     <None Include="Images\new.png" />
@@ -757,6 +753,12 @@
     <Content Include="online-test.ico" />
     <None Include="Resources\refresh-icon-vector-clipart.png" />
     <None Include="Resources\online-test.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ActiveX\editform\editform\editform.csproj">
+      <Project>{9f6d7943-8df2-44f2-9e5b-1a11511640d7}</Project>
+      <Name>editform</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

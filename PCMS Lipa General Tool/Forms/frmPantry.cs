@@ -3,11 +3,9 @@ using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Threading.Tasks;
-using System.Web.Mail;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
@@ -22,11 +20,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public string accessLevel;
 		//private static readonly string dbBackupcoll = ConfigurationManager.AppSettings["StoragePath"];
 		private readonly Pantry pantry = new();
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly FEWinForm fe = new();
+		private readonly Database db = new();
 		private readonly User user = new();
-		/// <summary>
-		///readonly emailSender mailSender = new();
-		/// </summary>
+		private readonly OfficeFiles office = new();
+
+
 
 
 		public frmPantry()
@@ -170,28 +171,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 				cmbItemEmpList.ReadOnly = true;
 			}
 			dgPantryList.Enabled = false;
-			GetDBListID();
+			pantry.GetDBListID(out string ID, EmpName);
+			var frmPantry  = new frmPantry();
+			frmPantry.txtIntID.Text = ID;
 
 		}
 
-		private void GetDBListID()
-		{
-			string nextSequence = task.GetSequenceNo("PantryListSeq", "PL-");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					txtIntID.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetDBListID", EmpName, "frmPantry", "N/A", ex);
-			}
-
-			//task.GetSequenceNo("textbox", "PantryListSeq", txtIntID.Text, null, "PL-");
-		}
+		
 
 		private void Clear()
 		{
@@ -238,7 +224,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					}
 					else
 					{
-						pantry.PantryListDBRequest(
+						bool isSuccess = pantry.PantryListDBRequest(
 							"Update",
 							txtIntID.Text,
 							cmbItemEmpList.Text,
@@ -248,7 +234,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 							decimal.Parse(txtTotalPrice.Text),
 							txtSummary.Text,
 							txtRemarks.Text,
-							EmpName);
+							EmpName,
+							out string message);
+						if (isSuccess)
+						{
+							fe.SendToastNotifDesktop(message, "Success");
+						}
+						else
+						{
+							fe.SendToastNotifDesktop(message, "Failed");
+						}
 					}
 				}
 			}
@@ -260,7 +255,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				else
 				{
-					pantry.PantryListDBRequest(
+					bool isSuccess = pantry.PantryListDBRequest(
 						"Create",
 						txtIntID.Text,
 						cmbItemEmpList.Text,
@@ -270,7 +265,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 						decimal.Parse(txtTotalPrice.Text),
 						txtSummary.Text,
 						txtRemarks.Text,
-						EmpName);
+						EmpName,
+						out string message);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					}
 
 				}
 			}
@@ -332,7 +336,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SumPantryExpense", EmpName, "frmPantry", null, ex); 
+				error.LogError("SumPantryExpense", EmpName, "frmPantry", null, ex); 
 			}
 		}
 
@@ -358,7 +362,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				task.LogError("LoadPantryListwithFilter", EmpName, "frmPantry", null, ex);
+				error.LogError("LoadPantryListwithFilter", EmpName, "frmPantry", null, ex);
 			}
 		}
 
@@ -389,7 +393,7 @@ of
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("LoadPantryListwithFilter", EmpName, "frmPantry", null, ex);
+		//		error.LogError("LoadPantryListwithFilter", EmpName, "frmPantry", null, ex);
 		//	}
 		//
 		//}
@@ -421,7 +425,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				task.LogError("cmbProductList_SelectedIndexChanged", EmpName, "frmPantry", null, ex);
+				error.LogError("cmbProductList_SelectedIndexChanged", EmpName, "frmPantry", null, ex);
 			}
 		}
 
@@ -458,7 +462,7 @@ of
 				Console.WriteLine(sheetName);
 
 				// Call the export method with the validated sheet name
-				task.ExportTableToExcel(dataTable, sheetName, EmpName);
+				office.ExportTableToExcel(dataTable, sheetName, EmpName);
 
 				// Optionally notify the user and open the file
 				string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -571,7 +575,7 @@ of
 				emailSender mail = new();
 				mail.SendEmail("yesAttach", mailContent, filePath, mailSubject, recipientEmail, "TM Pantry Store");
 
-				task.SendToastNotifDesktop($"Email sent to {recipientEmail}");
+				fe.SendToastNotifDesktop($"Email sent to {recipientEmail}", "Success");
 				//RadMessageBox.Show, "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 				await Task.Delay(3000);
 				lblstatus.Text = $"Spreadsheet attached and sent to {recipientEmail}.";
@@ -582,7 +586,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				task.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
+				error.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
 				//MessageBox.Show($"An error occurred:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
@@ -724,7 +728,7 @@ of
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
+		//		error.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
 		//	}
 		//}
 		//
@@ -793,7 +797,7 @@ of
 			//process.DeleteValues(query);
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				pantry.PantryListDBRequest(
+				bool isSuccess = pantry.PantryListDBRequest(
 					"Delete",
 					txtIntID.Text,
 					cmbItemEmpList.Text,
@@ -803,7 +807,16 @@ of
 					decimal.Parse(txtTotalPrice.Text),
 					txtSummary.Text,
 					txtRemarks.Text,
-					EmpName);
+					EmpName,
+					out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 				DefaultFields();
 				LoadPantryListwithFilter();
 			}
@@ -872,7 +885,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				task.LogError("AutoFillUp", EmpName, "frmPantry", null, ex);
+				error.LogError("AutoFillUp", EmpName, "frmPantry", null, ex);
 			}
 		}
 
@@ -1006,7 +1019,7 @@ of
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("AutoFillUp", EmpName, "frmPantry", null, ex);
+		//		error.LogError("AutoFillUp", EmpName, "frmPantry", null, ex);
 		//
 		//	}
 		//}

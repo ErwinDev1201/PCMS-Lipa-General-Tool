@@ -1,6 +1,6 @@
 ﻿namespace PCMS_Lipa_General_Tool.Forms
 {
-	partial class frmModifyAdjusterInfo
+	partial class frmModAdjusterInfo
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmModifyAdjusterInfo));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmModAdjusterInfo));
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
 			this.txtSupervisor = new Telerik.WinControls.UI.RadTextBox();
 			this.txtEmailAdd = new Telerik.WinControls.UI.RadTextBox();

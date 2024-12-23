@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -8,9 +9,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmAssignProvider : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
 		private readonly Provider provider = new();
 		private readonly User user = new();
+		private static readonly Error error = new();
+		private static readonly Database db = new();
+		private static readonly FEWinForm fe = new();
 
 		public string txtID;
 		public string empName;
@@ -26,7 +29,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBListID()
 		{
-			string nextSequence = task.GetSequenceNo("AssignProvider", "AP-");
+			string nextSequence = db.GetSequenceNo("AssignProvider", "AP-");
 
 			try
 			{
@@ -37,15 +40,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("GetDBListID", empName, "frmAssignProvider", "N/A", ex);
+				error.LogError("GetDBListID", empName, "frmAssignProvider", "N/A", ex);
 			}
 
-			//task.GetSequenceNo("textbox", "PantryListSeq", txtIntID.Text, null, "PL-");
+			//db.GetSequenceNo("textbox", "PantryListSeq", txtIntID.Text, null, "PL-");
 		}
 		//public void GetDBID()
 		//{
 		//
-		//	task.GetSequenceNo("textbox", "AssignProvider", txtIntID.Text, null, "AP-");
+		//	db.GetSequenceNo("textbox", "AssignProvider", txtIntID.Text, null, "AP-");
 		//}
 
 		public void LoadDefaults()
@@ -79,30 +82,26 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void btnSave_Click(object sender, EventArgs e)
 		{
 
-			if (btnSave.Text == "Save")
+			if (string.IsNullOrWhiteSpace(cmbEmployeeName.Text) || string.IsNullOrWhiteSpace(cmbProviderName.Text))
 			{
-				if (cmbEmployeeName.Text == "" || cmbProviderName.Text == "")
-				{
-					RadMessageBox.Show("Please select Employee or Provider in the Dropdown", "Warning", MessageBoxButtons.OK, RadMessageIcon.Error);
-				}
-				else
-				{
-					provider.AssignProvider("Create", txtIntID.Text, cmbProviderName.Text, cmbEmployeeName.Text, txtRemarks.Text, empName);
-					ClearData();
-				}
+				RadMessageBox.Show("Please select Employee or Provider in the Dropdown", "Warning", MessageBoxButtons.OK, RadMessageIcon.Error);
+				return;
 			}
-			else
-			{
-				if (cmbEmployeeName.Text == "" || cmbProviderName.Text == "")
-				{
-					RadMessageBox.Show("Please select Employee or Provider in the Dropdown", "Warning", MessageBoxButtons.OK, RadMessageIcon.Error);
-				}
-				else
-				{
-					provider.AssignProvider("Patch", txtIntID.Text, cmbProviderName.Text, cmbEmployeeName.Text, txtRemarks.Text, empName);
-					ClearData();
-				}
-			}
+
+			string operationType = btnSave.Text == "Save" ? "Create" : "Patch";
+			bool isSuccess = provider.AssignProvider(
+				operationType,
+				txtIntID.Text,
+				cmbProviderName.Text,
+				cmbEmployeeName.Text,
+				txtRemarks.Text,
+				empName,
+				out string message
+			);
+
+			fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
+
+			ClearData();
 			LoadDefaults();
 
 		}
@@ -118,7 +117,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-			provider.AssignProvider("Delete", txtIntID.Text, cmbProviderName.Text, cmbEmployeeName.Text, txtRemarks.Text, empName);
+			bool isSuccess = provider.AssignProvider("Delete", txtIntID.Text, cmbProviderName.Text, cmbEmployeeName.Text, txtRemarks.Text, empName, out string message);
+			fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
 		}
 
 		private void dgAssignedProvider_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -153,7 +153,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("PullDataFromTabletoTextBox", empName, "frmAssignProvider", "N/A", ex);
+				error.LogError("PullDataFromTabletoTextBox", empName, "frmAssignProvider", "N/A", ex);
 			}
 		}
 

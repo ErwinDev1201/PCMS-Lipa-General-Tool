@@ -1,9 +1,9 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
+using System.Web.UI;
 using Telerik.WinControls.UI;
 
 
@@ -13,8 +13,33 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class MPN
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
 
-		private readonly CommonTask task = new();
+
+		public void GetDBID(out string intID, string empName)
+		{
+			// Default assignment for the out parameter
+			intID = string.Empty;
+
+			string nextSequence = db.GetSequenceNo("MPNInfoSeq", "MPN-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					intID = nextSequence;
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBListID", empName, "frmMODMPN", "N/A", ex);
+			}
+			///db.GetSequenceNo("textbox", "MPNInfoSeq", txtIntID.Text, null, "MPN-");
+		}
+
 
 		public DataTable ViewMPNList(string empName, out string lblCount)
 		{
@@ -35,14 +60,14 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewMPNList", empName, "MPN", "N/A", ex);
+				error.LogError("ViewMPNList", empName, "MPN", "N/A", ex);
 			}
 
 			return data;
 		}
 
 
-		public void MPNDBRequest(
+		public bool MPNDBRequest(
 			string request,
 			string mpnID,
 			string insuranceName,
@@ -51,7 +76,8 @@ namespace PCMS_Lipa_General_Tool.Class
 			string passWord,
 			string webSite,
 			string remarks,
-			string empName)
+			string empName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -62,7 +88,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				cmd.CommandText = request switch
 				{
@@ -84,7 +110,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@MPNID", mpnID);
+					///cmd.Parameters.AddWithValue("@MPNID", mpnID);
 					cmd.Parameters.AddWithValue("@INSURANCENAME", insuranceName);
 					cmd.Parameters.AddWithValue("@MPN", mpn);
 					cmd.Parameters.AddWithValue("@USERNAME", userName);
@@ -103,13 +129,16 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d MPN ID: {mpnID}";
 				message = $"Done! {mpnID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} MPN INUSURANCE INFORMATION");
-				task.SendToastNotifDesktop(logs);
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} MPN INUSURANCE INFORMATION");
+				return true;
+				//fe.SendToastNotifDesktop(message, "success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError("MPNDBRequest", empName, "MPN", mpnID, ex);
-				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				error.LogError("MPNDBRequest", empName, "MPN", mpnID, ex);
+				message = $"Failed to {request.ToLower()} {mpnID}, Please try again later";
+				return false;
+				////throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
 			finally
 			{
@@ -145,7 +174,7 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "MPN", null, ex);
+				error.LogError("SearchData", empName, "MPN", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
