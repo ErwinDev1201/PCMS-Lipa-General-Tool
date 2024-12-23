@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -10,7 +11,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	{
 		private readonly Leave leave = new();
 		private readonly User user = new();
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
 		public string EmpName;
@@ -84,7 +85,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			modleave.dtpEndDate.Text = DateTime.Now.AddDays(1).ToString();
 			modleave.dtpStartdate.Text = DateTime.Now.ToString();
 			modleave.txtEmpID.Text = empID;
-			modleave.GetDBListID();
+			leave.GetDBListID(out string ID, EmpName);
+			modleave.lblLeaveID.Text = ID;
+			//modleave.GetDBListID();
 
 			//string empID = modLeave.txtEmpID.Text;
 			string employeeName = modleave.txtEmployeeName.Text;
@@ -292,7 +295,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgLeave_DoubleClick", EmpName, "frmLeave", selectedLeaveID, ex);
+				error.LogError("dgLeave_DoubleClick", EmpName, "frmLeave", selectedLeaveID, ex);
 			}
 
 

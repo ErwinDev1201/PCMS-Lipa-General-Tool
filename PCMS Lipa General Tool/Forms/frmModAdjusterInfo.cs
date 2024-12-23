@@ -1,18 +1,21 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmModifyAdjusterInfo : Telerik.WinControls.UI.RadForm
+	public partial class frmModAdjusterInfo : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly FEWinForm fe = new();
+		private readonly Database db = new();
 		private readonly Adjuster adj = new();
 		public string txtID;
 		public string empName;
 
-		public frmModifyAdjusterInfo()
+		public frmModAdjusterInfo()
 		{
 			InitializeComponent();
 			txtIntID.ReadOnly = true;
@@ -41,7 +44,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtAdjusterName.Enabled = true;
 			btnDelete.Enabled = true;
 			btnUpdateSave.Enabled = true;
-			GetDBID(); 
+			adj.GetDBID(out string intID, empName);
+			txtIntID.Text = intID;
 		}
 
 		private void DisableInput()
@@ -59,23 +63,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnUpdateSave.Enabled = false;
 		}
 
-		public void GetDBID()
-		{
-			string nextSequence = task.GetSequenceNo("AdjusterInfo", "ADJ-");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					txtIntID.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetDBID", empName, "frmModifyAdjusterInfo", "N/A", ex);
-			}
-			////task.GetSequenceNo("textbox", "AdjusterInfo", txtIntID.Text, null, "ADJ-");
-		}
+		
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
@@ -83,7 +71,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
 				{
-					adj.AdjusterDBRequest(
+					bool isSuccess = adj.AdjusterDBRequest(
 					"Delete",
 					txtIntID.Text,
 					txtInsuranceName.Text,
@@ -94,8 +82,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtEmailAdd.Text,
 					txtSupervisor.Text,
 					txtRemarks.Text,
-					empName
+					empName,
+					out string message
 					);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					}
 
 				}
 				ClearData();
@@ -110,7 +107,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Would you like to go ahead and update this record??", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					adj.AdjusterDBRequest(
+					bool isSuccess = adj.AdjusterDBRequest(
 					"Update",
 					txtIntID.Text,
 					txtInsuranceName.Text,
@@ -121,8 +118,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtEmailAdd.Text,
 					txtSupervisor.Text,
 					txtRemarks.Text,
-					empName
+					empName,
+					out string message
 					);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					}
 
 				}
 
@@ -130,7 +136,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			else
 			{
 				{
-					adj.AdjusterDBRequest(
+					bool isSuccess = adj.AdjusterDBRequest(
 					"Create",
 					txtIntID.Text,
 					txtInsuranceName.Text,
@@ -141,8 +147,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtEmailAdd.Text,
 					txtSupervisor.Text,
 					txtRemarks.Text,
-					empName
+					empName,
+					out string message
 					);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					}
 
 				}
 

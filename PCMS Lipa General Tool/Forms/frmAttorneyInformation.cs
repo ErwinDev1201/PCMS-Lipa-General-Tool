@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -13,6 +14,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private readonly CommonTask task = new();
 		public string accessLevel;
 		public string EmpName;
+		private static readonly Error error = new();
 
 		public frmAttorneyInformation()
 		{
@@ -39,7 +41,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					return;
 
 				var selectedRow = dgDefAtty.SelectedRows[0];
-				var modAtty = new frmModifyAtty
+				var modAtty = new frmModAtty
 				{
 					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
 					cmbAttyType = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
@@ -67,7 +69,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
+				error.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
 			}
 		}
 
@@ -98,11 +100,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnNew_Click(object sender, EventArgs e)
 		{
-			var modAtty = new frmModifyAtty();
+			var modAtty = new frmModAtty();
 			modAtty.btnDelete.Visible = false;
 			modAtty.btnUpdateSave.Text = "Save";
 			modAtty.Text = "New Attorney";
-			modAtty.GetDBID();
+			atty.GetDBID(out string ID, EmpName);
+			modAtty.txtIntID.Text = ID;
 			modAtty.cmbAttyType.Focus();
 			modAtty.ShowDialog();
 			modAtty.empName = EmpName;
@@ -130,7 +133,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("LoadSearchFilter", EmpName, "frmAttorneyInformation", null, ex);
+				error.LogError("LoadSearchFilter", EmpName, "frmAttorneyInformation", null, ex);
 			}
 		}
 

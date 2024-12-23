@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -8,8 +9,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmProvider : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
 		private readonly Provider provider = new();
+		private readonly Error error = new();
+		private readonly FEWinForm fe = new();
 		public string accessLevel;
 		public string EmpName;
 
@@ -116,24 +118,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 
 
-		private void GetProvID()
-		{
-			string nextSequence = task.GetSequenceNo("ProvInfoSeq", "PROV-");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					txtNoProv.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetProvID", EmpName, "fromProvider", "N/A", ex);
-			}
-			//task.GetSequenceNo("textbox", "ProvInfoSeq", txtNoProv.Text, null, "PROV-");
-		}
-
 		private void btnCancel_Click(object sender, EventArgs e)
 		{
 			ClearProvInfo();
@@ -145,7 +129,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (btnUpdateSave.Text == "Save")
 			{
-				provider.ProviderInfoDBRequest(
+				bool isSuccess = provider.ProviderInfoDBRequest(
 					"Create",
 					txtNoProv.Text,
 					txtProviderName.Text,
@@ -156,17 +140,23 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtPhysicalAdd.Text,
 					txtBillingAdd.Text,
 					txtRemarks.Text,
-					EmpName);
-				ClearProvInfo();
-				ShowProviderInfo();
-				ProvInDefault();
-				txtProviderName.Focus();
+					EmpName,
+					out string message);
+			
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 			}
 			else if (btnUpdateSave.Text == "Update")
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					provider.ProviderInfoDBRequest(
+					bool isSuccess = provider.ProviderInfoDBRequest(
 					"Update",
 					txtNoProv.Text,
 					txtProviderName.Text,
@@ -177,21 +167,32 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtPhysicalAdd.Text,
 					txtBillingAdd.Text,
 					txtRemarks.Text,
-					EmpName);
-					ClearProvInfo();
-					ProvInDefault();
-					ShowProviderInfo();
+					EmpName,
+					out string message);
+
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					}
+
 				}
 			}
 			else
 			{
-				ClearProvInfo();
-				ProvDoubleClickEnable();
-				txtProviderName.Focus();
 				btnUpdateSave.Text = "Save";
 				btnDelete.Enabled = false;
-				GetProvID();
+				provider.GetProvID(out string ID, EmpName);
+				txtNoProv.Text = ID;
 			}
+			ClearProvInfo();
+			ShowProviderInfo();
+			ProvInDefault();
+			txtProviderName.Focus();
+
 
 		}
 
@@ -199,7 +200,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				provider.ProviderInfoDBRequest(
+				bool isSuccess = provider.ProviderInfoDBRequest(
 					"Delete",
 					txtNoProv.Text,
 					txtProviderName.Text,
@@ -210,7 +211,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtPhysicalAdd.Text,
 					txtBillingAdd.Text,
 					txtRemarks.Text,
-					EmpName);
+					EmpName,
+					out string message);
+
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 				ProvInDefault();
 				ClearProvInfo();
 				ShowProviderInfo();
@@ -244,10 +255,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 			ClearProvInfo();
 			ProvDoubleClickEnable();
 			txtProviderName.Focus();
-			//sqlWorker.CreateDbId(txtNoProv, _provsql, @"PROV-");
 			btnUpdateSave.Text = "Save";
 			btnDelete.Enabled = false;
-			GetProvID();
+			provider.GetProvID(out string ID, EmpName);
+			txtNoProv.Text = ID;
 		}
 
 		private void dgProviderInfo_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -256,7 +267,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 			ProvDoubleClickEnable();
 			try
 			{
-				//"SELECT [INT-ID], [PROVIDER NAME], NPI, PTAN, [TAX ID], [RAILROAD PTAN], [PHYSICAL ADDRESS], [BILLING ADDRESS], REMARKS FROM [PROVIDER INFO]";
 				if (dgProviderInfo.SelectedRows.Count > 0)
 				{
 					if (accessLevel == "User")
@@ -309,7 +319,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgProviderInfo_MouseDoubleClick", EmpName, "frmProvider", txtNoProv.Text, ex);
+				error.LogError("dgProviderInfo_MouseDoubleClick", EmpName, "frmProvider", txtNoProv.Text, ex);
 			}
 		}
 
@@ -328,7 +338,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", EmpName, "frmProvider", null, ex);
+				error.LogError("txtSearch_TextChanged", EmpName, "frmProvider", null, ex);
 			}
 			//task.SearchTwoColumnOneFieldText(dgProviderInfo, "[Provider Information]", "[Provider Name]", "REMARKS", txtSearch, lblSearchCount, EmpName);
 		}

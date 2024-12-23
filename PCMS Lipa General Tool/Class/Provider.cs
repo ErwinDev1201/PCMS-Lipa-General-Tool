@@ -1,10 +1,10 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
 
 
@@ -15,7 +15,31 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
 
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
+
+
+		public void GetProvID(out string ID, string empName)
+		{
+			ID = string.Empty;
+
+			string nextSequence = db.GetSequenceNo("ProvInfoSeq", "PROV-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					ID = nextSequence;
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetProvID", empName, "Provider", ID, ex);
+			}
+			//db.GetSequenceNo("textbox", "ProvInfoSeq", txtNoProv.Text, null, "PROV-");
+		}
 
 		public DataTable ViewProviderAssignee(string empName, out string lblCount)
 		{
@@ -36,7 +60,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewProviderAssignee", empName, "Provider", "N/A", ex);
+				error.LogError("ViewProviderAssignee", empName, "Provider", "N/A", ex);
 			}
 
 			return data;
@@ -61,7 +85,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewProviderList", empName, "Provider", "N/A", ex);
+				error.LogError("ViewProviderList", empName, "Provider", "N/A", ex);
 			}
 
 			return data;
@@ -94,7 +118,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("FillUpProvTxtBox", empName, "Provider", "N/A", ex);
+		//		error.LogError("FillUpProvTxtBox", empName, "Provider", "N/A", ex);
 		//	}
 		//	finally
 		//	{
@@ -103,7 +127,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//
 		//}
 
-		public void ProviderInfoDBRequest(
+		public bool ProviderInfoDBRequest(
 			string request,
 			string provID,
 			string providerName,
@@ -114,7 +138,8 @@ namespace PCMS_Lipa_General_Tool.Class
 			string physicalAddress,
 			string billingAddress,
 			string remarks,
-			string empName) 
+			string empName,
+			out string message) 
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -125,7 +150,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				cmd.CommandText = request switch
 				{
@@ -163,13 +188,15 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Provider ID: {provID}";
 				message = $"Done! {provID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} PROVIDER INFORMATION");
-				task.SendToastNotifDesktop(logs);
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} PROVIDER INFORMATION");
+				return true;
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ProviderInfoDBRequest", empName, "Provider", "N/A", ex);
-				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				error.LogError("ProviderInfoDBRequest", empName, "Provider", "N/A", ex);
+				message = $"Failed to {request.ToLower()} {provID}, Please try again later";
+				return false;
+				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
 			finally
 			{
@@ -178,73 +205,75 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 
-		public void AssignProvider(
-	string requestType,
+		public bool AssignProvider(
+	string request,
 	string assignedID,
 	string providerName,
 	string employeeName,
 	string remarks,
-	string empName)
+	string empName,
+	out string message)
 		{
-			// Generate activity message and logs
-			var message = GenerateActivityMessage(requestType, assignedID, providerName, employeeName, remarks);
-			var logs = $"{empName} {requestType.ToLower()}ed patientName ID: {assignedID}";
-			string sqlCommandText;
-
-			// Determine SQL command based on the request type
-			switch (requestType)
-			{
-				case "Patch":
-					sqlCommandText = @"UPDATE [Provider Collector] 
-                               SET [Provider Name] = @providerName, 
-                                   [Employee Name] = @employeeName, 
-                                   REMARKS = @REMARKS 
-                               WHERE [Assigned ID] = @assignID";
-					break;
-
-				case "Create":
-					sqlCommandText = @"INSERT INTO [Provider Collector] 
-                               ([Assigned ID], [Provider Name], [Employee Name], [Remarks]) 
-                               VALUES (@assignID, @providerName, @employeeName, @REMARKS)";
-					break;
-
-				case "Delete":
-					sqlCommandText = @"DELETE FROM [Provider Collector] 
-                               WHERE [Assigned ID] = @assignID";
-					break;
-
-				default:
-					MessageBox.Show("Invalid request type", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-			}
-
-			// Execute the database request
-			ExecuteAssignProviderRequest(sqlCommandText, requestType, assignedID, providerName, employeeName, remarks, empName, message, logs);
-		}
-
-		private void ExecuteAssignProviderRequest(string sqlCommandText, string requestType, string assignID, string providerName, string employeeName, string remarks, string empName, string message, string logs)
-		{
-			using var conn = new SqlConnection(_dbConnection);
+			using SqlConnection conn = new(_dbConnection);
 			try
 			{
 				conn.Open();
-				using (var cmd = new SqlCommand(sqlCommandText, conn))
+				SqlCommand cmd = new()
 				{
-					cmd.Parameters.AddWithValue("@assignID", assignID);
+					Connection = conn
+				};
+				string logs;
+
+				cmd.CommandText = request switch
+				{
+					"Update" => @"
+								UPDATE [Provider Collector] 
+								SET [Provider Name] = @providerName, 
+                                   [Employee Name] = @employeeName, 
+                                   REMARKS = @REMARKS 
+								WHERE [Assigned ID] = @assignID",
+					"Create" => @"
+								INSERT INTO [Provider Collector] 
+                               ([Assigned ID], [Provider Name], [Employee Name], [Remarks]) 
+                               VALUES (@assignID, @providerName, @employeeName, @REMARKS)",
+					"Delete" => @"DELETE FROM [Provider Collector] 
+                               WHERE [Assigned ID] = @assignID",
+					_ => throw new ArgumentException("Invalid request type."),
+				};
+
+				// Add parameters common to Patch and Create
+				if (request != "Delete")
+				{
+					///cmd.Parameters.AddWithValue("@REPID", repID);
+					//cmd.Parameters.AddWithValue("@assignID", assignedID);
 					cmd.Parameters.AddWithValue("@providerName", providerName);
 					cmd.Parameters.AddWithValue("@employeeName", employeeName);
 					cmd.Parameters.AddWithValue("@REMARKS", remarks);
-
-					cmd.ExecuteNonQuery();
 				}
 
-				task.AddActivityLog(message, empName, logs, $"{requestType.ToUpper()} patientName INFORMATION");
-				task.SendToastNotifDesktop(logs);
+				// Common parameter for all requests
+				cmd.Parameters.AddWithValue("@assignID", assignedID);
+
+				// Execute query
+				cmd.ExecuteNonQuery();
+
+				// Log activity
+				message = GenerateActivityMessage(request, assignedID, providerName, employeeName, remarks);
+				logs = $"{empName} {request.ToLower()}ed assignment ID: {assignedID}"; ;
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} HEARING REP INFORMATION");
+				return true;
+				//fe.SendToastNotifDesktop(message, "Success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ExecuteAssignProviderRequest", empName, "Provider", "N/A", ex);
-				RadMessageBox.Show($"Failed to {requestType.ToLower()} record for patientName ID: {assignID}", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+				error.LogError($"HRRepDBRequest - {request}", empName, "Provider", assignedID, ex);
+				message = $"Failed to {request.ToLower()} {assignedID}, Please try again later";
+				return false;
+				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+			}
+			finally
+			{
+				conn.Close();
 			}
 		}
 
@@ -258,9 +287,9 @@ Additional Remarks: {remarks}";
 		}
 
 		public DataTable SearchData(
-	string searchTerm,
-	out string searchCount,
-	string empName)
+			string searchTerm,
+			out string searchCount,
+			string empName)
 		{
 			DataTable resultTable = new();
 
@@ -269,10 +298,13 @@ Additional Remarks: {remarks}";
 			{
 				conn.Open();
 				string query = $@"
-SELECT *
-FROM [Provider Information]
-WHERE [Provider Name] LIKE @searchTerm
-OR [Remarks] LIKE @searchTerm";
+					SELECT *
+						FROM [Provider Information]
+					WHERE
+						[Provider Name]
+					LIKE @searchTerm
+					OR [Remarks]
+					LIKE @searchTerm";
 
 				using SqlCommand cmd = new(query, conn);
 				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
@@ -285,7 +317,7 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				error.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -314,7 +346,7 @@ OR [Remarks] LIKE @searchTerm";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("GenerateActivityMessage", empName, "Provider", "N/A", ex);
+		//		error.LogError("GenerateActivityMessage", empName, "Provider", "N/A", ex);
 		//	}
 		//	finally
 		//	{
@@ -340,7 +372,7 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("GetProviderList", empName, "Pantry", "N/A", ex);
+				error.LogError("GetProviderList", empName, "Pantry", "N/A", ex);
 			}
 			return items;
 		}
@@ -364,7 +396,7 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("GetProviderListperCollector", empName, "Pantry", "N/A", ex);
+				error.LogError("GetProviderListperCollector", empName, "Pantry", "N/A", ex);
 			}
 			return items;
 		}

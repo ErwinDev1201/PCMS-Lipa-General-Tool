@@ -1,9 +1,8 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -11,9 +10,30 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
 
-		private static readonly CommonTask task = new();
+		public void GetDBID(out string intID, string empName)
+		{
+			intID = string.Empty;
 
+			string nextSequence = db.GetSequenceNo("AdjusterInfo", "ADJ-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					intID = nextSequence;
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBID", empName, "Adjuster", "N/A", ex);
+			}
+			////db.GetSequenceNo("textbox", "AdjusterInfo", txtIntID.Text, null, "ADJ-");
+		}
 
 		public DataTable ViewAdjusterList(string empName, out string lblCount)
 		{
@@ -34,14 +54,14 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
+				error.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
 			}
 
 			return data;
 		}
 
 
-		public void AdjusterDBRequest(
+		public bool AdjusterDBRequest(
 			string request,
 			string adjID,
 			string insuranceName,
@@ -52,7 +72,8 @@ namespace PCMS_Lipa_General_Tool.Class
 			string email,
 			string supervisorName,
 			string remarks,
-			string empName)
+			string empName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -63,7 +84,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				// Determine SQL command based on the request
 				cmd.CommandText = request switch
@@ -106,13 +127,17 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Adjuster ID: {adjID}";
 				message = $"Done! {adjID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} ADJUSTER INFORMATION");
-				task.SendToastNotifDesktop(message);
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} ADJUSTER INFORMATION");
+				return true;
+				//ask.SendToastNotifDesktop(message, "Success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"adjusterDBRequest {request}", empName, "Adjuster", adjID, ex);
-				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+				error.LogError($"adjusterDBRequest {request}", empName, "Adjuster", adjID, ex);
+				message = $"Failed to {request.ToLower()} {adjID}, Please try again later";
+				return false;
+				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
 			{
@@ -121,9 +146,9 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 		public DataTable SearchData(
-	string searchTerm,
-	out string searchCount,
-	string empName)
+			string searchTerm,
+			out string searchCount,
+			string empName)
 		{
 			DataTable resultTable = new();
 
@@ -132,11 +157,11 @@ namespace PCMS_Lipa_General_Tool.Class
 			{
 				conn.Open();
 				string query = $@"
-SELECT *
-FROM [Adjuster Information]
-WHERE [Insurance Name] LIKE @searchTerm
-OR [Remarks] LIKE @searchTerm
-OR [Adjuster Name] LIKE @searchTerm";
+					SELECT *
+					FROM [Adjuster Information]
+					WHERE [Insurance Name] LIKE @searchTerm
+					OR [Remarks] LIKE @searchTerm
+					OR [Adjuster Name] LIKE @searchTerm";
 
 				using SqlCommand cmd = new (query, conn);
 				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
@@ -149,7 +174,7 @@ OR [Adjuster Name] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				error.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -197,9 +222,9 @@ OR [Adjuster Name] LIKE @searchTerm";
 		//							cmd.ExecuteNonQuery();
 		//						}
 		//						string logs = empName + " updated information for Adjuster ID: " + adjID.Text;
-		//						task.AddActivityLog(message, empName, logs, "UPDATED ADJUSTER INFORMATION");
+		//						log.AddActivityLog(message, empName, logs, "UPDATED ADJUSTER INFORMATION");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		//						task.SendToastNotifDesktop(logs);
+		//						fe.SendToastNotifDesktop(logs);
 		//					}
 		//					catch (Exception ex)
 		//					{
@@ -246,10 +271,10 @@ OR [Adjuster Name] LIKE @searchTerm";
 		//							cmd.Parameters.AddWithValue("@REMARKS", remarks.Text);
 		//							cmd.ExecuteNonQuery();
 		//							string logs = empName + " added Adjuster ID: " + adjID.Text;
-		//							task.AddActivityLog(message, empName, logs, "ADDED ADJUSTER INFORMATION");
+		//							log.AddActivityLog(message, empName, logs, "ADDED ADJUSTER INFORMATION");
 		//							winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
 		//							//RadMessageBox.Show("Record successfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
-		//							task.SendToastNotifDesktop(logs);
+		//							fe.SendToastNotifDesktop(logs);
 		//						}
 		//					}
 		//					catch (Exception ex)
@@ -288,9 +313,9 @@ OR [Adjuster Name] LIKE @searchTerm";
 		//							cmd.ExecuteNonQuery();
 		//						}
 		//						string logs = empName + " deleted Adjuster ID: " + adjID.Text;
-		//						task.AddActivityLog(message, empName, logs, "DELETED ADJUSTER INFORMATION");
+		//						log.AddActivityLog(message, empName, logs, "DELETED ADJUSTER INFORMATION");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		//						task.SendToastNotifDesktop(logs);
+		//						fe.SendToastNotifDesktop(logs);
 		//						///RadMessageBox.Show("Record successfully Deleted", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//					}
 		//					catch (Exception ex)

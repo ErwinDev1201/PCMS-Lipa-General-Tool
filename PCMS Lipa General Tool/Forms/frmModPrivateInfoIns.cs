@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -7,7 +8,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmModPrivateInfoIns : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly FEWinForm fe = new();
+		private readonly Database db = new();
 		private readonly Insurance insurance = new();
 		public string empName;
 
@@ -29,7 +32,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void GetDBID()
 		{
-			string nextSequence = task.GetSequenceNo("InsuranceInfoSeq", "INS-");
+			string nextSequence = db.GetSequenceNo("InsuranceInfoSeq", "INS-");
 
 			try
 			{
@@ -40,9 +43,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("GetDBID", empName, "frmModPrivaateIns", "N/A", ex);
+				error.LogError("GetDBID", empName, "frmModPrivaateIns", "N/A", ex);
 			}
-			///task.GetSequenceNo("textbox", "InsuranceInfoSeq", txtIntID.Text, null, "INS-");
+			///db.GetSequenceNo("textbox", "InsuranceInfoSeq", txtIntID.Text, null, "INS-");
 		}
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)
@@ -56,7 +59,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					RadMessageIcon.Question
 				) == DialogResult.Yes)
 				{
-					insurance.InsuranceInfoDBRequest(
+					bool isSuccess = insurance.InsuranceInfoDBRequest(
 						"Update",
 						txtIntID.Text,
 						txtInsuranceName.Text,
@@ -64,23 +67,39 @@ namespace PCMS_Lipa_General_Tool.Forms
 						txtInsuranceAddress.Text,
 						txtPayerID.Text,
 						txtRemarks.Text,
-						empName
-					);
-				}
+						empName,
+						out string message);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					}
+				};
 			}
 			else
 			{
-				insurance.InsuranceInfoDBRequest(
-					"Create",
-					txtIntID.Text,
-					txtInsuranceName.Text,
-					txtInsCode.Text,
-					txtInsuranceAddress.Text,
-					txtPayerID.Text,
-					txtRemarks.Text,
-					empName
-				);
-				
+				bool isSuccess = insurance.InsuranceInfoDBRequest(
+						"Create",
+						txtIntID.Text,
+						txtInsuranceName.Text,
+						txtInsCode.Text,
+						txtInsuranceAddress.Text,
+						txtPayerID.Text,
+						txtRemarks.Text,
+						empName,
+						out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
+
 			}
 			ClearData();
 			Close();
@@ -90,15 +109,24 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				insurance.InsuranceInfoDBRequest(
-					"Delete",
-					txtIntID.Text,
-					txtInsuranceName.Text,
-					txtInsCode.Text,
-					txtInsuranceAddress.Text,
-					txtPayerID.Text,
-					txtRemarks.Text,
-					empName);
+				bool isSuccess = insurance.InsuranceInfoDBRequest(
+						"Delete",
+						txtIntID.Text,
+						txtInsuranceName.Text,
+						txtInsCode.Text,
+						txtInsuranceAddress.Text,
+						txtPayerID.Text,
+						txtRemarks.Text,
+						empName,
+						out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 				ClearData();
 				Close();
 			}

@@ -1,5 +1,6 @@
 ﻿
 using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -10,7 +11,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class FrmLogin : Telerik.WinControls.UI.RadForm
 	{
 		private readonly Login pushLogin = new();
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly User user = new();
 
 
 		public FrmLogin()
@@ -88,7 +90,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				if (Text == "Disconnected | Login")
 				{
 					RadMessageBox.Show("Server is offline. Please contact your Sys Admin for assistance or Retry again later. \n Sorry for the inconvenience.", "Offine", MessageBoxButtons.OK, RadMessageIcon.Error);
-					task.LogError("txtUsername_TextChanged", "Server Offline", "FrmLogin", null, null);
+					error.LogError("txtUsername_TextChanged", "Server Offline", "FrmLogin", null, null);
 				}
 				else
 				{
@@ -98,7 +100,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					}
 					else
 					{
-						string resultMessage = task.CheckIfExistinDB(txtUsername.Text, "Login", "Login");
+						string resultMessage = user.CheckIfExistinDB(txtUsername.Text, "Login", "Login");
 						if (!string.IsNullOrEmpty(resultMessage))
 						{
 							lblalert.Text = resultMessage;

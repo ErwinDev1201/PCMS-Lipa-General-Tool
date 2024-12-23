@@ -1,9 +1,8 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
 
 
@@ -11,9 +10,31 @@ namespace PCMS_Lipa_General_Tool.Class
 {
 	public class Diagnosis
 	{
-
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
+
+		public void GetDBID(out string ID, string empName)
+		{
+			ID = string.Empty;
+
+			string nextSequence = db.GetSequenceNo("DiagSeq", "DX-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					ID = nextSequence;
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBID", empName, "Diagnosis", "N/A", ex);
+			}
+			/////db.GetSequenceNo("textbox", "DiagSeq", txtIntID.Text, null, "DX-");
+		}
 
 		public DataTable ViewDxList(string empName, out string lblCount)
 		{
@@ -34,7 +55,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewDxList", empName, "Diagnosis", "N/A", ex);
+				error.LogError("ViewDxList", empName, "Diagnosis", "N/A", ex);
 			}
 
 			return data;
@@ -82,14 +103,14 @@ WHERE Diagnosis LIKE @searchItem";
 			catch (Exception ex)
 			{
 				// Log the error and provide feedback
-				task.LogError("SearchEmpTwoColumnOneFieldText", empName, "CommonTask", "N/A", ex);
+				error.LogError("SearchEmpTwoColumnOneFieldText", empName, "CommonTask", "N/A", ex);
 				searchCount = "Error occurred while fetching records.";
 			}
 
 			return resultTable;
 		}
 
-		public void DiagnosisDBRequest(
+		public bool DiagnosisDBRequest(
 			string request,
 			string dxID,
 			string icd10,
@@ -97,7 +118,8 @@ WHERE Diagnosis LIKE @searchItem";
 			string Diagnosis,
 			string BodyParts,
 			string remarks,
-			string empName)
+			string empName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -108,7 +130,7 @@ WHERE Diagnosis LIKE @searchItem";
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				cmd.CommandText = request switch
 				{
@@ -127,7 +149,7 @@ WHERE Diagnosis LIKE @searchItem";
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@DXID", dxID);
+					//cmd.Parameters.AddWithValue("@DXID", dxID);
 					cmd.Parameters.AddWithValue("@ICD10", icd10);
 					cmd.Parameters.AddWithValue("@ICD9", icd9);
 					cmd.Parameters.AddWithValue("@DIAGNOSIS", Diagnosis);
@@ -144,13 +166,17 @@ WHERE Diagnosis LIKE @searchItem";
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Diagnosis ID: {dxID}";
 				message = $"Done! {dxID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} DIAGNOSIS INFORMATION");
-				task.SendToastNotifDesktop(logs);
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} DIAGNOSIS INFORMATION");
+				///fe.SendToastNotifDesktop(message, "Success");
+				return true;
+
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"DiagnosisDBRequest - {request}", empName, "Diagnosis", dxID, ex);
-				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+				error.LogError($"DiagnosisDBRequest - {request}", empName, "Diagnosis", dxID, ex);
+				message = $"Failed to {request.ToLower()} {dxID}, Please try again later";
+				return false;
+				//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
 			{

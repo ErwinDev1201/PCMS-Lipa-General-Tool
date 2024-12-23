@@ -4,13 +4,15 @@ using System.Windows.Forms;
 using Telerik.WinControls.UI;
 using System.Collections.Generic;
 using System.Data;
+using PCMS_Lipa_General_Tool.HelperClass;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmViewActivityLogs : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
-		readonly ActivtiyLogs activity = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly FEWinForm fe = new();
 
 		public string empName;
 		public string accessLevel;
@@ -25,7 +27,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ViewLog()
 		{
 			dgActivityLogs.BestFitColumns(BestFitColumnMode.AllCells);
-			var dataTable = activity.ViewActivityLogs(empName, out string lblCount);
+			var dataTable = log.ViewActivityLogs(empName, out string lblCount);
 			dgActivityLogs.DataSource = dataTable;
 			lblSearchCount.Text = lblCount;
 		}
@@ -51,7 +53,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void FillActionDropdown()
 		{
-			List<string> items = activity.GetListofAction(empName);
+			List<string> items = log.GetListofAction(empName);
 			cmbAction.Items.Clear(); // Clear existing items, if any
 			foreach (var item in items)
 			{
@@ -92,10 +94,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 				Console.WriteLine($"Selected status: {cmbAction.Text}");
 				// Input values for the search
 				// Call the back-end method to perform the search
-				DataTable resultTable = task.GetSearch(
+				DataTable resultTable = log.GetSearch(
 					txtSearch.Text,
 					cmbAction.Text,
-					out string searchCountMessage);
+					out string searchCountMessage, empName);
 
 				// Bind the result to the RadGridView
 				dgActivityLogs.DataSource = resultTable;
@@ -105,7 +107,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("LoadSearchFilter", empName, "frmUserActivty", null, ex);
+				error.LogError("LoadSearchFilter", empName, "frmUserActivty", null, ex);
 			}
 		}
 

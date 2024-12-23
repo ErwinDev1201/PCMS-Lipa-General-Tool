@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Vml.Office;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,9 +16,32 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class Pantry
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
+		//private static readonly FEWinForm fe = new();
 
 
+		public void GetDBListID(out string ID, string empName)
+		{
+			ID = string.Empty;
+
+			string nextSequence = db.GetSequenceNo("PantryListSeq", "PL-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					ID = nextSequence;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBListID", empName, "frmPantry", "N/A", ex);
+			}
+
+			//db.GetSequenceNo("textbox", "PantryListSeq", txtIntID.Text, null, "PL-");
+		}
 
 		//public void FillUpPantryListField(string query, RadGridView dataGrid, RadDropDownList cmbProducts, RadTextBox quantity, RadTextBox price, RadTextBox Remarks, RadTextBox TransactionNo, RadTextBox Summary, RadTextBox totalPrices, string empName)
 		//{
@@ -46,7 +69,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("FillUpPantryListField", empName, "Pantry", "N/A", ex);
+		//		error.LogError("FillUpPantryListField", empName, "Pantry", "N/A", ex);
 		//
 		//	}
 		//	finally
@@ -144,7 +167,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("PantryAutoFillUp", empName, "Pantry", "N/A", ex);
+		//		error.LogError("PantryAutoFillUp", empName, "Pantry", "N/A", ex);
 		//	}
 		//}
 
@@ -164,7 +187,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillItemPrice", empName, "Pantry", "N/A", ex);
+				error.LogError("FillItemPrice", empName, "Pantry", "N/A", ex);
 			}
 			return string.Empty; // Return empty string if no result or error occurs
 		}
@@ -196,7 +219,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("FillItemPrice", empName, "Pantry", "N/A", ex);
+		//		error.LogError("FillItemPrice", empName, "Pantry", "N/A", ex);
 		//	}
 		//}
 		//
@@ -220,7 +243,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("FillProductInfo", empName, "Pantry", "N/A", ex);
+		//		error.LogError("FillProductInfo", empName, "Pantry", "N/A", ex);
 		//	}
 		//	finally
 		//	{
@@ -254,12 +277,12 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	catch (Exception ex)
 		//	{
 		//
-		//		task.LogError("FillProductInfo", empName, "Pantry", txtIntID.Text, ex);
+		//		error.LogError("FillProductInfo", empName, "Pantry", txtIntID.Text, ex);
 		//	}
 		//}
 		//
 
-		public void CheckProductExist(string txtIntID, string txtName, string txtPrice, string txtRemarks, string empName)
+		public void CheckProductExist(string txtName, string empName, out string message)
 		{
 			using SqlConnection con = new(_dbConnection);
 			try
@@ -275,21 +298,28 @@ namespace PCMS_Lipa_General_Tool.Class
 
 				if (dt.Rows.Count >= 1)
 				{
-					RadMessageBox.Show("Item already exists", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
+					message = "Item already exists";
 				}
 				else
 				{
-					PantryProductDBRequest("Create", txtIntID, txtName, txtPrice, txtRemarks, empName);
-				}
+					message = null;
+				}	
 			}
 			catch (Exception ex)
 			{
-				task.LogError("CheckProductExist", empName, "Pantry", txtIntID, ex);
-				throw;
+				error.LogError("CheckProductExist", empName, "Pantry", txtName, ex);
+				message = "\"An error occurred while checking the product";
 			}
 		}
 
-		public void PantryProductDBRequest(string request, string itemID, string itemName, string itemPrice, string itemRemarks, string empName)
+		public bool PantryProductDBRequest(
+			string request,
+			string itemID,
+			string itemName,
+			string itemPrice,
+			string itemRemarks,
+			string empName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -338,20 +368,25 @@ namespace PCMS_Lipa_General_Tool.Class
 				if (affectedRows > 0)
 				{
 					string logs = $"{empName} {request.ToLower()}d Product ID: {itemID}";
-					string message = $"Done! Product ID: {itemID} has been successfully {request.ToLower()}d.";
+					message = $"Done! Product ID: {itemID} has been successfully {request.ToLower()}d.";
 
-					task.AddActivityLog(message, empName, logs, $"{request.ToUpper()}D PRODUCT LIST INFORMATION");
-					task.SendToastNotifDesktop(message);
+					log.AddActivityLog(message, empName, logs, $"{request.ToUpper()}D PRODUCT LIST INFORMATION");
+					return true;
+					//fe.SendToastNotifDesktop(message, "Success");
 				}
 				else
 				{
-					throw new InvalidOperationException("No rows were affected by the operation. Please verify the input data.");
+					message = $"Failed to {request.ToLower()} {itemID}, Please try again later";
+					return false;
+					//throw new InvalidOperationException("No rows were affected by the operation. Please verify the input data.");
 				}
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID, ex);
-				throw new InvalidOperationException($"Error during {request} operation: {ex.Message}", ex);
+				error.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID, ex);
+				message = $"Failed to {request.ToLower()} {itemID}, Please try again later";
+				return false;
+				//throw new InvalidOperationException($"Error during {request} operation: {ex.Message}", ex);
 			}
 		}
 
@@ -407,12 +442,12 @@ namespace PCMS_Lipa_General_Tool.Class
 		//		// Log activity
 		//		logs = $"{empName} {request.ToLower()}d Product ID: {itemID.Text}";
 		//		message = $"Done! {itemID.Text} has been successfully {request.ToLower()}d.";
-		//		task.AddActivityLog(message, empName, logs, $"{request.ToUpper()}D PRODUCT LIST INFORMATION");
-		//		task.SendToastNotifDesktop(message);
+		//		log.AddActivityLog(message, empName, logs, $"{request.ToUpper()}D PRODUCT LIST INFORMATION");
+		//		fe.SendToastNotifDesktop(message, "Success");
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
+		//		error.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
 		//		throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 		//	}
 		//	finally
@@ -441,7 +476,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				error.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
 			}
 
 			return data;
@@ -474,7 +509,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			catch (Exception ex)
 			{
 				// Log errors for debugging and monitoring
-				task.LogError("ViewPantryList", empName, "Pantry", "N/A", ex);
+				error.LogError("ViewPantryList", empName, "Pantry", "N/A", ex);
 			}
 		}
 
@@ -496,7 +531,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("FillComboDropdown", empName, "Pantry", "N/A", ex);
+				error.LogError("FillComboDropdown", empName, "Pantry", "N/A", ex);
 			}
 			return items;
 		}
@@ -540,7 +575,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//		}
 		//		catch (Exception ex)
 		//		{
-		//			task.LogError("ViewDatagrid", empName, "Pantry", "N/A", ex);
+		//			error.LogError("ViewDatagrid", empName, "Pantry", "N/A", ex);
 		//		}
 		//	}
 		//	else
@@ -562,7 +597,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//		}
 		//		catch (Exception ex)
 		//		{
-		//			task.LogError("ViewDatagrid", empName, "Pantry", "N/A", ex);
+		//			error.LogError("ViewDatagrid", empName, "Pantry", "N/A", ex);
 		//		}
 		//	}
 		//
@@ -613,14 +648,14 @@ namespace PCMS_Lipa_General_Tool.Class
 		//							cmd.ExecuteNonQuery();
 		//						}
 		//						string logs = empName + " updated information for Product ID: " + itemID.Text;
-		//						task.AddActivityLog(message, empName, logs, "UPDATED PRODUCT INFORMATION");
+		//						log.AddActivityLog(message, empName, logs, "UPDATED PRODUCT INFORMATION");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		//						task.SendToastNotifDesktop(logs);
+		//						fe.SendToastNotifDesktop(logs);
 		//						//RadMessageBox.Show("Record successfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//					}
 		//					catch (Exception ex)
 		//					{
-		//						task.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
+		//						error.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
 		//						RadMessageBox.Show(ErrorMessageUpdate + itemID.Text, "Failed to Update", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//					}
 		//					finally
@@ -652,15 +687,15 @@ namespace PCMS_Lipa_General_Tool.Class
 		//							cmd.ExecuteNonQuery();
 		//						}
 		//						string logs = empName + " added Product ID: " + itemID.Text;
-		//						task.AddActivityLog(message, empName, logs, "ADDED PRODUCT INFORMATION");
+		//						log.AddActivityLog(message, empName, logs, "ADDED PRODUCT INFORMATION");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		//						task.SendToastNotifDesktop(logs);
+		//						fe.SendToastNotifDesktop(logs);
 		//						//RadMessageBox.Show("Record successfully Added", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//					}
 		//
 		//					catch (Exception ex)
 		//					{
-		//						task.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
+		//						error.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
 		//						RadMessageBox.Show(ErrorMessageCreate + itemID.Text + "Please try again later", "Failed to Create", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//					}
 		//					finally
@@ -688,14 +723,14 @@ namespace PCMS_Lipa_General_Tool.Class
 		//							cmd.ExecuteNonQuery();
 		//						}
 		//						string logs = empName + " deleted Product ID: " + itemID.Text;
-		//						task.AddActivityLog(message, empName, logs, "DELETED PRODUCT INFORMATION");
+		//						log.AddActivityLog(message, empName, logs, "DELETED PRODUCT INFORMATION");
 		//						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		//						task.SendToastNotifDesktop(logs);
+		//						fe.SendToastNotifDesktop(logs);
 		//						//RadMessageBox.Show("Record successfully Deleted", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		//					}
 		//					catch (Exception ex)
 		//					{
-		//						task.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
+		//						error.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
 		//						RadMessageBox.Show(ErrorMessageDelete + itemID.Text, "Failed to Delete", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//					}
 		//					finally
@@ -710,7 +745,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//}
 		//
 
-		public void PantryListDBRequest(
+		public bool PantryListDBRequest(
 			string request,
 			string itemID,
 			string empName,
@@ -720,7 +755,8 @@ namespace PCMS_Lipa_General_Tool.Class
 			decimal totalPrice,
 			string summary,
 			string remarks,
-			string authorName)
+			string authorName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -731,7 +767,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				// Determine SQL command based on the request type
 				cmd.CommandText = request switch
@@ -777,13 +813,16 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Pantry List ID: {itemID}";
 				message = $"Done! {itemID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, authorName, logs, $"{request.ToUpper()}D PANTRY LIST INFORMATION");
-				task.SendToastNotifDesktop(message);
+				log.AddActivityLog(message, authorName, logs, $"{request.ToUpper()}D PANTRY LIST INFORMATION");
+				return true;
+				
 			}
 			catch (Exception ex)
 			{
-				task.LogError("PantryListDBRequest", authorName, "Pantry", itemID, ex);
-				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+				error.LogError("PantryListDBRequest", authorName, "Pantry", itemID, ex);
+				message = $"Failed to {request.ToLower()} {itemID}, Please try again later";
+				return false;
+				//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
 			{
@@ -863,12 +902,12 @@ namespace PCMS_Lipa_General_Tool.Class
 		//		// Log activity
 		//		logs = $"{empName.Text} {request.ToLower()}d Pantry List ID: {itemID.Text}";
 		//		message = $"Done! {itemID.Text} has been successfully {request.ToLower()}d.";
-		//		task.AddActivityLog(message, authorName, logs, $"{request.ToUpper()}D PANTRY LIST INFORMATION");
-		//		task.SendToastNotifDesktop(message);
+		//		log.AddActivityLog(message, authorName, logs, $"{request.ToUpper()}D PANTRY LIST INFORMATION");
+		//		fe.SendToastNotifDesktop(message, "Success");
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("PantryListDBRequest", authorName, "Pantry", itemID.Text, ex);
+		//		error.LogError("PantryListDBRequest", authorName, "Pantry", itemID.Text, ex);
 		//		RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//	}
 		//	finally
@@ -897,7 +936,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"FillPanindaniTmCombo", empName, "Pantry", "N/A", ex);
+				error.LogError($"FillPanindaniTmCombo", empName, "Pantry", "N/A", ex);
 			}
 		}
 
@@ -928,7 +967,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("CalculateTotalPantryExpense", "System", "frmPantry", null, ex);
+				error.LogError("CalculateTotalPantryExpense", "System", "frmPantry", null, ex);
 				totalAmount = 0;
 				throw;
 			}
@@ -967,7 +1006,7 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				error.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -995,7 +1034,7 @@ OR [Remarks] LIKE @searchTerm";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError("SumPantryExpense", "System", "frmPantry", null, ex);
+		//		error.LogError("SumPantryExpense", "System", "frmPantry", null, ex);
 		//		totalAmount = 0;
 		//		throw;
 		//	}
@@ -1021,7 +1060,7 @@ OR [Remarks] LIKE @searchTerm";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		task.LogError($"SumTotalAmount", "N/A", "Pantry", "N/A", ex);
+		//		error.LogError($"SumTotalAmount", "N/A", "Pantry", "N/A", ex);
 		//	}
 		//}
 

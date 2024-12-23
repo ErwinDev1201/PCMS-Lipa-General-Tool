@@ -1,9 +1,9 @@
 ﻿
 using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
 using System.Diagnostics;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
@@ -12,7 +12,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmOnlineLogins : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly FEWinForm fe = new();
+		private readonly Database db = new();
 		private readonly OnlineLogins onlineLogin = new();
 
 		//private readonly MailSender mailSender = new MailSender();		
@@ -238,7 +241,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 
-				task.LogError($"AutoFill", empName, "Online Logins", txtLoginID.Text, ex);
+				error.LogError($"AutoFill", empName, "Online Logins", txtLoginID.Text, ex);
 				RadMessageBox.Show($"Error during updating text field information. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			DoubleClickEnable();
@@ -271,27 +274,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//txtSearchLogins.Enabled = false;
 			dgOnlineLogins.Enabled = false;
 			txtInsuranceName.Focus();
-			GetDBLoginID();
+			onlineLogin.GetDBLoginID(out string ID, empName);
+			txtLoginID.Text = ID;
 			//mainProcess.CreateDbId(txtLoginID, onlineID, @"OLID-");
 		}
 
-		private void GetDBLoginID()
-		{
-			string nextSequence = task.GetSequenceNo("OnlineLoginSeq", "INS-");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					txtLoginID.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetDBID", empName, "frmOnlineLogins", "N/A", ex);
-			}
-			//task.GetSequenceNo("textbox", "OnlineLoginSeq", txtLoginID.Text, null, "OL-");
-		}
+		
 
 		private void btnSave_Click(object sender, EventArgs e)
 		{
@@ -304,7 +292,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					RadMessageIcon.Question
 				) == DialogResult.Yes)
 				{
-					onlineLogin.OnlineLoginDB(
+					bool isSuccess = onlineLogin.OnlineLoginDB(
 						"Update",
 						txtLoginID.Text,
 						txtInsuranceName.Text,
@@ -315,11 +303,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 						txtaccntOwner.Text,
 						cmbBrowser.Text,
 						chkUpdateDiscord.Checked,
-						empName
-					);
-					ShowDataUserAccess();
-					UserAccessDefault();
-					Clear();
+						empName,
+						out string message);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					};
 				}
 			}
 			else
@@ -327,7 +320,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				// Validate input fields
 				if (ValidateInputs())
 				{
-					onlineLogin.OnlineLoginDB(
+					bool isSuccess = onlineLogin.OnlineLoginDB(
 						"Create",
 						txtLoginID.Text,
 						txtInsuranceName.Text,
@@ -338,14 +331,23 @@ namespace PCMS_Lipa_General_Tool.Forms
 						txtaccntOwner.Text,
 						cmbBrowser.Text,
 						chkUpdateDiscord.Checked,
-						empName
-					);
-					Clear();
-					ShowDataUserAccess();
-					UserAccessDefault();
-					txtInsuranceName.Focus();
+						empName,
+						out string message);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					};
+
 				}
 			}
+			Clear();
+			ShowDataUserAccess();
+			UserAccessDefault();
+			txtInsuranceName.Focus();
 		}
 
 		/// <summary>
@@ -460,7 +462,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					}
 				}
 				var AuditTextContent = empName + " open the link for " + txtInsuranceName.Text;
-				task.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
+				log.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
 
 			}
 			UserAccessDefault();
@@ -470,18 +472,27 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				onlineLogin.OnlineLoginDB(
-					"Delete",
-					txtLoginID.Text,
-					txtInsuranceName.Text,
-					txtWebLink.Text,
-					txtUsername.Text,
-					txtPassword.Text,
-					txtRemarks.Text,
-					txtaccntOwner.Text,
-					cmbBrowser.Text,
-					chkUpdateDiscord.Checked,
-					empName);
+				bool isSuccess = onlineLogin.OnlineLoginDB(
+						"Delete",
+						txtLoginID.Text,
+						txtInsuranceName.Text,
+						txtWebLink.Text,
+						txtUsername.Text,
+						txtPassword.Text,
+						txtRemarks.Text,
+						txtaccntOwner.Text,
+						cmbBrowser.Text,
+						chkUpdateDiscord.Checked,
+						empName,
+						out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				};
 				ShowDataUserAccess();
 				UserAccessDefault();
 				Clear();
@@ -606,7 +617,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", empName, "frmAdjusterInfo", null, ex);
+				error.LogError("txtSearch_TextChanged", empName, "frmAdjusterInfo", null, ex);
 			}
 			//if (txtSearchOnlineLogins.TextLength > 0)
 			//{

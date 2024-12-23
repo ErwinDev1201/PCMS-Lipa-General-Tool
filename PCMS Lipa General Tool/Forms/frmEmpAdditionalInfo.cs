@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -11,6 +12,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmEmpAdditionalInfo : Telerik.WinControls.UI.RadForm
 	{
 		private readonly User user = new();
+		private static readonly FEWinForm fe = new();
 		public string txtNoProv;
 		public string EmpName;
 		public string accessLevel;
@@ -109,29 +111,31 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnUpdate_Click(object sender, EventArgs e)
 		{
-			user.MoreEmployeeDatabase(
-	txtEmpID.Text,
-	txtEmpName.Text,
-	txtRDWebUsername.Text,
-	txtRDWebPassword.Text,
-	txtLytecUsername.Text,
-	txtLytecPassword.Text,
-	txtWorkEmail.Text,
-	txtWorkEmailPass.Text,
-	DateTime.Parse(txtDateofBirth.Text),
-	txtBVNo.Text,
-	txtBVUsername.Text,
-	txtBVPassword.Text,
-	txtPCName.Text,
-	txtPCUsername.Text,
-	txtPCPassword.Text,
-	cmbManagement.Text,
-	txtRemarks.Text,
-	cmbFirstTime.Text,
-	txtDCUsernaem.Text,
-	txtDCPassword.Text,
-	cmbEmploymentStatus.Text,
-	EmpName);
+			bool isSuccess = user.MoreEmployeeDatabase(
+				txtEmpID.Text,
+				txtEmpName.Text,
+				txtRDWebUsername.Text,
+				txtRDWebPassword.Text,
+				txtLytecUsername.Text,
+				txtLytecPassword.Text,
+				txtWorkEmail.Text,
+				txtWorkEmailPass.Text,
+				DateTime.Parse(txtDateofBirth.Text),
+				txtBVNo.Text,
+				txtBVUsername.Text,
+				txtBVPassword.Text,
+				txtPCName.Text,
+				txtPCUsername.Text,
+				txtPCPassword.Text,
+				cmbManagement.Text,
+				txtRemarks.Text,
+				cmbFirstTime.Text,
+				txtDCUsernaem.Text,
+				txtDCPassword.Text,
+				cmbEmploymentStatus.Text,
+				EmpName, out string message);
+			fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
+
 
 			//RadMessageBox.Show("Record Succesfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 			Close();
@@ -139,7 +143,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-			user.EmployeeDatabase("Delete", txtEmpID.Text, txtEmpName.Text, null, null, null, null, null, null, null, null, null, null, null, EmpName);
+			bool isSuccess = user.EmployeeDatabase("Delete", txtEmpID.Text, txtEmpName.Text, null, null, null, null, null, null, null, null, null, null, null, EmpName, out string message);
+			fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
 			Close();
 		}
 

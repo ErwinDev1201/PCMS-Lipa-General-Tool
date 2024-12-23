@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -8,8 +9,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class Broadvoice
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-
-		readonly CommonTask task = new();
+		private static readonly Error error = new();
 
 		public DataTable ViewBroadvoiceList(string empName, out string lblCount)
 		{
@@ -31,7 +31,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewBroadvoiceList", empName, "Broadvoice", "N/A", ex);
+				error.LogError("ViewBroadvoiceList", empName, "Broadvoice", "N/A", ex);
 			}
 
 			return data;

@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -7,8 +8,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmModBillReviewInfo : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
 		private readonly BillReview bill = new();
+		private static readonly Error error = new();
+		private static readonly FEWinForm fe = new();
+		private readonly Database db = new();
 		public string empName;
 
 		public frmModBillReviewInfo()
@@ -58,30 +61,34 @@ namespace PCMS_Lipa_General_Tool.Forms
 		}
 
 
-		public void GetDBID()
-		{
-			string nextSequence = task.GetSequenceNo("BillReviewSeq", "BR-");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					txtIntID.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetDBID", empName, "frmModBillReview", "N/A", ex);
-			}
-			//task.GetSequenceNo("textbox", "BillReviewSeq", txtIntID.Text, null, "BR-");
-		}
+		
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
 			DisableInput();
 			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				bill.BillReviewDBRequest("Delete", txtIntID.Text, txtInsuranceName.Text, txtPhoneNo.Text, txtFax.Text, txtURPhone.Text, txtURFaxNo.Text, txtBRPhoneNo.Text, txtBRFaxNo.Text, txtOnlineEmail.Text, txtRemarks.Text, empName);
+				bool isSuccess = bill.BillReviewDBRequest(
+					"Delete",
+					txtIntID.Text, 
+					txtInsuranceName.Text,
+					txtPhoneNo.Text, 
+					txtFax.Text, 
+					txtURPhone.Text, 
+					txtURFaxNo.Text, 
+					txtBRPhoneNo.Text, 
+					txtBRFaxNo.Text, 
+					txtOnlineEmail.Text, 
+					txtRemarks.Text, 
+					empName, out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 			}
 			ClearData();
 		}
@@ -93,12 +100,52 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Would you like to go ahead and update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					bill.BillReviewDBRequest("Update", txtIntID.Text, txtInsuranceName.Text, txtPhoneNo.Text, txtFax.Text, txtURPhone.Text, txtURFaxNo.Text, txtBRPhoneNo.Text, txtBRFaxNo.Text, txtOnlineEmail.Text, txtRemarks.Text, empName);
+					bool isSuccess = bill.BillReviewDBRequest(
+					"Update",
+					txtIntID.Text,
+					txtInsuranceName.Text,
+					txtPhoneNo.Text,
+					txtFax.Text,
+					txtURPhone.Text,
+					txtURFaxNo.Text,
+					txtBRPhoneNo.Text,
+					txtBRFaxNo.Text,
+					txtOnlineEmail.Text,
+					txtRemarks.Text,
+					empName, out string message);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					}
 				}
 			}
 			else
 			{
-				bill.BillReviewDBRequest("Create", txtIntID.Text, txtInsuranceName.Text, txtPhoneNo.Text, txtFax.Text, txtURPhone.Text, txtURFaxNo.Text, txtBRPhoneNo.Text, txtBRFaxNo.Text, txtOnlineEmail.Text, txtRemarks.Text, empName);
+				bool isSuccess = bill.BillReviewDBRequest(
+					"Create",
+					txtIntID.Text,
+					txtInsuranceName.Text,
+					txtPhoneNo.Text,
+					txtFax.Text,
+					txtURPhone.Text,
+					txtURFaxNo.Text,
+					txtBRPhoneNo.Text,
+					txtBRFaxNo.Text,
+					txtOnlineEmail.Text,
+					txtRemarks.Text,
+					empName, out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 			}
 			ClearData();
 			Close();

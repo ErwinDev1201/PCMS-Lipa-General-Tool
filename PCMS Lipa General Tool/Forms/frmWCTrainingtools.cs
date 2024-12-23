@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Configuration;
 using System.Diagnostics;
@@ -13,7 +14,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public string empName;
 		public string accessLevel;
-		readonly CommonTask task = new();
+		private static readonly Error error = new();
 
 
 		public frmWCTrainingtools()
@@ -30,7 +31,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("btnTerms_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnTerms_Click", empName, "frmWCTrainingTool", filepath, ex);
 				
 			}
 		}
@@ -45,7 +46,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnWCProcess_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnWCProcess_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 
@@ -59,7 +60,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnFlow_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnFlow_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 
@@ -73,7 +74,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnCorres_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnCorres_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 		private void btnParPaidBills_Click(object sender, EventArgs e)
@@ -86,7 +87,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnParPaidBills_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnParPaidBills_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 
@@ -100,7 +101,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnSBR_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnSBR_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 
@@ -114,7 +115,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnPIClaims_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnPIClaims_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 
@@ -128,7 +129,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnCaseSettlements_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnCaseSettlements_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 
@@ -142,7 +143,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnTypeofHearing_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnTypeofHearing_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 
@@ -156,7 +157,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnTerms_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnTerms_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 
@@ -170,7 +171,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnChroma_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnChroma_Click", empName, "frmWCTrainingTool", filepath, ex);
 
 			}
 		}
@@ -185,7 +186,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnExhibits_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnExhibits_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 
@@ -199,7 +200,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnBillingColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnDeclare_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnDeclare_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 
@@ -213,7 +214,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: WorkCompWindow \n Process: btnMemoColl_Click \n\n Detailed Error: " + ex.ToString();
-				task.LogError("btnMemo_Click", empName, "frmWCTrainingTool", filepath, ex);
+				error.LogError("btnMemo_Click", empName, "frmWCTrainingTool", filepath, ex);
 			}
 		}
 

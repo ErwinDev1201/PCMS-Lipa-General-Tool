@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -10,8 +11,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmEasyPrint : Telerik.WinControls.UI.RadForm
 	{
 		private const string frmTitle = "New Easy Print Denial";
-		private readonly CommonTask task = new();
 		private readonly EasyPrint easyPrint = new();
+		private static readonly Error error = new();
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
 		public string EmpName;
@@ -51,7 +52,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				Text = frmTitle,
 				empName = EmpName
 			};
-			dlgEPDenial.GetDBID();
+			easyPrint.GetDBID(out string ID, EmpName);
+			dlgEPDenial.txtIntID.Text = ID;
 			dlgEPDenial.btnUpdateSave.Text = "Save";
 			dlgEPDenial.ShowDialog();
 			ShowEpDenRes();
@@ -99,7 +101,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgEasyPrint_MouseDoubleClick", EmpName, "frmEasyPrint", null, ex);
+				error.LogError("dgEasyPrint_MouseDoubleClick", EmpName, "frmEasyPrint", null, ex);
 			}
 		}
 
@@ -125,7 +127,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", EmpName, "frmEasyprint", null, ex);
+				error.LogError("txtSearch_TextChanged", EmpName, "frmEasyprint", null, ex);
 			}
 		}
 	}

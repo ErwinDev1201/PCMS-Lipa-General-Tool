@@ -31,8 +31,11 @@ namespace PCMS_Lipa_General_Tool.Class
 		private string devAccess;
 		private string theme;
 
-		readonly frmMainApp mainApp = new(); // Replace with your actual MainApp class
+		readonly frmMainApp mainApp = new();
 		readonly frmDemoTool demoTool = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly FEWinForm fe = new();
 
 		// Resets login data to default values
 		public void DefaultLoginSet(ref string username, ref string password, ref bool isLoginPanelEnabled, out string alertMessage)
@@ -48,7 +51,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		{
 			try
 			{
-				DBConStatus dBConStat = new(_dbConnection);
+				Database dBConStat = new(_dbConnection);
 				conStatus = dBConStat.IsConnected ? "Connected | Login" : "Disconnected | Login";
 			}
 			catch (Exception)
@@ -187,7 +190,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			mainApp.themeName = theme;
 			mainApp.position = Position;
 		
-			task.AddActivityLog(logMessage, EmpName, $"{EmpName} logged in", "USER LOGGED IN");
+			log.AddActivityLog(logMessage, EmpName, $"{EmpName} logged in", "USER LOGGED IN");
 		} 
 
 		private bool ConfigureVisibility(frmMainApp mainApp, frmDemoTool demoTool, string role, string department, string position, SqlDataReader readerSQL)
@@ -230,7 +233,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			else
 			{
-				RadMessageBox.Show("Your role or access is not configured Properly, Please check with Erwin", "Role Exception", MessageBoxButtons.OK, RadMessageIcon.Error);
+				fe.SendToastNotifDesktop("Your role or access is not configured Properly, Please check with Erwin", "Error");
 				Application.Exit();
 			}
 
@@ -317,7 +320,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		private void HandleInvalidPassword(ref string alertMessage, ref string password, ref string username, ref bool isLoginPanelEnabled)
 		{
 			alertMessage = "PASSWORD IS INCORRECT";
-			task.AddActivityLog($"Incorrect password used for {username}", "", $"Incorrect password used for {username}", "INCORRECT PASSWORD");
+			log.AddActivityLog($"Incorrect password used for {username}", "", $"Incorrect password used for {username}", "INCORRECT PASSWORD");
 			isLoginPanelEnabled = true;
 			password = string.Empty;
 		}
@@ -325,7 +328,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		private void LogAndNotifyError(Exception ex, string username, ref string alertMessage)
 		{
 			string errorMessage = $"Error processing login for {username}:\n{ex.Message}";
-			task.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
+			error.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
 			alertMessage = "An error occurred, please check with Developer.";
 		}
 	}
@@ -479,7 +482,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//	{
 	//		alertMessage = "PASSWORD IS INCORRECT";
 	//		string logs = $"Incorrect password used for {username}";
-	//		task.AddActivityLog(logs, "", logs, "INCORRECT PASSWORD");
+	//		log.AddActivityLog(logs, "", logs, "INCORRECT PASSWORD");
 	//		isLoginPanelEnabled = true;
 	//		password = string.Empty;
 	//	}
@@ -487,7 +490,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//	private void LogAndNotifyError(Exception ex, string username, ref string alertMessage)
 	//	{
 	//		string errorMessage = $"Error processing login for {username}:\n{ex}";
-	//		task.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
+	//		error.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
 	//		alertMessage = "An error occurred, please check with Developer.";
 	//	}
 	//}
@@ -670,7 +673,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//			}
 	//			catch (Exception ex)
 	//			{
-	//				task.LogError("ProcessLogin", EmpName, "Login", txtUsername.Text, ex);
+	//				error.LogError("ProcessLogin", EmpName, "Login", txtUsername.Text, ex);
 	//				lblalert.Text = "Something went wrong, please contact the developer.";
 	//				loginPanel.Enabled = true;
 	//			}
@@ -717,7 +720,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//	{
 	//		lblalert.Text = "PASSWORD IS INCORRECT";
 	//		string logs = $"Incorrect password used for {txtUsername.Text}";
-	//		task.AddActivityLog(logs, "", logs, "INCORRECT PASSWORD");
+	//		log.AddActivityLog(logs, "", logs, "INCORRECT PASSWORD");
 	//		lblalert.Visible = true;
 	//		loginPanel.Enabled = true;
 	//		txtPassword.Clear();
@@ -727,7 +730,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//	private void LogAndNotifyError(Exception ex, string username, RadLabel lblalert)
 	//	{
 	//		string errorMessage = $"Error processing login for {username}:\n{ex}";
-	//		task.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
+	//		error.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
 	//		lblalert.Text = "An error occurred, please check with Developer.";
 	//	}
 	//
@@ -745,7 +748,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//		mainApp.themeName = theme;
 	//		mainApp.position = Position;
 	//
-	//		task.AddActivityLog(logMessage, EmpName, $"{EmpName} logged in", "USER LOGGED IN");
+	//		log.AddActivityLog(logMessage, EmpName, $"{EmpName} logged in", "USER LOGGED IN");
 	//	}
 	//
 	//
@@ -963,8 +966,8 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											mainApp.statlblPosition.Text = Position;
 	//											mainApp.officeLoc = officeLoc;
 	//											mainApp.themeName = theme;
-	//											//task.AddActivityLog(txtAudtiID, message, EmpName, message, "LOG IN");
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											//log.AddActivityLog(txtAudtiID, message, EmpName, message, "LOG IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											mainApp.Show();
 	//											break;
 	//
@@ -985,7 +988,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											//mainApp.mnuAdmin.Visibility = ElementVisibility.Visible;
 	//											mainApp.mnuActivityLog.Visibility = ElementVisibility.Collapsed;
 	//											mainApp.mnuDBSequence.Visibility = ElementVisibility.Collapsed;
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											mainApp.Show();
 	//											break;
 	//
@@ -1006,7 +1009,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											mainApp.mnuDBSequence.Visibility = ElementVisibility.Collapsed;
 	//											mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
 	//											mainApp.themeName = theme;
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											mainApp.Show();
 	//											break;
 	//
@@ -1026,7 +1029,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											mainApp.mnuAdmin.Visibility = ElementVisibility.Collapsed;
 	//											mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
 	//											mainApp.themeName = theme;
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											mainApp.Show();
 	//											break;
 	//
@@ -1049,7 +1052,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											mainApp.mnuDevAccountAccess.Visibility = ElementVisibility.Collapsed;
 	//											mainApp.themeName = theme;
 	//											mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											mainApp.Show();
 	//											break;
 	//
@@ -1073,7 +1076,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											mainApp.officeLoc = officeLoc;
 	//											mainApp.pictureBox1.Visible = false;
 	//											mainApp.Text = ProgName + " ver. " + ProgVer + " (" + EmpName + ")";
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											mainApp.Show();
 	//											break;
 	//
@@ -1095,7 +1098,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											demoTool.Text = ProgName + " | Demo Tool | (" + EmpName + ")";
 	//											demoTool.accessLevel = "Power User";
 	//											demoTool.EmpName = EmpName;
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											demoTool.Show();
 	//											break;
 	//
@@ -1122,7 +1125,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											mainApp.officeLoc = officeLoc;
 	//											mainApp.mnuAdmin.Visibility = ElementVisibility.Collapsed;
 	//											mainApp.Text = ProgName + " ver. " + ProgVer + " (" + EmpName + ")";
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											mainApp.Show();
 	//											break;
 	//
@@ -1147,7 +1150,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											mainApp.Text = ProgName + " ver. " + ProgVer + " (" + EmpName + ")";
 	//											mainApp.mnuAdmin.Visibility = ElementVisibility.Collapsed;
 	//											mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											mainApp.Show();
 	//											break;
 	//
@@ -1175,7 +1178,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
 	//											//mainApp.mnuThemes.Visibility = ElementVisibility.Collapsed;
 	//											mainApp.Text = ProgName + " ver. " + ProgVer + " (" + EmpName + ")";
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											mainApp.Show();
 	//											break;
 	//
@@ -1194,7 +1197,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											demoTool.Text = ProgName + " | Demo Tool | (" + EmpName + ")";
 	//											demoTool.accessLevel = "User";
 	//											demoTool.EmpName = EmpName;
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											demoTool.Show();
 	//											break;
 	//
@@ -1216,7 +1219,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//											mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
 	//											//mainApp.mnuThemes.Visibility = ElementVisibility.Collapsed;
 	//											mainApp.Text = ProgName + " ver. " + ProgVer + " (" + EmpName + ")";
-	//											task.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
+	//											log.AddActivityLog(LogMessage, EmpName, EmpName + " logged in", "USER LOGGED IN");
 	//											mainApp.Show();
 	//											break;
 	//
@@ -1245,7 +1248,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//				{
 	//					lblalert.Text = "PASSWORD IS INCORRECT";
 	//					string logs = "Incorrect password used for " + txtUsername.Text;
-	//					task.AddActivityLog(logs, "", logs, "INCORRECT PASSWORD");
+	//					log.AddActivityLog(logs, "", logs, "INCORRECT PASSWORD");
 	//					winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
 	//					loginPanel.Enabled = true;
 	//					lblalert.Visible = true;

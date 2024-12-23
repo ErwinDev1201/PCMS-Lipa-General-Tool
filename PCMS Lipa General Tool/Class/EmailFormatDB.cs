@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json.Converters;
+using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
 
 
@@ -12,7 +12,30 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class EmailFormatDB
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
+
+		public void GetDBID(out string ID, string empName)
+		{
+			ID = string.Empty;
+			
+			string nextSequence = db.GetSequenceNo("EmailFormatSeq", "EF-");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					ID = nextSequence;
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBID", empName, "EmailFormatDB", "N/A", ex);
+			}
+			//db.GetSequenceNo("textbox", "EmailFormatSeq", txtIntID.Text, null, "EF-");
+		}
 
 		public DataTable ViewEmailFormatList(string empName, out string lblCount)
 		{
@@ -33,7 +56,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewEmailFormatList", empName, "EmailFormatDB", "N/A", ex);
+				error.LogError("ViewEmailFormatList", empName, "EmailFormatDB", "N/A", ex);
 			}
 
 			return data;
@@ -41,13 +64,14 @@ namespace PCMS_Lipa_General_Tool.Class
 
 
 
-		public void EmailFormatDBRequest(
+		public bool EmailFormatDBRequest(
 			string request,
 			string formatID,
 			string insuranceName, 
 			string emailFormat,
 			string remarks,
-			string empName)
+			string empName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -58,7 +82,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				cmd.CommandText = request switch
 				{
@@ -79,7 +103,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@FORMATID", formatID);
+					//cmd.Parameters.AddWithValue("@FORMATID", formatID);
 					cmd.Parameters.AddWithValue("@INSURANCE", insuranceName);
 					cmd.Parameters.AddWithValue("@EMAILFORMAT", emailFormat);
 					cmd.Parameters.AddWithValue("@REMARKS", remarks);
@@ -94,13 +118,16 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Email Format ID: {formatID}";
 				message = $"Done! {formatID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} EMAIL FORMAT INFORMATION");
-				task.SendToastNotifDesktop(logs);
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} EMAIL FORMAT INFORMATION");
+				return true;
+				//fe.SendToastNotifDesktop(logs, "success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"EmailFormatDBRequest - {request}", empName, "EmailFormatDB", formatID, ex);
-				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				error.LogError($"EmailFormatDBRequest - {request}", empName, "EmailFormatDB", formatID, ex);
+				message = $"Failed to {request.ToLower()} {formatID}, Please try again later";
+				return false;
+				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
 			finally
 			{
@@ -136,7 +163,7 @@ OR [Email Format] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "BillReviews", null, ex);
+				error.LogError("SearchData", empName, "BillReviews", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -170,9 +197,9 @@ OR [Email Format] LIKE @searchTerm";
 		///
 		///						}
 		///						string logs = empName + " updated Format ID: " + formatID.Text;
-		///						task.AddActivityLog(message, empName, logs, "UPDATED EMAIL FORMAT INFORMATION");
+		///						log.AddActivityLog(message, empName, logs, "UPDATED EMAIL FORMAT INFORMATION");
 		///						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		///						task.SendToastNotifDesktop(logs);
+		///						fe.SendToastNotifDesktop(logs);
 		///						//RadMessageBox.Show("Record successfully Updated", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		///					}
 		///					catch (Exception ex)
@@ -211,9 +238,9 @@ OR [Email Format] LIKE @searchTerm";
 		///							cmd.ExecuteNonQuery();
 		///						}
 		///						string logs = empName + " added Format ID: " + formatID.Text;
-		///						task.AddActivityLog(message, empName, logs, "ADDED EMAIL FORMAT INFORMATION");
+		///						log.AddActivityLog(message, empName, logs, "ADDED EMAIL FORMAT INFORMATION");
 		///						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		///						task.SendToastNotifDesktop(logs);
+		///						fe.SendToastNotifDesktop(logs);
 		///						//RadMessageBox.Show("Record successfully Added", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		///					}
 		///
@@ -248,9 +275,9 @@ OR [Email Format] LIKE @searchTerm";
 		///							cmd.ExecuteNonQuery();
 		///						}
 		///						string logs = empName + " deleted Format ID: " + formatID.Text;
-		///						task.AddActivityLog(message, empName, logs, "DELETED EMAIL FORMAT INFORMATION");
+		///						log.AddActivityLog(message, empName, logs, "DELETED EMAIL FORMAT INFORMATION");
 		///						winDiscordAPI.PublishtoDiscord(Global.AppLogger, "", logs, "", Global.DCActivityLoggerWebhook, Global.DCActivityLoggerInvite);
-		///						task.SendToastNotifDesktop(logs);
+		///						fe.SendToastNotifDesktop(logs);
 		///						//RadMessageBox.Show("Record successfully Deleted", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 		///					}
 		///					catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -9,11 +10,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class FrmAdjusterinformation : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
 		private readonly Adjuster adj = new();
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
 		public string EmpName;
+		private static readonly Error error = new();
 
 
 		public FrmAdjusterinformation()
@@ -32,41 +33,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 		}
 
 
-		public void FillModifyAdjusterWindow()
-		{
-			frmModifyAdjusterInfo modAdj = new();
-			try
-			{
-				if (dgAdjusterInfo.SelectedRows.Count > 0)
-				{
-					string insID = dgAdjusterInfo.SelectedRows[0].Cells[0].Value + string.Empty;
-					string insName = dgAdjusterInfo.SelectedRows[0].Cells[1].Value + string.Empty;
-					string adjName = dgAdjusterInfo.SelectedRows[0].Cells[2].Value + string.Empty;
-					string phoneNo = dgAdjusterInfo.SelectedRows[0].Cells[3].Value + string.Empty;
-					string ext = dgAdjusterInfo.SelectedRows[0].Cells[4].Value + string.Empty;
-					string faxNo = dgAdjusterInfo.SelectedRows[0].Cells[5].Value + string.Empty;
-					string email = dgAdjusterInfo.SelectedRows[0].Cells[6].Value + string.Empty;
-					string supervisor = dgAdjusterInfo.SelectedRows[0].Cells[7].Value + string.Empty;
-					string remarks = dgAdjusterInfo.SelectedRows[0].Cells[8].Value + string.Empty;
-
-					modAdj.txtIntID.Text = insID;
-					modAdj.txtInsuranceName.Text = insName;
-					modAdj.txtAdjusterName.Text = adjName;
-					modAdj.txtphoneno.Text = phoneNo;
-					modAdj.txtExtension.Text = ext;
-					modAdj.txtFax.Text = faxNo;
-					modAdj.txtEmailAdd.Text = email;
-					modAdj.txtSupervisor.Text = supervisor;
-					modAdj.txtRemarks.Text = remarks;
-
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("FillAdjusterInfo", EmpName, "Adjuster", null, ex);
-			}
-		}
-
 
 		private void dgAdjusterInfo_DoubleClick(object sender, EventArgs e)
 		{
@@ -76,7 +42,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					return;
 
 				var selectedRow = dgAdjusterInfo.SelectedRows[0];
-				var modAdj = new frmModifyAdjusterInfo
+				var modAdj = new frmModAdjusterInfo
 				{
 					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
 					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
@@ -86,7 +52,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtFax = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty },
 					txtEmailAdd = { Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty },
 					txtSupervisor = { Text = selectedRow.Cells[7].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[8].Value?.ToString() ?? string.Empty }
+					txtRemarks = { Text = selectedRow.Cells[8].Value?.ToString() ?? string.Empty },
+					empName = EmpName
 				};
 
 				if (accessLevel != "User")
@@ -106,7 +73,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
+				error.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
 			}
 		}
 
@@ -120,7 +87,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnNew_Click(object sender, EventArgs e)
 		{
-			var modifyAdjInfo = new frmModifyAdjusterInfo
+			var modifyAdjInfo = new frmModAdjusterInfo
 			{
 				txtIntID = { ReadOnly = true },
 				btnDelete = { Visible = false },
@@ -129,7 +96,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				empName = EmpName
 			};
 			modifyAdjInfo.txtInsuranceName.Focus();
-			modifyAdjInfo.GetDBID();
+			adj.GetDBID(out string ID, EmpName);
+			modifyAdjInfo.txtIntID.Text = ID;
 			modifyAdjInfo.ShowDialog();
 			ShowAdjInfo();
 
@@ -164,7 +132,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
+				error.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
 			}
 			
 			//task.SearchTwoColumnOneFieldText(dgAdjusterInfo, "[Adjuster Information]", "[Insurance Name]", "[Remarks]", txtSearch, lblCountSearch, EmpName);

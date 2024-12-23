@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Configuration;
 using System.Data.SqlClient;
 
@@ -7,6 +8,9 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class Discord
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly FEWinForm fe = new();
 
 		readonly CommonTask task = new();
 
@@ -22,11 +26,11 @@ namespace PCMS_Lipa_General_Tool.Class
 					command.ExecuteNonQuery();
 				}
 				//RadMessageBox.Show("Theme successfully updated", "Information", MessageBoxButtons.OK, RadMessageIcon.Info);
-				task.SendToastNotifDesktop("Discord Password successfully updated");
+				fe.SendToastNotifDesktop("Discord Password successfully updated", "Success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError("UpdateValues", empName, "CommonTask", "N/A", ex);
+				error.LogError("UpdateValues", empName, "CommonTask", "N/A", ex);
 			}
 		}
 	}

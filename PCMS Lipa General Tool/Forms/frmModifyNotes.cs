@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -11,6 +12,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private readonly CommonTask task = new();
 		private readonly CollectorNotes cx = new();
 		private readonly Provider provider = new();
+		private readonly Error error = new();  
 		//private readonly MailSender mailSender = new MailSender();
 		public string txtID;
 		public string empName;
@@ -27,24 +29,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		}
 
 
-		public void GetDBID()
-		{
-			string nextSequence = task.GetSequenceNo("CollectorNotesSeq", "CX-");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					txtIntID.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetDBID", empName, "frmModifyNotes", "N/A", ex);
-			}
-			//task.GetSequenceNo("textbox", "CollectorNotesSeq", txtIntID.Text, null, "CX -");
-		}
-
+		
 		private void ClearData()
 		{
 			txtIntID.Clear();
@@ -64,7 +49,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtChartNo.Enabled = true;
 			btnDelete.Enabled = true;
 			btnUpdateSave.Enabled = true;
-			GetDBID();
+			cx.GetDBID(out string intId, empName);
+			txtIntID.Text = intId;
 		}
 
 		private void DisableInput()
@@ -86,7 +72,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Would you like to go ahead and update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					cx.NoteDBRequest("Update", txtIntID.Text, cmbProviderList.Text, txtChartNo.Text, txtPatientName.Text, txtNotes.Text, txtRemarks.Text, empName);
+					cx.NoteDBRequest(
+						"Update",
+						txtIntID.Text,
+						cmbProviderList.Text,
+						txtChartNo.Text,
+						txtPatientName.Text,
+						txtNotes.Text,
+						txtRemarks.Text,
+						empName);
 					
 				}
 			}
@@ -98,7 +92,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				else
 				{
-					cx.NoteDBRequest("Create", txtIntID.Text, cmbProviderList.Text, txtChartNo.Text, txtPatientName.Text, txtNotes.Text, txtRemarks.Text, empName);
+					cx.NoteDBRequest(
+						"Create",
+						txtIntID.Text,
+						cmbProviderList.Text,
+						txtChartNo.Text,
+						txtPatientName.Text,
+						txtNotes.Text,
+						txtRemarks.Text,
+						empName);
 				}
 			}
 			ClearData();
@@ -110,7 +112,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 			DisableInput();
 			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				cx.NoteDBRequest("Delete", txtIntID.Text, cmbProviderList.Text, txtChartNo.Text, txtPatientName.Text, txtNotes.Text, txtRemarks.Text, empName);
+				cx.NoteDBRequest(
+					"Delete",
+					txtIntID.Text,
+					cmbProviderList.Text,
+					txtChartNo.Text,
+					txtPatientName.Text,
+					txtNotes.Text,
+					txtRemarks.Text,
+					empName);
 				ClearData();
 				Close();
 			}

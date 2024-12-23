@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -7,7 +8,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmModLeave : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly FEWinForm fe = new();
+		private readonly Database db = new();
 		private readonly Leave leave = new();
 		public string accessLevel;
 		public string EmpName;
@@ -97,7 +100,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 			if (ConfirmAction(action, txtReason.Text, dtpStartdate.Text, dtpEndDate.Text, paymentOption, typeOfLeave, cmbApproval.Text))
 			{
-				leave.LeaveFiling(
+				bool isSuccess = leave.LeaveFiling(
 					operation,
 					lblLeaveID.Text,
 					txtEmpID.Text,
@@ -109,7 +112,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 					cmbApproval.Text,
 					txtRemarks.Text,
 					EmpName,
-					txtPosition.Text);
+					txtPosition.Text,
+					out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 			}
 			DefaulSet();
 			Close();
@@ -269,23 +281,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnSaveUpdate.Visible = false;
 		}
 
-		public void GetDBListID()
-		{
-			string nextSequence = task.GetSequenceNo("LeaveSeq", "LV-");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					lblLeaveID.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetDBListID", EmpName, "frmModLeave", "N/A", ex);
-			}
-			//task.GetSequenceNo("label", "LeaveSeq", null, lblLeaveID.Text, "LV-");
-		}
+		
 
 		private void frmModLeave_Load(object sender, EventArgs e)
 		{
@@ -297,7 +293,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure want to delete this leave?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				leave.LeaveFiling(
+				bool isSuccess = leave.LeaveFiling(
 					"Delete",
 					lblLeaveID.Text,
 					txtEmpID.Text,
@@ -308,7 +304,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtReason.Text,
 					cmbApproval.Text,
 					txtRemarks.Text	,
-					EmpName, null);
+					EmpName, null,
+					out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 			}
 			Close();
 		}

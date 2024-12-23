@@ -12,7 +12,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmModConnection : Telerik.WinControls.UI.RadForm
 	{
 		readonly SecurityEncryption secEnc = new();
-		readonly CommonTask task = new();
+		private static readonly Error error = new();
 		public string empName;
 		public string accessLevel;
 
@@ -37,7 +37,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("AutoDecrpyt", empName, "frmModConnection", null, ex);
+				error.LogError("AutoDecrpyt", empName, "frmModConnection", null, ex);
 			} 
 
 		}
@@ -51,7 +51,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("AutoEncrypt", empName, "frmModConnection", null, ex);
+				error.LogError("AutoEncrypt", empName, "frmModConnection", null, ex);
 			}
 
 		}
@@ -66,7 +66,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("btnSave_Click", empName, "frmModConnection", null, ex);
+				error.LogError("btnSave_Click", empName, "frmModConnection", null, ex);
 			}
 		}
 

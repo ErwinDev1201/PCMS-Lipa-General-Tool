@@ -1,10 +1,11 @@
-﻿using editform;
-using PCMS_Lipa_General_Tool.Class;
+﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -20,8 +21,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private readonly string _personalreminderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\PersonalReminder.rtf";
 		private readonly Leave leave = new();
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly FEWinForm fe = new();
 		private readonly User user = new();
+		private readonly OfficeFiles office = new();
 
 		public string EmpName;
 		public string accessLevel;
@@ -196,7 +200,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ProcessInputText", EmpName,"frmDemoTool", null, ex);
+				error.LogError("ProcessInputText", EmpName,"frmDemoTool", null, ex);
 			}
 		}
 
@@ -366,7 +370,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			RadMenuItem menuItem = sender as RadMenuItem;
 			ThemeResolutionService.ApplicationThemeName = menuItem.Tag as string;
-			user.UpdateUserTheme(menuItem.Tag.ToString(), EmpName);
+			user.UpdateUserTheme(menuItem.Tag.ToString(), EmpName, out string message);
+			fe.SendToastNotifDesktop(message, "Success");
 		}
 
 		private void mnuUseProfile_Click(object sender, EventArgs e)
@@ -376,32 +381,32 @@ namespace PCMS_Lipa_General_Tool.Forms
 				(
 				employeeID,
 				out string txtName,
-	out string txtUsername,
-	out string cmbLevel,
-	out string cmbRole,
-	out string txtRDWebUsername,
-	out string txtRDWebPassword,
-	out string txtLytecUsername,
-	out string txtLytecPassword,
-	out string txtEmail,
-	out string txtBroadvoice,
-	out string txtDateOfBirth,
-	out string dcUsername,
-	out string dcPassword,
-	EmpName);
+				out string txtUsername,
+				out string cmbLevel,
+				out string cmbRole,
+				out string txtRDWebUsername,
+				out string txtRDWebPassword,
+				out string txtLytecUsername,
+				out string txtLytecPassword,
+				out string txtEmail,
+				out string txtBroadvoice,
+				out string txtDateOfBirth,
+				out string dcUsername,
+				out string dcPassword,
+				EmpName);
 
 			userProfile.txtIntID.Text = employeeID.ToString();
 			userProfile.txtEmpName.Text = txtName;
 			userProfile.txtUsername.Text = txtUsername;
-				userProfile.txtUserAccess.Text = cmbLevel;
-				userProfile.txtUserPosition.Text = cmbRole;
+			userProfile.txtUserAccess.Text = cmbLevel;
+			userProfile.txtUserPosition.Text = cmbRole;
 			userProfile.txtRDWebUsername.Text = txtRDWebUsername;
 			userProfile.txtRDWebPassword.Text = txtRDWebPassword;
 			userProfile.txtLytecUsername.Text = txtLytecUsername;
 			userProfile.txtLytecPassword.Text = txtLytecPassword;
 			userProfile.txtWorkEmail.Text = txtEmail;
 			userProfile.txtBVNo.Text = txtBroadvoice;
-				userProfile.txtDateofBirth.Text = txtDateOfBirth;
+			userProfile.txtDateofBirth.Text = txtDateOfBirth;
 			userProfile.txtDiscordUsername.Text = dcUsername;
 			userProfile.txtDiscordPassword.Text = dcPassword;  
 			userProfile.empName = EmpName;
@@ -413,7 +418,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (!File.Exists(_personalreminderPath))
 			{
-				task.CreateRtfFile(_personalreminderPath);
+				office.CreateRtfFile(_personalreminderPath);
 				
 			}
 			var editor = new frmRTFEditor
@@ -434,7 +439,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			modleave.dtpEndDate.Text = DateTime.Now.AddDays(1).ToString();
 			modleave.dtpStartdate.Text = DateTime.Now.ToString();
 			modleave.txtEmpID.Text = employeeID;
-			modleave.GetDBListID();
+			leave.GetDBListID(out string ID, EmpName);
+			modleave.leaveID = ID;
 			string employeeName = modleave.txtEmployeeName.Text;
 			string position = modleave.txtPosition.Text;
 			string empStat = modleave.txtEmploymentStatus.Text;

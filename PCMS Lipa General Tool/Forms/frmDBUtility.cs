@@ -1,4 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
 using Telerik.WinControls;
@@ -8,7 +9,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmDBUtility : Telerik.WinControls.UI.RadForm
 	{
 
-		private readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private readonly Database db = new();
+
 
 		public string empName;
 		public string accessLevel;
@@ -38,15 +42,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 
-				task.LogError("PopulateDatabaseTable", empName, "frmDBUtility", null, ex);
+				error.LogError("PopulateDatabaseTable", empName, "frmDBUtility", null, ex);
 			}
 			
 		}
 
 		private void btnChangeSeq_Click(object sender, EventArgs e)
 		{
-			task.AlterDBSequece(txtSequence, cmbTable, empName);
-			task.AddActivityLog($"Sequence of {cmbTable.Text} is changed by {empName} to {txtSequence.Text}", empName, $"{empName} change the sequence of {cmbTable.Text}", "DB CHANGED SEQUENCE");
+			db.AlterDBSequence(txtSequence, cmbTable, empName);
+			log.AddActivityLog($"Sequence of {cmbTable.Text} is changed by {empName} to {txtSequence.Text}", empName, $"{empName} change the sequence of {cmbTable.Text}", "DB CHANGED SEQUENCE");
 			RadMessageBox.Show("Sequence successfully updated to " + txtSequence.Text);
 			ClearData();
 		}
@@ -54,7 +58,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void GetcurrentSequence()
 		{
 			var query = $"SELECT current_value FROM sys.sequences WHERE name = '{cmbTable.Text}'";
-			task.GetSequenceNoPre(query, lblcurrentVal);
+			db.GetSequenceNoPre(query, lblcurrentVal);
 		}
 
 		private void cmbTable_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)

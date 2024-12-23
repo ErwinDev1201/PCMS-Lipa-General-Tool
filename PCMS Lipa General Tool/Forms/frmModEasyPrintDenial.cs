@@ -1,5 +1,8 @@
-﻿using PCMS_Lipa_General_Tool.Class;
+﻿using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
+using System.Web.Caching;
 using System.Windows.Forms;
 using Telerik.WinControls;
 
@@ -7,8 +10,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmModEasyPrintDenial : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
-		private readonly EasyPrint easyPrint = new();
+		private static readonly Error error = new();
+		private static readonly FEWinForm fe = new();
+		private readonly Database db = new();
+		private static readonly EasyPrint easyPrint = new();
 		public string empName;
 
 		public frmModEasyPrintDenial()
@@ -20,24 +25,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtIntID.ReadOnly = true;
 		}
 
-		public void GetDBID()
-		{
-			string nextSequence = task.GetSequenceNo("EasyPrintSeq", "EP-");
-
-			try
-			{
-				if (!string.IsNullOrEmpty(nextSequence))
-				{
-					txtIntID.Text = nextSequence;
-				}
-			}
-			catch (Exception ex)
-			{
-				task.LogError("GetDBID", empName, "frmEasyprint", "N/A", ex);
-			}
-			//var query = "SELECT NEXT VALUE FOR EasyPrintSeq";
-			//task.GetSequenceNo("textbox", query, txtIntID.Text, null, "EP-");
-		}
+		
 
 		public void ClearData()
 		{
@@ -78,14 +66,48 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Would you like to go ahead and update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 				{
-					easyPrint.EPDenialDBRequest("Patch", txtIntID.Text, txtEPCode.Text, txtInsuranceName.Text, txtDenialDescrption.Text, txtPossibleSolution.Text, txtRemarks.Text, empName);
+					bool isSuccess = easyPrint.EPDenialDBRequest(
+						"Update", 
+						txtIntID.Text, 
+						txtEPCode.Text, 
+						txtInsuranceName.Text, 
+						txtDenialDescrption.Text, 
+						txtPossibleSolution.Text, 
+						txtRemarks.Text, 
+						empName,
+						out string message);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					}
 				}
 
 			}
 			else
 			{
-				easyPrint.EPDenialDBRequest("Create", txtIntID.Text, txtEPCode.Text, txtInsuranceName.Text, txtDenialDescrption.Text, txtPossibleSolution.Text, txtRemarks.Text, empName);
 
+				bool isSuccess = easyPrint.EPDenialDBRequest(
+					"Create",
+					txtIntID.Text,
+					txtEPCode.Text,
+					txtInsuranceName.Text,
+					txtDenialDescrption.Text,
+					txtPossibleSolution.Text,
+					txtRemarks.Text,
+					empName,
+					out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 			}
 			ClearData();
 			Close();
@@ -96,7 +118,25 @@ namespace PCMS_Lipa_General_Tool.Forms
 			DisableInput();
 			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				easyPrint.EPDenialDBRequest("Delete", txtIntID.Text, txtEPCode.Text, txtInsuranceName.Text, txtDenialDescrption.Text, txtPossibleSolution.Text, txtRemarks.Text, empName);
+
+				bool isSuccess = easyPrint.EPDenialDBRequest(
+					"Delete",
+					txtIntID.Text,
+					txtEPCode.Text,
+					txtInsuranceName.Text,
+					txtDenialDescrption.Text,
+					txtPossibleSolution.Text,
+					txtRemarks.Text,
+					empName,
+					out string message);
+				if (isSuccess)
+				{
+					fe.SendToastNotifDesktop(message, "Success");
+				}
+				else
+				{
+					fe.SendToastNotifDesktop(message, "Failed");
+				}
 
 			}
 			ClearData();

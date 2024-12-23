@@ -1,9 +1,8 @@
-﻿using System;
+﻿using PCMS_Lipa_General_Tool.HelperClass;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
 
 
@@ -13,8 +12,29 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private static readonly CommonTask task = new();
+		private static readonly Error error = new();
+		private static readonly ActivtiyLogs log = new();
+		private static readonly Database db = new();
 
+		public void GetDBID(out string ID, string empName)
+		{
+			ID = string.Empty;
+			string nextSequence = db.GetSequenceNo("AttyInfo", "ATTY-0");
+
+			try
+			{
+				if (!string.IsNullOrEmpty(nextSequence))
+				{
+					ID = nextSequence;
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("GetDBID", empName, "Attoryney", "N/A", ex);
+			}
+			//db.GetSequenceNo("textbox", "AttyInfo", txtIntID.Text, null, "ATTY-");
+		}
 
 		public DataTable ViewAttorneyList(string empName, out string lblCount)
 		{
@@ -35,7 +55,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				task.LogError("ViewAttorneyList", empName, "Attorney", "N/A", ex);
+				error.LogError("ViewAttorneyList", empName, "Attorney", "N/A", ex);
 			}
 
 			return data;
@@ -82,7 +102,7 @@ OR [Remarks] LIKE @searchTerm)";
 			}
 			catch (Exception ex)
 			{
-				task.LogError("SearchData", empName, "Adjuster", null, ex);
+				error.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -90,7 +110,7 @@ OR [Remarks] LIKE @searchTerm)";
 		}
 
 
-		public void AttorneyDBRequest(
+		public bool AttorneyDBRequest(
 			string request,
 			string attyID,
 			string cmbAttyType,
@@ -99,7 +119,8 @@ OR [Remarks] LIKE @searchTerm)";
 			string faxNo,
 			string email,
 			string remarks,
-			string empName)
+			string empName,
+			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
@@ -110,7 +131,7 @@ OR [Remarks] LIKE @searchTerm)";
 					Connection = conn
 				};
 
-				string logs, message;
+				string logs;
 
 				cmd.CommandText = request switch
 				{
@@ -132,7 +153,7 @@ OR [Remarks] LIKE @searchTerm)";
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					cmd.Parameters.AddWithValue("@ATTYID", attyID);
+					//cmd.Parameters.AddWithValue("@ATTYID", attyID);
 					cmd.Parameters.AddWithValue("@ATTYTYPE", cmbAttyType);
 					cmd.Parameters.AddWithValue("@ATTYNAME", attyName);
 					cmd.Parameters.AddWithValue("@PHONENO", phoneNo);
@@ -150,13 +171,16 @@ OR [Remarks] LIKE @searchTerm)";
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Atty ID: {attyID}";
 				message = $"Done! {attyID} has been successfully {request.ToLower()}d.";
-				task.AddActivityLog(message, empName, logs, $"{request.ToUpper()} ATTORNEY INFORMATION");
-				task.SendToastNotifDesktop(logs);
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} ATTORNEY INFORMATION");
+				return true;
+				////fe.SendToastNotifDesktop(message, "Success");
 			}
 			catch (Exception ex)
 			{
-				task.LogError($"AttorneyDBRequest {request}", empName, "Attorney", attyID, ex);
-				throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+				error.LogError($"AttorneyDBRequest {request}", empName, "Attorney", attyID, ex);
+				message = $"Failed to {request.ToLower()} {attyID}, Please try again later";
+				return false;
+				///throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
 			//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			finally
