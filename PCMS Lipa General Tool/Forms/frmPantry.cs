@@ -172,8 +172,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			dgPantryList.Enabled = false;
 			pantry.GetDBListID(out string ID, EmpName);
-			var frmPantry  = new frmPantry();
-			frmPantry.txtIntID.Text = ID;
+			txtIntID.Text = ID;
 
 		}
 
