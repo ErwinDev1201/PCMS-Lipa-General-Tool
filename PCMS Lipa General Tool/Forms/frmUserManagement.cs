@@ -199,16 +199,29 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (dgEmployeeInfo.SelectedRows.Count > 0)
 				{
-					txtIntID.Text = dgEmployeeInfo.SelectedRows[0].Cells["Employee ID"].Value + string.Empty;
-					txtEmployeeName.Text = dgEmployeeInfo.SelectedRows[0].Cells["Employee Name"].Value + string.Empty;
-					txtUsername.Text = dgEmployeeInfo.SelectedRows[0].Cells["Username"].Value + string.Empty;
-					cmbUserAccess.Text = dgEmployeeInfo.SelectedRows[0].Cells["User Access"].Value + string.Empty;
-					cmbPosition.Text = dgEmployeeInfo.SelectedRows[0].Cells["Position"].Value + string.Empty;
-					cmbUserDept.Text = dgEmployeeInfo.SelectedRows[0].Cells["Department"].Value + string.Empty;
-					cmbUserStatus.Text = dgEmployeeInfo.SelectedRows[0].Cells["Status"].Value + string.Empty;
-					cmbOffice.Text = dgEmployeeInfo.SelectedRows[0].Cells["Office"].Value + string.Empty;
-					txtWorkEmail.Text = dgEmployeeInfo.SelectedRows[0].Cells["Email Address"].Value + string.Empty;
-					txtBVNo.Text = dgEmployeeInfo.SelectedRows[0].Cells["Broadvoice No."].Value + string.Empty;
+					var selectedRow = dgEmployeeInfo.SelectedRows[0];
+
+					// Safely extract each value and check for nulls
+					txtIntID.Text = selectedRow.Cells["Employee ID"]?.Value?.ToString() ?? string.Empty;
+					txtEmployeeName.Text = selectedRow.Cells["Employee Name"]?.Value?.ToString() ?? string.Empty;
+					txtUsername.Text = selectedRow.Cells["Username"]?.Value?.ToString() ?? string.Empty;
+					cmbUserAccess.Text = selectedRow.Cells["User Access"]?.Value?.ToString() ?? string.Empty;
+					cmbPosition.Text = selectedRow.Cells["Position"]?.Value?.ToString() ?? string.Empty;
+					cmbUserDept.Text = selectedRow.Cells["Department"]?.Value?.ToString() ?? string.Empty;
+					cmbUserStatus.Text = selectedRow.Cells["Status"]?.Value?.ToString() ?? string.Empty;
+					cmbOffice.Text = selectedRow.Cells["Office"]?.Value?.ToString() ?? string.Empty;
+					txtWorkEmail.Text = selectedRow.Cells["Email Address"]?.Value?.ToString() ?? string.Empty;
+					txtBVNo.Text = selectedRow.Cells["Broadvoice No."]?.Value?.ToString() ?? string.Empty;
+					//txtIntID.Text = dgEmployeeInfo.SelectedRows[0].Cells["Employee ID"].Value + string.Empty;
+					//txtEmployeeName.Text = dgEmployeeInfo.SelectedRows[0].Cells["Employee Name"].Value + string.Empty;
+					//txtUsername.Text = dgEmployeeInfo.SelectedRows[0].Cells["Username"].Value + string.Empty;
+					//cmbUserAccess.Text = dgEmployeeInfo.SelectedRows[0].Cells["User Access"].Value + string.Empty;
+					//cmbPosition.Text = dgEmployeeInfo.SelectedRows[0].Cells["Position"].Value + string.Empty;
+					//cmbUserDept.Text = dgEmployeeInfo.SelectedRows[0].Cells["Department"].Value + string.Empty;
+					//cmbUserStatus.Text = dgEmployeeInfo.SelectedRows[0].Cells["Status"].Value + string.Empty;
+					//cmbOffice.Text = dgEmployeeInfo.SelectedRows[0].Cells["Office"].Value + string.Empty;
+					//txtWorkEmail.Text = dgEmployeeInfo.SelectedRows[0].Cells["Email Address"].Value + string.Empty;
+					//txtBVNo.Text = dgEmployeeInfo.SelectedRows[0].Cells["Broadvoice No."].Value + string.Empty;
 				}
 				DoubleClickEnable();
 				btnResetPassword.Text = "Reset Password";

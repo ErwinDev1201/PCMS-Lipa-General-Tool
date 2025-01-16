@@ -87,40 +87,44 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnSaveUpdate_Click(object sender, EventArgs e)
 		{
-			DisableInput();
 			if (!ValidateInputs())
 			{
 				return;
 			}
-
-			string paymentOption = rdoWOPay.IsChecked ? "Without Pay" : "With Pay";
-			string typeOfLeave = DetermineLeaveType();
-			string action = btnSaveUpdate.Text == "Update" ? "update this leave" : "file this leave";
-			string operation = btnSaveUpdate.Text == "Update" ? "Update" : "Create";
-
-			if (ConfirmAction(action, txtReason.Text, dtpStartdate.Text, dtpEndDate.Text, paymentOption, typeOfLeave, cmbApproval.Text))
+			else
 			{
-				bool isSuccess = leave.LeaveFiling(
-					operation,
-					lblLeaveID.Text,
-					txtEmpID.Text,
-					txtEmployeeName.Text,
-					dtpStartdate.Value.ToString("yyyy-MM-dd"),
-					dtpEndDate.Value.ToString("yyyy-MM-dd"),
-					paymentOption, typeOfLeave,
-					txtReason.Text,
-					cmbApproval.Text,
-					txtRemarks.Text,
-					EmpName,
-					txtPosition.Text,
-					out string message);
-				if (isSuccess)
+				DisableInput();
+				string paymentOption = rdoWOPay.IsChecked ? "Without Pay" : "With Pay";
+				string typeOfLeave = DetermineLeaveType();
+				string action = btnSaveUpdate.Text == "Update" ? "update this leave" : "file this leave";
+				string operation = btnSaveUpdate.Text == "Update" ? "Update" : "Create";
+
+				if (ConfirmAction(action, txtReason.Text, dtpStartdate.Text, dtpEndDate.Text, paymentOption, typeOfLeave, cmbApproval.Text))
 				{
-					fe.SendToastNotifDesktop(message, "Success");
-				}
-				else
-				{
-					fe.SendToastNotifDesktop(message, "Failed");
+					bool isSuccess = leave.LeaveFiling(
+						operation,
+						lblLeaveID.Text,
+						txtEmpID.Text,
+						txtEmployeeName.Text,
+						dtpStartdate.Value.ToLongDateString(),
+						//dtpStartdate.Value.ToString("yyyy-MM-dd"
+						dtpEndDate.Value.ToLongDateString(),
+						//dtpEndDate.Value.ToString("yyyy-MM-dd"),
+						paymentOption, typeOfLeave,
+						txtReason.Text,
+						cmbApproval.Text,
+						txtRemarks.Text,
+						EmpName,
+						txtPosition.Text,
+						out string message);
+					if (isSuccess)
+					{
+						fe.SendToastNotifDesktop(message, "Success");
+					}
+					else
+					{
+						fe.SendToastNotifDesktop(message, "Failed");
+					}
 				}
 			}
 			DefaulSet();

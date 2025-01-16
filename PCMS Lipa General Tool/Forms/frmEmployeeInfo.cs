@@ -37,14 +37,24 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 				var selectedRow = dgEmpInfo.SelectedRows[0];
 				{
-					txtEmpID.Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty;
-					txtEmpName.Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty;
-					txtemailAdd.Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty;
-					txtBVNo.Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
-					cmbUserDept.Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty;
-					cmbUserPosition.Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty;
-					cmbempStatus.Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty;
-					txtRemarks.Text = selectedRow.Cells[7].Value?.ToString() ?? string.Empty;
+					///txtEmpID.Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty;
+					///txtEmpName.Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty;
+					///txtemailAdd.Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty;
+					///txtBVNo.Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
+					///cmbUserDept.Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty;
+					///cmbUserPosition.Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty;
+					///cmbempStatus.Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty;
+					///txtRemarks.Text = selectedRow.Cells[7].Value?.ToString() ?? string.Empty;
+
+					// Safely extract each value and check for nulls
+					txtEmpID.Text = selectedRow.Cells["Employee ID"]?.Value?.ToString() ?? string.Empty;
+					txtEmpName.Text = selectedRow.Cells["Employee Name"]?.Value?.ToString() ?? string.Empty;
+					cmbUserPosition.Text = selectedRow.Cells["Position"]?.Value?.ToString() ?? string.Empty;
+					cmbUserDept.Text = selectedRow.Cells["Department"]?.Value?.ToString() ?? string.Empty;
+					cmbempStatus.Text = selectedRow.Cells["Status"]?.Value?.ToString() ?? string.Empty;
+					txtemailAdd.Text = selectedRow.Cells["Email Address"]?.Value?.ToString() ?? string.Empty;
+					cmbOfficeLoc.Text = selectedRow.Cells["Office"]?.Value?.ToString() ?? string.Empty;	
+					txtBVNo.Text = selectedRow.Cells["Broadvoice No."]?.Value?.ToString() ?? string.Empty;
 				}
 			}
 			catch (Exception ex)

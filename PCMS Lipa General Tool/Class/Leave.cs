@@ -762,7 +762,7 @@ namespace PCMS_Lipa_General_Tool.Class
         <html>
             <body>
                 <p>To Whom It May Concern,</p>
-                <p>I would like to formally request Sick Leave from {startDate} to {endDate} due to {reason}. I will make every effort to recover fully during this time and look forward to resuming my duties as soon as I am able.</p>
+                <p>I would like to formally request sick leave from {startDate} to {endDate} due to {reason}. I will make every effort to recover fully during this time and look forward to resuming my duties as soon as I am able.</p>
                 <p>Regards,<br/>{employeeName}</p>
             </body>
         </html>",
@@ -771,7 +771,7 @@ namespace PCMS_Lipa_General_Tool.Class
         <html>
             <body>
                 <p>To Whom It May Concern,</p>
-                <p>I am respectfully requesting Bereavement Leave from {startDate} to {endDate} due to a recent loss in my family. I appreciate your understanding during this difficult time and will ensure to return to work once I am able.</p>
+                <p>I am respectfully requesting bereavement leave from {startDate} to {endDate} due to a recent loss in my family. I appreciate your understanding during this difficult time and will ensure to return to work once I am able.</p>
                 <p>Regards,<br/>{employeeName}</p>
             </body>
         </html>",
@@ -780,8 +780,9 @@ namespace PCMS_Lipa_General_Tool.Class
         <html>
             <body>
                 <p>To Whom It May Concern,</p>
-                <p>Kindly consider my request for <strong>{typeofLeave} Leave</strong> from  <strong>{startDate}</strong> to  <strong>{endDate}</strong>, with <strong>{paymentOption}</strong> as the preferred payment option.<br/> The reason for this request is:  <strong>{reason}</strong>.</p
-                <p>Regards,<br/>{employeeName}</p>
+                <p>Kindly consider my request for <strong>{typeofLeave.ToLower()} Leave</strong> from  <strong>{startDate}</strong> to  <strong>{endDate}</strong>, with <strong>{paymentOption}</strong> as the preferred payment option.<br/> I am requesting this leave in order to <strong>{reason}</strong>.</p>
+                <p>Thank you for your understanding and consideration</p>
+				<p>Regards,<br/>{employeeName}</p>
             </body>
         </html>"
 			};

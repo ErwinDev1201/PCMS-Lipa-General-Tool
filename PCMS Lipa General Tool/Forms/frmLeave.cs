@@ -78,7 +78,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				Text = "Leave",
 				EmpName = EmpName,
-				accessLevel = accessLevel,
+				accessLevel = accessLevel
 			};
 			modleave.btnDelete.Visible = false;
 			modleave.btnCancel.Location = new System.Drawing.Point(880, 223);
@@ -88,20 +88,45 @@ namespace PCMS_Lipa_General_Tool.Forms
 			leave.GetDBListID(out string ID, EmpName);
 			modleave.lblLeaveID.Text = ID;
 			//modleave.GetDBListID();
-
-			//string empID = modLeave.txtEmpID.Text;
-			string employeeName = modleave.txtEmployeeName.Text;
 			string position = modleave.txtPosition.Text;
 			string empStat = modleave.txtEmploymentStatus.Text;
-			string empName = EmpName;
+			//string empName = EmpName;
 
-			leave.FillUpSupportLeaveForm(empID, ref position, ref empStat, empName);
+			leave.FillUpSupportLeaveForm(empID, ref position, ref empStat, EmpName);
 
-			modleave.txtEmployeeName.Text = employeeName;
+			modleave.txtEmployeeName.Text = EmpName;
 			modleave.txtPosition.Text = position;
 			modleave.txtEmploymentStatus.Text = empStat;
-			//leave.FillUpSupportLeaveForm(modLeave.txtEmpI
-			//leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
+			modleave.dtpStartdate.Focus();
+			///leave.FillUpSupportLe
+			/////var modleave = new frmModLeave()
+			/////{
+			/////	Text = "Leave",
+			/////	EmpName = EmpName,
+			/////	accessLevel = accessLevel,
+			/////};
+			/////modleave.btnDelete.Visible = false;
+			/////modleave.btnCancel.Location = new System.Drawing.Point(880, 223);
+			/////modleave.dtpEndDate.Text = DateTime.Now.AddDays(1).ToString();
+			/////modleave.dtpStartdate.Text = DateTime.Now.ToString();
+			/////modleave.txtEmpID.Text = empID;
+			/////leave.GetDBListID(out string ID, EmpName);
+			/////modleave.lblLeaveID.Text = ID;
+			///////modleave.GetDBListID();
+			/////
+			///////string empID = modLeave.txtEmpID.Text;
+			///////string employeeName = modleave.txtEmployeeName.Text;
+			/////string position = modleave.txtPosition.Text;
+			/////string empStat = modleave.txtEmploymentStatus.Text;
+			/////string empName = EmpName;
+			/////
+			/////leave.FillUpSupportLeaveForm(empID, ref position, ref empStat, empName);
+			/////
+			/////modleave.txtEmployeeName.Text = empName;
+			/////modleave.txtPosition.Text = position;
+			/////modleave.txtEmploymentStatus.Text = empStat;
+			///////leave.FillUpSupportLeaveForm(modLeave.txtEmpI
+			///////leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
 			modleave.ShowDialog();
 			ShowLeaveList();
 
@@ -113,6 +138,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			dgLeave.BestFitColumns(BestFitColumnMode.AllCells);
 			//this.dgAdjusterInfo.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 			dgLeave.ReadOnly = true;
+			ShowLeaveList();
 		}
 
 		private void frmLeave_KeyDown(object sender, KeyEventArgs e)

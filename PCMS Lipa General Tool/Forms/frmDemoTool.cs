@@ -434,24 +434,48 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				Text = "Leave",
 				EmpName = EmpName,
-				accessLevel = accessLevel,
+				accessLevel = accessLevel
 			};
+			modleave.btnDelete.Visible = false;
+			modleave.btnCancel.Location = new System.Drawing.Point(880, 223);
 			modleave.dtpEndDate.Text = DateTime.Now.AddDays(1).ToString();
 			modleave.dtpStartdate.Text = DateTime.Now.ToString();
 			modleave.txtEmpID.Text = employeeID;
 			leave.GetDBListID(out string ID, EmpName);
-			modleave.leaveID = ID;
-			string employeeName = modleave.txtEmployeeName.Text;
+			modleave.lblLeaveID.Text = ID;
+			//modleave.GetDBListID();
 			string position = modleave.txtPosition.Text;
 			string empStat = modleave.txtEmploymentStatus.Text;
-			string empName = EmpName;
+			//string empName = EmpName;
 
-			leave.FillUpSupportLeaveForm(employeeID, ref position, ref empStat, empName);
+			leave.FillUpSupportLeaveForm(employeeID, ref position, ref empStat, EmpName);
 
-			modleave.txtEmployeeName.Text = employeeName;
+			modleave.txtEmployeeName.Text = EmpName;
 			modleave.txtPosition.Text = position;
 			modleave.txtEmploymentStatus.Text = empStat;
-			///leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
+			modleave.dtpStartdate.Focus();
+			//var modleave = new frmModLeave()
+			//{
+			//	Text = "Leave",
+			//	EmpName = EmpName,
+			//	accessLevel = accessLevel,
+			//};
+			//modleave.dtpEndDate.Text = DateTime.Now.AddDays(1).ToString();
+			//modleave.dtpStartdate.Text = DateTime.Now.ToString();
+			//modleave.txtEmpID.Text = employeeID;
+			//leave.GetDBListID(out string ID, EmpName);
+			//modleave.leaveID = ID;
+			//string employeeName = modleave.txtEmployeeName.Text;
+			//string position = modleave.txtPosition.Text;
+			//string empStat = modleave.txtEmploymentStatus.Text;
+			//string empName = EmpName;
+			//
+			//leave.FillUpSupportLeaveForm(employeeID, ref position, ref empStat, empName);
+			//
+			//modleave.txtEmployeeName.Text = employeeName;
+			//modleave.txtPosition.Text = position;
+			//modleave.txtEmploymentStatus.Text = empStat;
+			/////leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
 			modleave.ShowDialog();
 		}
 
@@ -471,8 +495,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			leave.EmpName = EmpName;
 			leave.accessLevel = accessLevel;
 			leave.empID = employeeID;
-			leave.ShowLeaveList();
 			leave.ShowDialog();
+			leave.ShowLeaveList();
 		}
 	}
 }

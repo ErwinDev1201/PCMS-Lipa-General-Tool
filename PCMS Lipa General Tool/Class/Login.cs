@@ -13,7 +13,6 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class Login
 	{
 		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private readonly CommonTask task = new();
 		private readonly SecurityEncryption secEnc = new();
 		public static string ProgName = Global.ProgName;
 		public static string ProgVer = Global.ProgVer;
@@ -288,7 +287,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		{
 			Console.WriteLine("Setting up BackOffice user controls");
 
-			demoTool.employeeID = readerSQL.GetString(10); // Ensure index 10 is correct
+			demoTool.employeeID = readerSQL.GetString(readerSQL.GetOrdinal("Employee ID"));// Ensure index 10 is correct
 			demoTool.EmpName = EmpName; // Ensure EmpName is correctly initialized
 			demoTool.userName = userName;
 			demoTool.accessLevel = UserAccess;
