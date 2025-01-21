@@ -10,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Class
 {
 	public class Bundle
 	{
-		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		private readonly string _dbConnection = db.GetDbConnection();
 		private static readonly Error error = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
@@ -134,7 +134,7 @@ OR [Adjuster Name] LIKE @searchTerm";
 									INSERT INTO [Bundle Codes]
 									([Treatment ID], [CPT Code], [Bundle Codes], [Description], [Indicator], [Remarks])
 									VALUES (@TREAMENTID, @CPTCODE, @BUNDLECODE, @DESCRIPTION, @INDICATOR, @REMARKS)",
-					"Delete" => @"DELETE FROM [Bundle Codes] WHERE [Reviewer ID] = @TREAMENTID",
+					"Delete" => @"DELETE FROM [Bundle Codes] WHERE [Treatment ID] = @TREAMENTID",
 					_ => throw new ArgumentException("Invalid request type."),
 				};
 

@@ -15,7 +15,7 @@ namespace PCMS_Lipa_General_Tool.Class
 {
 	public class Pantry
 	{
-		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		private readonly string _dbConnection = db.GetDbConnection();
 		private static readonly Error error = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();

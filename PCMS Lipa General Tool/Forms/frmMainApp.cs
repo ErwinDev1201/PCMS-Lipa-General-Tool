@@ -1,4 +1,5 @@
-﻿using PCMS_Lipa_General_Tool.Class;
+﻿using Org.BouncyCastle.Asn1.Mozilla;
+using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.Forms;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
@@ -43,6 +44,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		public string officeLoc;
 		public string themeName;
 		public string position;
+		public string _dbConnection;
 
 		private string _empName;
 
@@ -952,9 +954,9 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		public void viewNotesTab()
 		{
 			//collnotes.ViewNotesToday(dgCurrentNotes, lblCountNotes, EmpName);
-			LoadAllNotes();
-			LoadNotesToday();
-			collnotes.ViewNotesMonth(lblMonthly.Text, lblAverage.Text, EmpName);
+			//LoadAllNotes();
+			//LoadNotesToday();
+			//collnotes.ViewNotesMonth(lblMonthly.Text, lblAverage.Text, EmpName);
 			//collnotes.ViewNotes(dgallNotesView, EmpName, position);
 		}
 

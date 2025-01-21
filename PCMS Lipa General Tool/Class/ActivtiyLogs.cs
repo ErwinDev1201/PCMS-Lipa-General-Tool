@@ -9,10 +9,12 @@ namespace PCMS_Lipa_General_Tool.Class
 {
 	public class ActivtiyLogs
 	{
-		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		private static readonly Database db = new();
+		private readonly string _dbConnection = db.GetDbConnection();
 
 		readonly WinDiscordAPI dc = new();
 		readonly Error error = new();
+
 
 		public DataTable ViewActivityLogs(string empName, out string lblCount)
 		{

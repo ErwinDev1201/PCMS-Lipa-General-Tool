@@ -6,13 +6,15 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using PCMS_Lipa_General_Tool.HelperClass;
+using Telerik.WinControls.UI;
 
 
 namespace PCMS_Lipa_General_Tool.Class
 {
 	public class Login
 	{
-		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		private readonly string _dbConnection = db.GetDbConnection();
+		private static readonly Database db = new();
 		private readonly SecurityEncryption secEnc = new();
 		public static string ProgName = Global.ProgName;
 		public static string ProgVer = Global.ProgVer;
@@ -35,6 +37,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		private static readonly Error error = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
+
 
 		// Resets login data to default values
 		public void DefaultLoginSet(ref string username, ref string password, ref bool isLoginPanelEnabled, out string alertMessage)
@@ -116,7 +119,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			ref bool isLoginPanelEnabled,
 			ref string alertMessage)
 		{
-			UserStatus = readerSQL.GetString(readerSQL.	GetOrdinal("Status"));
+			UserStatus = readerSQL.GetString(readerSQL.GetOrdinal("Status"));
 			if (UserStatus.Equals("INACTIVE", StringComparison.OrdinalIgnoreCase))
 			{
 				HandleInactiveUser(ref alertMessage, ref password, ref username, ref isLoginPanelEnabled);
@@ -135,7 +138,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			else
 			{
 				Position = readerSQL.GetString(readerSQL.GetOrdinal("Position"));
-				UserAccess = readerSQL.GetString(readerSQL.GetOrdinal("User Access")); 
+				UserAccess = readerSQL.GetString(readerSQL.GetOrdinal("User Access"));
 				Department = readerSQL.GetString(readerSQL.GetOrdinal("Department"));
 				officeLoc = readerSQL.GetString(readerSQL.GetOrdinal("Office"));
 				theme = readerSQL.GetString(readerSQL.GetOrdinal("Theme"));
@@ -160,7 +163,6 @@ namespace PCMS_Lipa_General_Tool.Class
 				}
 			}
 		}
-
 
 		private void ConfigureUserThemeIfMissing(SqlDataReader readerSQL, string username)
 		{
@@ -188,9 +190,10 @@ namespace PCMS_Lipa_General_Tool.Class
 			mainApp.officeLoc = officeLoc;
 			mainApp.themeName = theme;
 			mainApp.position = Position;
-		
+			mainApp._dbConnection = _dbConnection;
+
 			log.AddActivityLog(logMessage, EmpName, $"{EmpName} logged in", "USER LOGGED IN");
-		} 
+		}
 
 		private bool ConfigureVisibility(frmMainApp mainApp, frmDemoTool demoTool, string role, string department, string position, SqlDataReader readerSQL)
 		{
@@ -295,12 +298,10 @@ namespace PCMS_Lipa_General_Tool.Class
 			demoTool.statlblAccess.Text = UserAccess;
 			demoTool.statlblPosition.Text = Position;
 			demoTool.officeLoc = officeLoc;
+			demoTool._dbConnection = _dbConnection;
 			demoTool.Text = $"{ProgName} | Demo Tool | ({EmpName})";
 
 		}
-
-
-
 
 		private void HandleInactiveUser(ref string alertMessage, ref string password, ref string username, ref bool isLoginPanelEnabled)
 		{

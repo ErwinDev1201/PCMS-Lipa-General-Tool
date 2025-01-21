@@ -9,7 +9,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmModifyNotes : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
 		private readonly CollectorNotes cx = new();
 		private readonly Provider provider = new();
 		private readonly Error error = new();  

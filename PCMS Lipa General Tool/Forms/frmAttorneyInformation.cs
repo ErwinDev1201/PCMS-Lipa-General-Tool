@@ -11,7 +11,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmAttorneyInformation : Telerik.WinControls.UI.RadForm
 	{
 		private readonly Attorney atty = new();
-		private readonly CommonTask task = new();
 		public string accessLevel;
 		public string EmpName;
 		private static readonly Error error = new();

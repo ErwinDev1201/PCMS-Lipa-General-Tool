@@ -13,6 +13,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private readonly Login pushLogin = new();
 		private static readonly Error error = new();
 		private static readonly User user = new();
+		private readonly Database db = new();
 
 
 		public FrmLogin()
@@ -100,6 +101,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					}
 					else
 					{
+						user._dbConnection = db.GetDbConnection();
 						string resultMessage = user.CheckIfExistinDB(txtUsername.Text, "Login", "Login");
 						if (!string.IsNullOrEmpty(resultMessage))
 						{
