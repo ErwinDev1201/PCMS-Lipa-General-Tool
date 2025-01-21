@@ -14,8 +14,10 @@ namespace PCMS_Lipa_General_Tool.Class
 {
 	public class User
 	{
-		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		//private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
 		private static readonly string EmailHost = ConfigurationManager.AppSettings["smtpserver"];
+
+		public string _dbConnection;
 
 		readonly SecurityEncryption sec = new();
 		readonly emailSender mailSender = new();
@@ -894,8 +896,9 @@ WHERE USERNAME LIKE @itemToSearch";
 		{
 			string emailSubject = reason == "forgot" ? "Password Reset Request" : "Password Change Confirmation";
 			string emailContent = $"Your new password for PCMS Lipa General Tool is: {password}\n\nPlease do not share this email or your password.";
+			mailSender.SendEmail(email, emailSubject, email, "CMS Lipa General Tool - noreply", null, null, null);
 
-			mailSender.SendEmail("noAttach", emailContent, null, emailSubject, email, "PCMS Lipa General Tool - noreply", null, null);
+			//mailSender.SendEmail("noAttach", emailContent, null, emailSubject, email, "PCMS Lipa General Tool - noreply", null, null);
 
 			string discordMessage = $"{userName} updated their password.";
 			log.AddActivityLog(discordMessage, userName, discordMessage, "USER PASSWORD UPDATED");

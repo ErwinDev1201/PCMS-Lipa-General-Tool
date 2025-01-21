@@ -8,7 +8,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class OnlineLogins
 	{
 
-		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		private readonly string _dbConnection = db.GetDbConnection();
 		readonly WinDiscordAPI dc = new();
 		private static readonly Error error = new();
 		private static readonly ActivtiyLogs log = new();

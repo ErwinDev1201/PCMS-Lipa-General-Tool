@@ -10,8 +10,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class Leave
 	{
 
-		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private readonly CommonTask task = new();
+		private readonly string _dbConnection = db.GetDbConnection();
 		private readonly User user = new();
 		private static readonly Error error = new();
 		private static readonly ActivtiyLogs log = new();
@@ -195,17 +194,17 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		public void FillUpLeaveFields(
 	//string leaveID,
-	out string employeeID,
-	out string employeeName,
-	out DateTime? startDate,
-	out DateTime? endDate,
-	out string reason,
-	out bool isWithPay,
-	out string leaveType,
-	out string approvalStatus,
-	out string remarks,
-	string selectedLeaveID,
-	string empName)
+			out string employeeID,
+			out string employeeName,
+			out DateTime? startDate,
+			out DateTime? endDate,
+			out string reason,
+			out bool isWithPay,
+			out string leaveType,
+			out string approvalStatus,
+			out string remarks,
+			string selectedLeaveID,
+			string empName)
 		{
 			// Initialize output variables
 			employeeID = string.Empty;
@@ -828,12 +827,13 @@ namespace PCMS_Lipa_General_Tool.Class
 					mailSubject = "Filed Leave from " + employeeName;
 					if (position == "Management")
 					{
-
-						mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", null, null);
+						mail.SendEmail(mailContent, mailSubject, emailAddress, "Leave Notification", null, null, null);
+						//mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", null, null);
 					}
 					else
 					{
-						mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", ccEmail1, null);
+						mail.SendEmail(mailContent, mailSubject, emailAddress, "Leave Notification", null, ccEmail1, null);
+						//mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", ccEmail1, null);
 						//emailSender.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", );
 					}
 
@@ -843,7 +843,8 @@ namespace PCMS_Lipa_General_Tool.Class
 					user.GetUsersEmail(employeeName, empName);
 					emailAddress = email;
 					mailSubject = "File Leave Update for " + employeeName;
-					mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Leave Update Notification (via PCMS Lipa General Tool)", null, null);
+					mail.SendEmail(mailContent, mailSubject, emailAddress, "Leave Update Response", null, ccEmail1, null);
+					//mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Leave Update Notification (via PCMS Lipa General Tool)", null, null);
 				}
 			}
 			catch (Exception ex)

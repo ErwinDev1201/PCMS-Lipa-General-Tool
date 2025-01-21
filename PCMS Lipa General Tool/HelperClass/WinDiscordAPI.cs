@@ -45,7 +45,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 			{
 				// Handle exception by sending a failure email
 				emailSender mailSender = new();
-				mailSender.SendEmailAppFailure(ex.ToString());
+				mailSender.SendEmail(ex.ToString(), "Discord Error Log Failed to Write","mr.erwinalcantara@gmail.com","Discord Failure",null, null, null);
 			}
 		}
 	}

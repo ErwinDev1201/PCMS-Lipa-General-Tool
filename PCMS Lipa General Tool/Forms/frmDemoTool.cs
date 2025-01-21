@@ -33,6 +33,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public string officeLoc;
 		public string employeeID;
 		public string employmentStat;
+		public string _dbConnection;
 
 
 		public frmDemoTool()

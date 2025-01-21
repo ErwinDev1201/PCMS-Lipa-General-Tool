@@ -9,9 +9,10 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class DeveloperAccess
 	{
 
-		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private static readonly Error error = new();
+		private readonly string _dbConnection = db.GetDbConnection();
 		private static readonly FEWinForm fe = new();
+		private static readonly Database db = new();
+		private static readonly Error error = new();	
 
 
 		public void UpdateDevPasswordAccess(string empName, string password)

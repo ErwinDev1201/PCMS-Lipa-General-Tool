@@ -5,8 +5,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmBVChecker : Telerik.WinControls.UI.RadForm
 	{
-		private readonly CommonTask task = new();
-
 		public string empName;
 		public string accessLevel;
 		readonly Broadvoice bv = new();

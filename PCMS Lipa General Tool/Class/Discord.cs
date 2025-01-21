@@ -7,12 +7,11 @@ namespace PCMS_Lipa_General_Tool.Class
 {
 	public class Discord
 	{
-		private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
+		private readonly string _dbConnection = db.GetDbConnection();
 		private static readonly Error error = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
-
-		readonly CommonTask task = new();
+		private static readonly Database db = new();
 
 		public void UpdateDCPassword(string userName, string password, string empName)
 		{

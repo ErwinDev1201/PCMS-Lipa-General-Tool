@@ -225,7 +225,6 @@
     <Compile Include="Class\Broadvoice.cs" />
     <Compile Include="Class\Bundle.cs" />
     <Compile Include="Class\CollectorNotes.cs" />
-    <Compile Include="Class\CommonTask.cs" />
     <Compile Include="Class\DeveloperAccess.cs" />
     <Compile Include="Class\Diagnosis.cs" />
     <Compile Include="Class\Discord.cs" />

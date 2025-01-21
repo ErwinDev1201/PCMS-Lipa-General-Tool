@@ -15,7 +15,8 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 
 		public Database(string connectionString = null)
 		{
-			_dbConnection = connectionString ?? ConfigurationManager.AppSettings["serverpath"];
+			// Use GetDbConnection to handle conditional logic
+			_dbConnection = connectionString ?? GetDbConnection();
 			cn = new SqlConnection(_dbConnection);
 		}
 
@@ -23,13 +24,71 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 		{
 			get
 			{
-				if (cn.State != ConnectionState.Open)
+				try
 				{
-					cn.Open();
+					if (cn.State != ConnectionState.Open)
+					{
+						cn.Open();
+					}
+					return true;
 				}
-				return true;
+				catch (Exception ex)
+				{
+					// Log error and return false
+					error.LogError("IsConnected", null, "Database", null, ex); // Assuming Error has a Log method
+					return false;
+				}
 			}
 		}
+
+		public string GetDbConnection()
+		{
+			string machineName = Environment.MachineName;
+
+			return machineName == "ERWIN-PC"
+				? ConfigurationManager.AppSettings["homeserverpath"]
+				: ConfigurationManager.AppSettings["serverpath"];
+		}
+
+		// Dispose the SqlConnection when done
+		public void CloseConnection()
+		{
+			if (cn.State == ConnectionState.Open)
+			{
+				cn.Close();
+			}
+		}
+
+		//private string _dbConnection;
+		//
+		//public Database(string connectionString = null)
+		//{
+		//	_dbConnection = connectionString ?? ConfigurationManager.AppSettings["serverpath"];
+		//	cn = new SqlConnection(_dbConnection);
+		//}
+		//
+		//public bool IsConnected
+		//{
+		//	get
+		//	{
+		//		if (cn.State != ConnectionState.Open)
+		//		{
+		//			cn.Open();
+		//		}
+		//		return true;
+		//	}
+		//}
+		//
+		//public string GetDbConnection()
+		//{
+		//	string machineName = Environment.MachineName;
+		//
+		//	_dbConnection = machineName == "Erwin-PC"
+		//		? ConfigurationManager.AppSettings["homeserverpath"]
+		//		: ConfigurationManager.AppSettings["serverpath"];
+		//
+		//	return _dbConnection;
+		//}
 
 		public void AlterDBSequence(RadTextBox sequence, RadDropDownList databaseTable, string empName)
 		{
