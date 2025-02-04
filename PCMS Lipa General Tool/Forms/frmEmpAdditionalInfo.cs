@@ -143,7 +143,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-			bool isSuccess = user.EmployeeDatabase("Delete", txtEmpID.Text, txtEmpName.Text, null, null, null, null, null, null, null, null, null, null, null, EmpName, out string message);
+			bool isSuccess = user.EmployeeDatabase("Delete", txtEmpID.Text, txtEmpName.Text, null, null, null, null, null, null, null, null, null, null, EmpName, out string message);
 			fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
 			Close();
 		}
