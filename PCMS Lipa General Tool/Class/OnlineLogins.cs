@@ -18,9 +18,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		public void GetDBLoginID(out string ID, string empName)
 		{
 			ID = string.Empty;
-
 			string nextSequence = db.GetSequenceNo("OnlineLoginSeq", "OL-");
-
 			try
 			{
 				if (!string.IsNullOrEmpty(nextSequence))

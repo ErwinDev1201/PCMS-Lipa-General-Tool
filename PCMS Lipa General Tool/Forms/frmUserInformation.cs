@@ -248,6 +248,92 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//btnDelete.Visible = false;
 		}
 
+		public void DisableItem()
+		{
+			// First Group
+			txtEmpID.Enabled = false;
+			txtUsername.Enabled = false;
+			txtEmpName.Enabled = false;
+			txtWorkEmailMain.Enabled = false;
+
+			// Second Group
+			txtRDWebUsername.Enabled = false;
+			txtRDWebPassword.Enabled = false;
+			txtLytecUsername.Enabled = false;
+			txtLytecPassword.Enabled = false;
+
+			// Third Group
+			txtBVNo.Enabled = false;
+			txtBVUsername.Enabled = false;
+			txtBVPassword.Enabled = false;
+			txtPCName.Enabled = false;
+			txtPCUsername.Enabled = false;
+			txtPCPassword.Enabled = false;
+			txtWorkEmail.Enabled = false;
+			txtWorkEmailPass.Enabled = false;
+			txtDCUsernaem.Enabled = false;
+			txtDCPassword.Enabled = false;
+			txtRemarks.Enabled = false;
+
+			// Set ComboBoxes as disabled (read-only alternative)
+			cmbUserAccess.Enabled = false;
+			cmbUserDept.Enabled = false;
+			cmbPosition.Enabled = false;
+			cmbUserStatus.Enabled = false;
+			cmbOffice.Enabled = false;
+			cmbManagement.Enabled = false;
+			cmbEmploymentStatus.Enabled = false;
+			cmbFirstTime.Enabled = false;
+
+			// Set DateTimePicker as disabled (read-only alternative)
+			dtpDateofBirth.Enabled = false;
+			//btnUpdate.Visible = false;
+			//btnDelete.Visible = false;
+		}
+
+		public void EnableItem()
+		{
+			// First Group
+			txtEmpID.Enabled = true;
+			txtUsername.Enabled = true;
+			txtEmpName.Enabled = true;
+			txtWorkEmailMain.Enabled = true;
+
+			// Second Group
+			txtRDWebUsername.Enabled = true;
+			txtRDWebPassword.Enabled = true;
+			txtLytecUsername.Enabled = true;
+			txtLytecPassword.Enabled = true;
+
+			// Third Group
+			txtBVNo.Enabled = true;
+			txtBVUsername.Enabled = true;
+			txtBVPassword.Enabled = true;
+			txtPCName.Enabled = true;
+			txtPCUsername.Enabled = true;
+			txtPCPassword.Enabled = true;
+			txtWorkEmail.Enabled = true;
+			txtWorkEmailPass.Enabled = true;
+			txtDCUsernaem.Enabled = true;
+			txtDCPassword.Enabled = true;
+			txtRemarks.Enabled = true;
+
+			// Set ComboBoxes as disabled (read-only alternative)
+			cmbUserAccess.Enabled = true;
+			cmbUserDept.Enabled = true;
+			cmbPosition.Enabled = true;
+			cmbUserStatus.Enabled = true;
+			cmbOffice.Enabled = true;
+			cmbManagement.Enabled = true;
+			cmbEmploymentStatus.Enabled = true;
+			cmbFirstTime.Enabled = true;
+
+			// Set DateTimePicker as disabled (read-only alternative)
+			dtpDateofBirth.Enabled = true;
+			//btnUpdate.Visible = false;
+			//btnDelete.Visible = false;
+		}
+
 		private void FillManagementName()
 		{
 			cmbManagement.Items.Clear();
@@ -379,6 +465,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			if (result != DialogResult.Yes)
 				return; // Exit if the user cancels
 			var password = user.GenerateRandomPassword();
+			DisableItem();
 			bool isSuccess = user.UpdateUserPassword(
 				txtUsername.Text,
 				txtWorkEmail.Text,
@@ -387,7 +474,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 				EmpName,
 				out string message,
 				out string status);
-			//DefaultItem();
+			EnableItem();
+			if (status == "Success")
+			{
+				RadMessageBox.Show("A temporary password has been sent to user's email", "Password Reset", MessageBoxButtons.OK, RadMessageIcon.Info);
+			}
+		
+			
 		}
 
 		private void txtWorkEmailMain_TextChanged(object sender, EventArgs e)

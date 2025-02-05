@@ -28,6 +28,8 @@ namespace PCMS_Lipa_General_Tool.Class
 		readonly Error error = new();
 		
 		private string email;
+		public string EmpName;
+
 
 		public void GetDBID(out string ID, string empName)
 		{
@@ -661,7 +663,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			catch (Exception ex)
 			{
 				// Log the error and provide feedback
-				error.LogError("SearchEmpTwoColumnOneFieldText", empName, "User", "N/A", ex);
+				error.LogError("GetSearch", empName, "User", "N/A", ex);
 				searchCount = "Error occurred while fetching records.";
 			}
 
@@ -849,7 +851,7 @@ WHERE USERNAME LIKE @itemToSearch";
 					return true;
 				}
 
-				string query = "SELECT USERNAME, PASSWORD, [EMAIL ADDRESS] FROM [User Information] WHERE USERNAME = @UserName";
+				string query = "SELECT USERNAME, PASSWORD, [EMAIL ADDRESS], [Employee Name] FROM [User Information] WHERE USERNAME = @UserName";
 
 				using var con = new SqlConnection(_dbConnection);
 				using var cmd = new SqlCommand(query, con);
@@ -864,8 +866,11 @@ WHERE USERNAME LIKE @itemToSearch";
 					return true;
 				}
 
-				string userNameDB = reader.GetString(0);
-				string emailDB = reader.GetString(2);
+				// Correctly fetching values from the reader
+				string userNameDB = reader.IsDBNull(reader.GetOrdinal("USERNAME")) ? string.Empty : reader.GetString(reader.GetOrdinal("USERNAME"));
+				string emailDB = reader.IsDBNull(reader.GetOrdinal("EMAIL ADDRESS")) ? string.Empty : reader.GetString(reader.GetOrdinal("EMAIL ADDRESS"));
+				string name = reader.IsDBNull(reader.GetOrdinal("Employee Name")) ? string.Empty : reader.GetString(reader.GetOrdinal("Employee Name"));
+
 
 				if (!emailDB.Equals(email, StringComparison.OrdinalIgnoreCase))
 				{
@@ -875,7 +880,7 @@ WHERE USERNAME LIKE @itemToSearch";
 				}
 
 				UpdatePassword(password, userNameDB, reason, empName);
-				SendCredentialstoEmail(email, userName, empName, password, "Reset");
+				SendCredentialstoEmail(email, userName, empName, password, name, "Reset");
 
 				//SendCredentialstoEmail(email, userName, empName, password, "Reset");
 
@@ -896,7 +901,16 @@ WHERE USERNAME LIKE @itemToSearch";
 
 		private void UpdatePassword(string password, string userName, string reason, string empName)
 		{
-			string updateQuery = "UPDATE [User Information] SET PASSWORD = @Password, [First Time Login] = 'NO' WHERE USERNAME = @UserName";
+			string updateQuery;
+			if (reason == "adminreset")
+			{
+				updateQuery = "UPDATE [User Information] SET PASSWORD = @Password, [First Time Login] = 'Yes' WHERE USERNAME = @UserName";
+			}
+			else
+			{
+				updateQuery = "UPDATE [User Information] SET PASSWORD = @Password, [First Time Login] = 'NO' WHERE USERNAME = @UserName";
+			}
+			
 
 			string logMessage;
 
@@ -917,7 +931,7 @@ WHERE USERNAME LIKE @itemToSearch";
 						log.AddActivityLog(logMessage, userName, logMessage, "FORGOT PASSWORD UPDATE");
 						break;
 
-				case "change":
+				    case "change":
 					logMessage = $"{userName} updated their password due to a system requirement.";
 					log.AddActivityLog(logMessage, userName, "System required password change", "CHANGE PASSWORD UPDATE");
 					//UpdateFirstLoginInfo("UPDATE [User Information] SET [FIRST TIME LOGIN] = 'NO' WHERE USERNAME = @UserName", userName, empName, out string message);
@@ -1511,7 +1525,7 @@ WHERE USERNAME LIKE @itemToSearch";
 					//cmd.Parameters.AddWithValue("@NEWEMP", newEmp ?? "N/A");
 					cmd.Parameters.AddWithValue("@PASSWORD", sec.PassHash(password ?? string.Empty));
 					cmd.Parameters.AddWithValue("@THEME", theme ?? "Default");
-					SendCredentialstoEmail(workEmail.Trim(), userName.Trim(), empName.Trim(), password.Trim(), "New");
+					SendCredentialstoEmail(workEmail.Trim(), userName.Trim(), EmpName.Trim(), password.Trim(), empName, "New");
 				}
 
 				// Add parameter for all requests
@@ -1765,7 +1779,7 @@ WHERE USERNAME LIKE @itemToSearch";
 		//	}
 		//}
 
-		public void SendCredentialstoEmail(string recipientEmail, string userName, string empName, string password, string action)
+		public void SendCredentialstoEmail(string recipientEmail, string userName, string empName, string password, string Name, string action)
 		{
 			string machineName = Environment.MachineName;
 			string emailAddressCC;
@@ -1785,27 +1799,27 @@ WHERE USERNAME LIKE @itemToSearch";
 
 				// Corrected placeholder usage
 				string bodyTemplate = @"
-        <h3>Hello {0},</h3>
-        <p>{1}</p>
-        <ul>
-            <li><strong>Username:</strong> {2}</li>
-            <li><strong>Password:</strong> {3}</li>
-        </ul>
-        <p>Best regards,<br>System Administrator</p>";
+<h3>Hello {0},</h3>
+<p>{1}</p>
+<ul>
+    <li><strong>Username:</strong> {2}</li>
+    <li><strong>Password:</strong> {3}</li>
+</ul>
+<p>Best regards,<br>System Administrator</p>";
 
 				string body;
 
 				if (action == "Reset")
 				{
 					subject = "Password Reset";
-					body = string.Format(bodyTemplate, empName,
+					body = string.Format(bodyTemplate, Name,
 						"Your account credentials for PCMS Lipa General Tools have been updated. Please check the details below:",
 						userName, password);
 				}
 				else
 				{
 					subject = "Your Account Credentials";
-					body = string.Format(bodyTemplate, empName,
+					body = string.Format(bodyTemplate, Name,
 						"Welcome to Primary Care Management Service. " +
 						"Please log in and change your password immediately. Your account credentials for PCMS Lipa General Tools are as follows:",
 						userName, password);

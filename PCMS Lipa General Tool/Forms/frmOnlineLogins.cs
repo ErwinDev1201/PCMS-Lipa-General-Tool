@@ -107,9 +107,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ShowDataUserAccess()
 		{
-			dgOnlineLogins.BestFitColumns(BestFitColumnMode.AllCells);
+			dgOnlineLogins.BestFitColumns(BestFitColumnMode.DisplayedDataCells);
 			var dataTable = onlineLogin.ViewOnlineLogins(empName, out string lblCount);
+
 			dgOnlineLogins.DataSource = dataTable;
+			dgOnlineLogins.Columns["Password"].IsVisible = false;
 			lblSearchCount.Text = lblCount;
 		}
 		
@@ -228,14 +230,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (dgOnlineLogins.SelectedRows.Count > 0)
 				{
-					txtLoginID.Text = dgOnlineLogins.SelectedRows[0].Cells[0].Value + string.Empty;
-					txtInsuranceName.Text = dgOnlineLogins.SelectedRows[0].Cells[1].Value + string.Empty;
-					txtWebLink.Text = dgOnlineLogins.SelectedRows[0].Cells[2].Value + string.Empty;
-					txtUsername.Text = dgOnlineLogins.SelectedRows[0].Cells[3].Value + string.Empty;
-					txtPassword.Text = dgOnlineLogins.SelectedRows[0].Cells[4].Value + string.Empty;
-					txtaccntOwner.Text = dgOnlineLogins.SelectedRows[0].Cells[5].Value + string.Empty;
-					txtRemarks.Text = dgOnlineLogins.SelectedRows[0].Cells[6].Value + string.Empty;
-					cmbBrowser.Text = dgOnlineLogins.SelectedRows[0].Cells[7].Value + string.Empty;
+					//txtEmpID = { Text = selectedRow.Cells["Employee ID"].Value?.ToString() ?? string.Empty },
+					txtLoginID.Text = dgOnlineLogins.SelectedRows[0].Cells["Login ID"].Value + string.Empty;
+					txtInsuranceName.Text = dgOnlineLogins.SelectedRows[0].Cells["Insurance Name"].Value + string.Empty;
+					txtWebLink.Text = dgOnlineLogins.SelectedRows[0].Cells["URL Link"].Value + string.Empty;
+					txtUsername.Text = dgOnlineLogins.SelectedRows[0].Cells["Username"].Value + string.Empty;
+					txtPassword.Text = dgOnlineLogins.SelectedRows[0].Cells["Password"].Value + string.Empty;
+					txtaccntOwner.Text = dgOnlineLogins.SelectedRows[0].Cells["Account Owner"].Value + string.Empty;
+					txtRemarks.Text = dgOnlineLogins.SelectedRows[0].Cells["Remarks"].Value + string.Empty;
+					cmbBrowser.Text = dgOnlineLogins.SelectedRows[0].Cells["Browser"].Value + string.Empty;
 				}
 			}
 			catch (Exception ex)
