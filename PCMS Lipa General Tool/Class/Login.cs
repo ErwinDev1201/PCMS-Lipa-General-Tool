@@ -88,6 +88,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				else
 				{
 					HandleInvalidPassword(ref alertMessage, ref password, ref username, ref isLoginPanelEnabled);
+					//Console.WriteLine($"DEBUG: AlertMessage after failed login: {alertMessage}"); // Debugging line
 				}
 			}
 			catch (Exception ex)
@@ -133,7 +134,7 @@ namespace PCMS_Lipa_General_Tool.Class
 
 			if (firstTime.Equals("YES", StringComparison.OrdinalIgnoreCase))
 			{
-				PromptFirstTimePasswordChange(ref username, ref password, ref isLoginPanelEnabled, ref alertMessage, email);
+				PromptFirstTimePasswordChange(ref username, ref password, ref EmpName, ref isLoginPanelEnabled, ref alertMessage, email);
 			}
 			else
 			{
@@ -213,7 +214,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			else if (combineRole.Contains("Management_All Department_Supervisor") || combineRole.Contains("Management_All Department_Operations Manager"))
 			{
-				HideAdminControls(mainApp);
+				HideManagementControls(mainApp);
 				mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
 				return false; // Show MainApp for Management roles
 			}
@@ -251,6 +252,19 @@ namespace PCMS_Lipa_General_Tool.Class
 			mainApp.mnuDBSequence.Visibility = ElementVisibility.Collapsed;
 			mainApp.mnuOpenConfig.Visibility = ElementVisibility.Collapsed;
 			mainApp.mnuViewCollectorNotes.Visibility = ElementVisibility.Collapsed;
+			mainApp.pictureBox1.BringToFront();
+		}
+
+		private void HideManagementControls(frmMainApp mainApp)
+		{
+			Console.WriteLine("Hiding management controls");
+			mainApp.mnuOpenConfig.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuDevAccountAccess.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuActivityLog.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuDBSequence.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuOpenConfig.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuViewCollectorNotes.Visibility = ElementVisibility.Collapsed;
+			mainApp.mnuAdmin.Visibility = ElementVisibility.Collapsed;
 			mainApp.pictureBox1.BringToFront();
 		}
 
@@ -310,10 +324,16 @@ namespace PCMS_Lipa_General_Tool.Class
 			DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out _);
 		}
 
-		private void PromptFirstTimePasswordChange(ref string username, ref string password, ref bool isLoginPanelEnabled, ref string alertMessage, string email)
+		private void PromptFirstTimePasswordChange(ref string username, ref string password, ref string EmpName, ref bool isLoginPanelEnabled, ref string alertMessage, string email)
 		{
 			// Simulate password change prompt logic
-			alertMessage = $"First-time login detected. Password reset email sent to {email}.";
+			var mandatorychangepassword = new frmResetPassword();
+			mandatorychangepassword.txtEmpID.Text = username;
+			mandatorychangepassword.txtWorkEmail.Text = email;
+			mandatorychangepassword.empName = EmpName;
+			mandatorychangepassword.changePassword = "Yes";
+			mandatorychangepassword.ShowDialog();
+			//alertMessage = $"First-time login detected. Password reset email sent to {email}.";
 			DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out _);
 		}
 

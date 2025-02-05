@@ -17,25 +17,22 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class User
 	{
 		//private readonly string _dbConnection = ConfigurationManager.AppSettings["serverpath"];
-		private static readonly string EmailHost = ConfigurationManager.AppSettings["smtpserver"];
+		//private static readonly string EmailHost = ConfigurationManager.AppSettings["smtpserver"];
 
-		public string _dbConnection;
+		private readonly string _dbConnection = db.GetDbConnection();
+		private static readonly Database db = new();
 
 		readonly SecurityEncryption sec = new();
 		readonly emailSender mailSender = new();
 		readonly ActivtiyLogs log = new();
 		readonly Error error = new();
-		readonly Database db = new();
 		
 		private string email;
 
 		public void GetDBID(out string ID, string empName)
 		{
-
 			ID = string.Empty;
-
 			string nextSequence = db.GetSequenceNo("UserInfoSeq", "PCMS-0");
-
 			try
 			{
 				if (!string.IsNullOrEmpty(nextSequence))
@@ -179,80 +176,80 @@ namespace PCMS_Lipa_General_Tool.Class
 		//
 
 
-		public void FillAdminUserProfile(
-			string EmpID,
-			out string RDWebUsername,
-			out string RDWebPassword,
-			out string LytecUsername,
-			out string LytecPassword,
-			out string EmailPassword,
-			out string BVUsername,
-			out string BVPassword,
-			out string PCName,
-			out string PCUsername,
-			out string PCPassword,
-			out string Remarks,
-			out string DateOfBirth,
-			out string cmbDirectReport,
-			out string firstTimeLogin,
-			out string DCUsername,
-			out string DCPassword,
-			out string cmbEmploymentStatus,
-			string empName,
-			string popupfrom)
-		{
-			// Initialize out parameters with default values
-			RDWebUsername = RDWebPassword = LytecUsername = LytecPassword = EmailPassword = string.Empty;
-			BVUsername = BVPassword = PCName = PCUsername = PCPassword = Remarks = string.Empty;
-			DateOfBirth = cmbDirectReport = firstTimeLogin = DCUsername = DCPassword = cmbEmploymentStatus = string.Empty;
-
-			try
-			{
-				using var con = new SqlConnection(_dbConnection);
-				using var cmd = new SqlCommand(@"
-            SELECT 
-                [Employee ID], [EMPLOYEE NAME], [RDWEB USERNAME], [RDWEB PASSWORD],
-                [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [EMAIL PASSWORD],
-                [BROADVOICE NO.], [Broadvoice Username], [Broadvoice Password],
-                [PC Assigned], [PC USERNAME], [PC PASSWORD], TEAM, REMARKS,
-                [DATE OF BIRTH], [Employment Status], [FIRST TIME LOGIN],
-                [Discord Username], [Discord Password]
-            FROM 
-                [User Information]
-            WHERE 
-                [Employee ID] = @EmployeeID", con);
-
-				cmd.Parameters.AddWithValue("@EmployeeID", EmpID);
-
-				con.Open();
-				using var reader = cmd.ExecuteReader();
-
-				if (reader.Read())
-				{
-					// Use GetOrdinal to map column names to indices once
-					RDWebUsername = reader["RDWEB USERNAME"]?.ToString() ?? string.Empty;
-					RDWebPassword = reader["RDWEB PASSWORD"]?.ToString() ?? string.Empty;
-					LytecUsername = reader["LYTEC USERNAME"]?.ToString() ?? string.Empty;
-					LytecPassword = reader["LYTEC PASSWORD"]?.ToString() ?? string.Empty;
-					EmailPassword = reader["EMAIL PASSWORD"]?.ToString() ?? string.Empty;
-					BVUsername = reader["Broadvoice Username"]?.ToString() ?? string.Empty;
-					BVPassword = reader["Broadvoice Password"]?.ToString() ?? string.Empty;
-					PCName = reader["PC Assigned"]?.ToString() ?? string.Empty;
-					PCUsername = reader["PC USERNAME"]?.ToString() ?? string.Empty;
-					PCPassword = reader["PC PASSWORD"]?.ToString() ?? string.Empty;
-					Remarks = reader["REMARKS"]?.ToString() ?? string.Empty;
-					DateOfBirth = reader["DATE OF BIRTH"]?.ToString() ?? string.Empty;
-					cmbEmploymentStatus = reader["Employment Status"]?.ToString() ?? string.Empty;
-					firstTimeLogin = reader["FIRST TIME LOGIN"]?.ToString() ?? string.Empty;
-					DCUsername = reader["Discord Username"]?.ToString() ?? string.Empty;
-					DCPassword = reader["Discord Password"]?.ToString() ?? string.Empty;
-				}
-			}
-			catch (Exception ex)
-			{
-				error.LogError("FillAdminUserProfile", empName, "User", EmpID, ex);
-			}
-		}
+		//public void FillAdminUserProfile(
+		//	string EmpID,
+		//	out string RDWebUsername,
+		//	out string RDWebPassword,
+		//	out string LytecUsername,
+		//	out string LytecPassword,
+		//	out string EmailPassword,
+		//	out string BVUsername,
+		//	out string BVPassword,
+		//	out string PCName,
+		//	out string PCUsername,
+		//	out string PCPassword,
+		//	out string Remarks,
+		//	out string DateOfBirth,
+		//	out string cmbDirectReport,
+		//	out string firstTimeLogin,
+		//	out string DCUsername,
+		//	out string DCPassword,
+		//	out string cmbEmploymentStatus,
+		//	string empName,
+		//	string popupfrom)
+		//{
+		//	// Initialize out parameters with default values
+		//	RDWebUsername = RDWebPassword = LytecUsername = LytecPassword = EmailPassword = string.Empty;
+		//	BVUsername = BVPassword = PCName = PCUsername = PCPassword = Remarks = string.Empty;
+		//	DateOfBirth = cmbDirectReport = firstTimeLogin = DCUsername = DCPassword = cmbEmploymentStatus = string.Empty;
+		//
+		//	try
+		//	{
+		//		using var con = new SqlConnection(_dbConnection);
+		//		using var cmd = new SqlCommand(@"
+        //    SELECT 
+        //        [Employee ID], [EMPLOYEE NAME], [RDWEB USERNAME], [RDWEB PASSWORD],
+        //        [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [EMAIL PASSWORD],
+        //        [BROADVOICE NO.], [Broadvoice Username], [Broadvoice Password],
+        //        [PC Assigned], [PC USERNAME], [PC PASSWORD], TEAM, REMARKS,
+        //        [DATE OF BIRTH], [Employment Status], [FIRST TIME LOGIN],
+        //        [Discord Username], [Discord Password]
+        //    FROM 
+        //        [User Information]
+        //    WHERE 
+        //        [Employee ID] = @EmployeeID", con);
+		//
+		//		cmd.Parameters.AddWithValue("@EmployeeID", EmpID);
+		//
+		//		con.Open();
+		//		using var reader = cmd.ExecuteReader();
+		//
+		//		if (reader.Read())
+		//		{
+		//			// Use GetOrdinal to map column names to indices once
+		//			RDWebUsername = reader["RDWEB USERNAME"]?.ToString() ?? string.Empty;
+		//			RDWebPassword = reader["RDWEB PASSWORD"]?.ToString() ?? string.Empty;
+		//			LytecUsername = reader["LYTEC USERNAME"]?.ToString() ?? string.Empty;
+		//			LytecPassword = reader["LYTEC PASSWORD"]?.ToString() ?? string.Empty;
+		//			EmailPassword = reader["EMAIL PASSWORD"]?.ToString() ?? string.Empty;
+		//			BVUsername = reader["Broadvoice Username"]?.ToString() ?? string.Empty;
+		//			BVPassword = reader["Broadvoice Password"]?.ToString() ?? string.Empty;
+		//			PCName = reader["PC Assigned"]?.ToString() ?? string.Empty;
+		//			PCUsername = reader["PC USERNAME"]?.ToString() ?? string.Empty;
+		//			PCPassword = reader["PC PASSWORD"]?.ToString() ?? string.Empty;
+		//			Remarks = reader["REMARKS"]?.ToString() ?? string.Empty;
+		//			DateOfBirth = reader["DATE OF BIRTH"]?.ToString() ?? string.Empty;
+		//			cmbEmploymentStatus = reader["Employment Status"]?.ToString() ?? string.Empty;
+		//			firstTimeLogin = reader["FIRST TIME LOGIN"]?.ToString() ?? string.Empty;
+		//			DCUsername = reader["Discord Username"]?.ToString() ?? string.Empty;
+		//			DCPassword = reader["Discord Password"]?.ToString() ?? string.Empty;
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		error.LogError("FillAdminUserProfile", empName, "User", EmpID, ex);
+		//	}
+		//}
 
 
 		//try
@@ -618,9 +615,26 @@ namespace PCMS_Lipa_General_Tool.Class
 
 				// Define the base query
 				string query = $@"
-SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT],
-[USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS]
-FROM [User Information]
+      SELECT 
+	  [Employee ID]
+      ,[Employee Name]
+      ,[Username]
+      ,[Department]
+      ,[Position]
+      ,[RDWeb Username]
+      ,[Lytec Username]
+      ,[Email Address]
+      ,[Broadvoice No.]
+      ,[PC Assigned]
+      ,[PC Username]
+      ,[Team]
+      ,[Status]
+      ,[Employment Status]
+      ,[Date of Birth]
+      ,[Office]
+      ,[First Time Login]
+      ,[Discord Username]
+      ,[Remarks] FROM [User Information]
 WHERE USERNAME LIKE @itemToSearch";
 
 				// Add the STATUS filter only if statusColumn is not "All"
@@ -670,7 +684,7 @@ WHERE USERNAME LIKE @itemToSearch";
 				{
 					if (modLoc == "UserMgmt" && request == "Create")
 					{
-						return "Username already exists.";
+						return "Username exists.";
 					}
 				}
 				else
@@ -702,72 +716,96 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 		}
 
-		public void GetUsersEmail(string name, string empName)
+		public string GetUsersEmail(string name, string empName)
 		{
+			string email = null;
 			using var con = new SqlConnection(_dbConnection);
 			try
 			{
 				con.Open();
-				using SqlCommand cmd = new("SELECT [Employee Name], [Email Address] FROM [User Information] WHERE [Employee Name] = '" + name + "'", con);
+				using SqlCommand cmd = new("SELECT [Email Address] FROM [User Information] WHERE [Employee Name] = @name", con);
+				cmd.Parameters.AddWithValue("@name", name);
+
 				using var reader = cmd.ExecuteReader();
 				if (reader.Read())
 				{
-					email = reader.IsDBNull(1) ? null : reader.GetString(1);
+					email = reader.IsDBNull(0) ? null : reader.GetString(0);
 				}
 			}
 			catch (Exception ex)
 			{
 				error.LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
 			}
-			finally
-			{
-				con.Close();
-			}
+			return email;
 		}
 
-		public bool UpdateFirstLoginInfo(string query, string userName, string empName, out string message)
-		{
-			message = string.Empty;
 
-			try
-			{
-				using var con = new SqlConnection(_dbConnection);
-				con.Open();
+		//public void GetUsersEmail(string name, string empName)
+		//{
+		//	using var con = new SqlConnection(_dbConnection);
+		//	try
+		//	{
+		//		con.Open();
+		//		using SqlCommand cmd = new("SELECT [Employee Name], [Email Address] FROM [User Information] WHERE [Employee Name] = '" + name + "'", con);
+		//		using var reader = cmd.ExecuteReader();
+		//		if (reader.Read())
+		//		{
+		//			email = reader.IsDBNull(1) ? null : reader.GetString(1);
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		error.LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
+		//	}
+		//	finally
+		//	{
+		//		con.Close();
+		//	}
+		//}
 
-				using var command = new SqlCommand(query, con);
-				// Add the parameter for @UserName with explicit type and size (adjust SqlDbType and size as needed)
-				var parameter = new SqlParameter("@UserName", SqlDbType.NVarChar, 50)
-				{
-					Value = userName
-				};
-				command.Parameters.Add(parameter);
-
-				int rowsAffected = command.ExecuteNonQuery();
-				if (rowsAffected > 0)
-				{
-					message = "First login info updated successfully.";
-					return true;
-				}
-				else
-				{
-					message = "No records were updated.";
-					return false;
-				}
-			}
-			catch (SqlException sqlEx)
-			{
-				error.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", sqlEx);
-				message = $"SQL Error: {sqlEx.Message}";
-				return false;
-			}
-			catch (Exception ex)
-			{
-				error.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", ex);
-				message = $"An error occurred: {ex.Message}";
-				return false;
-			}
-		}
-
+		//public bool UpdateFirstLoginInfo(string query, string userName, string empName, out string message)
+		//{
+		//	message = string.Empty;
+		//
+		//	try
+		//	{
+		//		using var con = new SqlConnection(_dbConnection);
+		//		con.Open();
+		//
+		//		using var command = new SqlCommand(query, con);
+		//		// Add the parameter for @UserName with explicit type and size (adjust SqlDbType and size as needed)
+		//		var parameter = new SqlParameter("@UserName", SqlDbType.NVarChar, 50)
+		//		{
+		//			Value = userName
+		//		};
+		//		command.Parameters.Add(parameter);
+		//
+		//		int rowsAffected = command.ExecuteNonQuery();
+		//		if (rowsAffected > 0)
+		//		{
+		//			message = "First login info updated successfully.";
+		//			return true;
+		//		}
+		//		else
+		//		{
+		//			message = "No records were updated.";
+		//			return false;
+		//		}
+		//	}
+		//	catch (SqlException sqlEx)
+		//	{
+		//		error.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", sqlEx);
+		//		message = $"SQL Error: {sqlEx.Message}";
+		//		return false;
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		error.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", ex);
+		//		message = $"An error occurred: {ex.Message}";
+		//		return false;
+		//	}
+		//}
+		//
 
 		//public bool UpdateFirstLoginInfo(string query, string userName, string empName, out string message)
 		//{
@@ -839,7 +877,9 @@ WHERE USERNAME LIKE @itemToSearch";
 				UpdatePassword(password, userNameDB, empName);
 				LogPasswordChange(userName, reason, empName);
 
-				NotifyUser(userName, email, password, reason);
+				SendCredentialstoEmail(email, userName, empName, password, "Reset");
+
+				//NotifyUser(userName, email, password, reason);
 
 				message = "Password updated successfully.";
 				status = "Success";
@@ -856,7 +896,7 @@ WHERE USERNAME LIKE @itemToSearch";
 
 		private void UpdatePassword(string password, string userName, string empName)
 		{
-			string updateQuery = "UPDATE [User Information] SET PASSWORD = @Password WHERE USERNAME = @UserName";
+			string updateQuery = "UPDATE [User Information] SET PASSWORD = @Password, [First Time Login] = 'NO' WHERE USERNAME = @UserName";
 
 			using (var con = new SqlConnection(_dbConnection))
 			using (var cmd = new SqlCommand(updateQuery, con))
@@ -884,7 +924,7 @@ WHERE USERNAME LIKE @itemToSearch";
 				case "change":
 					logMessage = $"{userName} updated their password due to a system requirement.";
 					log.AddActivityLog(logMessage, userName, "System required password change", "CHANGE PASSWORD UPDATE");
-					UpdateFirstLoginInfo("UPDATE [User Information] SET [FIRST TIME LOGIN] = 'NO' WHERE USERNAME = @UserName", userName, empName, out string message);
+					//UpdateFirstLoginInfo("UPDATE [User Information] SET [FIRST TIME LOGIN] = 'NO' WHERE USERNAME = @UserName", userName, empName, out string message);
 					break;
 
 				default:
@@ -898,7 +938,8 @@ WHERE USERNAME LIKE @itemToSearch";
 		{
 			string emailSubject = reason == "forgot" ? "Password Reset Request" : "Password Change Confirmation";
 			string emailContent = $"Your new password for PCMS Lipa General Tool is: {password}\n\nPlease do not share this email or your password.";
-			mailSender.SendEmail(email, emailSubject, email, "CMS Lipa General Tool - noreply", null, null, null);
+			mailSender.SendEmail(email, emailSubject, emailContent, null, "PCMS Lipa General Tool - User", null);
+			//mailSender.SendEmail(email, emailSubject, email, "CMS Lipa General Tool - noreply", null, null, null);
 
 			//mailSender.SendEmail("noAttach", emailContent, null, emailSubject, email, "PCMS Lipa General Tool - noreply", null, null);
 
@@ -1202,130 +1243,130 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 		}
 
-		public bool MoreEmployeeDatabase(
-	string empID,
-	string empName,
-	string rdWebUsername,
-	string rdWebPassword,
-	string lytecUsername,
-	string lytecPassword,
-	string workEmail,
-	string emailPassword,
-	DateTime dateOfBirth,
-	string broadvoiceNo,
-	string broadvoiceUsername,
-	string broadvoicePassword,
-	string pcName,
-	string pcUsername,
-	string pcPassword,
-	string team,
-	string remarks,
-	string firstLogin,
-	string discordUsername,
-	string discordPassword,
-	string employmentStatus,
-	string authorName,
-	out string message)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				conn.Open();
-
-				// Generate activity message
-				string logs = $@"I added an update for {empName}. Check the details below.
-
-Employee ID: {empID}
-Employee Name: {empName}
-RDWeb Username: {rdWebUsername}
-RD Password: {rdWebPassword}
-Lytec Username: {lytecUsername}
-Lytec Password: {lytecPassword}
-Email: {workEmail}
-Email Password: {emailPassword}
-Date of Birth: {dateOfBirth:yyyy-MM-dd}
-Broadvoice No: {broadvoiceNo}
-Broadvoice Username: {broadvoiceUsername}
-Broadvoice Password: {broadvoicePassword}
-PC Name: {pcName}
-PC Username: {pcUsername}
-PC Password: {pcPassword}
-Team: {team}
-Discord Username: {discordUsername}
-Discord Password: {discordPassword}
-First Login: {firstLogin}
-Remarks: {remarks}
-Employment Status: {employmentStatus}";
-
-				// SQL command to update employee information
-				string sql = @"UPDATE [User Information] 
-                       SET [EMPLOYEE NAME] = @EMPNAME, 
-                           [RDWeb Username] = @RDUN, 
-                           [RDWeb Password] = @RDPW,
-                           [Lytec Username] = @LYTECUN, 
-                           [Lytec Password] = @LYTECPW, 
-                           [Email Address] = @WORKEMAIL, 
-                           [Email Password] = @EMAILPW, 
-                           [Broadvoice No.] = @BVNO,
-                           [Broadvoice Username] = @BVUN,  
-                           [Broadvoice Password] = @BVPW, 
-                           [PC Assigned] = @PCASS, 
-                           [PC Username] = @PCUN,
-                           [PC Password] = @PCPW, 
-                           Remarks = @REMARKS, 
-                           [Date of Birth] = @DOB, 
-                           [Team] = @Team, 
-                           [First Time Login] = @FIRSTLOGIN, 
-                           [Discord Username] = @DCUsername, 
-                           [Discord Password] = @DCPassword, 
-                           [Employment Status] = @EmpStatus 
-                       WHERE [Employee ID] = @EMPID";
-
-				using SqlCommand cmd = new(sql, conn);
-				cmd.Parameters.AddWithValue("@EMPID", empID);
-				cmd.Parameters.AddWithValue("@EMPNAME", empName);
-				cmd.Parameters.AddWithValue("@RDUN", rdWebUsername);
-				cmd.Parameters.AddWithValue("@RDPW", rdWebPassword);
-				cmd.Parameters.AddWithValue("@LYTECUN", lytecUsername);
-				cmd.Parameters.AddWithValue("@LYTECPW", lytecPassword);
-				cmd.Parameters.AddWithValue("@WORKEMAIL", workEmail);
-				cmd.Parameters.AddWithValue("@EMAILPW", emailPassword);
-				cmd.Parameters.AddWithValue("@DOB", dateOfBirth);
-				cmd.Parameters.AddWithValue("@BVNO", broadvoiceNo);
-				cmd.Parameters.AddWithValue("@BVUN", broadvoiceUsername);
-				cmd.Parameters.AddWithValue("@BVPW", broadvoicePassword);
-				cmd.Parameters.AddWithValue("@PCASS", pcName);
-				cmd.Parameters.AddWithValue("@PCUN", pcUsername);
-				cmd.Parameters.AddWithValue("@PCPW", pcPassword);
-				cmd.Parameters.AddWithValue("@Team", team);
-				cmd.Parameters.AddWithValue("@REMARKS", remarks);
-				cmd.Parameters.AddWithValue("@DCUsername", discordUsername);
-				cmd.Parameters.AddWithValue("@DCPassword", discordPassword);
-				cmd.Parameters.AddWithValue("@FIRSTLOGIN", firstLogin);
-				cmd.Parameters.AddWithValue("@EmpStatus", employmentStatus);
-
-				// Execute the query
-				cmd.ExecuteNonQuery();
-
-				// Log activity
-				message = $"{authorName} updated Employee ID: {empID}";
-				log.AddActivityLog(message, authorName, logs, "UPDATED MORE EMPLOYEE INFORMATION");
-				return true;
-				///fe.SendToastNotifDesktop(message, "success");
-			}
-			catch (Exception ex)
-			{
-				error.LogError("MoreEmployeeDatabase", authorName, "User", empID, ex);
-				message = $"Failed to update {empID}, Please try again later";
-				return false;
-				///MessageBox.Show($"{ex.Message} {empID}", "Failed to Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			finally
-			{
-				conn.Close();
-			}
-		}
-
+//		public bool MoreEmployeeDatabase(
+//	string empID,
+//	string empName,
+//	string rdWebUsername,
+//	string rdWebPassword,
+//	string lytecUsername,
+//	string lytecPassword,
+//	string workEmail,
+//	string emailPassword,
+//	DateTime dateOfBirth,
+//	string broadvoiceNo,
+//	string broadvoiceUsername,
+//	string broadvoicePassword,
+//	string pcName,
+//	string pcUsername,
+//	string pcPassword,
+//	string team,
+//	string remarks,
+//	string firstLogin,
+//	string discordUsername,
+//	string discordPassword,
+//	string employmentStatus,
+//	string authorName,
+//	out string message)
+//		{
+//			using SqlConnection conn = new(_dbConnection);
+//			try
+//			{
+//				conn.Open();
+//
+//				// Generate activity message
+//				string logs = $@"I added an update for {empName}. Check the details below.
+//
+//Employee ID: {empID}
+//Employee Name: {empName}
+//RDWeb Username: {rdWebUsername}
+//RD Password: {rdWebPassword}
+//Lytec Username: {lytecUsername}
+//Lytec Password: {lytecPassword}
+//Email: {workEmail}
+//Email Password: {emailPassword}
+//Date of Birth: {dateOfBirth:yyyy-MM-dd}
+//Broadvoice No: {broadvoiceNo}
+//Broadvoice Username: {broadvoiceUsername}
+//Broadvoice Password: {broadvoicePassword}
+//PC Name: {pcName}
+//PC Username: {pcUsername}
+//PC Password: {pcPassword}
+//Team: {team}
+//Discord Username: {discordUsername}
+//Discord Password: {discordPassword}
+//First Login: {firstLogin}
+//Remarks: {remarks}
+//Employment Status: {employmentStatus}";
+//
+//				// SQL command to update employee information
+//				string sql = @"UPDATE [User Information] 
+//                       SET [EMPLOYEE NAME] = @EMPNAME, 
+//                           [RDWeb Username] = @RDUN, 
+//                           [RDWeb Password] = @RDPW,
+//                           [Lytec Username] = @LYTECUN, 
+//                           [Lytec Password] = @LYTECPW, 
+//                           [Email Address] = @WORKEMAIL, 
+//                           [Email Password] = @EMAILPW, 
+//                           [Broadvoice No.] = @BVNO,
+//                           [Broadvoice Username] = @BVUN,  
+//                           [Broadvoice Password] = @BVPW, 
+//                           [PC Assigned] = @PCASS, 
+//                           [PC Username] = @PCUN,
+//                           [PC Password] = @PCPW, 
+//                           Remarks = @REMARKS, 
+//                           [Date of Birth] = @DOB, 
+//                           [Team] = @Team, 
+//                           [First Time Login] = @FIRSTLOGIN, 
+//                           [Discord Username] = @DCUsername, 
+//                           [Discord Password] = @DCPassword, 
+//                           [Employment Status] = @EmpStatus 
+//                       WHERE [Employee ID] = @EMPID";
+//
+//				using SqlCommand cmd = new(sql, conn);
+//				cmd.Parameters.AddWithValue("@EMPID", empID);
+//				cmd.Parameters.AddWithValue("@EMPNAME", empName);
+//				cmd.Parameters.AddWithValue("@RDUN", rdWebUsername);
+//				cmd.Parameters.AddWithValue("@RDPW", rdWebPassword);
+//				cmd.Parameters.AddWithValue("@LYTECUN", lytecUsername);
+//				cmd.Parameters.AddWithValue("@LYTECPW", lytecPassword);
+//				cmd.Parameters.AddWithValue("@WORKEMAIL", workEmail);
+//				cmd.Parameters.AddWithValue("@EMAILPW", emailPassword);
+//				cmd.Parameters.AddWithValue("@DOB", dateOfBirth);
+//				cmd.Parameters.AddWithValue("@BVNO", broadvoiceNo);
+//				cmd.Parameters.AddWithValue("@BVUN", broadvoiceUsername);
+//				cmd.Parameters.AddWithValue("@BVPW", broadvoicePassword);
+//				cmd.Parameters.AddWithValue("@PCASS", pcName);
+//				cmd.Parameters.AddWithValue("@PCUN", pcUsername);
+//				cmd.Parameters.AddWithValue("@PCPW", pcPassword);
+//				cmd.Parameters.AddWithValue("@Team", team);
+//				cmd.Parameters.AddWithValue("@REMARKS", remarks);
+//				cmd.Parameters.AddWithValue("@DCUsername", discordUsername);
+//				cmd.Parameters.AddWithValue("@DCPassword", discordPassword);
+//				cmd.Parameters.AddWithValue("@FIRSTLOGIN", firstLogin);
+//				cmd.Parameters.AddWithValue("@EmpStatus", employmentStatus);
+//
+//				// Execute the query
+//				cmd.ExecuteNonQuery();
+//
+//				// Log activity
+//				message = $"{authorName} updated Employee ID: {empID}";
+//				log.AddActivityLog(message, authorName, logs, "UPDATED MORE EMPLOYEE INFORMATION");
+//				return true;
+//				///fe.SendToastNotifDesktop(message, "success");
+//			}
+//			catch (Exception ex)
+//			{
+//				error.LogError("MoreEmployeeDatabase", authorName, "User", empID, ex);
+//				message = $"Failed to update {empID}, Please try again later";
+//				return false;
+//				///MessageBox.Show($"{ex.Message} {empID}", "Failed to Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
+//			}
+//			finally
+//			{
+//				conn.Close();
+//			}
+//		}
+//
 		public bool EmployeeDatabaseAllInfo(
 			string request,
 			string empID,
@@ -1337,18 +1378,16 @@ Employment Status: {employmentStatus}";
 			string userDept,
 			string userStatus,
 			string workEmail,
-			string bvNo,
+			string broadvoiceNo,
 			string office,
-			string newEmp,
+			string firstLogin,
 			string theme,
-			string authorName,
 			string rdWebUsername,
 			string rdWebPassword,
 			string lytecUsername,
 			string lytecPassword,
 			string emailPassword,
 			DateTime dateOfBirth,
-			string broadvoiceNo,
 			string broadvoiceUsername,
 			string broadvoicePassword,
 			string pcName,
@@ -1356,10 +1395,10 @@ Employment Status: {employmentStatus}";
 			string pcPassword,
 			string team,
 			string remarks,
-			string firstLogin,
 			string discordUsername,
 			string discordPassword,
 			string employmentStatus,
+			string authorName,
 			out string message)
 		{
 			using SqlConnection conn = new(_dbConnection);
@@ -1385,13 +1424,12 @@ Employment Status: {employmentStatus}";
                               POSITION = @POSITION,
                               DEPARTMENT = @USERDEPT,
                               [STATUS] = @USERSTATUS,
-                              [EMAIL ADDRESS] = @WORKEMAIL,
+                              [Email Address] = @WORKEMAIL,
                               [OFFICE] = @OFFICE,
                               [RDWeb Username] = @RDUN, 
 							  [RDWeb Password] = @RDPW,
 							  [Lytec Username] = @LYTECUN, 
 							  [Lytec Password] = @LYTECPW, 
-							  [Email Address] = @WORKEMAIL, 
 							  [Email Password] = @EMAILPW, 
 							  [Broadvoice No.] = @BVNO,
 							  [Broadvoice Username] = @BVUN,  
@@ -1413,18 +1451,18 @@ Employment Status: {employmentStatus}";
                           ([EMPLOYEE NAME], USERNAME, PASSWORD, [USER ACCESS],
                           POSITION, DEPARTMENT, [STATUS], [EMAIL ADDRESS], 
                           OFFICE, [FIRST TIME LOGIN], THEME, [RDWeb Username], 
-						  [RDWeb Password], [Lytec Username], [Lytec Password], [Email Address], 
+						  [RDWeb Password], [Lytec Username], [Lytec Password], 
 						  [Email Password], [Broadvoice No.], [Broadvoice Username], [Broadvoice Password],
                           [PC Assigned], [PC Username], [PC Password], Remarks, [Date of Birth], [Team], 
-						  [First Time Login], [Discord Username], [Discord Password], [Employment Status]) 
+						  [Discord Username], [Discord Password], [Employment Status]) 
                      VALUES
                           (@EMPNAME, @USERNAME, @PASSWORD, @USERACCESS,
                           @POSITION, @USERDEPT, @USERSTATUS, @WORKEMAIL, 
-                          @OFFICE, @NEWEMP, @THEME, @RDUN,
-						  @RDPW, @LYTECUN, @LYTECPW, @WORKEMAIL,
+                          @OFFICE, @FIRSTLOGIN, @THEME, @RDUN,
+						  @RDPW, @LYTECUN, @LYTECPW,
                           @EMAILPW, @BVNO, @BVUN, @BVPW,
 						  @PCASS, @PCUN, @PCPW, @REMARKS, @DOB, @Team,
-                          @FIRSTLOGIN, @DCUsername, @DCPassword, @EmpStatus)",
+                          @DCUsername, @DCPassword, @EmpStatus)",
 
 					"Delete" => @"DELETE FROM [User Information]
                           WHERE
@@ -1444,13 +1482,11 @@ Employment Status: {employmentStatus}";
 					cmd.Parameters.AddWithValue("@WORKEMAIL", workEmail ?? string.Empty);
 					cmd.Parameters.AddWithValue("@OFFICE", office ?? string.Empty);
 					cmd.Parameters.AddWithValue("@BVStatus", userStatus ?? string.Empty);
-					cmd.Parameters.AddWithValue("@EMPID", empID ?? string.Empty);
-					cmd.Parameters.AddWithValue("@EMPNAME", empName ?? string.Empty);
+					//cmd.Parameters.AddWithValue("@EMPID", empID ?? string.Empty);
 					cmd.Parameters.AddWithValue("@RDUN", rdWebUsername ?? string.Empty);
 					cmd.Parameters.AddWithValue("@RDPW", rdWebPassword ?? string.Empty);
 					cmd.Parameters.AddWithValue("@LYTECUN", lytecUsername ?? string.Empty);
 					cmd.Parameters.AddWithValue("@LYTECPW", lytecPassword ?? string.Empty);
-					cmd.Parameters.AddWithValue("@WORKEMAIL", workEmail ?? string.Empty);
 					cmd.Parameters.AddWithValue("@EMAILPW", emailPassword ?? string.Empty);
 					cmd.Parameters.AddWithValue("@DOB", dateOfBirth);
 					cmd.Parameters.AddWithValue("@BVNO", broadvoiceNo ?? string.Empty);
@@ -1468,13 +1504,15 @@ Employment Status: {employmentStatus}";
 				}
 
 				// Add specific parameters for "Create"
-				var password = GenerateRandomPassword();
+				
 
 				if (request == "Create")
 				{
-					cmd.Parameters.AddWithValue("@NEWEMP", newEmp ?? "N/A");
+					var password = GenerateRandomPassword();
+					//cmd.Parameters.AddWithValue("@NEWEMP", newEmp ?? "N/A");
 					cmd.Parameters.AddWithValue("@PASSWORD", sec.PassHash(password ?? string.Empty));
 					cmd.Parameters.AddWithValue("@THEME", theme ?? "Default");
+					SendCredentialstoEmail(workEmail.Trim(), userName.Trim(), empName.Trim(), password.Trim(), "New");
 				}
 
 				// Add parameter for all requests
@@ -1486,7 +1524,7 @@ Employment Status: {employmentStatus}";
 				// Log activity
 				logs = $"{authorName} {request.ToLower()}d Employee ID: {empID}";
 				message = $"Done! {empID} has been successfully {request.ToLower()}d.";
-				SendCredentialstoEmail(workEmail.Trim(), userName.Trim(), empName.Trim(), password.Trim());
+				
 
 				log.AddActivityLog(message, authorName, logs, $"{request.ToUpper()} USER INFORMATION");
 				return true;
@@ -1494,7 +1532,7 @@ Employment Status: {employmentStatus}";
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"EmployeeDatabase {request}", authorName, "User", newEmp, ex);
+				error.LogError($"EmployeeDatabase {request}", authorName, "User", empID, ex);
 				message = $"Failed to {request.ToLower()} {empID}, Please try again later";
 				return false;
 				//MessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1506,119 +1544,119 @@ Employment Status: {employmentStatus}";
 		}
 
 
-		public bool EmployeeDatabase(
-			string request,
-			string empID,
-			string empName,
-			string userName,
-			//string passWord,
-			string userAccess,
-			string position,
-			string userDept,
-			string userStatus,
-			string workEmail,
-			string bvNo,
-			string office,
-			string newEmp,
-			string theme,
-			string authorName,
-			out string message)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				ValidateInputs(workEmail);
-				conn.Open();
-				SqlCommand cmd = new()
-				{
-					Connection = conn
-				};
-
-				string logs;
-
-				// Determine the SQL command based on the request type
-				cmd.CommandText = request switch
-				{
-					"Update" => @"UPDATE [User Information]
-                          SET 
-                              [EMPLOYEE NAME] = @EMPNAME,
-                              USERNAME = @USERNAME,
-                              [USER ACCESS] = @USERACCESS,
-                              POSITION = @POSITION,
-                              DEPARTMENT = @USERDEPT,
-                              [STATUS] = @USERSTATUS,
-                              [EMAIL ADDRESS] = @WORKEMAIL,
-                              [OFFICE] = @OFFICE,
-                              [Broadvoice No.] = @BVNo,
-                              [Broadvoice Status] = @BVStatus
-                          WHERE
-                              [Employee ID] = @EMPID",
-					"Create" => @"INSERT INTO [User Information]
-                          ([EMPLOYEE NAME], USERNAME, PASSWORD, [USER ACCESS],
-                          POSITION, DEPARTMENT, [STATUS], [EMAIL ADDRESS], 
-                          [Broadvoice No.], OFFICE, [FIRST TIME LOGIN], THEME) 
-                          VALUES
-                          (@EMPNAME, @USERNAME, @PASSWORD, @USERACCESS,
-                          @POSITION, @USERDEPT, @USERSTATUS, @WORKEMAIL, 
-                          @BVNO, @OFFICE, @NEWEMP, @THEME)",
-					"Delete" => @"DELETE FROM [User Information]
-                          WHERE
-                              [Employee ID] = @EMPID",
-					_ => throw new ArgumentException("Invalid request type."),
-				};
-
-				// Add common parameters for "Update" and "Create"
-				if (request != "Delete")
-				{
-					cmd.Parameters.AddWithValue("@EMPNAME", empName ?? string.Empty);
-					cmd.Parameters.AddWithValue("@USERNAME", userName ?? string.Empty);
-					cmd.Parameters.AddWithValue("@USERACCESS", userAccess ?? string.Empty);
-					cmd.Parameters.AddWithValue("@POSITION", position ?? string.Empty);
-					cmd.Parameters.AddWithValue("@USERDEPT", userDept ?? string.Empty);
-					cmd.Parameters.AddWithValue("@USERSTATUS", userStatus ?? string.Empty);
-					cmd.Parameters.AddWithValue("@WORKEMAIL", workEmail ?? string.Empty);
-					cmd.Parameters.AddWithValue("@BVNO", bvNo ?? string.Empty);
-					cmd.Parameters.AddWithValue("@OFFICE", office ?? string.Empty);
-					cmd.Parameters.AddWithValue("@BVStatus", userStatus ?? string.Empty);
-				}
-
-				// Add specific parameters for "Create"
-				var password = GenerateRandomPassword();
-
-				if (request == "Create")
-				{
-					cmd.Parameters.AddWithValue("@NEWEMP", newEmp ?? "N/A");
-					cmd.Parameters.AddWithValue("@PASSWORD", sec.PassHash(password ?? string.Empty));
-					cmd.Parameters.AddWithValue("@THEME", theme ?? "Default");
-				}
-
-				// Add parameter for all requests
-				cmd.Parameters.AddWithValue("@EMPID", empID ?? string.Empty);
-
-				// Execute query
-				cmd.ExecuteNonQuery();
-
-				// Log activity
-				logs = $"{authorName} {request.ToLower()}d Employee ID: {empID}";
-				message = $"Done! {empID} has been successfully {request.ToLower()}d.";
-				SendCredentialstoEmail(workEmail.Trim(), userName.Trim(), empName.Trim(), password.Trim());
-
-				log.AddActivityLog(message, authorName, logs, $"{request.ToUpper()} USER INFORMATION");
-				return true;
-				//fe.SendToastNotifDesktop(message, "Success");
-			}
-			catch (Exception ex)
-			{
-				error.LogError($"EmployeeDatabase {request}", authorName, "User", newEmp, ex);
-				message = $"Failed to {request.ToLower()} {empID}, Please try again later";
-				return false;
-				//MessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			finally
-			{
-				conn.Close();
-			}
-		}
+		//public bool EmployeeDatabase(
+		//	string request,
+		//	string empID,
+		//	string empName,
+		//	string userName,
+		//	//string passWord,
+		//	string userAccess,
+		//	string position,
+		//	string userDept,
+		//	string userStatus,
+		//	string workEmail,
+		//	string bvNo,
+		//	string office,
+		//	string newEmp,
+		//	string theme,
+		//	string authorName,
+		//	out string message)
+		//{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		ValidateInputs(workEmail);
+		//		conn.Open();
+		//		SqlCommand cmd = new()
+		//		{
+		//			Connection = conn
+		//		};
+		//
+		//		string logs;
+		//
+		//		// Determine the SQL command based on the request type
+		//		cmd.CommandText = request switch
+		//		{
+		//			"Update" => @"UPDATE [User Information]
+		//                  SET 
+		//                      [EMPLOYEE NAME] = @EMPNAME,
+		//                      USERNAME = @USERNAME,
+		//                      [USER ACCESS] = @USERACCESS,
+		//                      POSITION = @POSITION,
+		//                      DEPARTMENT = @USERDEPT,
+		//                      [STATUS] = @USERSTATUS,
+		//                      [EMAIL ADDRESS] = @WORKEMAIL,
+		//                      [OFFICE] = @OFFICE,
+		//                      [Broadvoice No.] = @BVNo,
+		//                      [Broadvoice Status] = @BVStatus
+		//                  WHERE
+		//                      [Employee ID] = @EMPID",
+		//			"Create" => @"INSERT INTO [User Information]
+		//                  ([EMPLOYEE NAME], USERNAME, PASSWORD, [USER ACCESS],
+		//                  POSITION, DEPARTMENT, [STATUS], [EMAIL ADDRESS], 
+		//                  [Broadvoice No.], OFFICE, [FIRST TIME LOGIN], THEME) 
+		//                  VALUES
+		//                  (@EMPNAME, @USERNAME, @PASSWORD, @USERACCESS,
+		//                  @POSITION, @USERDEPT, @USERSTATUS, @WORKEMAIL, 
+		//                  @BVNO, @OFFICE, @NEWEMP, @THEME)",
+		//			"Delete" => @"DELETE FROM [User Information]
+		//                  WHERE
+		//                      [Employee ID] = @EMPID",
+		//			_ => throw new ArgumentException("Invalid request type."),
+		//		};
+		//
+		//		// Add common parameters for "Update" and "Create"
+		//		if (request != "Delete")
+		//		{
+		//			cmd.Parameters.AddWithValue("@EMPNAME", empName ?? string.Empty);
+		//			cmd.Parameters.AddWithValue("@USERNAME", userName ?? string.Empty);
+		//			cmd.Parameters.AddWithValue("@USERACCESS", userAccess ?? string.Empty);
+		//			cmd.Parameters.AddWithValue("@POSITION", position ?? string.Empty);
+		//			cmd.Parameters.AddWithValue("@USERDEPT", userDept ?? string.Empty);
+		//			cmd.Parameters.AddWithValue("@USERSTATUS", userStatus ?? string.Empty);
+		//			cmd.Parameters.AddWithValue("@WORKEMAIL", workEmail ?? string.Empty);
+		//			cmd.Parameters.AddWithValue("@BVNO", bvNo ?? string.Empty);
+		//			cmd.Parameters.AddWithValue("@OFFICE", office ?? string.Empty);
+		//			cmd.Parameters.AddWithValue("@BVStatus", userStatus ?? string.Empty);
+		//		}
+		//
+		//		// Add specific parameters for "Create"
+		//		var password = GenerateRandomPassword();
+		//
+		//		if (request == "Create")
+		//		{
+		//			cmd.Parameters.AddWithValue("@NEWEMP", newEmp ?? "N/A");
+		//			cmd.Parameters.AddWithValue("@PASSWORD", sec.PassHash(password ?? string.Empty));
+		//			cmd.Parameters.AddWithValue("@THEME", theme ?? "Default");
+		//		}
+		//
+		//		// Add parameter for all requests
+		//		cmd.Parameters.AddWithValue("@EMPID", empID ?? string.Empty);
+		//
+		//		// Execute query
+		//		cmd.ExecuteNonQuery();
+		//
+		//		// Log activity
+		//		logs = $"{authorName} {request.ToLower()}d Employee ID: {empID}";
+		//		message = $"Done! {empID} has been successfully {request.ToLower()}d.";
+		//		SendCredentialstoEmail(workEmail.Trim(), userName.Trim(), empName.Trim(), password.Trim());
+		//
+		//		log.AddActivityLog(message, authorName, logs, $"{request.ToUpper()} USER INFORMATION");
+		//		return true;
+		//		//fe.SendToastNotifDesktop(message, "Success");
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		error.LogError($"EmployeeDatabase {request}", authorName, "User", newEmp, ex);
+		//		message = $"Failed to {request.ToLower()} {empID}, Please try again later";
+		//		return false;
+		//		//MessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		//	}
+		//	finally
+		//	{
+		//		conn.Close();
+		//	}
+		//}
 
 
 		//public void EmployeeDatabase(
@@ -1728,68 +1766,136 @@ Employment Status: {employmentStatus}";
 		//	}
 		//}
 
-
-		private void SendCredentialstoEmail(string recipientEmail, string userName, string empName, string password)
+		public void SendCredentialstoEmail(string recipientEmail, string userName, string empName, string password, string action)
 		{
+			string machineName = Environment.MachineName;
+			string emailAddressCC;
+			if (machineName == "ERWIN-PC")
+			{
+				emailAddressCC = "Edimson@yopmail.com";
+				//ccEmail1 = "Angeline@yopmail.com";
+			}
+			else
+			{
+				emailAddressCC = "Edimson@pcmsbilling.net";
+				//ccEmail1 = "Angeline@pcmsbilling.net";
+			}
 			try
 			{
-				string subject = "Your Account Credentials";
-				string body = $@"
-                    <h3>Hello {empName},</h3>
-                    <p>Welcome to Primary Care Management Service. Your account credentials for PCMS Lipa General Tools are as follows:</p>
-                    <ul>
-                        <li><strong>Username:</strong> {userName}</li>
-                        <li><strong>Password:</strong> {password}</li>
-                    </ul>
-                    <p>Please log in and change your password immediately.</p>
-                    <p>Best regards,<br>SystemAdministrator</br> </p>";
+				string subject;
+				string bodyTemplate = @"
+            <h3>Hello {empName},</h3>
+            <p>{1}</p>
+            <ul>
+                <li><strong>Username:</strong> {2}</li>
+                <li><strong>Password:</strong> {3}</li>
+            </ul>
 
-				SendEmail(recipientEmail, subject, body);
-				//ShowNotification("Email sent successfully!", NotificationType.Success);
+            <p>Best regards,<br>System Administrator</br></p>";
+
+				if (action == "Reset")
+				{
+					subject = "Password Reset";
+					bodyTemplate = string.Format(bodyTemplate, empName,
+						"Your account credentials for PCMS Lipa General Tools have been updated. Please check the details below:",
+						userName, password);
+				}
+				else
+				{
+					subject = "Your Account Credentials";
+					bodyTemplate = string.Format(bodyTemplate, empName,
+						"Welcome to Primary Care Management Service. " +
+						"Please log in and change your password immediately. Your account credentials for PCMS Lipa General Tools are as follows:",
+						userName, password);
+				}
+				mailSender.SendEmail(recipientEmail, subject, bodyTemplate, emailAddressCC,  "PCMS Lipa General Tool - User", null);
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"SendCredentialstoEmail", empName,"User", recipientEmail, ex);
-				//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);/ ShowNotification($"Error sending email: {ex.Message}", NotificationType.Error);
+				error.LogError(nameof(SendCredentialstoEmail), empName, "User", recipientEmail, ex);
 			}
 		}
 
-		private void SendEmail(string recipient, string subject, string body)
-		{
-			try
-			{
-				string senderEmail = "yourmeeappnoreply@gmail.com";
-				string appPassword = "qrgd alxm otut euuq";
-				string senderName = "PCMS Lipa General Tool - noreply";
-				// Use the App Password generated from Google
-				//string recipientEmail = txtRecipient.Text.Trim();
-				//string subject = txtSubject.Text.Trim();
-				//string body = txtBody.Text.Trim();
+		//public void SendCredentialstoEmail(string recipientEmail, string userName, string empName, string password, string action)
+		//{
+		//	try
+		//	{
+		//		if (action == "Reset")
+		//		{
+		//			string subject = "Password Reset";
+		//			string body = $@"
+		//            <h3>Hello {empName},</h3>
+		//            <p>Your account credentials for PCMS Lipa General Tools has been reset. Please check the details below:</p>
+		//            <ul>
+		//                <li><strong>Username:</strong> {userName}</li>
+		//                <li><strong>Password:</strong> {password}</li>
+		//            </ul>
+		//            <p>Please log in and change your password immediately.</p>
+		//            <p>Best regards,<br>SystemAdministrator</br> </p>";
+		//
+		//			SendEmail(recipientEmail, subject, body);
+		//		}
+		//		else
+		//		{
+		//			string subject = "Your Account Credentials";
+		//			string body = $@"
+		//			<h3>Hello {empName},</h3>
+		//			<p>Welcome to Primary Care Management Service. Your account credentials for PCMS Lipa General Tools are as follows:</p>
+		//			<ul>
+		//				<li><strong>Username:</strong> {userName}</li>
+		//				<li><strong>Password:</strong> {password}</li>
+		//			</ul>
+		//			<p>Please log in and change your password immediately.</p>
+		//			<p>Best regards,<br>SystemAdministrator</br> </p>";
+		//			SendEmail(recipientEmail, subject, body);
+		//			//ShowNotification("Email sent successfully!", NotificationType.Success);
+		//		}
+		//		
+		//		//ShowNotification("Email sent successfully!", NotificationType.Success);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		error.LogError($"SendCredentialstoEmail", empName,"User", recipientEmail, ex);
+		//		//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);/ ShowNotification($"Error sending email: {ex.Message}", NotificationType.Error);
+		//	}
+		//}
 
-				using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587))
-				{
-					smtpClient.Credentials = new NetworkCredential(senderEmail, appPassword);
-					smtpClient.EnableSsl = true;
-
-					using (MailMessage mailMessage = new MailMessage())
-					{
-						mailMessage.From = new MailAddress(senderEmail, senderName); // Custom Sender Name
-						mailMessage.To.Add(new MailAddress(recipient));
-						mailMessage.Subject = subject;
-						mailMessage.Body = body;
-						mailMessage.IsBodyHtml = true;
-						mailMessage.CC.Add("edimson@yopmail.com");
-						mailMessage.Bcc.Add("mr.erwinalcantara@gmail.com");
-						smtpClient.Send(mailMessage);
-					}
-				}
-
-				RadMessageBox.Show("Email Sent Successfully!", "Success", MessageBoxButtons.OK, RadMessageIcon.Info);
-			}
-			catch (Exception ex)
-			{
-				RadMessageBox.Show($"Error: {ex.Message}", "Email Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
-			}
+		//private void SendEmail(string recipient, string subject, string body)
+		//{
+		//	try
+		//	{
+		//		string senderEmail = "yourmeeappnoreply@gmail.com";
+		//		string appPassword = "qrgd alxm otut euuq";
+		//		string senderName = "PCMS Lipa General Tool - noreply";
+		//		// Use the App Password generated from Google
+		//		//string recipientEmail = txtRecipient.Text.Trim();
+		//		//string subject = txtSubject.Text.Trim();
+		//		//string body = txtBody.Text.Trim();
+		//
+		//		using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587))
+		//		{
+		//			smtpClient.Credentials = new NetworkCredential(senderEmail, appPassword);
+		//			smtpClient.EnableSsl = true;
+		//
+		//			using (MailMessage mailMessage = new MailMessage())
+		//			{
+		//				mailMessage.From = new MailAddress(senderEmail, senderName); // Custom Sender Name
+		//				mailMessage.To.Add(new MailAddress(recipient));
+		//				mailMessage.Subject = subject;
+		//				mailMessage.Body = body;
+		//				mailMessage.IsBodyHtml = true;
+		//				mailMessage.CC.Add("edimson@yopmail.com");
+		//				mailMessage.Bcc.Add("mr.erwinalcantara@gmail.com");
+		//				smtpClient.Send(mailMessage);
+		//			}
+		//		}
+		//
+		//		RadMessageBox.Show("Email Sent Successfully!", "Success", MessageBoxButtons.OK, RadMessageIcon.Info);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		RadMessageBox.Show($"Error: {ex.Message}", "Email Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+		//	}
 
 			//string smtpHost = "smtp." + EmailHost;
 			//int smtpPort = 587;
@@ -1835,9 +1941,9 @@ Employment Status: {employmentStatus}";
 			//		Task.Delay(retryDelay).Wait();
 			//	}
 			//}
-		}
+		
 
-		private string GenerateRandomPassword()
+		public string GenerateRandomPassword()
 		{
 			const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 			var random = new Random();
@@ -1852,9 +1958,12 @@ Employment Status: {employmentStatus}";
 
 		public DataTable ViewEmployeeInformationUser(string empName, out string lblCount, string window)
 		{
-			string query =  window == "EmpInfo"
+			//string query =  window == "EmpInfo"
+			//	? "SELECT [EMPLOYEE ID], [EMPLOYEE NAME], [EMAIL ADDRESS], [BROADVOICE NO.], [DEPARTMENT], POSITION, OFFICE, STATUS, REMARKS FROM [User Information] WHERE STATUS = 'ACTIVE'"
+			//	: "SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS], [Broadvoice No.] FROM [User Information] WHERE STATUS = 'ACTIVE'";
+			string query = window == "EmpInfo"
 				? "SELECT [EMPLOYEE ID], [EMPLOYEE NAME], [EMAIL ADDRESS], [BROADVOICE NO.], [DEPARTMENT], POSITION, OFFICE, STATUS, REMARKS FROM [User Information] WHERE STATUS = 'ACTIVE'"
-				: "SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS], [Broadvoice No.] FROM [User Information] WHERE STATUS = 'ACTIVE'";
+				: "SELECT * FROM [User Information] WHERE STATUS = 'ACTIVE'";
 
 			var data = new DataTable();
 			lblCount = string.Empty;
@@ -2090,130 +2199,130 @@ Employment Status: {employmentStatus}";
 		//}
 		//
 
-		public bool MoreEmployeeDatabase(
-	string empID,
-	string empName,
-	string rdWebUsername,
-	string rdWebPassword,
-	string lytecUsername,
-	string lytecPassword,
-	string workEmail,
-	string emailPassword,
-	DateTime dateOfBirth,
-	string broadvoiceNo,
-	string broadvoiceUsername,
-	string broadvoicePassword,
-	string pcName,
-	string pcUsername,
-	string pcPassword,
-	string team,
-	string remarks,
-	string firstLogin,
-	string discordUsername,
-	string discordPassword,
-	string employmentStatus,
-	string authorName,
-	out string message)
-		{
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				conn.Open();
-
-				// Generate activity message
-				string logs = $@"I added an update for {empName}. Check the details below.
-
-Employee ID: {empID}
-Employee Name: {empName}
-RDWeb Username: {rdWebUsername}
-RD Password: {rdWebPassword}
-Lytec Username: {lytecUsername}
-Lytec Password: {lytecPassword}
-Email: {workEmail}
-Email Password: {emailPassword}
-Date of Birth: {dateOfBirth:yyyy-MM-dd}
-Broadvoice No: {broadvoiceNo}
-Broadvoice Username: {broadvoiceUsername}
-Broadvoice Password: {broadvoicePassword}
-PC Name: {pcName}
-PC Username: {pcUsername}
-PC Password: {pcPassword}
-Team: {team}
-Discord Username: {discordUsername}
-Discord Password: {discordPassword}
-First Login: {firstLogin}
-Remarks: {remarks}
-Employment Status: {employmentStatus}";
-
-				// SQL command to update employee information
-				string sql = @"UPDATE [User Information] 
-                       SET [EMPLOYEE NAME] = @EMPNAME, 
-                           [RDWeb Username] = @RDUN, 
-                           [RDWeb Password] = @RDPW,
-                           [Lytec Username] = @LYTECUN, 
-                           [Lytec Password] = @LYTECPW, 
-                           [Email Address] = @WORKEMAIL, 
-                           [Email Password] = @EMAILPW, 
-                           [Broadvoice No.] = @BVNO,
-                           [Broadvoice Username] = @BVUN,  
-                           [Broadvoice Password] = @BVPW, 
-                           [PC Assigned] = @PCASS, 
-                           [PC Username] = @PCUN,
-                           [PC Password] = @PCPW, 
-                           Remarks = @REMARKS, 
-                           [Date of Birth] = @DOB, 
-                           [Team] = @Team, 
-                           [First Time Login] = @FIRSTLOGIN, 
-                           [Discord Username] = @DCUsername, 
-                           [Discord Password] = @DCPassword, 
-                           [Employment Status] = @EmpStatus 
-                       WHERE [Employee ID] = @EMPID";
-
-				using SqlCommand cmd = new(sql, conn);
-				cmd.Parameters.AddWithValue("@EMPID", empID);
-				cmd.Parameters.AddWithValue("@EMPNAME", empName);
-				cmd.Parameters.AddWithValue("@RDUN", rdWebUsername);
-				cmd.Parameters.AddWithValue("@RDPW", rdWebPassword);
-				cmd.Parameters.AddWithValue("@LYTECUN", lytecUsername);
-				cmd.Parameters.AddWithValue("@LYTECPW", lytecPassword);
-				cmd.Parameters.AddWithValue("@WORKEMAIL", workEmail);
-				cmd.Parameters.AddWithValue("@EMAILPW", emailPassword);
-				cmd.Parameters.AddWithValue("@DOB", dateOfBirth);
-				cmd.Parameters.AddWithValue("@BVNO", broadvoiceNo);
-				cmd.Parameters.AddWithValue("@BVUN", broadvoiceUsername);
-				cmd.Parameters.AddWithValue("@BVPW", broadvoicePassword);
-				cmd.Parameters.AddWithValue("@PCASS", pcName);
-				cmd.Parameters.AddWithValue("@PCUN", pcUsername);
-				cmd.Parameters.AddWithValue("@PCPW", pcPassword);
-				cmd.Parameters.AddWithValue("@Team", team);
-				cmd.Parameters.AddWithValue("@REMARKS", remarks);
-				cmd.Parameters.AddWithValue("@DCUsername", discordUsername);
-				cmd.Parameters.AddWithValue("@DCPassword", discordPassword);
-				cmd.Parameters.AddWithValue("@FIRSTLOGIN", firstLogin);
-				cmd.Parameters.AddWithValue("@EmpStatus", employmentStatus);
-
-				// Execute the query
-				cmd.ExecuteNonQuery();
-
-				// Log activity
-				message = $"{authorName} updated Employee ID: {empID}";
-				log.AddActivityLog(message, authorName, logs, "UPDATED MORE EMPLOYEE INFORMATION");
-				return true;
-				///fe.SendToastNotifDesktop(message, "success");
-			}
-			catch (Exception ex)
-			{
-				error.LogError("MoreEmployeeDatabase", authorName, "User", empID, ex);
-				message = $"Failed to update {empID}, Please try again later";
-				return false;
-				///MessageBox.Show($"{ex.Message} {empID}", "Failed to Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			finally
-			{
-				conn.Close();
-			}
-		}
-
+		//public bool MoreEmployeeDatabase(
+		//	string empID,
+		//	string empName,
+		//	string rdWebUsername,
+		//	string rdWebPassword,
+		//	string lytecUsername,
+		//	string lytecPassword,
+		//	string workEmail,
+		//	string emailPassword,
+		//	DateTime dateOfBirth,
+		//	string broadvoiceNo,
+		//	string broadvoiceUsername,
+		//	string broadvoicePassword,
+		//	string pcName,
+		//	string pcUsername,
+		//	string pcPassword,
+		//	string team,
+		//	string remarks,
+		//	string firstLogin,
+		//	string discordUsername,
+		//	string discordPassword,
+		//	string employmentStatus,
+		//	string authorName,
+		//	out string message)
+		//		{
+		//	using SqlConnection conn = new(_dbConnection);
+		//	try
+		//	{
+		//		conn.Open();
+		//
+		//		// Generate activity message
+		//		string logs = $@"I added an update for {empName}. Check the details below.
+		//
+		//	Employee ID: {empID}
+		//	Employee Name: {empName}
+		//	RDWeb Username: {rdWebUsername}
+		//	RD Password: {rdWebPassword}
+		//	Lytec Username: {lytecUsername}
+		//	Lytec Password: {lytecPassword}
+		//	Email: {workEmail}
+		//	Email Password: {emailPassword}
+		//	Date of Birth: {dateOfBirth:yyyy-MM-dd}
+		//	Broadvoice No: {broadvoiceNo}
+		//	Broadvoice Username: {broadvoiceUsername}
+		//	Broadvoice Password: {broadvoicePassword}
+		//	PC Name: {pcName}
+		//	PC Username: {pcUsername}
+		//	PC Password: {pcPassword}
+		//	Team: {team}
+		//	Discord Username: {discordUsername}
+		//	Discord Password: {discordPassword}
+		//	First Login: {firstLogin}
+		//	Remarks: {remarks}
+		//	Employment Status: {employmentStatus}";
+		//	
+		//		// SQL command to update employee information
+		//		string sql = @"UPDATE [User Information] 
+        //               SET [EMPLOYEE NAME] = @EMPNAME, 
+        //                   [RDWeb Username] = @RDUN, 
+        //                   [RDWeb Password] = @RDPW,
+        //                   [Lytec Username] = @LYTECUN, 
+        //                   [Lytec Password] = @LYTECPW, 
+        //                   [Email Address] = @WORKEMAIL, 
+        //                   [Email Password] = @EMAILPW, 
+        //                   [Broadvoice No.] = @BVNO,
+        //                   [Broadvoice Username] = @BVUN,  
+        //                   [Broadvoice Password] = @BVPW, 
+        //                   [PC Assigned] = @PCASS, 
+        //                   [PC Username] = @PCUN,
+        //                   [PC Password] = @PCPW, 
+        //                   Remarks = @REMARKS, 
+        //                   [Date of Birth] = @DOB, 
+        //                   [Team] = @Team, 
+        //                   [First Time Login] = @FIRSTLOGIN, 
+        //                   [Discord Username] = @DCUsername, 
+        //                   [Discord Password] = @DCPassword, 
+        //                   [Employment Status] = @EmpStatus 
+        //               WHERE [Employee ID] = @EMPID";
+		//
+		//		using SqlCommand cmd = new(sql, conn);
+		//		cmd.Parameters.AddWithValue("@EMPID", empID);
+		//		cmd.Parameters.AddWithValue("@EMPNAME", empName);
+		//		cmd.Parameters.AddWithValue("@RDUN", rdWebUsername);
+		//		cmd.Parameters.AddWithValue("@RDPW", rdWebPassword);
+		//		cmd.Parameters.AddWithValue("@LYTECUN", lytecUsername);
+		//		cmd.Parameters.AddWithValue("@LYTECPW", lytecPassword);
+		//		cmd.Parameters.AddWithValue("@WORKEMAIL", workEmail);
+		//		cmd.Parameters.AddWithValue("@EMAILPW", emailPassword);
+		//		cmd.Parameters.AddWithValue("@DOB", dateOfBirth);
+		//		cmd.Parameters.AddWithValue("@BVNO", broadvoiceNo);
+		//		cmd.Parameters.AddWithValue("@BVUN", broadvoiceUsername);
+		//		cmd.Parameters.AddWithValue("@BVPW", broadvoicePassword);
+		//		cmd.Parameters.AddWithValue("@PCASS", pcName);
+		//		cmd.Parameters.AddWithValue("@PCUN", pcUsername);
+		//		cmd.Parameters.AddWithValue("@PCPW", pcPassword);
+		//		cmd.Parameters.AddWithValue("@Team", team);
+		//		cmd.Parameters.AddWithValue("@REMARKS", remarks);
+		//		cmd.Parameters.AddWithValue("@DCUsername", discordUsername);
+		//		cmd.Parameters.AddWithValue("@DCPassword", discordPassword);
+		//		cmd.Parameters.AddWithValue("@FIRSTLOGIN", firstLogin);
+		//		cmd.Parameters.AddWithValue("@EmpStatus", employmentStatus);
+		//
+		//		// Execute the query
+		//		cmd.ExecuteNonQuery();
+		//
+		//		// Log activity
+		//		message = $"{authorName} updated Employee ID: {empID}";
+		//		log.AddActivityLog(message, authorName, logs, "UPDATED MORE EMPLOYEE INFORMATION");
+		//		return true;
+		//		///fe.SendToastNotifDesktop(message, "success");
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		error.LogError("MoreEmployeeDatabase", authorName, "User", empID, ex);
+		//		message = $"Failed to update {empID}, Please try again later";
+		//		return false;
+		//		///MessageBox.Show($"{ex.Message} {empID}", "Failed to Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		//	}
+		//	finally
+		//	{
+		//		conn.Close();
+		//	}
+		//}
+		//
 		public DataTable GetAdminSearch(
 			string itemToSearch,
 			string statusColumn,
@@ -2228,9 +2337,25 @@ Employment Status: {employmentStatus}";
 
 				// Define the base query
 				string query = $@"
-SELECT [EMPLOYEE ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT],
-[USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS]
-FROM [User Information]
+	  [Employee ID]
+      ,[Employee Name]
+      ,[Username]
+      ,[Department]
+      ,[Position]
+      ,[RDWeb Username]
+      ,[Lytec Username]
+      ,[Email Address]
+      ,[Broadvoice No.]
+      ,[PC Assigned]
+      ,[PC Username]
+      ,[Team]
+      ,[Status]
+      ,[Employment Status]
+      ,[Date of Birth]
+      ,[Office]
+      ,[First Time Login]
+      ,[Discord Username]
+      ,[Remarks]
 WHERE USERNAME LIKE @itemToSearch";
 
 				// Add the STATUS filter only if statusColumn is not "All"

@@ -122,16 +122,14 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		private void mnuUserMgmt_Click(object sender, EventArgs e)
 		{
 			var userMgmt = new frmUserManagement();
-			if (accessLevel == "Management")
+			if (accessLevel == "Administrator")
 			{
-				userMgmt.btnNew.Visible = false;
-				userMgmt.btnRemove.Visible = false;
-				userMgmt.btnUpdateSave.Visible = false;
+				userMgmt.btnNewUser.Visible = false;
 			}
-			userMgmt.Text = "User Management";
+			userMgmt.Text = "User List";
 			userMgmt.empName = EmpName;
 			userMgmt.accessLevel = accessLevel;
-			userMgmt.Show();
+			userMgmt.ShowDialog();
 		}
 
 		private void radStatusStrip1_StatusBarClick(object sender, RadStatusBarClickEventArgs args)
@@ -158,7 +156,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			Hide();
 			var dlglogin = new FrmLogin();
 			dlglogin.txtUsername.Focus();
-			dlglogin.Show();
+			dlglogin.ShowDialog();
 		}
 
 		private void mnuExit_Click(object sender, EventArgs e)
@@ -774,7 +772,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 				accessLevel = accessLevel,
 				Text = "Database Utility"
 			};
-			dbUtility.Show();
+			dbUtility.ShowDialog();
 		}
 
 		private void mnuwcDX_Click(object sender, EventArgs e)

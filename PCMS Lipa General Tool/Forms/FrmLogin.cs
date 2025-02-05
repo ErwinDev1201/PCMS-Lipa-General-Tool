@@ -58,10 +58,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 			var loginManager = new Login();
 			loginManager.UserLogin(ref username, ref password, ref isLoginPanelEnabled, ref alertMessage);
-
-			// Update the UI
-			loginPanel.Enabled = isLoginPanelEnabled;
+			//alertMessage = lblalert.Text;
 			lblalert.Text = alertMessage;
+			lblalert.Visible = true;
+			txtPassword.Text = "";
+			txtUsername.Focus();
+			lblalert.Refresh(); // Force UI update
+
+			// Update login panel state
+			loginPanel.Enabled = isLoginPanelEnabled;
 
 			if (string.IsNullOrEmpty(alertMessage))
 			{
@@ -101,7 +106,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 					}
 					else
 					{
-						user._dbConnection = db.GetDbConnection();
 						string resultMessage = user.CheckIfExistinDB(txtUsername.Text, "Login", "Login");
 						if (!string.IsNullOrEmpty(resultMessage))
 						{
