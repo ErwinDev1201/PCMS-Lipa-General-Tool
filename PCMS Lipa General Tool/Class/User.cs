@@ -877,6 +877,8 @@ WHERE USERNAME LIKE @itemToSearch";
 				UpdatePassword(password, userNameDB, reason, empName);
 				SendCredentialstoEmail(email, userName, empName, password, "Reset");
 
+				//SendCredentialstoEmail(email, userName, empName, password, "Reset");
+
 				//NotifyUser(userName, email, password, reason);
 
 				message = "Password updated successfully.";
@@ -915,11 +917,11 @@ WHERE USERNAME LIKE @itemToSearch";
 						log.AddActivityLog(logMessage, userName, logMessage, "FORGOT PASSWORD UPDATE");
 						break;
 
-					case "change":
-						logMessage = $"{userName} updated their password due to a system requirement.";
-						log.AddActivityLog(logMessage, userName, "System required password change", "CHANGE PASSWORD UPDATE");
-						//UpdateFirstLoginInfo("UPDATE [User Information] SET [FIRST TIME LOGIN] = 'NO' WHERE USERNAME = @UserName", userName, empName, out string message);
-						break;
+				case "change":
+					logMessage = $"{userName} updated their password due to a system requirement.";
+					log.AddActivityLog(logMessage, userName, "System required password change", "CHANGE PASSWORD UPDATE");
+					//UpdateFirstLoginInfo("UPDATE [User Information] SET [FIRST TIME LOGIN] = 'NO' WHERE USERNAME = @UserName", userName, empName, out string message);
+					break;
 
 					case "adminreset":
 						logMessage = $"{empName} (Admin) updated the password for {userName}.";
@@ -1780,6 +1782,8 @@ WHERE USERNAME LIKE @itemToSearch";
 			try
 			{
 				string subject;
+
+				// Corrected placeholder usage
 				string bodyTemplate = @"
         <h3>Hello {0},</h3>
         <p>{1}</p>
@@ -1787,9 +1791,10 @@ WHERE USERNAME LIKE @itemToSearch";
             <li><strong>Username:</strong> {2}</li>
             <li><strong>Password:</strong> {3}</li>
         </ul>
-        <p>Best regards,<br>System Administrator</br></p>";
+        <p>Best regards,<br>System Administrator</p>";
 
 				string body;
+
 				if (action == "Reset")
 				{
 					subject = "Password Reset";
