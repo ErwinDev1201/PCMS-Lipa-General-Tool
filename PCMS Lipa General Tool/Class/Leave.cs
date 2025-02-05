@@ -806,33 +806,34 @@ namespace PCMS_Lipa_General_Tool.Class
 				//emailAddress = "Edimson@pcmsbilling.net";
 				//ccEmail1 = "Angeline@pcmsbilling.net";
 				//ccEmail2 = "Shalah@pcmsbilling.net";
-				machineName = Environment.MachineName;
-				if (machineName == "ERWIN-PC")
-				{
-					emailAddress = "Edimson@yopmail.com";
-					ccEmail1 = "Angeline@yopmail.com";
-				}
-				else
-				{
-					emailAddress = "Edimson@pcmsbilling.net";
-					ccEmail1 = "Angeline@pcmsbilling.net";
-				}
+				
 				//yopmail use for testing to avoid sending spam/test email in activate account and comment when building release
 
 				//ccEmail2 = "Shalah@yopmail.com";
 
 				if (request == "file")
 				{
-					user.GetUsersEmail(employeeName, empName);
-					mailSubject = "Filed Leave from " + employeeName;
-					if (position == "Management")
+					machineName = Environment.MachineName;
+					if (machineName == "ERWIN-PC")
 					{
-						mail.SendEmail(mailContent, mailSubject, emailAddress, "Leave Notification", null, null, null);
+						emailAddress = "Edimson@yopmail.com";
+						ccEmail1 = "Angeline@yopmail.com";
+					}
+					else
+					{
+						emailAddress = "Edimson@pcmsbilling.net";
+						ccEmail1 = "Angeline@pcmsbilling.net";
+					}
+					//user.GetUsersEmail(employeeName, empName);
+					mailSubject = "Filed Leave from " + employeeName;
+					if (position == "Supervisor")
+					{
+						mail.SendEmail(emailAddress, mailSubject, mailContent, null, "PCMS Lipa General Tool - Leave Notification", null);
 						//mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", null, null);
 					}
 					else
 					{
-						mail.SendEmail(mailContent, mailSubject, emailAddress, "Leave Notification", null, ccEmail1, null);
+						mail.SendEmail(emailAddress, mailSubject, mailContent, ccEmail1, "PCMS Lipa General Tool - Leave Notification", null);
 						//mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", ccEmail1, null);
 						//emailSender.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", );
 					}
@@ -840,10 +841,10 @@ namespace PCMS_Lipa_General_Tool.Class
 				}
 				else if (request == "response")
 				{
-					user.GetUsersEmail(employeeName, empName);
-					emailAddress = email;
+					emailAddress = user.GetUsersEmail(employeeName, empName);
 					mailSubject = "File Leave Update for " + employeeName;
-					mail.SendEmail(mailContent, mailSubject, emailAddress, "Leave Update Response", null, ccEmail1, null);
+					mail.SendEmail(emailAddress, mailSubject, mailContent, null, "PCMS Lipa General Tool - Leave Response", null);
+					//mail.SendEmail(mailContent, mailSubject, emailAddress, "Leave Update Response", null, ccEmail1, null);
 					//mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Leave Update Notification (via PCMS Lipa General Tool)", null, null);
 				}
 			}
