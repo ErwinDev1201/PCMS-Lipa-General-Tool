@@ -257,12 +257,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 					//
 					lblResult = { Visible = false },
+					EmpName = empName,
 					Text = "Modify User",
 					//btnUpdate = { Text = "Update" },
 					accessLevel = accessLevel,
 					
 				};
-				modUser.EmpName = empName;
 				modUser.DefaultItem("Update");
 				modUser.btnDelete.Visible = accessLevel != "Administrator" ? true : false;
 				modUser.ShowDialog();

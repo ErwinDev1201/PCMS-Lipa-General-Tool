@@ -877,6 +877,8 @@ WHERE USERNAME LIKE @itemToSearch";
 				UpdatePassword(password, userNameDB, reason, empName);
 				SendCredentialstoEmail(email, userName, empName, password, "Reset");
 
+				SendCredentialstoEmail(email, userName, empName, password, "Reset");
+
 				//NotifyUser(userName, email, password, reason);
 
 				message = "Password updated successfully.";
@@ -915,11 +917,11 @@ WHERE USERNAME LIKE @itemToSearch";
 						log.AddActivityLog(logMessage, userName, logMessage, "FORGOT PASSWORD UPDATE");
 						break;
 
-					case "change":
-						logMessage = $"{userName} updated their password due to a system requirement.";
-						log.AddActivityLog(logMessage, userName, "System required password change", "CHANGE PASSWORD UPDATE");
-						//UpdateFirstLoginInfo("UPDATE [User Information] SET [FIRST TIME LOGIN] = 'NO' WHERE USERNAME = @UserName", userName, empName, out string message);
-						break;
+				case "change":
+					logMessage = $"{userName} updated their password due to a system requirement.";
+					log.AddActivityLog(logMessage, userName, "System required password change", "CHANGE PASSWORD UPDATE");
+					//UpdateFirstLoginInfo("UPDATE [User Information] SET [FIRST TIME LOGIN] = 'NO' WHERE USERNAME = @UserName", userName, empName, out string message);
+					break;
 
 					case "adminreset":
 						logMessage = $"{empName} (Admin) updated the password for {userName}.";
@@ -1767,53 +1769,51 @@ WHERE USERNAME LIKE @itemToSearch";
 		{
 			string machineName = Environment.MachineName;
 			string emailAddressCC;
-
 			if (machineName == "ERWIN-PC")
 			{
 				emailAddressCC = "Edimson@yopmail.com";
+				//ccEmail1 = "Angeline@yopmail.com";
 			}
 			else
 			{
 				emailAddressCC = "Edimson@pcmsbilling.net";
+				//ccEmail1 = "Angeline@pcmsbilling.net";
 			}
-
 			try
 			{
 				string subject;
 				string bodyTemplate = @"
-        <h3>Hello {0},</h3>
-        <p>{1}</p>
-        <ul>
-            <li><strong>Username:</strong> {2}</li>
-            <li><strong>Password:</strong> {3}</li>
-        </ul>
-        <p>Best regards,<br>System Administrator</br></p>";
+            <h3>Hello {empName},</h3>
+            <p>{1}</p>
+            <ul>
+                <li><strong>Username:</strong> {2}</li>
+                <li><strong>Password:</strong> {3}</li>
+            </ul>
 
-				string body;
+            <p>Best regards,<br>System Administrator</br></p>";
+
 				if (action == "Reset")
 				{
 					subject = "Password Reset";
-					body = string.Format(bodyTemplate, empName,
+					bodyTemplate = string.Format(bodyTemplate, empName,
 						"Your account credentials for PCMS Lipa General Tools have been updated. Please check the details below:",
 						userName, password);
 				}
 				else
 				{
 					subject = "Your Account Credentials";
-					body = string.Format(bodyTemplate, empName,
+					bodyTemplate = string.Format(bodyTemplate, empName,
 						"Welcome to Primary Care Management Service. " +
 						"Please log in and change your password immediately. Your account credentials for PCMS Lipa General Tools are as follows:",
 						userName, password);
 				}
-
-				mailSender.SendEmail(recipientEmail, subject, body, emailAddressCC, "PCMS Lipa General Tool - User", null);
+				mailSender.SendEmail(recipientEmail, subject, bodyTemplate, emailAddressCC,  "PCMS Lipa General Tool - User", null);
 			}
 			catch (Exception ex)
 			{
 				error.LogError(nameof(SendCredentialstoEmail), empName, "User", recipientEmail, ex);
 			}
 		}
-
 
 		//public void SendCredentialstoEmail(string recipientEmail, string userName, string empName, string password, string action)
 		//{
@@ -1896,51 +1896,51 @@ WHERE USERNAME LIKE @itemToSearch";
 		//		RadMessageBox.Show($"Error: {ex.Message}", "Email Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//	}
 
-		//string smtpHost = "smtp." + EmailHost;
-		//int smtpPort = 587;
-		//string senderEmail = "erwin@pcmsbilling.net";
-		////gmail app password = qrgd alxm otut euuq
-		//string senderPassword = "W3yHzy-j-A";
-		//int retryCount = 3; // Number of retries
-		//int retryDelay = 2000; // Delay in milliseconds between retries
-		//
-		//for (int attempt = 1; attempt <= retryCount; attempt++)
-		//{
-		//	try
-		//	{
-		//		using var smtpClient = new SmtpClient(smtpHost)
-		//		{
-		//			Port = smtpPort,
-		//			Credentials = new NetworkCredential(senderEmail, senderPassword),
-		//			EnableSsl = true
-		//		};
-		//
-		//		using MailMessage mail = new()
-		//		{
-		//			From = new MailAddress(senderEmail, "PCMS Lipa General Tool"),
-		//			Subject = subject,
-		//			Body = body
-		//
-		//		};
-		//		mail.IsBodyHtml = true;	
-		//		mail.To.Add(recipient);
-		//		mail.CC.Add("edimson@pcmsbilling.net");
-		//		mail.Bcc.Add("mr.erwinalcantara@gmail.com");
-		//		smtpClient.Send(mail);
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		if (attempt == retryCount)
-		//		{
-		//			error.LogError("SendEmail", null, "User", recipient, ex);
-		//			return;
-		//		}
-		//
-		//		// Delay before retrying
-		//		Task.Delay(retryDelay).Wait();
-		//	}
-		//}
-
+			//string smtpHost = "smtp." + EmailHost;
+			//int smtpPort = 587;
+			//string senderEmail = "erwin@pcmsbilling.net";
+			////gmail app password = qrgd alxm otut euuq
+			//string senderPassword = "W3yHzy-j-A";
+			//int retryCount = 3; // Number of retries
+			//int retryDelay = 2000; // Delay in milliseconds between retries
+			//
+			//for (int attempt = 1; attempt <= retryCount; attempt++)
+			//{
+			//	try
+			//	{
+			//		using var smtpClient = new SmtpClient(smtpHost)
+			//		{
+			//			Port = smtpPort,
+			//			Credentials = new NetworkCredential(senderEmail, senderPassword),
+			//			EnableSsl = true
+			//		};
+			//
+			//		using MailMessage mail = new()
+			//		{
+			//			From = new MailAddress(senderEmail, "PCMS Lipa General Tool"),
+			//			Subject = subject,
+			//			Body = body
+			//
+			//		};
+			//		mail.IsBodyHtml = true;	
+			//		mail.To.Add(recipient);
+			//		mail.CC.Add("edimson@pcmsbilling.net");
+			//		mail.Bcc.Add("mr.erwinalcantara@gmail.com");
+			//		smtpClient.Send(mail);
+			//	}
+			//	catch (Exception ex)
+			//	{
+			//		if (attempt == retryCount)
+			//		{
+			//			error.LogError("SendEmail", null, "User", recipient, ex);
+			//			return;
+			//		}
+			//
+			//		// Delay before retrying
+			//		Task.Delay(retryDelay).Wait();
+			//	}
+			//}
+		
 
 		public string GenerateRandomPassword()
 		{
