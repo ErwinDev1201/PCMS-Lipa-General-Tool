@@ -318,7 +318,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtDCPassword.Enabled = true;
 			txtRemarks.Enabled = true;
 
-			// Set ComboBoxes as disabled (read-only alternative)
+			// Set ComboBoxes as enable (read-only alternative)
 			cmbUserAccess.Enabled = true;
 			cmbUserDept.Enabled = true;
 			cmbPosition.Enabled = true;
@@ -328,7 +328,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			cmbEmploymentStatus.Enabled = true;
 			cmbFirstTime.Enabled = true;
 
-			// Set DateTimePicker as disabled (read-only alternative)
+			// Set DateTimePicker as enable (read-only alternative)
 			dtpDateofBirth.Enabled = true;
 			//btnUpdate.Visible = false;
 			//btnDelete.Visible = false;
