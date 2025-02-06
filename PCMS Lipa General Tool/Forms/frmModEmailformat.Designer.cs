@@ -68,16 +68,16 @@
 			this.radPanel1.Controls.Add(this.radLabel1);
 			this.radPanel1.Location = new System.Drawing.Point(14, 18);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(521, 272);
+			this.radPanel1.Size = new System.Drawing.Size(377, 246);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
 			// radLabel5
 			// 
 			this.radLabel5.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel5.Location = new System.Drawing.Point(20, 187);
+			this.radLabel5.Location = new System.Drawing.Point(20, 138);
 			this.radLabel5.Name = "radLabel5";
-			this.radLabel5.Size = new System.Drawing.Size(60, 20);
+			this.radLabel5.Size = new System.Drawing.Size(59, 19);
 			this.radLabel5.TabIndex = 19;
 			this.radLabel5.Text = "Remarks";
 			this.radLabel5.ThemeName = "Crystal";
@@ -85,18 +85,18 @@
 			// txtRemarks
 			// 
 			this.txtRemarks.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtRemarks.Location = new System.Drawing.Point(124, 139);
+			this.txtRemarks.Location = new System.Drawing.Point(124, 109);
 			this.txtRemarks.Multiline = true;
 			this.txtRemarks.Name = "txtRemarks";
-			this.txtRemarks.Size = new System.Drawing.Size(238, 108);
+			this.txtRemarks.Size = new System.Drawing.Size(238, 86);
 			this.txtRemarks.TabIndex = 18;
 			// 
 			// btnSave
 			// 
 			this.btnSave.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnSave.Location = new System.Drawing.Point(386, 59);
+			this.btnSave.Location = new System.Drawing.Point(124, 200);
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(110, 65);
+			this.btnSave.Size = new System.Drawing.Size(238, 39);
 			this.btnSave.TabIndex = 17;
 			this.btnSave.Text = "&Save";
 			this.btnSave.ThemeName = "Crystal";
@@ -105,18 +105,18 @@
 			// txtInsuranceName
 			// 
 			this.txtInsuranceName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtInsuranceName.Location = new System.Drawing.Point(124, 98);
+			this.txtInsuranceName.Location = new System.Drawing.Point(124, 80);
 			this.txtInsuranceName.Name = "txtInsuranceName";
-			this.txtInsuranceName.Size = new System.Drawing.Size(238, 24);
+			this.txtInsuranceName.Size = new System.Drawing.Size(238, 23);
 			this.txtInsuranceName.TabIndex = 16;
 			this.txtInsuranceName.ThemeName = "Crystal";
 			// 
 			// radLabel3
 			// 
 			this.radLabel3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel3.Location = new System.Drawing.Point(20, 98);
+			this.radLabel3.Location = new System.Drawing.Point(20, 81);
 			this.radLabel3.Name = "radLabel3";
-			this.radLabel3.Size = new System.Drawing.Size(68, 20);
+			this.radLabel3.Size = new System.Drawing.Size(65, 19);
 			this.radLabel3.TabIndex = 15;
 			this.radLabel3.Text = "Insurance";
 			this.radLabel3.ThemeName = "Crystal";
@@ -124,18 +124,18 @@
 			// txtEmailFormat
 			// 
 			this.txtEmailFormat.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtEmailFormat.Location = new System.Drawing.Point(124, 59);
+			this.txtEmailFormat.Location = new System.Drawing.Point(124, 51);
 			this.txtEmailFormat.Name = "txtEmailFormat";
-			this.txtEmailFormat.Size = new System.Drawing.Size(238, 24);
+			this.txtEmailFormat.Size = new System.Drawing.Size(238, 23);
 			this.txtEmailFormat.TabIndex = 14;
 			this.txtEmailFormat.ThemeName = "Crystal";
 			// 
 			// radLabel2
 			// 
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel2.Location = new System.Drawing.Point(20, 59);
+			this.radLabel2.Location = new System.Drawing.Point(20, 52);
 			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(94, 20);
+			this.radLabel2.Size = new System.Drawing.Size(93, 19);
 			this.radLabel2.TabIndex = 13;
 			this.radLabel2.Text = "Email Format: ";
 			this.radLabel2.ThemeName = "Crystal";
@@ -145,7 +145,7 @@
 			this.txtIntID.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtIntID.Location = new System.Drawing.Point(124, 22);
 			this.txtIntID.Name = "txtIntID";
-			this.txtIntID.Size = new System.Drawing.Size(100, 24);
+			this.txtIntID.Size = new System.Drawing.Size(100, 23);
 			this.txtIntID.TabIndex = 12;
 			this.txtIntID.ThemeName = "Crystal";
 			// 
@@ -154,22 +154,22 @@
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(20, 22);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(78, 20);
+			this.radLabel1.Size = new System.Drawing.Size(74, 19);
 			this.radLabel1.TabIndex = 11;
 			this.radLabel1.Text = "Internal ID: ";
 			this.radLabel1.ThemeName = "Crystal";
 			// 
-			// frmModifyEmailformat
+			// frmModEmailformat
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(551, 305);
+			this.ClientSize = new System.Drawing.Size(401, 276);
 			this.Controls.Add(this.radPanel1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "frmModifyEmailformat";
+			this.Name = "frmModEmailformat";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Email Information";
 			this.ThemeName = "Crystal";

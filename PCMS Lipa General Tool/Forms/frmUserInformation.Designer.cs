@@ -220,6 +220,7 @@
 			this.radGroupBox3.Controls.Add(this.radLabel16);
 			this.radGroupBox3.Controls.Add(this.radLabel17);
 			this.radGroupBox3.Controls.Add(this.radLabel18);
+			this.radGroupBox3.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.radGroupBox3.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.radGroupBox3.HeaderText = "Personal Information";
 			this.radGroupBox3.Location = new System.Drawing.Point(388, 14);
@@ -516,6 +517,7 @@
 			this.radGroupBox2.Controls.Add(this.radLabel4);
 			this.radGroupBox2.Controls.Add(this.radLabel3);
 			this.radGroupBox2.Controls.Add(this.radLabel2);
+			this.radGroupBox2.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.radGroupBox2.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.radGroupBox2.HeaderText = "RD App Credentials";
 			this.radGroupBox2.Location = new System.Drawing.Point(13, 388);
@@ -616,6 +618,7 @@
 			this.radGroupBox1.Controls.Add(this.radLabel22);
 			this.radGroupBox1.Controls.Add(this.txtEmpID);
 			this.radGroupBox1.Controls.Add(this.radLabel1);
+			this.radGroupBox1.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.radGroupBox1.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.radGroupBox1.HeaderText = "Mandatory Information";
 			this.radGroupBox1.Location = new System.Drawing.Point(13, 14);

@@ -90,7 +90,7 @@
 			// cmbProviderList
 			// 
 			this.cmbProviderList.DropDownAnimationEnabled = true;
-			this.cmbProviderList.Location = new System.Drawing.Point(125, 55);
+			this.cmbProviderList.Location = new System.Drawing.Point(125, 49);
 			this.cmbProviderList.Name = "cmbProviderList";
 			this.cmbProviderList.Size = new System.Drawing.Size(227, 24);
 			this.cmbProviderList.TabIndex = 10;
@@ -100,7 +100,7 @@
 			// txtNotes
 			// 
 			this.txtNotes.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtNotes.Location = new System.Drawing.Point(125, 171);
+			this.txtNotes.Location = new System.Drawing.Point(125, 137);
 			this.txtNotes.Multiline = true;
 			this.txtNotes.Name = "txtNotes";
 			this.txtNotes.Size = new System.Drawing.Size(506, 110);
@@ -110,7 +110,7 @@
 			// btnDelete
 			// 
 			this.btnDelete.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDelete.Location = new System.Drawing.Point(505, 87);
+			this.btnDelete.Location = new System.Drawing.Point(505, 80);
 			this.btnDelete.Name = "btnDelete";
 			this.btnDelete.Size = new System.Drawing.Size(126, 51);
 			this.btnDelete.TabIndex = 8;
@@ -121,7 +121,7 @@
 			// btnUpdateSave
 			// 
 			this.btnUpdateSave.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnUpdateSave.Location = new System.Drawing.Point(505, 28);
+			this.btnUpdateSave.Location = new System.Drawing.Point(505, 22);
 			this.btnUpdateSave.Name = "btnUpdateSave";
 			this.btnUpdateSave.Size = new System.Drawing.Size(126, 51);
 			this.btnUpdateSave.TabIndex = 7;
@@ -132,17 +132,17 @@
 			// txtRemarks
 			// 
 			this.txtRemarks.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtRemarks.Location = new System.Drawing.Point(125, 300);
+			this.txtRemarks.Location = new System.Drawing.Point(125, 253);
 			this.txtRemarks.Multiline = true;
 			this.txtRemarks.Name = "txtRemarks";
-			this.txtRemarks.Size = new System.Drawing.Size(506, 43);
+			this.txtRemarks.Size = new System.Drawing.Size(506, 91);
 			this.txtRemarks.TabIndex = 6;
 			this.txtRemarks.ThemeName = "Crystal";
 			// 
 			// radLabel6
 			// 
 			this.radLabel6.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel6.Location = new System.Drawing.Point(20, 314);
+			this.radLabel6.Location = new System.Drawing.Point(20, 264);
 			this.radLabel6.Name = "radLabel6";
 			this.radLabel6.Size = new System.Drawing.Size(66, 19);
 			this.radLabel6.TabIndex = 3;
@@ -152,7 +152,7 @@
 			// txtPatientName
 			// 
 			this.txtPatientName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtPatientName.Location = new System.Drawing.Point(125, 129);
+			this.txtPatientName.Location = new System.Drawing.Point(125, 108);
 			this.txtPatientName.Name = "txtPatientName";
 			this.txtPatientName.Size = new System.Drawing.Size(237, 23);
 			this.txtPatientName.TabIndex = 3;
@@ -161,7 +161,7 @@
 			// radLabel5
 			// 
 			this.radLabel5.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel5.Location = new System.Drawing.Point(20, 211);
+			this.radLabel5.Location = new System.Drawing.Point(20, 176);
 			this.radLabel5.Name = "radLabel5";
 			this.radLabel5.Size = new System.Drawing.Size(42, 19);
 			this.radLabel5.TabIndex = 2;
@@ -171,7 +171,7 @@
 			// txtChartNo
 			// 
 			this.txtChartNo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtChartNo.Location = new System.Drawing.Point(125, 92);
+			this.txtChartNo.Location = new System.Drawing.Point(125, 79);
 			this.txtChartNo.Name = "txtChartNo";
 			this.txtChartNo.Size = new System.Drawing.Size(237, 23);
 			this.txtChartNo.TabIndex = 5;
@@ -181,7 +181,7 @@
 			// radLabel4
 			// 
 			this.radLabel4.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel4.Location = new System.Drawing.Point(20, 133);
+			this.radLabel4.Location = new System.Drawing.Point(20, 109);
 			this.radLabel4.Name = "radLabel4";
 			this.radLabel4.Size = new System.Drawing.Size(95, 19);
 			this.radLabel4.TabIndex = 2;
@@ -191,7 +191,7 @@
 			// radLabel3
 			// 
 			this.radLabel3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel3.Location = new System.Drawing.Point(20, 96);
+			this.radLabel3.Location = new System.Drawing.Point(20, 80);
 			this.radLabel3.Name = "radLabel3";
 			this.radLabel3.Size = new System.Drawing.Size(66, 19);
 			this.radLabel3.TabIndex = 4;
@@ -210,7 +210,7 @@
 			// radLabel2
 			// 
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel2.Location = new System.Drawing.Point(20, 60);
+			this.radLabel2.Location = new System.Drawing.Point(20, 52);
 			this.radLabel2.Name = "radLabel2";
 			this.radLabel2.Size = new System.Drawing.Size(99, 19);
 			this.radLabel2.TabIndex = 2;

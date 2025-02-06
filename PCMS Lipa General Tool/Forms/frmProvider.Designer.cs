@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition2 = new Telerik.WinControls.UI.TableViewDefinition();
+			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
 			this.txtNoProv = new Telerik.WinControls.UI.RadTextBox();
 			this.btnCancel = new Telerik.WinControls.UI.RadButton();
 			this.btnDelete = new Telerik.WinControls.UI.RadButton();
@@ -77,7 +77,7 @@
 			this.txtNoProv.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtNoProv.Location = new System.Drawing.Point(20, 51);
 			this.txtNoProv.Name = "txtNoProv";
-			this.txtNoProv.Size = new System.Drawing.Size(71, 24);
+			this.txtNoProv.Size = new System.Drawing.Size(71, 23);
 			this.txtNoProv.TabIndex = 2;
 			this.txtNoProv.ThemeName = "Crystal";
 			// 
@@ -119,7 +119,7 @@
 			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblSearchCount.Location = new System.Drawing.Point(20, 332);
 			this.lblSearchCount.Name = "lblSearchCount";
-			this.lblSearchCount.Size = new System.Drawing.Size(66, 20);
+			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
 			this.lblSearchCount.TabIndex = 4;
 			this.lblSearchCount.Text = "radLabel1";
 			this.lblSearchCount.ThemeName = "Crystal";
@@ -142,7 +142,7 @@
 			this.dgProviderInfo.MasterTemplate.AllowEditRow = false;
 			this.dgProviderInfo.MasterTemplate.AllowRowHeaderContextMenu = false;
 			this.dgProviderInfo.MasterTemplate.AllowRowResize = false;
-			this.dgProviderInfo.MasterTemplate.ViewDefinition = tableViewDefinition2;
+			this.dgProviderInfo.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgProviderInfo.Name = "dgProviderInfo";
 			this.dgProviderInfo.Size = new System.Drawing.Size(969, 274);
 			this.dgProviderInfo.TabIndex = 0;
@@ -154,7 +154,7 @@
 			this.txtRemarks.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtRemarks.Location = new System.Drawing.Point(507, 196);
 			this.txtRemarks.Name = "txtRemarks";
-			this.txtRemarks.Size = new System.Drawing.Size(468, 24);
+			this.txtRemarks.Size = new System.Drawing.Size(468, 23);
 			this.txtRemarks.TabIndex = 11;
 			this.txtRemarks.ThemeName = "Crystal";
 			// 
@@ -163,7 +163,7 @@
 			this.txtBillingAdd.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtBillingAdd.Location = new System.Drawing.Point(507, 149);
 			this.txtBillingAdd.Name = "txtBillingAdd";
-			this.txtBillingAdd.Size = new System.Drawing.Size(468, 24);
+			this.txtBillingAdd.Size = new System.Drawing.Size(468, 23);
 			this.txtBillingAdd.TabIndex = 9;
 			this.txtBillingAdd.ThemeName = "Crystal";
 			// 
@@ -172,7 +172,7 @@
 			this.txtPhysicalAdd.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtPhysicalAdd.Location = new System.Drawing.Point(507, 95);
 			this.txtPhysicalAdd.Name = "txtPhysicalAdd";
-			this.txtPhysicalAdd.Size = new System.Drawing.Size(468, 24);
+			this.txtPhysicalAdd.Size = new System.Drawing.Size(468, 23);
 			this.txtPhysicalAdd.TabIndex = 9;
 			this.txtPhysicalAdd.ThemeName = "Crystal";
 			// 
@@ -181,7 +181,7 @@
 			this.txtPalPTANo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtPalPTANo.Location = new System.Drawing.Point(507, 51);
 			this.txtPalPTANo.Name = "txtPalPTANo";
-			this.txtPalPTANo.Size = new System.Drawing.Size(271, 24);
+			this.txtPalPTANo.Size = new System.Drawing.Size(271, 23);
 			this.txtPalPTANo.TabIndex = 9;
 			this.txtPalPTANo.ThemeName = "Crystal";
 			// 
@@ -190,7 +190,7 @@
 			this.txtTaxID.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtTaxID.Location = new System.Drawing.Point(20, 196);
 			this.txtTaxID.Name = "txtTaxID";
-			this.txtTaxID.Size = new System.Drawing.Size(426, 24);
+			this.txtTaxID.Size = new System.Drawing.Size(426, 23);
 			this.txtTaxID.TabIndex = 7;
 			this.txtTaxID.ThemeName = "Crystal";
 			// 
@@ -199,7 +199,7 @@
 			this.txtPTANo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtPTANo.Location = new System.Drawing.Point(20, 149);
 			this.txtPTANo.Name = "txtPTANo";
-			this.txtPTANo.Size = new System.Drawing.Size(426, 24);
+			this.txtPTANo.Size = new System.Drawing.Size(426, 23);
 			this.txtPTANo.TabIndex = 5;
 			this.txtPTANo.ThemeName = "Crystal";
 			// 
@@ -208,7 +208,7 @@
 			this.txtNPINo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtNPINo.Location = new System.Drawing.Point(20, 96);
 			this.txtNPINo.Name = "txtNPINo";
-			this.txtNPINo.Size = new System.Drawing.Size(426, 24);
+			this.txtNPINo.Size = new System.Drawing.Size(426, 23);
 			this.txtNPINo.TabIndex = 3;
 			this.txtNPINo.ThemeName = "Crystal";
 			// 
@@ -217,7 +217,7 @@
 			this.txtProviderName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtProviderName.Location = new System.Drawing.Point(97, 51);
 			this.txtProviderName.Name = "txtProviderName";
-			this.txtProviderName.Size = new System.Drawing.Size(349, 24);
+			this.txtProviderName.Size = new System.Drawing.Size(349, 23);
 			this.txtProviderName.TabIndex = 1;
 			this.txtProviderName.ThemeName = "Crystal";
 			// 
@@ -236,6 +236,7 @@
 			this.radGroupBox1.Controls.Add(this.txtPTANo);
 			this.radGroupBox1.Controls.Add(this.txtNPINo);
 			this.radGroupBox1.Controls.Add(this.txtProviderName);
+			this.radGroupBox1.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.radGroupBox1.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.radGroupBox1.HeaderText = "Provider Details";
 			this.radGroupBox1.Location = new System.Drawing.Point(13, 379);
@@ -263,7 +264,7 @@
 			this.txtSearch.Location = new System.Drawing.Point(113, 14);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
-			this.txtSearch.Size = new System.Drawing.Size(283, 24);
+			this.txtSearch.Size = new System.Drawing.Size(283, 23);
 			this.txtSearch.TabIndex = 9;
 			this.txtSearch.ThemeName = "Crystal";
 			this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
@@ -273,7 +274,7 @@
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(21, 17);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(90, 20);
+			this.radLabel1.Size = new System.Drawing.Size(84, 19);
 			this.radLabel1.TabIndex = 8;
 			this.radLabel1.Text = "Search here: ";
 			this.radLabel1.ThemeName = "Crystal";

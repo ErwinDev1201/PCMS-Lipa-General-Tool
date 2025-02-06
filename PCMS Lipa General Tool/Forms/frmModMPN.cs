@@ -36,7 +36,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		}
 
-		
+
 
 		private void btnUpdateSave_Click(object sender, EventArgs e)
 		{
@@ -90,7 +90,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					fe.SendToastNotifDesktop(message, "Failed");
 				}
-				
+
 			}
 			ClearData();
 			Close();

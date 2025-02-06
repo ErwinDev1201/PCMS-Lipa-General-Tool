@@ -52,7 +52,7 @@
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(13, 27);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(96, 20);
+			this.radLabel1.Size = new System.Drawing.Size(92, 19);
 			this.radLabel1.TabIndex = 0;
 			this.radLabel1.Text = "Database List:";
 			this.radLabel1.ThemeName = "Crystal";
@@ -61,7 +61,7 @@
 			// 
 			this.cmbTable.DropDownAnimationEnabled = true;
 			this.cmbTable.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmbTable.Location = new System.Drawing.Point(183, 23);
+			this.cmbTable.Location = new System.Drawing.Point(159, 23);
 			this.cmbTable.Name = "cmbTable";
 			this.cmbTable.Size = new System.Drawing.Size(217, 24);
 			this.cmbTable.TabIndex = 1;
@@ -71,7 +71,7 @@
 			// btnChangeSeq
 			// 
 			this.btnChangeSeq.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnChangeSeq.Location = new System.Drawing.Point(266, 102);
+			this.btnChangeSeq.Location = new System.Drawing.Point(241, 87);
 			this.btnChangeSeq.Name = "btnChangeSeq";
 			this.btnChangeSeq.Size = new System.Drawing.Size(135, 34);
 			this.btnChangeSeq.TabIndex = 2;
@@ -82,18 +82,18 @@
 			// txtSequence
 			// 
 			this.txtSequence.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSequence.Location = new System.Drawing.Point(184, 105);
+			this.txtSequence.Location = new System.Drawing.Point(159, 92);
 			this.txtSequence.Name = "txtSequence";
-			this.txtSequence.Size = new System.Drawing.Size(68, 24);
+			this.txtSequence.Size = new System.Drawing.Size(68, 23);
 			this.txtSequence.TabIndex = 3;
 			this.txtSequence.ThemeName = "Crystal";
 			// 
 			// radLabel2
 			// 
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel2.Location = new System.Drawing.Point(13, 105);
+			this.radLabel2.Location = new System.Drawing.Point(13, 93);
 			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(129, 20);
+			this.radLabel2.Size = new System.Drawing.Size(121, 19);
 			this.radLabel2.TabIndex = 4;
 			this.radLabel2.Text = "Start Sequence No:";
 			this.radLabel2.ThemeName = "Crystal";
@@ -101,9 +101,9 @@
 			// radLabel3
 			// 
 			this.radLabel3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel3.Location = new System.Drawing.Point(13, 66);
+			this.radLabel3.Location = new System.Drawing.Point(13, 61);
 			this.radLabel3.Name = "radLabel3";
-			this.radLabel3.Size = new System.Drawing.Size(149, 20);
+			this.radLabel3.Size = new System.Drawing.Size(140, 19);
 			this.radLabel3.TabIndex = 5;
 			this.radLabel3.Text = "Current Sequence No: ";
 			this.radLabel3.ThemeName = "Crystal";
@@ -111,17 +111,18 @@
 			// lblcurrentVal
 			// 
 			this.lblcurrentVal.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblcurrentVal.Location = new System.Drawing.Point(183, 66);
+			this.lblcurrentVal.Location = new System.Drawing.Point(159, 61);
 			this.lblcurrentVal.Name = "lblcurrentVal";
-			this.lblcurrentVal.Size = new System.Drawing.Size(2, 2);
+			this.lblcurrentVal.Size = new System.Drawing.Size(14, 19);
 			this.lblcurrentVal.TabIndex = 6;
+			this.lblcurrentVal.Text = "0";
 			this.lblcurrentVal.ThemeName = "Crystal";
 			// 
 			// frmDBUtility
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(419, 154);
+			this.ClientSize = new System.Drawing.Size(389, 133);
 			this.Controls.Add(this.lblcurrentVal);
 			this.Controls.Add(this.radLabel3);
 			this.Controls.Add(this.radLabel2);

@@ -3,6 +3,7 @@ using System.Data;
 using System;
 using Telerik.WinControls.UI;
 using System.Configuration;
+using DocumentFormat.OpenXml.Office2013.Excel;
 
 namespace PCMS_Lipa_General_Tool.HelperClass
 {
@@ -90,13 +91,13 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 		//	return _dbConnection;
 		//}
 
-		public void AlterDBSequence(RadTextBox sequence, RadDropDownList databaseTable, string empName)
+		public void AlterDBSequence(string sequence, string databaseTable, string empName)
 		{
 			using SqlConnection conn = new(_dbConnection);
 			try
 			{
 				conn.Open();
-				using SqlCommand cmd = new("ALTER SEQUENCE " + databaseTable.Text + " RESTART WITH " + sequence.Text, conn);
+				using SqlCommand cmd = new("ALTER SEQUENCE " + databaseTable + " RESTART WITH " + sequence, conn);
 				cmd.ExecuteNonQuery();
 			}
 			catch (Exception ex)
@@ -109,30 +110,29 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 			}
 		}
 
-		public void GetSequenceNoPre(string query, RadLabel nextSequence)
+		public int GetSequenceNoPre(string cmbTable)
 		{
-			//int Price;
-			var con = new SqlConnection(_dbConnection);
+			int currSeq = 0; // Default value in case of an error
+
+			using SqlConnection con = new(_dbConnection);
 			try
 			{
 				con.Open();
-				SqlCommand cmd = new(query, con);
-				SqlDataReader reader = cmd.ExecuteReader();
-				while (reader.Read())
+				using SqlCommand cmd = new($"SELECT current_value FROM sys.sequences WHERE name = '{cmbTable}'", con);
+				using SqlDataReader reader = cmd.ExecuteReader();
+				if (reader.Read())
 				{
-					int currSeq = reader.GetInt32(0);
-					//nextSequence.Text = preID + (currSeq + 1).ToString();
-					nextSequence.Text = currSeq.ToString();// + ToString();
+					currSeq = reader.GetInt32(0);
 				}
-				con.Close();
-
-
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"GetSequenceNoPre", "N/A", "CommonTask", "N/A", ex);
+				error.LogError("GetSequenceNoPre", "N/A", "CommonTask", "N/A", ex);
 			}
+
+			return currSeq; // Return the sequence number
 		}
+
 
 		public string GetSequenceNo(string sequenceName, string preID)
 		{

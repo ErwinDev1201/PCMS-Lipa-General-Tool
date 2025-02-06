@@ -57,7 +57,7 @@
 			this.radPanel1.Controls.Add(this.label3);
 			this.radPanel1.Location = new System.Drawing.Point(12, 12);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(530, 155);
+			this.radPanel1.Size = new System.Drawing.Size(493, 143);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
@@ -66,7 +66,7 @@
 			this.txtUsername.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtUsername.Location = new System.Drawing.Point(135, 69);
 			this.txtUsername.Name = "txtUsername";
-			this.txtUsername.Size = new System.Drawing.Size(227, 23);
+			this.txtUsername.Size = new System.Drawing.Size(195, 23);
 			this.txtUsername.TabIndex = 18;
 			this.txtUsername.ThemeName = "Crystal";
 			// 
@@ -74,7 +74,7 @@
 			// 
 			this.radPictureBox1.Image = global::PCMS_Lipa_General_Tool.Properties.Resources.discord_hero_1;
 			this.radPictureBox1.ImageLayout = Telerik.WinControls.UI.RadImageLayout.Stretch;
-			this.radPictureBox1.Location = new System.Drawing.Point(155, 12);
+			this.radPictureBox1.Location = new System.Drawing.Point(145, 14);
 			this.radPictureBox1.Name = "radPictureBox1";
 			this.radPictureBox1.Size = new System.Drawing.Size(175, 43);
 			this.radPictureBox1.TabIndex = 17;
@@ -93,9 +93,9 @@
 			// txtNewPassword
 			// 
 			this.txtNewPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtNewPassword.Location = new System.Drawing.Point(135, 107);
+			this.txtNewPassword.Location = new System.Drawing.Point(135, 98);
 			this.txtNewPassword.Name = "txtNewPassword";
-			this.txtNewPassword.Size = new System.Drawing.Size(227, 23);
+			this.txtNewPassword.Size = new System.Drawing.Size(195, 23);
 			this.txtNewPassword.TabIndex = 14;
 			this.txtNewPassword.ThemeName = "Crystal";
 			this.txtNewPassword.TextChanged += new System.EventHandler(this.txtNewPassword_TextChanged);
@@ -103,9 +103,9 @@
 			// btnOK
 			// 
 			this.btnOK.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnOK.Location = new System.Drawing.Point(381, 69);
+			this.btnOK.Location = new System.Drawing.Point(346, 71);
 			this.btnOK.Name = "btnOK";
-			this.btnOK.Size = new System.Drawing.Size(133, 64);
+			this.btnOK.Size = new System.Drawing.Size(133, 52);
 			this.btnOK.TabIndex = 9;
 			this.btnOK.Text = "&Update Password";
 			this.btnOK.ThemeName = "Crystal";
@@ -115,7 +115,7 @@
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label3.Location = new System.Drawing.Point(24, 109);
+			this.label3.Location = new System.Drawing.Point(24, 100);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(96, 15);
 			this.label3.TabIndex = 5;
@@ -125,7 +125,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(553, 179);
+			this.ClientSize = new System.Drawing.Size(515, 167);
 			this.Controls.Add(this.radPanel1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

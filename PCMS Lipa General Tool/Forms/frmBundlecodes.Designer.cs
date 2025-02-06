@@ -33,21 +33,21 @@
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
 			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
-			this.lblbundeCode = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
 			this.dgBundleCode = new Telerik.WinControls.UI.RadGridView();
 			this.btnNew = new Telerik.WinControls.UI.RadButton();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
+			this.lblbundeCode = new Telerik.WinControls.UI.RadLabel();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblbundeCode)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBundleCode)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBundleCode.MasterTemplate)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblbundeCode)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -56,23 +56,22 @@
 			this.radPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.radPanel1.Controls.Add(this.lblbundeCode);
 			this.radPanel1.Controls.Add(this.txtSearch);
 			this.radPanel1.Controls.Add(this.radLabel1);
-			this.radPanel1.Controls.Add(this.lblbundeCode);
 			this.radPanel1.Controls.Add(this.radLabel2);
 			this.radPanel1.Controls.Add(this.dgBundleCode);
 			this.radPanel1.Controls.Add(this.btnNew);
 			this.radPanel1.Location = new System.Drawing.Point(13, 24);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(937, 634);
+			this.radPanel1.Size = new System.Drawing.Size(874, 558);
 			this.radPanel1.TabIndex = 0;
-			this.radPanel1.Text = "c";
 			this.radPanel1.ThemeName = "Crystal";
 			// 
 			// txtSearch
 			// 
 			this.txtSearch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSearch.Location = new System.Drawing.Point(113, 53);
+			this.txtSearch.Location = new System.Drawing.Point(112, 24);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
 			this.txtSearch.Size = new System.Drawing.Size(283, 23);
@@ -83,27 +82,17 @@
 			// radLabel1
 			// 
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(21, 56);
+			this.radLabel1.Location = new System.Drawing.Point(22, 27);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(84, 19);
 			this.radLabel1.TabIndex = 8;
 			this.radLabel1.Text = "Search here: ";
 			this.radLabel1.ThemeName = "Crystal";
 			// 
-			// lblbundeCode
-			// 
-			this.lblbundeCode.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblbundeCode.Location = new System.Drawing.Point(19, 606);
-			this.lblbundeCode.Name = "lblbundeCode";
-			this.lblbundeCode.Size = new System.Drawing.Size(66, 19);
-			this.lblbundeCode.TabIndex = 5;
-			this.lblbundeCode.Text = "radLabel3";
-			this.lblbundeCode.ThemeName = "Crystal";
-			// 
 			// radLabel2
 			// 
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel2.Location = new System.Drawing.Point(19, 90);
+			this.radLabel2.Location = new System.Drawing.Point(19, 69);
 			this.radLabel2.Name = "radLabel2";
 			this.radLabel2.Size = new System.Drawing.Size(796, 19);
 			this.radLabel2.TabIndex = 4;
@@ -118,7 +107,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgBundleCode.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dgBundleCode.Location = new System.Drawing.Point(19, 116);
+			this.dgBundleCode.Location = new System.Drawing.Point(19, 94);
 			// 
 			// 
 			// 
@@ -135,7 +124,7 @@
 			this.dgBundleCode.MasterTemplate.AllowRowResize = false;
 			this.dgBundleCode.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgBundleCode.Name = "dgBundleCode";
-			this.dgBundleCode.Size = new System.Drawing.Size(898, 483);
+			this.dgBundleCode.Size = new System.Drawing.Size(835, 429);
 			this.dgBundleCode.TabIndex = 3;
 			this.dgBundleCode.ThemeName = "Crystal";
 			this.dgBundleCode.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgBundleCode_MouseDoubleClick);
@@ -144,20 +133,30 @@
 			// 
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
-			this.btnNew.Location = new System.Drawing.Point(789, 29);
+			this.btnNew.Location = new System.Drawing.Point(692, 15);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(128, 48);
+			this.btnNew.Size = new System.Drawing.Size(162, 48);
 			this.btnNew.TabIndex = 2;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.btnNew.ThemeName = "Crystal";
 			this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
 			// 
+			// lblbundeCode
+			// 
+			this.lblbundeCode.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblbundeCode.Location = new System.Drawing.Point(21, 536);
+			this.lblbundeCode.Name = "lblbundeCode";
+			this.lblbundeCode.Size = new System.Drawing.Size(66, 19);
+			this.lblbundeCode.TabIndex = 10;
+			this.lblbundeCode.Text = "radLabel3";
+			this.lblbundeCode.ThemeName = "Crystal";
+			// 
 			// frmBundlecodes
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(962, 670);
+			this.ClientSize = new System.Drawing.Size(899, 594);
 			this.Controls.Add(this.radPanel1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -174,11 +173,11 @@
 			this.radPanel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblbundeCode)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBundleCode.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBundleCode)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblbundeCode)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 
@@ -191,9 +190,9 @@
 		private Telerik.WinControls.Themes.CrystalDarkTheme crystalDarkTheme1;
 		public Telerik.WinControls.UI.RadButton btnNew;
 		public Telerik.WinControls.UI.RadLabel radLabel2;
-		private Telerik.WinControls.UI.RadLabel lblbundeCode;
 		public Telerik.WinControls.UI.RadGridView dgBundleCode;
 		private Telerik.WinControls.UI.RadTextBox txtSearch;
 		private Telerik.WinControls.UI.RadLabel radLabel1;
+		private Telerik.WinControls.UI.RadLabel lblbundeCode;
 	}
 }

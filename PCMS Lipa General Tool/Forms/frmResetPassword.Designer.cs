@@ -80,7 +80,7 @@
 			this.txtNewPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtNewPassword.Location = new System.Drawing.Point(128, 123);
 			this.txtNewPassword.Name = "txtNewPassword";
-			this.txtNewPassword.Size = new System.Drawing.Size(293, 24);
+			this.txtNewPassword.Size = new System.Drawing.Size(293, 23);
 			this.txtNewPassword.TabIndex = 14;
 			this.txtNewPassword.ThemeName = "Crystal";
 			this.txtNewPassword.TextChanged += new System.EventHandler(this.txtNewPassword_TextChanged);
@@ -139,7 +139,7 @@
 			this.txtWorkEmail.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtWorkEmail.Location = new System.Drawing.Point(128, 73);
 			this.txtWorkEmail.Name = "txtWorkEmail";
-			this.txtWorkEmail.Size = new System.Drawing.Size(293, 24);
+			this.txtWorkEmail.Size = new System.Drawing.Size(293, 23);
 			this.txtWorkEmail.TabIndex = 7;
 			this.txtWorkEmail.ThemeName = "Crystal";
 			this.txtWorkEmail.TextChanged += new System.EventHandler(this.txtWorkEmail_TextChanged);
@@ -149,7 +149,7 @@
 			this.txtEmpID.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtEmpID.Location = new System.Drawing.Point(128, 22);
 			this.txtEmpID.Name = "txtEmpID";
-			this.txtEmpID.Size = new System.Drawing.Size(76, 24);
+			this.txtEmpID.Size = new System.Drawing.Size(76, 23);
 			this.txtEmpID.TabIndex = 6;
 			this.txtEmpID.ThemeName = "Crystal";
 			this.txtEmpID.TextChanged += new System.EventHandler(this.txtEmpID_TextChanged);
@@ -160,7 +160,7 @@
 			this.label3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label3.Location = new System.Drawing.Point(20, 127);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(105, 20);
+			this.label3.Size = new System.Drawing.Size(96, 15);
 			this.label3.TabIndex = 5;
 			this.label3.Text = "New Password:";
 			// 
@@ -170,7 +170,7 @@
 			this.label2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label2.Location = new System.Drawing.Point(20, 75);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(48, 20);
+			this.label2.Size = new System.Drawing.Size(44, 15);
 			this.label2.TabIndex = 4;
 			this.label2.Text = "Email: ";
 			// 
@@ -180,7 +180,7 @@
 			this.lblTemp.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblTemp.Location = new System.Drawing.Point(20, 24);
 			this.lblTemp.Name = "lblTemp";
-			this.lblTemp.Size = new System.Drawing.Size(77, 20);
+			this.lblTemp.Size = new System.Drawing.Size(71, 15);
 			this.lblTemp.TabIndex = 3;
 			this.lblTemp.Text = "Username: ";
 			// 

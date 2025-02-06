@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-			Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
-			Telerik.WinControls.UI.RadListDataItem radListDataItem2 = new Telerik.WinControls.UI.RadListDataItem();
-			Telerik.WinControls.UI.RadListDataItem radListDataItem3 = new Telerik.WinControls.UI.RadListDataItem();
-			Telerik.WinControls.UI.RadListDataItem radListDataItem4 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem5 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem6 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem7 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem8 = new Telerik.WinControls.UI.RadListDataItem();
 			this.grpEmpInfo = new Telerik.WinControls.UI.RadGroupBox();
 			this.txtEmploymentStatus = new Telerik.WinControls.UI.RadTextBox();
 			this.txtPosition = new Telerik.WinControls.UI.RadTextBox();
@@ -128,6 +128,7 @@
 			this.grpEmpInfo.Controls.Add(this.radLabel2);
 			this.grpEmpInfo.Controls.Add(this.radLabel1);
 			this.grpEmpInfo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.grpEmpInfo.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.grpEmpInfo.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.grpEmpInfo.HeaderText = "Employee Information";
 			this.grpEmpInfo.Location = new System.Drawing.Point(13, 13);
@@ -220,9 +221,10 @@
 			this.grpLeaveDate.Controls.Add(this.radLabel6);
 			this.grpLeaveDate.Controls.Add(this.radLabel5);
 			this.grpLeaveDate.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.grpLeaveDate.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.grpLeaveDate.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.grpLeaveDate.HeaderText = "Leave Date";
-			this.grpLeaveDate.Location = new System.Drawing.Point(13, 208);
+			this.grpLeaveDate.Location = new System.Drawing.Point(13, 196);
 			this.grpLeaveDate.Name = "grpLeaveDate";
 			this.grpLeaveDate.Size = new System.Drawing.Size(298, 105);
 			this.grpLeaveDate.TabIndex = 1;
@@ -283,11 +285,12 @@
 			this.grpFilingoptions.Controls.Add(this.grpTypeofLeave);
 			this.grpFilingoptions.Controls.Add(this.grpPaymentOption);
 			this.grpFilingoptions.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.grpFilingoptions.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.grpFilingoptions.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.grpFilingoptions.HeaderText = "Leave Filing Options";
 			this.grpFilingoptions.Location = new System.Drawing.Point(318, 13);
 			this.grpFilingoptions.Name = "grpFilingoptions";
-			this.grpFilingoptions.Size = new System.Drawing.Size(289, 300);
+			this.grpFilingoptions.Size = new System.Drawing.Size(289, 288);
 			this.grpFilingoptions.TabIndex = 2;
 			this.grpFilingoptions.Text = "Leave Filing Options";
 			this.grpFilingoptions.ThemeName = "Crystal";
@@ -301,9 +304,10 @@
 			this.grpTypeofLeave.Controls.Add(this.rdoPaternity);
 			this.grpTypeofLeave.Controls.Add(this.rdoVacation);
 			this.grpTypeofLeave.Controls.Add(this.rdoSick);
+			this.grpTypeofLeave.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.grpTypeofLeave.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.grpTypeofLeave.HeaderText = "Type of Leave";
-			this.grpTypeofLeave.Location = new System.Drawing.Point(15, 139);
+			this.grpTypeofLeave.Location = new System.Drawing.Point(15, 132);
 			this.grpTypeofLeave.Name = "grpTypeofLeave";
 			this.grpTypeofLeave.Size = new System.Drawing.Size(258, 145);
 			this.grpTypeofLeave.TabIndex = 4;
@@ -375,9 +379,10 @@
 			this.grpPaymentOption.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
 			this.grpPaymentOption.Controls.Add(this.rdoWOPay);
 			this.grpPaymentOption.Controls.Add(this.rdoWPay);
+			this.grpPaymentOption.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.grpPaymentOption.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.grpPaymentOption.HeaderText = "Payment Options";
-			this.grpPaymentOption.Location = new System.Drawing.Point(15, 45);
+			this.grpPaymentOption.Location = new System.Drawing.Point(15, 41);
 			this.grpPaymentOption.Name = "grpPaymentOption";
 			this.grpPaymentOption.Size = new System.Drawing.Size(258, 77);
 			this.grpPaymentOption.TabIndex = 3;
@@ -409,6 +414,7 @@
 			this.grpReason.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
 			this.grpReason.Controls.Add(this.txtReason);
 			this.grpReason.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.grpReason.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.grpReason.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.grpReason.HeaderText = "Reason";
 			this.grpReason.Location = new System.Drawing.Point(614, 13);
@@ -433,7 +439,7 @@
 			// btnCancel
 			// 
 			this.btnCancel.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnCancel.Location = new System.Drawing.Point(880, 273);
+			this.btnCancel.Location = new System.Drawing.Point(880, 259);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(116, 40);
 			this.btnCancel.TabIndex = 9;
@@ -443,7 +449,7 @@
 			// btnSaveUpdate
 			// 
 			this.btnSaveUpdate.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnSaveUpdate.Location = new System.Drawing.Point(880, 173);
+			this.btnSaveUpdate.Location = new System.Drawing.Point(880, 161);
 			this.btnSaveUpdate.Name = "btnSaveUpdate";
 			this.btnSaveUpdate.Size = new System.Drawing.Size(116, 40);
 			this.btnSaveUpdate.TabIndex = 13;
@@ -458,9 +464,10 @@
 			this.grpApprovalStatus.Controls.Add(this.cmbApproval);
 			this.grpApprovalStatus.Controls.Add(this.radLabel9);
 			this.grpApprovalStatus.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.grpApprovalStatus.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.grpApprovalStatus.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.grpApprovalStatus.HeaderText = "Approval Status";
-			this.grpApprovalStatus.Location = new System.Drawing.Point(613, 173);
+			this.grpApprovalStatus.Location = new System.Drawing.Point(613, 161);
 			this.grpApprovalStatus.Name = "grpApprovalStatus";
 			this.grpApprovalStatus.Size = new System.Drawing.Size(251, 140);
 			this.grpApprovalStatus.TabIndex = 10;
@@ -482,18 +489,18 @@
 			// 
 			this.cmbApproval.DropDownAnimationEnabled = true;
 			this.cmbApproval.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			radListDataItem1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			radListDataItem1.Text = "FOR APPROVAL";
-			radListDataItem2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			radListDataItem2.Text = "APPROVED";
-			radListDataItem3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			radListDataItem3.Text = "NOT APPROVED";
-			radListDataItem4.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			radListDataItem4.Text = "NEED SUP. DOC";
-			this.cmbApproval.Items.Add(radListDataItem1);
-			this.cmbApproval.Items.Add(radListDataItem2);
-			this.cmbApproval.Items.Add(radListDataItem3);
-			this.cmbApproval.Items.Add(radListDataItem4);
+			radListDataItem5.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			radListDataItem5.Text = "FOR APPROVAL";
+			radListDataItem6.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			radListDataItem6.Text = "APPROVED";
+			radListDataItem7.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			radListDataItem7.Text = "NOT APPROVED";
+			radListDataItem8.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			radListDataItem8.Text = "NEED SUP. DOC";
+			this.cmbApproval.Items.Add(radListDataItem5);
+			this.cmbApproval.Items.Add(radListDataItem6);
+			this.cmbApproval.Items.Add(radListDataItem7);
+			this.cmbApproval.Items.Add(radListDataItem8);
 			this.cmbApproval.Location = new System.Drawing.Point(10, 32);
 			this.cmbApproval.Name = "cmbApproval";
 			this.cmbApproval.Size = new System.Drawing.Size(232, 24);
@@ -525,6 +532,7 @@
 			this.grpID.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
 			this.grpID.Controls.Add(this.lblLeaveID);
 			this.grpID.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.grpID.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.grpID.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.grpID.HeaderText = "Leave ID";
 			this.grpID.Location = new System.Drawing.Point(877, 13);
@@ -537,7 +545,7 @@
 			// btnDelete
 			// 
 			this.btnDelete.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDelete.Location = new System.Drawing.Point(880, 223);
+			this.btnDelete.Location = new System.Drawing.Point(880, 207);
 			this.btnDelete.Name = "btnDelete";
 			this.btnDelete.Size = new System.Drawing.Size(116, 40);
 			this.btnDelete.TabIndex = 15;

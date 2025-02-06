@@ -34,18 +34,20 @@
 			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
 			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
-			this.dgHearingRep = new Telerik.WinControls.UI.RadGridView();
 			this.btnNew = new Telerik.WinControls.UI.RadButton();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
+			this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
+			this.dgHearingRep = new Telerik.WinControls.UI.RadGridView();
 			((System.ComponentModel.ISupportInitialize)(this.v)).BeginInit();
 			this.v.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgHearingRep)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgHearingRep.MasterTemplate)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -54,21 +56,22 @@
 			this.v.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.v.Controls.Add(this.dgHearingRep);
+			this.v.Controls.Add(this.radLabel2);
 			this.v.Controls.Add(this.txtSearch);
 			this.v.Controls.Add(this.radLabel1);
 			this.v.Controls.Add(this.lblSearchCount);
-			this.v.Controls.Add(this.dgHearingRep);
 			this.v.Controls.Add(this.btnNew);
 			this.v.Location = new System.Drawing.Point(13, 24);
 			this.v.Name = "v";
-			this.v.Size = new System.Drawing.Size(937, 634);
+			this.v.Size = new System.Drawing.Size(874, 558);
 			this.v.TabIndex = 0;
 			this.v.ThemeName = "Crystal";
 			// 
 			// txtSearch
 			// 
 			this.txtSearch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSearch.Location = new System.Drawing.Point(112, 43);
+			this.txtSearch.Location = new System.Drawing.Point(110, 38);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
 			this.txtSearch.Size = new System.Drawing.Size(283, 23);
@@ -79,7 +82,7 @@
 			// radLabel1
 			// 
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(20, 46);
+			this.radLabel1.Location = new System.Drawing.Point(18, 41);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(84, 19);
 			this.radLabel1.TabIndex = 8;
@@ -96,6 +99,28 @@
 			this.lblSearchCount.Text = "radLabel2";
 			this.lblSearchCount.ThemeName = "Crystal";
 			// 
+			// btnNew
+			// 
+			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
+			this.btnNew.Location = new System.Drawing.Point(692, 13);
+			this.btnNew.Name = "btnNew";
+			this.btnNew.Size = new System.Drawing.Size(162, 48);
+			this.btnNew.TabIndex = 2;
+			this.btnNew.Text = "&New";
+			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+			this.btnNew.ThemeName = "Crystal";
+			this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
+			// 
+			// radLabel2
+			// 
+			this.radLabel2.Location = new System.Drawing.Point(19, 535);
+			this.radLabel2.Name = "radLabel2";
+			this.radLabel2.Size = new System.Drawing.Size(68, 20);
+			this.radLabel2.TabIndex = 10;
+			this.radLabel2.Text = "radLabel2";
+			this.radLabel2.ThemeName = "Crystal";
+			// 
 			// dgHearingRep
 			// 
 			this.dgHearingRep.AllowShowFocusCues = true;
@@ -103,7 +128,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgHearingRep.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dgHearingRep.Location = new System.Drawing.Point(19, 73);
+			this.dgHearingRep.Location = new System.Drawing.Point(19, 67);
 			// 
 			// 
 			// 
@@ -119,29 +144,15 @@
 			this.dgHearingRep.MasterTemplate.AllowRowResize = false;
 			this.dgHearingRep.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgHearingRep.Name = "dgHearingRep";
-			this.dgHearingRep.Size = new System.Drawing.Size(898, 521);
-			this.dgHearingRep.TabIndex = 3;
+			this.dgHearingRep.Size = new System.Drawing.Size(835, 462);
+			this.dgHearingRep.TabIndex = 11;
 			this.dgHearingRep.ThemeName = "Crystal";
-			this.dgHearingRep.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgHearingRep_MouseDoubleClick);
-			// 
-			// btnNew
-			// 
-			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
-			this.btnNew.Location = new System.Drawing.Point(815, 19);
-			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(102, 48);
-			this.btnNew.TabIndex = 2;
-			this.btnNew.Text = "&New";
-			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-			this.btnNew.ThemeName = "Crystal";
-			this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
 			// 
 			// frmHearingRep
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(962, 670);
+			this.ClientSize = new System.Drawing.Size(899, 594);
 			this.Controls.Add(this.v);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -159,9 +170,10 @@
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgHearingRep.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgHearingRep)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 
@@ -172,10 +184,11 @@
 		private Telerik.WinControls.UI.RadPanel v;
 		private Telerik.WinControls.Themes.CrystalTheme crystalTheme1;
 		private Telerik.WinControls.Themes.CrystalDarkTheme crystalDarkTheme1;
-		public Telerik.WinControls.UI.RadGridView dgHearingRep;
 		public Telerik.WinControls.UI.RadButton btnNew;
 		private Telerik.WinControls.UI.RadLabel lblSearchCount;
 		private Telerik.WinControls.UI.RadTextBox txtSearch;
 		private Telerik.WinControls.UI.RadLabel radLabel1;
+		private Telerik.WinControls.UI.RadLabel radLabel2;
+		public Telerik.WinControls.UI.RadGridView dgHearingRep;
 	}
 }

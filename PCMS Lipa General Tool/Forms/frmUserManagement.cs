@@ -264,7 +264,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					
 				};
 				modUser.DefaultItem("Update");
-				modUser.btnDelete.Visible = accessLevel != "Administrator" ? true : false;
+				modUser.btnDelete.Visible = accessLevel != "Administrator";
 				modUser.ShowDialog();
 				ShowAllUserAccess();
 			}

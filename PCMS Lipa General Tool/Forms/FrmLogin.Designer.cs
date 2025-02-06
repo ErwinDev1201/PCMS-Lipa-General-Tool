@@ -78,7 +78,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.radPanel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radPanel1.Location = new System.Drawing.Point(13, 13);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(477, 101);
+			this.radPanel1.Size = new System.Drawing.Size(439, 101);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
@@ -106,7 +106,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			// lblProgVersion
 			// 
 			this.lblProgVersion.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblProgVersion.Location = new System.Drawing.Point(117, 36);
+			this.lblProgVersion.Location = new System.Drawing.Point(117, 37);
 			this.lblProgVersion.Name = "lblProgVersion";
 			this.lblProgVersion.Size = new System.Drawing.Size(66, 19);
 			this.lblProgVersion.TabIndex = 1;
@@ -135,7 +135,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.loginPanel.ForeColor = System.Drawing.Color.BlanchedAlmond;
 			this.loginPanel.Location = new System.Drawing.Point(12, 120);
 			this.loginPanel.Name = "loginPanel";
-			this.loginPanel.Size = new System.Drawing.Size(478, 129);
+			this.loginPanel.Size = new System.Drawing.Size(440, 108);
 			this.loginPanel.TabIndex = 1;
 			this.loginPanel.ThemeName = "Crystal";
 			// 
@@ -143,9 +143,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			// 
 			this.btnLogin.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btnLogin.Image = global::PCMS_Lipa_General_Tool.Properties.Resources.login_;
-			this.btnLogin.Location = new System.Drawing.Point(340, 21);
+			this.btnLogin.Location = new System.Drawing.Point(307, 17);
 			this.btnLogin.Name = "btnLogin";
-			this.btnLogin.Size = new System.Drawing.Size(117, 70);
+			this.btnLogin.Size = new System.Drawing.Size(118, 52);
 			this.btnLogin.TabIndex = 3;
 			this.btnLogin.Text = "Login";
 			this.btnLogin.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -155,7 +155,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			// radLabel2
 			// 
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel2.Location = new System.Drawing.Point(28, 67);
+			this.radLabel2.Location = new System.Drawing.Point(14, 50);
 			this.radLabel2.Name = "radLabel2";
 			this.radLabel2.Size = new System.Drawing.Size(69, 19);
 			this.radLabel2.TabIndex = 8;
@@ -165,7 +165,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			// radLabel1
 			// 
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(28, 25);
+			this.radLabel1.Location = new System.Drawing.Point(14, 21);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(71, 19);
 			this.radLabel1.TabIndex = 7;
@@ -175,9 +175,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			// txtPassword
 			// 
 			this.txtPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtPassword.Location = new System.Drawing.Point(105, 63);
+			this.txtPassword.Location = new System.Drawing.Point(91, 46);
 			this.txtPassword.Name = "txtPassword";
-			this.txtPassword.Size = new System.Drawing.Size(209, 23);
+			this.txtPassword.Size = new System.Drawing.Size(210, 23);
 			this.txtPassword.TabIndex = 2;
 			this.txtPassword.ThemeName = "Crystal";
 			this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
@@ -188,7 +188,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.linkLabel1.AutoSize = true;
 			this.linkLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.linkLabel1.LinkColor = System.Drawing.Color.CornflowerBlue;
-			this.linkLabel1.Location = new System.Drawing.Point(176, 94);
+			this.linkLabel1.Location = new System.Drawing.Point(192, 72);
 			this.linkLabel1.Name = "linkLabel1";
 			this.linkLabel1.Size = new System.Drawing.Size(109, 15);
 			this.linkLabel1.TabIndex = 5;
@@ -199,9 +199,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			// txtUsername
 			// 
 			this.txtUsername.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtUsername.Location = new System.Drawing.Point(107, 21);
+			this.txtUsername.Location = new System.Drawing.Point(91, 17);
 			this.txtUsername.Name = "txtUsername";
-			this.txtUsername.Size = new System.Drawing.Size(207, 23);
+			this.txtUsername.Size = new System.Drawing.Size(210, 23);
 			this.txtUsername.TabIndex = 1;
 			this.txtUsername.ThemeName = "Crystal";
 			this.txtUsername.WordWrap = false;
@@ -211,7 +211,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			// 
 			this.lblalert.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblalert.ForeColor = System.Drawing.Color.Red;
-			this.lblalert.Location = new System.Drawing.Point(13, 258);
+			this.lblalert.Location = new System.Drawing.Point(13, 234);
 			this.lblalert.Name = "lblalert";
 			this.lblalert.Size = new System.Drawing.Size(66, 19);
 			this.lblalert.TabIndex = 2;
@@ -222,7 +222,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(506, 279);
+			this.ClientSize = new System.Drawing.Size(463, 258);
 			this.Controls.Add(this.lblalert);
 			this.Controls.Add(this.loginPanel);
 			this.Controls.Add(this.radPanel1);

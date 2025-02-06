@@ -29,19 +29,13 @@
         private void InitializeComponent()
         {
 			this.components = new System.ComponentModel.Container();
-			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition2 = new Telerik.WinControls.UI.TableViewDefinition();
-			Telerik.WinControls.UI.RadListDataItem radListDataItem3 = new Telerik.WinControls.UI.RadListDataItem();
-			Telerik.WinControls.UI.RadListDataItem radListDataItem4 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem2 = new Telerik.WinControls.UI.RadListDataItem();
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
 			this.dgOnlineLogins = new Telerik.WinControls.UI.RadGridView();
 			this.radPanel2 = new Telerik.WinControls.UI.RadPanel();
 			this.radGroupBox1 = new Telerik.WinControls.UI.RadGroupBox();
-			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
-			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
-			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
-			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
-			this.txtSearchOnlineLogins = new Telerik.WinControls.UI.RadTextBox();
-			this.onlineLoginAlert = new Telerik.WinControls.UI.RadDesktopAlert(this.components);
 			this.chkUpdateDiscord = new Telerik.WinControls.UI.RadCheckBox();
 			this.cmbBrowser = new Telerik.WinControls.UI.RadDropDownList();
 			this.lblbrowsertouse = new Telerik.WinControls.UI.RadLabel();
@@ -63,6 +57,12 @@
 			this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel3 = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
+			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
+			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
+			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
+			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
+			this.txtSearchOnlineLogins = new Telerik.WinControls.UI.RadTextBox();
+			this.onlineLoginAlert = new Telerik.WinControls.UI.RadDesktopAlert(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgOnlineLogins)).BeginInit();
@@ -71,9 +71,6 @@
 			this.radPanel2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).BeginInit();
 			this.radGroupBox1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtSearchOnlineLogins)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.chkUpdateDiscord)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbBrowser)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblbrowsertouse)).BeginInit();
@@ -95,6 +92,9 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtSearchOnlineLogins)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -129,7 +129,7 @@
 			this.dgOnlineLogins.MasterTemplate.AllowEditRow = false;
 			this.dgOnlineLogins.MasterTemplate.AllowRowHeaderContextMenu = false;
 			this.dgOnlineLogins.MasterTemplate.AllowRowResize = false;
-			this.dgOnlineLogins.MasterTemplate.ViewDefinition = tableViewDefinition2;
+			this.dgOnlineLogins.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgOnlineLogins.Name = "dgOnlineLogins";
 			this.dgOnlineLogins.Size = new System.Drawing.Size(981, 308);
 			this.dgOnlineLogins.TabIndex = 0;
@@ -184,46 +184,6 @@
 			this.radGroupBox1.Text = "Login Details";
 			this.radGroupBox1.ThemeName = "Crystal";
 			// 
-			// lblSearchCount
-			// 
-			this.lblSearchCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSearchCount.Location = new System.Drawing.Point(872, 14);
-			this.lblSearchCount.Name = "lblSearchCount";
-			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
-			this.lblSearchCount.TabIndex = 5;
-			this.lblSearchCount.Text = "radLabel8";
-			this.lblSearchCount.ThemeName = "Crystal";
-			this.lblSearchCount.Click += new System.EventHandler(this.lblCount_Click);
-			this.lblSearchCount.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lblCount_KeyDown);
-			// 
-			// radLabel1
-			// 
-			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(13, 13);
-			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(84, 19);
-			this.radLabel1.TabIndex = 6;
-			this.radLabel1.Text = "Search here: ";
-			this.radLabel1.ThemeName = "Crystal";
-			// 
-			// txtSearchOnlineLogins
-			// 
-			this.txtSearchOnlineLogins.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSearchOnlineLogins.Location = new System.Drawing.Point(105, 10);
-			this.txtSearchOnlineLogins.Name = "txtSearchOnlineLogins";
-			this.txtSearchOnlineLogins.ShowClearButton = true;
-			this.txtSearchOnlineLogins.Size = new System.Drawing.Size(283, 23);
-			this.txtSearchOnlineLogins.TabIndex = 7;
-			this.txtSearchOnlineLogins.ThemeName = "Crystal";
-			this.txtSearchOnlineLogins.TextChanged += new System.EventHandler(this.txtSearchOnlineLogins_TextChanged);
-			// 
-			// onlineLoginAlert
-			// 
-			this.onlineLoginAlert.CaptionText = "PCMS Lipa General Tool";
-			this.onlineLoginAlert.ContentText = "Online Login Updated";
-			this.onlineLoginAlert.ThemeName = "Crystal";
-			// 
 			// chkUpdateDiscord
 			// 
 			this.chkUpdateDiscord.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -238,10 +198,10 @@
 			// 
 			this.cmbBrowser.DropDownAnimationEnabled = true;
 			this.cmbBrowser.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			radListDataItem3.Text = "Local Browser";
-			radListDataItem4.Text = "RD Web Browser";
-			this.cmbBrowser.Items.Add(radListDataItem3);
-			this.cmbBrowser.Items.Add(radListDataItem4);
+			radListDataItem1.Text = "Local Browser";
+			radListDataItem2.Text = "RD Web Browser";
+			this.cmbBrowser.Items.Add(radListDataItem1);
+			this.cmbBrowser.Items.Add(radListDataItem2);
 			this.cmbBrowser.Location = new System.Drawing.Point(139, 252);
 			this.cmbBrowser.Name = "cmbBrowser";
 			this.cmbBrowser.Size = new System.Drawing.Size(199, 24);
@@ -464,6 +424,46 @@
 			this.radLabel2.Text = "Insurance Name:";
 			this.radLabel2.ThemeName = "Crystal";
 			// 
+			// lblSearchCount
+			// 
+			this.lblSearchCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSearchCount.Location = new System.Drawing.Point(872, 14);
+			this.lblSearchCount.Name = "lblSearchCount";
+			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
+			this.lblSearchCount.TabIndex = 5;
+			this.lblSearchCount.Text = "radLabel8";
+			this.lblSearchCount.ThemeName = "Crystal";
+			this.lblSearchCount.Click += new System.EventHandler(this.lblCount_Click);
+			this.lblSearchCount.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lblCount_KeyDown);
+			// 
+			// radLabel1
+			// 
+			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.radLabel1.Location = new System.Drawing.Point(13, 13);
+			this.radLabel1.Name = "radLabel1";
+			this.radLabel1.Size = new System.Drawing.Size(84, 19);
+			this.radLabel1.TabIndex = 6;
+			this.radLabel1.Text = "Search here: ";
+			this.radLabel1.ThemeName = "Crystal";
+			// 
+			// txtSearchOnlineLogins
+			// 
+			this.txtSearchOnlineLogins.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtSearchOnlineLogins.Location = new System.Drawing.Point(105, 10);
+			this.txtSearchOnlineLogins.Name = "txtSearchOnlineLogins";
+			this.txtSearchOnlineLogins.ShowClearButton = true;
+			this.txtSearchOnlineLogins.Size = new System.Drawing.Size(283, 23);
+			this.txtSearchOnlineLogins.TabIndex = 7;
+			this.txtSearchOnlineLogins.ThemeName = "Crystal";
+			this.txtSearchOnlineLogins.TextChanged += new System.EventHandler(this.txtSearchOnlineLogins_TextChanged);
+			// 
+			// onlineLoginAlert
+			// 
+			this.onlineLoginAlert.CaptionText = "PCMS Lipa General Tool";
+			this.onlineLoginAlert.ContentText = "Online Login Updated";
+			this.onlineLoginAlert.ThemeName = "Crystal";
+			// 
 			// frmOnlineLogins
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -490,9 +490,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).EndInit();
 			this.radGroupBox1.ResumeLayout(false);
 			this.radGroupBox1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtSearchOnlineLogins)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.chkUpdateDiscord)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbBrowser)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblbrowsertouse)).EndInit();
@@ -514,6 +511,9 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtSearchOnlineLogins)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

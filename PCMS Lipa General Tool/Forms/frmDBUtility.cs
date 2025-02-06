@@ -49,7 +49,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnChangeSeq_Click(object sender, EventArgs e)
 		{
-			db.AlterDBSequence(txtSequence, cmbTable, empName);
+			db.AlterDBSequence(txtSequence.Text, cmbTable.Text, empName);
 			log.AddActivityLog($"Sequence of {cmbTable.Text} is changed by {empName} to {txtSequence.Text}", empName, $"{empName} change the sequence of {cmbTable.Text}", "DB CHANGED SEQUENCE");
 			RadMessageBox.Show("Sequence successfully updated to " + txtSequence.Text);
 			ClearData();
@@ -57,8 +57,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void GetcurrentSequence()
 		{
-			var query = $"SELECT current_value FROM sys.sequences WHERE name = '{cmbTable.Text}'";
-			db.GetSequenceNoPre(query, lblcurrentVal);
+
+			int currentValue = db.GetSequenceNoPre(cmbTable.Text);
+			lblcurrentVal.Text = currentValue.ToString();
 		}
 
 		private void cmbTable_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
