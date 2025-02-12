@@ -110,7 +110,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ShowDataUserAccess()
 		{
-			dgOnlineLogins.BestFitColumns(BestFitColumnMode.DisplayedDataCells);
+			dgOnlineLogins.BestFitColumns(BestFitColumnMode.AllCells);
 			var dataTable = onlineLogin.ViewOnlineLogins(empName, out string lblCount);
 
 			dgOnlineLogins.DataSource = dataTable;
