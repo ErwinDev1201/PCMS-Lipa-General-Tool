@@ -125,9 +125,9 @@
 			// 
 			this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnNew.Location = new System.Drawing.Point(723, 11);
+			this.btnNew.Location = new System.Drawing.Point(744, 10);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(131, 38);
+			this.btnNew.Size = new System.Drawing.Size(110, 39);
 			this.btnNew.TabIndex = 2;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;

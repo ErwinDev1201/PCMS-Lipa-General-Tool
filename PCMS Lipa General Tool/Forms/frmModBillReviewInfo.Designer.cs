@@ -107,7 +107,7 @@
 			this.radPanel1.Controls.Add(this.radLabel1);
 			this.radPanel1.Location = new System.Drawing.Point(13, 13);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(500, 412);
+			this.radPanel1.Size = new System.Drawing.Size(500, 402);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			this.radPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.radPanel1_Paint);
@@ -117,7 +117,7 @@
 			this.txtOnlineEmail.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtOnlineEmail.Location = new System.Drawing.Point(113, 247);
 			this.txtOnlineEmail.Name = "txtOnlineEmail";
-			this.txtOnlineEmail.Size = new System.Drawing.Size(233, 23);
+			this.txtOnlineEmail.Size = new System.Drawing.Size(240, 23);
 			this.txtOnlineEmail.TabIndex = 18;
 			this.txtOnlineEmail.ThemeName = "Crystal";
 			// 
@@ -136,7 +136,7 @@
 			this.txtURFaxNo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtURFaxNo.Location = new System.Drawing.Point(113, 218);
 			this.txtURFaxNo.Name = "txtURFaxNo";
-			this.txtURFaxNo.Size = new System.Drawing.Size(233, 23);
+			this.txtURFaxNo.Size = new System.Drawing.Size(240, 23);
 			this.txtURFaxNo.TabIndex = 13;
 			this.txtURFaxNo.ThemeName = "Crystal";
 			// 
@@ -145,7 +145,7 @@
 			this.txtURPhone.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtURPhone.Location = new System.Drawing.Point(113, 189);
 			this.txtURPhone.Name = "txtURPhone";
-			this.txtURPhone.Size = new System.Drawing.Size(233, 23);
+			this.txtURPhone.Size = new System.Drawing.Size(240, 23);
 			this.txtURPhone.TabIndex = 16;
 			this.txtURPhone.ThemeName = "Crystal";
 			// 
@@ -174,7 +174,7 @@
 			this.txtFax.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtFax.Location = new System.Drawing.Point(113, 160);
 			this.txtFax.Name = "txtFax";
-			this.txtFax.Size = new System.Drawing.Size(233, 23);
+			this.txtFax.Size = new System.Drawing.Size(240, 23);
 			this.txtFax.TabIndex = 14;
 			this.txtFax.ThemeName = "Crystal";
 			// 
@@ -191,9 +191,9 @@
 			// btnDelete
 			// 
 			this.btnDelete.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDelete.Location = new System.Drawing.Point(362, 90);
+			this.btnDelete.Location = new System.Drawing.Point(372, 90);
 			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(120, 38);
+			this.btnDelete.Size = new System.Drawing.Size(110, 39);
 			this.btnDelete.TabIndex = 8;
 			this.btnDelete.Text = "Delete";
 			this.btnDelete.ThemeName = "Crystal";
@@ -202,9 +202,9 @@
 			// btnUpdateSave
 			// 
 			this.btnUpdateSave.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnUpdateSave.Location = new System.Drawing.Point(362, 46);
+			this.btnUpdateSave.Location = new System.Drawing.Point(372, 46);
 			this.btnUpdateSave.Name = "btnUpdateSave";
-			this.btnUpdateSave.Size = new System.Drawing.Size(120, 38);
+			this.btnUpdateSave.Size = new System.Drawing.Size(110, 39);
 			this.btnUpdateSave.TabIndex = 7;
 			this.btnUpdateSave.Text = "Update/Save";
 			this.btnUpdateSave.ThemeName = "Crystal";
@@ -235,7 +235,7 @@
 			this.txtBRFaxNo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtBRFaxNo.Location = new System.Drawing.Point(113, 131);
 			this.txtBRFaxNo.Name = "txtBRFaxNo";
-			this.txtBRFaxNo.Size = new System.Drawing.Size(233, 23);
+			this.txtBRFaxNo.Size = new System.Drawing.Size(240, 23);
 			this.txtBRFaxNo.TabIndex = 3;
 			this.txtBRFaxNo.ThemeName = "Crystal";
 			// 
@@ -244,7 +244,7 @@
 			this.txtBRPhoneNo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtBRPhoneNo.Location = new System.Drawing.Point(113, 102);
 			this.txtBRPhoneNo.Name = "txtBRPhoneNo";
-			this.txtBRPhoneNo.Size = new System.Drawing.Size(233, 23);
+			this.txtBRPhoneNo.Size = new System.Drawing.Size(240, 23);
 			this.txtBRPhoneNo.TabIndex = 3;
 			this.txtBRPhoneNo.ThemeName = "Crystal";
 			// 
@@ -263,7 +263,7 @@
 			this.txtPhoneNo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtPhoneNo.Location = new System.Drawing.Point(113, 73);
 			this.txtPhoneNo.Name = "txtPhoneNo";
-			this.txtPhoneNo.Size = new System.Drawing.Size(233, 23);
+			this.txtPhoneNo.Size = new System.Drawing.Size(240, 23);
 			this.txtPhoneNo.TabIndex = 5;
 			this.txtPhoneNo.ThemeName = "Crystal";
 			// 
@@ -292,7 +292,7 @@
 			this.txtInsuranceName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtInsuranceName.Location = new System.Drawing.Point(113, 45);
 			this.txtInsuranceName.Name = "txtInsuranceName";
-			this.txtInsuranceName.Size = new System.Drawing.Size(233, 23);
+			this.txtInsuranceName.Size = new System.Drawing.Size(240, 23);
 			this.txtInsuranceName.TabIndex = 3;
 			this.txtInsuranceName.ThemeName = "Crystal";
 			// 
@@ -329,7 +329,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(525, 437);
+			this.ClientSize = new System.Drawing.Size(525, 429);
 			this.Controls.Add(this.radPanel1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

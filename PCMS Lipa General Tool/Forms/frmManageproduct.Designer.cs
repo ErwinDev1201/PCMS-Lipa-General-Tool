@@ -32,49 +32,49 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmManageproduct));
 			this.paneltable = new Telerik.WinControls.UI.RadPanel();
 			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
-			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
 			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
 			this.dgPantryProduct = new Telerik.WinControls.UI.RadGridView();
+			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
 			this.radPanel2 = new Telerik.WinControls.UI.RadPanel();
 			this.radGroupBox1 = new Telerik.WinControls.UI.RadGroupBox();
+			this.lblalert = new Telerik.WinControls.UI.RadLabel();
+			this.radLabel5 = new Telerik.WinControls.UI.RadLabel();
 			this.txtIntID = new Telerik.WinControls.UI.RadTextBox();
 			this.txtRemarks = new Telerik.WinControls.UI.RadTextBoxControl();
 			this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel3 = new Telerik.WinControls.UI.RadLabel();
 			this.txtPrice = new Telerik.WinControls.UI.RadTextBox();
-			this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
 			this.txtProductName = new Telerik.WinControls.UI.RadTextBox();
+			this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
 			this.btnCancel = new Telerik.WinControls.UI.RadButton();
 			this.btnDelete = new Telerik.WinControls.UI.RadButton();
 			this.btnSave = new Telerik.WinControls.UI.RadButton();
 			this.btnNew = new Telerik.WinControls.UI.RadButton();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
-			this.radLabel5 = new Telerik.WinControls.UI.RadLabel();
-			this.lblalert = new Telerik.WinControls.UI.RadLabel();
 			((System.ComponentModel.ISupportInitialize)(this.paneltable)).BeginInit();
 			this.paneltable.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgPantryProduct)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgPantryProduct.MasterTemplate)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel2)).BeginInit();
 			this.radPanel2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).BeginInit();
 			this.radGroupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblalert)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel5)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtIntID)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtRemarks)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrice)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtProductName)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnCancel)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnDelete)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnSave)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel5)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblalert)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -101,16 +101,6 @@
 			this.txtSearch.TabIndex = 9;
 			this.txtSearch.ThemeName = "Crystal";
 			this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-			// 
-			// radLabel1
-			// 
-			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(17, 15);
-			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(84, 19);
-			this.radLabel1.TabIndex = 8;
-			this.radLabel1.Text = "Search here: ";
-			this.radLabel1.ThemeName = "Crystal";
 			// 
 			// lblSearchCount
 			// 
@@ -148,6 +138,16 @@
 			this.dgPantryProduct.ThemeName = "Crystal";
 			this.dgPantryProduct.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgPantryProduct_MouseDoubleClick);
 			// 
+			// radLabel1
+			// 
+			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.radLabel1.Location = new System.Drawing.Point(17, 15);
+			this.radLabel1.Name = "radLabel1";
+			this.radLabel1.Size = new System.Drawing.Size(84, 19);
+			this.radLabel1.TabIndex = 8;
+			this.radLabel1.Text = "Search here: ";
+			this.radLabel1.ThemeName = "Crystal";
+			// 
 			// radPanel2
 			// 
 			this.radPanel2.Controls.Add(this.radGroupBox1);
@@ -184,6 +184,27 @@
 			this.radGroupBox1.Text = "Product Details";
 			this.radGroupBox1.ThemeName = "Crystal";
 			// 
+			// lblalert
+			// 
+			this.lblalert.Font = new System.Drawing.Font("Roboto", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblalert.ForeColor = System.Drawing.Color.IndianRed;
+			this.lblalert.Location = new System.Drawing.Point(11, 139);
+			this.lblalert.Name = "lblalert";
+			this.lblalert.Size = new System.Drawing.Size(37, 17);
+			this.lblalert.TabIndex = 16;
+			this.lblalert.Text = "Price: ";
+			this.lblalert.ThemeName = "Crystal";
+			// 
+			// radLabel5
+			// 
+			this.radLabel5.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.radLabel5.Location = new System.Drawing.Point(9, 39);
+			this.radLabel5.Name = "radLabel5";
+			this.radLabel5.Size = new System.Drawing.Size(73, 19);
+			this.radLabel5.TabIndex = 15;
+			this.radLabel5.Text = "Product ID:";
+			this.radLabel5.ThemeName = "Crystal";
+			// 
 			// txtIntID
 			// 
 			this.txtIntID.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -196,7 +217,7 @@
 			// txtRemarks
 			// 
 			this.txtRemarks.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtRemarks.Location = new System.Drawing.Point(8, 243);
+			this.txtRemarks.Location = new System.Drawing.Point(8, 239);
 			this.txtRemarks.Multiline = true;
 			this.txtRemarks.Name = "txtRemarks";
 			this.txtRemarks.Size = new System.Drawing.Size(176, 118);
@@ -206,7 +227,7 @@
 			// radLabel4
 			// 
 			this.radLabel4.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel4.Location = new System.Drawing.Point(9, 226);
+			this.radLabel4.Location = new System.Drawing.Point(9, 222);
 			this.radLabel4.Name = "radLabel4";
 			this.radLabel4.Size = new System.Drawing.Size(66, 19);
 			this.radLabel4.TabIndex = 13;
@@ -232,6 +253,16 @@
 			this.txtPrice.TabIndex = 11;
 			this.txtPrice.ThemeName = "Crystal";
 			// 
+			// txtProductName
+			// 
+			this.txtProductName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtProductName.Location = new System.Drawing.Point(9, 113);
+			this.txtProductName.Name = "txtProductName";
+			this.txtProductName.Size = new System.Drawing.Size(175, 23);
+			this.txtProductName.TabIndex = 8;
+			this.txtProductName.ThemeName = "Crystal";
+			this.txtProductName.TextChanged += new System.EventHandler(this.txtProductName_TextChanged);
+			// 
 			// radLabel2
 			// 
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -241,15 +272,6 @@
 			this.radLabel2.TabIndex = 10;
 			this.radLabel2.Text = "Product Name:";
 			this.radLabel2.ThemeName = "Crystal";
-			// 
-			// txtProductName
-			// 
-			this.txtProductName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtProductName.Location = new System.Drawing.Point(9, 113);
-			this.txtProductName.Name = "txtProductName";
-			this.txtProductName.Size = new System.Drawing.Size(175, 23);
-			this.txtProductName.TabIndex = 8;
-			this.txtProductName.ThemeName = "Crystal";
 			// 
 			// btnCancel
 			// 
@@ -295,27 +317,6 @@
 			this.btnNew.ThemeName = "Crystal";
 			this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
 			// 
-			// radLabel5
-			// 
-			this.radLabel5.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel5.Location = new System.Drawing.Point(9, 39);
-			this.radLabel5.Name = "radLabel5";
-			this.radLabel5.Size = new System.Drawing.Size(73, 19);
-			this.radLabel5.TabIndex = 15;
-			this.radLabel5.Text = "Product ID:";
-			this.radLabel5.ThemeName = "Crystal";
-			// 
-			// lblalert
-			// 
-			this.lblalert.Font = new System.Drawing.Font("Roboto", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblalert.ForeColor = System.Drawing.Color.IndianRed;
-			this.lblalert.Location = new System.Drawing.Point(11, 139);
-			this.lblalert.Name = "lblalert";
-			this.lblalert.Size = new System.Drawing.Size(37, 17);
-			this.lblalert.TabIndex = 16;
-			this.lblalert.Text = "Price: ";
-			this.lblalert.ThemeName = "Crystal";
-			// 
 			// frmManageproduct
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -336,28 +337,28 @@
 			this.paneltable.ResumeLayout(false);
 			this.paneltable.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgPantryProduct.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgPantryProduct)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel2)).EndInit();
 			this.radPanel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).EndInit();
 			this.radGroupBox1.ResumeLayout(false);
 			this.radGroupBox1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblalert)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel5)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtIntID)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtRemarks)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrice)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtProductName)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnCancel)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnDelete)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnSave)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel5)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblalert)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 

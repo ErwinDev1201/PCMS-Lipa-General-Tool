@@ -45,6 +45,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnSave.Enabled = false;
 			btnCancel.Enabled = false;
 			dgPantryProduct.ReadOnly = true;
+			lblalert.Visible = false;
 			//txtSearch.Enabled = true;
 			btnNew.Enabled = true;
 			dgPantryProduct.BestFitColumns(BestFitColumnMode.AllCells);
@@ -294,7 +295,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			if (txtProductName.TextLength > 5)
 			{
 				pantry.CheckProductExist(txtProductName.Text, empName, out string message);
-				fe.SendToastNotifDesktop(message, "Warning");
+				lblalert.Visible = true;
+				lblalert.Text = message;
+				//fe.SendToastNotifDesktop(message, "Warning");
 			}
 		}
 	}

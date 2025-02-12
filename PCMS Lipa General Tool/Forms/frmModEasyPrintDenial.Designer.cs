@@ -103,7 +103,7 @@
 			this.txtRemarks.Location = new System.Drawing.Point(144, 251);
 			this.txtRemarks.Multiline = true;
 			this.txtRemarks.Name = "txtRemarks";
-			this.txtRemarks.Size = new System.Drawing.Size(349, 70);
+			this.txtRemarks.Size = new System.Drawing.Size(339, 70);
 			this.txtRemarks.TabIndex = 11;
 			this.txtRemarks.ThemeName = "Crystal";
 			// 
@@ -113,7 +113,7 @@
 			this.txtDenialDescrption.Location = new System.Drawing.Point(144, 99);
 			this.txtDenialDescrption.Multiline = true;
 			this.txtDenialDescrption.Name = "txtDenialDescrption";
-			this.txtDenialDescrption.Size = new System.Drawing.Size(349, 70);
+			this.txtDenialDescrption.Size = new System.Drawing.Size(339, 70);
 			this.txtDenialDescrption.TabIndex = 10;
 			this.txtDenialDescrption.ThemeName = "Crystal";
 			// 
@@ -130,9 +130,9 @@
 			// btnDelete
 			// 
 			this.btnDelete.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDelete.Location = new System.Drawing.Point(383, 54);
+			this.btnDelete.Location = new System.Drawing.Point(373, 54);
 			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(110, 38);
+			this.btnDelete.Size = new System.Drawing.Size(110, 39);
 			this.btnDelete.TabIndex = 8;
 			this.btnDelete.Text = "Delete";
 			this.btnDelete.ThemeName = "Crystal";
@@ -141,9 +141,9 @@
 			// btnUpdateSave
 			// 
 			this.btnUpdateSave.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnUpdateSave.Location = new System.Drawing.Point(383, 12);
+			this.btnUpdateSave.Location = new System.Drawing.Point(373, 12);
 			this.btnUpdateSave.Name = "btnUpdateSave";
-			this.btnUpdateSave.Size = new System.Drawing.Size(110, 38);
+			this.btnUpdateSave.Size = new System.Drawing.Size(110, 39);
 			this.btnUpdateSave.TabIndex = 7;
 			this.btnUpdateSave.Text = "Save/Update";
 			this.btnUpdateSave.ThemeName = "Crystal";
@@ -155,7 +155,7 @@
 			this.txtPossibleSolution.Location = new System.Drawing.Point(144, 175);
 			this.txtPossibleSolution.Multiline = true;
 			this.txtPossibleSolution.Name = "txtPossibleSolution";
-			this.txtPossibleSolution.Size = new System.Drawing.Size(349, 70);
+			this.txtPossibleSolution.Size = new System.Drawing.Size(339, 70);
 			this.txtPossibleSolution.TabIndex = 6;
 			this.txtPossibleSolution.ThemeName = "Crystal";
 			// 
@@ -174,7 +174,7 @@
 			this.txtInsuranceName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtInsuranceName.Location = new System.Drawing.Point(144, 69);
 			this.txtInsuranceName.Name = "txtInsuranceName";
-			this.txtInsuranceName.Size = new System.Drawing.Size(217, 23);
+			this.txtInsuranceName.Size = new System.Drawing.Size(202, 23);
 			this.txtInsuranceName.TabIndex = 5;
 			this.txtInsuranceName.ThemeName = "Crystal";
 			// 

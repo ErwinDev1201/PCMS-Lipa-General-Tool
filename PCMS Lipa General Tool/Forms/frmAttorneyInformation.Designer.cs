@@ -138,10 +138,9 @@
 			this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
-			this.btnNew.Location = new System.Drawing.Point(692, 18);
+			this.btnNew.Location = new System.Drawing.Point(744, 28);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(130, 38);
+			this.btnNew.Size = new System.Drawing.Size(110, 39);
 			this.btnNew.TabIndex = 13;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;

@@ -88,15 +88,15 @@
 			this.txtRemarks.Location = new System.Drawing.Point(124, 109);
 			this.txtRemarks.Multiline = true;
 			this.txtRemarks.Name = "txtRemarks";
-			this.txtRemarks.Size = new System.Drawing.Size(362, 169);
+			this.txtRemarks.Size = new System.Drawing.Size(238, 214);
 			this.txtRemarks.TabIndex = 18;
 			// 
 			// btnSave
 			// 
 			this.btnSave.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnSave.Location = new System.Drawing.Point(124, 284);
+			this.btnSave.Location = new System.Drawing.Point(376, 52);
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(362, 38);
+			this.btnSave.Size = new System.Drawing.Size(110, 39);
 			this.btnSave.TabIndex = 17;
 			this.btnSave.Text = "&Save";
 			this.btnSave.ThemeName = "Crystal";

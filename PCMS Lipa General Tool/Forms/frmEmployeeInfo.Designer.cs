@@ -109,9 +109,9 @@
 			this.radPanel1.Controls.Add(this.radLabel2);
 			this.radPanel1.Controls.Add(this.radLabel1);
 			this.radPanel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radPanel1.Location = new System.Drawing.Point(12, 25);
+			this.radPanel1.Location = new System.Drawing.Point(12, 12);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(433, 433);
+			this.radPanel1.Size = new System.Drawing.Size(433, 446);
 			this.radPanel1.TabIndex = 11;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
@@ -164,7 +164,7 @@
 			this.txtRemarks.Location = new System.Drawing.Point(145, 255);
 			this.txtRemarks.Multiline = true;
 			this.txtRemarks.Name = "txtRemarks";
-			this.txtRemarks.Size = new System.Drawing.Size(268, 159);
+			this.txtRemarks.Size = new System.Drawing.Size(268, 172);
 			this.txtRemarks.TabIndex = 52;
 			this.txtRemarks.ThemeName = "Crystal";
 			// 
@@ -347,9 +347,9 @@
 			this.radGroupBox1.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.radGroupBox1.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.radGroupBox1.HeaderText = "User Information";
-			this.radGroupBox1.Location = new System.Drawing.Point(451, 25);
+			this.radGroupBox1.Location = new System.Drawing.Point(451, 12);
 			this.radGroupBox1.Name = "radGroupBox1";
-			this.radGroupBox1.Size = new System.Drawing.Size(590, 433);
+			this.radGroupBox1.Size = new System.Drawing.Size(590, 446);
 			this.radGroupBox1.TabIndex = 11;
 			this.radGroupBox1.Text = "User Information";
 			this.radGroupBox1.ThemeName = "Crystal";
@@ -378,7 +378,7 @@
 			// lblSearchCount
 			// 
 			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSearchCount.Location = new System.Drawing.Point(26, 413);
+			this.lblSearchCount.Location = new System.Drawing.Point(17, 422);
 			this.lblSearchCount.Name = "lblSearchCount";
 			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
 			this.lblSearchCount.TabIndex = 9;
@@ -409,7 +409,7 @@
 			this.dgEmpInfo.MasterTemplate.AllowRowResize = false;
 			this.dgEmpInfo.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgEmpInfo.Name = "dgEmpInfo";
-			this.dgEmpInfo.Size = new System.Drawing.Size(557, 341);
+			this.dgEmpInfo.Size = new System.Drawing.Size(557, 354);
 			this.dgEmpInfo.TabIndex = 1;
 			this.dgEmpInfo.ThemeName = "Crystal";
 			this.dgEmpInfo.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dgEmpInfo_KeyUp);

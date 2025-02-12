@@ -31,6 +31,7 @@
 			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMPN));
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
+			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
 			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
 			this.txtLink = new Telerik.WinControls.UI.RadTextBox();
@@ -38,16 +39,15 @@
 			this.btnNew = new Telerik.WinControls.UI.RadButton();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
-			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtLink)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgMPN)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgMPN.MasterTemplate)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -68,10 +68,20 @@
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
+			// lblSearchCount
+			// 
+			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSearchCount.Location = new System.Drawing.Point(19, 536);
+			this.lblSearchCount.Name = "lblSearchCount";
+			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
+			this.lblSearchCount.TabIndex = 10;
+			this.lblSearchCount.Text = "radLabel2";
+			this.lblSearchCount.ThemeName = "Crystal";
+			// 
 			// txtSearch
 			// 
 			this.txtSearch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSearch.Location = new System.Drawing.Point(111, 44);
+			this.txtSearch.Location = new System.Drawing.Point(113, 33);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
 			this.txtSearch.Size = new System.Drawing.Size(283, 23);
@@ -82,7 +92,7 @@
 			// radLabel1
 			// 
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(19, 47);
+			this.radLabel1.Location = new System.Drawing.Point(21, 36);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(84, 19);
 			this.radLabel1.TabIndex = 8;
@@ -92,7 +102,7 @@
 			// txtLink
 			// 
 			this.txtLink.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtLink.Location = new System.Drawing.Point(544, 43);
+			this.txtLink.Location = new System.Drawing.Point(545, 32);
 			this.txtLink.Name = "txtLink";
 			this.txtLink.Size = new System.Drawing.Size(100, 23);
 			this.txtLink.TabIndex = 4;
@@ -129,23 +139,13 @@
 			// btnNew
 			// 
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnNew.Location = new System.Drawing.Point(692, 19);
+			this.btnNew.Location = new System.Drawing.Point(744, 17);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(162, 48);
+			this.btnNew.Size = new System.Drawing.Size(110, 39);
 			this.btnNew.TabIndex = 2;
 			this.btnNew.Text = "&New";
 			this.btnNew.ThemeName = "Crystal";
 			this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
-			// 
-			// lblSearchCount
-			// 
-			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSearchCount.Location = new System.Drawing.Point(19, 536);
-			this.lblSearchCount.Name = "lblSearchCount";
-			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
-			this.lblSearchCount.TabIndex = 10;
-			this.lblSearchCount.Text = "radLabel2";
-			this.lblSearchCount.ThemeName = "Crystal";
 			// 
 			// frmMPN
 			// 
@@ -164,13 +164,13 @@
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
 			this.radPanel1.ResumeLayout(false);
 			this.radPanel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtLink)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgMPN.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgMPN)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 

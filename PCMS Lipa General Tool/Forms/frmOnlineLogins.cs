@@ -429,6 +429,38 @@ namespace PCMS_Lipa_General_Tool.Forms
 		//}
 
 
+					// Open Microsoft Edge inside the Remote Desktop session with the provided URL
+					//Process.Start(new ProcessStartInfo
+					//{
+					//	FileName = "cmd.exe",
+					//	Arguments = $"/c start msedge.exe \"{urltoOpen}\"",
+					//	UseShellExecute = true
+					//});
+		//		}
+		//		catch (Exception ex)
+		//		{
+		//			error.LogError("openRDLinkWebsite", empName, "frmOnlinelogins", txtLoginID.Text, ex);
+		//			//Console.WriteLine("Error launching Edge in Remote Desktop: " + ex.Message);
+		//		}
+		//	}
+		//}
+
+		// Extracts the target executable path from a .lnk shortcut
+		//private static string GetShortcutTarget(string shortcutPath)
+		//{
+		//	try
+		//	{
+		//		WshShell shell = new WshShell();
+		//		IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
+		//		return shortcut.TargetPath; // Returns the real path to Edge
+		//	}
+		//	catch
+		//	{
+		//		return string.Empty; // Return empty string if an error occurs
+		//	}
+		//}
+
+
 		private void btnOpenLink_Click(object sender, EventArgs e)
 		{
 			string AuditTextContent;
@@ -442,7 +474,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				{
 					DialogResult result = RadMessageBox.Show(
 						"Website provided is intended for RDWeb Browser and will not work in Local Browser. " +
-						"Link is already copied and redy to paste to browser." +
+						"\nLink is already copied and redy to paste to browser." +
 						"\nDo you want to open Microsoft Edge in Remote?",
 						"Confirmation",
 						MessageBoxButtons.YesNo,

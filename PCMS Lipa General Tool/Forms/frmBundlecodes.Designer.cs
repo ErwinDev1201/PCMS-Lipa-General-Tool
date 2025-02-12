@@ -81,7 +81,7 @@
 			// txtSearch
 			// 
 			this.txtSearch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSearch.Location = new System.Drawing.Point(112, 24);
+			this.txtSearch.Location = new System.Drawing.Point(112, 27);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
 			this.txtSearch.Size = new System.Drawing.Size(283, 23);
@@ -92,7 +92,7 @@
 			// radLabel1
 			// 
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(22, 27);
+			this.radLabel1.Location = new System.Drawing.Point(21, 31);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(84, 19);
 			this.radLabel1.TabIndex = 8;
@@ -102,7 +102,7 @@
 			// radLabel2
 			// 
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel2.Location = new System.Drawing.Point(19, 69);
+			this.radLabel2.Location = new System.Drawing.Point(19, 56);
 			this.radLabel2.Name = "radLabel2";
 			this.radLabel2.Size = new System.Drawing.Size(796, 19);
 			this.radLabel2.TabIndex = 4;
@@ -117,7 +117,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgBundleCode.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dgBundleCode.Location = new System.Drawing.Point(19, 94);
+			this.dgBundleCode.Location = new System.Drawing.Point(19, 81);
 			// 
 			// 
 			// 
@@ -134,7 +134,7 @@
 			this.dgBundleCode.MasterTemplate.AllowRowResize = false;
 			this.dgBundleCode.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgBundleCode.Name = "dgBundleCode";
-			this.dgBundleCode.Size = new System.Drawing.Size(835, 429);
+			this.dgBundleCode.Size = new System.Drawing.Size(835, 442);
 			this.dgBundleCode.TabIndex = 3;
 			this.dgBundleCode.ThemeName = "Crystal";
 			this.dgBundleCode.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgBundleCode_MouseDoubleClick);
@@ -142,10 +142,9 @@
 			// btnNew
 			// 
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
-			this.btnNew.Location = new System.Drawing.Point(724, 19);
+			this.btnNew.Location = new System.Drawing.Point(744, 11);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(130, 38);
+			this.btnNew.Size = new System.Drawing.Size(110, 39);
 			this.btnNew.TabIndex = 2;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;

@@ -75,7 +75,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgHearingRep.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dgHearingRep.Location = new System.Drawing.Point(19, 67);
+			this.dgHearingRep.Location = new System.Drawing.Point(19, 57);
 			// 
 			// 
 			// 
@@ -91,7 +91,7 @@
 			this.dgHearingRep.MasterTemplate.AllowRowResize = false;
 			this.dgHearingRep.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgHearingRep.Name = "dgHearingRep";
-			this.dgHearingRep.Size = new System.Drawing.Size(835, 462);
+			this.dgHearingRep.Size = new System.Drawing.Size(835, 472);
 			this.dgHearingRep.TabIndex = 11;
 			this.dgHearingRep.ThemeName = "Crystal";
 			// 
@@ -107,7 +107,7 @@
 			// txtSearch
 			// 
 			this.txtSearch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSearch.Location = new System.Drawing.Point(110, 38);
+			this.txtSearch.Location = new System.Drawing.Point(109, 28);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
 			this.txtSearch.Size = new System.Drawing.Size(283, 23);
@@ -118,7 +118,7 @@
 			// radLabel1
 			// 
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(18, 41);
+			this.radLabel1.Location = new System.Drawing.Point(17, 31);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(84, 19);
 			this.radLabel1.TabIndex = 8;
@@ -138,10 +138,9 @@
 			// btnNew
 			// 
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
-			this.btnNew.Location = new System.Drawing.Point(692, 13);
+			this.btnNew.Location = new System.Drawing.Point(744, 12);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(130, 38);
+			this.btnNew.Size = new System.Drawing.Size(110, 39);
 			this.btnNew.TabIndex = 2;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;

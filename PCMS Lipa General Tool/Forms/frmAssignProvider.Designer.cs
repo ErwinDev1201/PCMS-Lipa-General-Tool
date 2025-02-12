@@ -84,9 +84,9 @@
 			// btnDelete
 			// 
 			this.btnDelete.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDelete.Location = new System.Drawing.Point(210, 397);
+			this.btnDelete.Location = new System.Drawing.Point(240, 406);
 			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(130, 38);
+			this.btnDelete.Size = new System.Drawing.Size(110, 39);
 			this.btnDelete.TabIndex = 22;
 			this.btnDelete.Text = "&Delete";
 			this.btnDelete.ThemeName = "Crystal";
@@ -114,7 +114,7 @@
 			// 
 			// radLabel5
 			// 
-			this.radLabel5.Location = new System.Drawing.Point(20, 178);
+			this.radLabel5.Location = new System.Drawing.Point(20, 231);
 			this.radLabel5.Name = "radLabel5";
 			this.radLabel5.Size = new System.Drawing.Size(61, 20);
 			this.radLabel5.TabIndex = 19;
@@ -127,15 +127,15 @@
 			this.txtRemarks.Location = new System.Drawing.Point(130, 106);
 			this.txtRemarks.Multiline = true;
 			this.txtRemarks.Name = "txtRemarks";
-			this.txtRemarks.Size = new System.Drawing.Size(220, 274);
+			this.txtRemarks.Size = new System.Drawing.Size(220, 294);
 			this.txtRemarks.TabIndex = 18;
 			// 
 			// btnSave
 			// 
 			this.btnSave.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnSave.Location = new System.Drawing.Point(20, 397);
+			this.btnSave.Location = new System.Drawing.Point(120, 406);
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(130, 38);
+			this.btnSave.Size = new System.Drawing.Size(110, 39);
 			this.btnSave.TabIndex = 17;
 			this.btnSave.Text = "Save";
 			this.btnSave.ThemeName = "Crystal";

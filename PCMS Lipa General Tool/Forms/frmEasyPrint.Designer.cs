@@ -77,7 +77,7 @@
 			// txtSearch
 			// 
 			this.txtSearch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSearch.Location = new System.Drawing.Point(114, 24);
+			this.txtSearch.Location = new System.Drawing.Point(114, 30);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
 			this.txtSearch.Size = new System.Drawing.Size(283, 23);
@@ -87,7 +87,7 @@
 			// 
 			// radLabel1
 			// 
-			this.radLabel1.Location = new System.Drawing.Point(22, 27);
+			this.radLabel1.Location = new System.Drawing.Point(22, 33);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(86, 20);
 			this.radLabel1.TabIndex = 8;
@@ -100,7 +100,7 @@
 			this.dgEasyPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.dgEasyPrint.Location = new System.Drawing.Point(19, 68);
+			this.dgEasyPrint.Location = new System.Drawing.Point(19, 59);
 			// 
 			// 
 			// 
@@ -117,17 +117,16 @@
 			this.dgEasyPrint.MasterTemplate.AllowRowResize = false;
 			this.dgEasyPrint.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgEasyPrint.Name = "dgEasyPrint";
-			this.dgEasyPrint.Size = new System.Drawing.Size(835, 461);
+			this.dgEasyPrint.Size = new System.Drawing.Size(835, 470);
 			this.dgEasyPrint.TabIndex = 3;
 			this.dgEasyPrint.ThemeName = "Crystal";
 			this.dgEasyPrint.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgEasyPrint_MouseDoubleClick);
 			// 
 			// btnNew
 			// 
-			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
-			this.btnNew.Location = new System.Drawing.Point(692, 14);
+			this.btnNew.Location = new System.Drawing.Point(742, 14);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(130, 38);
+			this.btnNew.Size = new System.Drawing.Size(110, 39);
 			this.btnNew.TabIndex = 2;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;

@@ -4,6 +4,7 @@ using System;
 using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls;
+using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
@@ -49,10 +50,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ShowProviderInfo()
 		{
 			var dataTable = provider.ViewProviderList(EmpName, out string lblCount);
-
 			dgProviderInfo.DataSource = dataTable;
-
 			lblSearchCount.Text = lblCount;
+			dgProviderInfo.BestFitColumns(BestFitColumnMode.AllCells);
 		}
 
 
@@ -238,16 +238,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmProvider_Load(object sender, EventArgs e)
 		{
-			txtNoProv.ShowEmbeddedLabel = true; txtNoProv.EmbeddedLabelText = "Prov. ID";
-			txtPalPTANo.ShowEmbeddedLabel = true; txtPalPTANo.EmbeddedLabelText = "Palmetto PTA No.";
-			txtNPINo.ShowEmbeddedLabel = true; txtNPINo.EmbeddedLabelText = "NPI No.";
-			txtTaxID.ShowEmbeddedLabel = true; txtTaxID.EmbeddedLabelText = "Tax ID No.";
-			txtPhysicalAdd.ShowEmbeddedLabel = true; txtPhysicalAdd.EmbeddedLabelText = "Physical Address";
-			txtBillingAdd.ShowEmbeddedLabel = true; txtBillingAdd.EmbeddedLabelText = "Billing Address";
-			txtProviderName.ShowEmbeddedLabel = true; txtProviderName.EmbeddedLabelText = "Provider Name";
-			txtPTANo.ShowEmbeddedLabel = true; txtPTANo.EmbeddedLabelText = "PTAN No.";
-			txtRemarks.ShowEmbeddedLabel = true; txtRemarks.EmbeddedLabelText = "Remarks";
-			dgProviderInfo.ReadOnly = true;
+			//txtNoProv.ShowEmbeddedLabel = true; txtNoProv.EmbeddedLabelText = "Prov. ID";
+			//txtPalPTANo.ShowEmbeddedLabel = true; txtPalPTANo.EmbeddedLabelText = "Palmetto PTA No.";
+			//txtNPINo.ShowEmbeddedLabel = true; txtNPINo.EmbeddedLabelText = "NPI No.";
+			//txtTaxID.ShowEmbeddedLabel = true; txtTaxID.EmbeddedLabelText = "Tax ID No.";
+			//txtPhysicalAdd.ShowEmbeddedLabel = true; txtPhysicalAdd.EmbeddedLabelText = "Physical Address";
+			//txtBillingAdd.ShowEmbeddedLabel = true; txtBillingAdd.EmbeddedLabelText = "Billing Address";
+			//txtProviderName.ShowEmbeddedLabel = true; txtProviderName.EmbeddedLabelText = "Provider Name";
+			//txtPTANo.ShowEmbeddedLabel = true; txtPTANo.EmbeddedLabelText = "PTAN No.";
+			//txtRemarks.ShowEmbeddedLabel = true; txtRemarks.EmbeddedLabelText = "Remarks";
+			dgProviderInfo.BestFitColumns(BestFitColumnMode.AllCells);
+			//dgProviderInfo.ReadOnly = true;
 		}
 
 		private void btnNew_Click(object sender, EventArgs e)

@@ -96,7 +96,7 @@
 			this.txtRemarks.Location = new System.Drawing.Point(121, 269);
 			this.txtRemarks.Multiline = true;
 			this.txtRemarks.Name = "txtRemarks";
-			this.txtRemarks.Size = new System.Drawing.Size(225, 90);
+			this.txtRemarks.Size = new System.Drawing.Size(238, 90);
 			this.txtRemarks.TabIndex = 15;
 			this.txtRemarks.ThemeName = "Crystal";
 			// 
@@ -146,16 +146,16 @@
 			this.txtDescription.Location = new System.Drawing.Point(121, 77);
 			this.txtDescription.Multiline = true;
 			this.txtDescription.Name = "txtDescription";
-			this.txtDescription.Size = new System.Drawing.Size(225, 90);
+			this.txtDescription.Size = new System.Drawing.Size(238, 90);
 			this.txtDescription.TabIndex = 9;
 			this.txtDescription.ThemeName = "Crystal";
 			// 
 			// btnDelete
 			// 
 			this.btnDelete.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDelete.Location = new System.Drawing.Point(369, 93);
+			this.btnDelete.Location = new System.Drawing.Point(379, 93);
 			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(120, 38);
+			this.btnDelete.Size = new System.Drawing.Size(110, 39);
 			this.btnDelete.TabIndex = 8;
 			this.btnDelete.Text = "Delete";
 			this.btnDelete.ThemeName = "Crystal";
@@ -164,9 +164,9 @@
 			// btnUpdateSave
 			// 
 			this.btnUpdateSave.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnUpdateSave.Location = new System.Drawing.Point(369, 49);
+			this.btnUpdateSave.Location = new System.Drawing.Point(379, 49);
 			this.btnUpdateSave.Name = "btnUpdateSave";
-			this.btnUpdateSave.Size = new System.Drawing.Size(120, 38);
+			this.btnUpdateSave.Size = new System.Drawing.Size(110, 39);
 			this.btnUpdateSave.TabIndex = 7;
 			this.btnUpdateSave.Text = "Update/Save";
 			this.btnUpdateSave.ThemeName = "Crystal";
@@ -178,7 +178,7 @@
 			this.txtBundleCodes.Location = new System.Drawing.Point(121, 173);
 			this.txtBundleCodes.Multiline = true;
 			this.txtBundleCodes.Name = "txtBundleCodes";
-			this.txtBundleCodes.Size = new System.Drawing.Size(225, 90);
+			this.txtBundleCodes.Size = new System.Drawing.Size(238, 90);
 			this.txtBundleCodes.TabIndex = 6;
 			this.txtBundleCodes.ThemeName = "Crystal";
 			// 
@@ -207,7 +207,7 @@
 			this.txtCPTCode.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtCPTCode.Location = new System.Drawing.Point(121, 48);
 			this.txtCPTCode.Name = "txtCPTCode";
-			this.txtCPTCode.Size = new System.Drawing.Size(225, 23);
+			this.txtCPTCode.Size = new System.Drawing.Size(238, 23);
 			this.txtCPTCode.TabIndex = 3;
 			this.txtCPTCode.ThemeName = "Crystal";
 			// 

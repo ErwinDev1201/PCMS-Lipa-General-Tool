@@ -77,7 +77,7 @@
 			// txtSearch
 			// 
 			this.txtSearch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSearch.Location = new System.Drawing.Point(113, 39);
+			this.txtSearch.Location = new System.Drawing.Point(112, 28);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
 			this.txtSearch.Size = new System.Drawing.Size(283, 23);
@@ -88,7 +88,7 @@
 			// radLabel1
 			// 
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(21, 42);
+			this.radLabel1.Location = new System.Drawing.Point(20, 31);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(81, 19);
 			this.radLabel1.TabIndex = 8;
@@ -102,7 +102,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgEmail.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dgEmail.Location = new System.Drawing.Point(19, 68);
+			this.dgEmail.Location = new System.Drawing.Point(19, 56);
 			// 
 			// 
 			// 
@@ -119,7 +119,7 @@
 			this.dgEmail.MasterTemplate.AllowRowResize = false;
 			this.dgEmail.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgEmail.Name = "dgEmail";
-			this.dgEmail.Size = new System.Drawing.Size(835, 461);
+			this.dgEmail.Size = new System.Drawing.Size(835, 473);
 			this.dgEmail.TabIndex = 3;
 			this.dgEmail.ThemeName = "Crystal";
 			this.dgEmail.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgEmail_MouseDoubleClick);
@@ -128,9 +128,9 @@
 			// 
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
-			this.btnNew.Location = new System.Drawing.Point(692, 14);
+			this.btnNew.Location = new System.Drawing.Point(744, 12);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(130, 38);
+			this.btnNew.Size = new System.Drawing.Size(110, 39);
 			this.btnNew.TabIndex = 2;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
