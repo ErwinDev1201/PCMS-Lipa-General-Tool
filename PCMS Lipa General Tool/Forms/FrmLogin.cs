@@ -49,16 +49,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 			UserLogin();
 		}
 
-		private void UserLogin()
+		private async void UserLogin()
 		{
 			string username = txtUsername.Text;
 			string password = txtPassword.Text;
-			bool isLoginPanelEnabled = true;
-			string alertMessage = string.Empty; // Initialize here to avoid the error
+			lblalert.Visible = false;
 
 			var loginManager = new Login();
-			loginManager.UserLogin(ref username, ref password, ref isLoginPanelEnabled, ref alertMessage);
-			//alertMessage = lblalert.Text;
+			var (updatedUsername, updatedPassword, isLoginPanelEnabled, alertMessage) = await loginManager.UserLoginAsync(username, password);
+
 			lblalert.Text = alertMessage;
 			lblalert.Visible = true;
 			txtPassword.Text = "";
@@ -72,8 +71,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				Hide(); // Close the login form if successful
 			}
-
 		}
+
 
 		//private void btnLogin_Click(object sender, EventArgs e)
 		//{
@@ -184,10 +183,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 			string username = txtUsername.Text;
 			string password = txtPassword.Text;
 			bool isLoginPanelEnabled = true;
+			string alertMessage = "";
 
 			// Reset the login form using the refactored Login class
 			var loginManager = new Login();
-			loginManager.DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out string alertMessage);
+			(username, password, isLoginPanelEnabled, alertMessage) = loginManager.DefaultLoginSet();
+
+
 
 			// Update the UI after resetting
 			txtUsername.Text = username;
