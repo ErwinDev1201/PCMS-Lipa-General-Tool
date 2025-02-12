@@ -218,7 +218,7 @@
 			this.btnRemove.Name = "btnRemove";
 			this.btnRemove.Size = new System.Drawing.Size(114, 38);
 			this.btnRemove.TabIndex = 29;
-			this.btnRemove.Text = "&Remove Item(s)";
+			this.btnRemove.Text = "&Remove Item";
 			this.btnRemove.ThemeName = "Crystal";
 			this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
 			// 
@@ -229,7 +229,7 @@
 			this.btnAdditem.Name = "btnAdditem";
 			this.btnAdditem.Size = new System.Drawing.Size(114, 38);
 			this.btnAdditem.TabIndex = 25;
-			this.btnAdditem.Text = "&Add Item(s)";
+			this.btnAdditem.Text = "&Add Item";
 			this.btnAdditem.ThemeName = "Crystal";
 			this.btnAdditem.Click += new System.EventHandler(this.btnAdditem_Click);
 			// 

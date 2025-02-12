@@ -31,21 +31,21 @@
 			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmAdjusterinformation));
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
+			this.lblCountSearch = new Telerik.WinControls.UI.RadLabel();
 			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
 			this.dgAdjusterInfo = new Telerik.WinControls.UI.RadGridView();
 			this.btnNew = new Telerik.WinControls.UI.RadButton();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
-			this.lblCountSearch = new Telerik.WinControls.UI.RadLabel();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblCountSearch)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgAdjusterInfo)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgAdjusterInfo.MasterTemplate)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblCountSearch)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -65,9 +65,18 @@
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
+			// lblCountSearch
+			// 
+			this.lblCountSearch.Location = new System.Drawing.Point(19, 535);
+			this.lblCountSearch.Name = "lblCountSearch";
+			this.lblCountSearch.Size = new System.Drawing.Size(68, 20);
+			this.lblCountSearch.TabIndex = 10;
+			this.lblCountSearch.Text = "radLabel2";
+			this.lblCountSearch.ThemeName = "Crystal";
+			// 
 			// txtSearch
 			// 
-			this.txtSearch.Location = new System.Drawing.Point(109, 37);
+			this.txtSearch.Location = new System.Drawing.Point(110, 24);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
 			this.txtSearch.Size = new System.Drawing.Size(283, 24);
@@ -79,7 +88,7 @@
 			// radLabel1
 			// 
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(19, 38);
+			this.radLabel1.Location = new System.Drawing.Point(20, 25);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(84, 19);
 			this.radLabel1.TabIndex = 8;
@@ -91,7 +100,7 @@
 			this.dgAdjusterInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.dgAdjusterInfo.Location = new System.Drawing.Point(19, 67);
+			this.dgAdjusterInfo.Location = new System.Drawing.Point(19, 55);
 			// 
 			// 
 			// 
@@ -107,7 +116,7 @@
 			this.dgAdjusterInfo.MasterTemplate.AllowRowResize = false;
 			this.dgAdjusterInfo.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgAdjusterInfo.Name = "dgAdjusterInfo";
-			this.dgAdjusterInfo.Size = new System.Drawing.Size(835, 462);
+			this.dgAdjusterInfo.Size = new System.Drawing.Size(835, 474);
 			this.dgAdjusterInfo.TabIndex = 3;
 			this.dgAdjusterInfo.ThemeName = "Crystal";
 			this.dgAdjusterInfo.DoubleClick += new System.EventHandler(this.dgAdjusterInfo_DoubleClick);
@@ -116,24 +125,14 @@
 			// 
 			this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
-			this.btnNew.Location = new System.Drawing.Point(692, 13);
+			this.btnNew.Location = new System.Drawing.Point(723, 11);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(162, 48);
+			this.btnNew.Size = new System.Drawing.Size(131, 38);
 			this.btnNew.TabIndex = 2;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.btnNew.ThemeName = "Crystal";
 			this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
-			// 
-			// lblCountSearch
-			// 
-			this.lblCountSearch.Location = new System.Drawing.Point(19, 535);
-			this.lblCountSearch.Name = "lblCountSearch";
-			this.lblCountSearch.Size = new System.Drawing.Size(68, 20);
-			this.lblCountSearch.TabIndex = 10;
-			this.lblCountSearch.Text = "radLabel2";
-			this.lblCountSearch.ThemeName = "Crystal";
 			// 
 			// FrmAdjusterinformation
 			// 
@@ -153,12 +152,12 @@
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
 			this.radPanel1.ResumeLayout(false);
 			this.radPanel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblCountSearch)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgAdjusterInfo.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgAdjusterInfo)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblCountSearch)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 

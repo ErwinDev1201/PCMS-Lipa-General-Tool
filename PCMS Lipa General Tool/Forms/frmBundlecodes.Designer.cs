@@ -31,6 +31,7 @@
 			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBundlecodes));
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
+			this.lblbundeCode = new Telerik.WinControls.UI.RadLabel();
 			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
@@ -38,16 +39,15 @@
 			this.btnNew = new Telerik.WinControls.UI.RadButton();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
-			this.lblbundeCode = new Telerik.WinControls.UI.RadLabel();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblbundeCode)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBundleCode)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBundleCode.MasterTemplate)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblbundeCode)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -67,6 +67,16 @@
 			this.radPanel1.Size = new System.Drawing.Size(874, 558);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
+			// 
+			// lblbundeCode
+			// 
+			this.lblbundeCode.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblbundeCode.Location = new System.Drawing.Point(21, 536);
+			this.lblbundeCode.Name = "lblbundeCode";
+			this.lblbundeCode.Size = new System.Drawing.Size(66, 19);
+			this.lblbundeCode.TabIndex = 10;
+			this.lblbundeCode.Text = "radLabel3";
+			this.lblbundeCode.ThemeName = "Crystal";
 			// 
 			// txtSearch
 			// 
@@ -133,24 +143,14 @@
 			// 
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
-			this.btnNew.Location = new System.Drawing.Point(692, 15);
+			this.btnNew.Location = new System.Drawing.Point(724, 19);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(162, 48);
+			this.btnNew.Size = new System.Drawing.Size(130, 38);
 			this.btnNew.TabIndex = 2;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.btnNew.ThemeName = "Crystal";
 			this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
-			// 
-			// lblbundeCode
-			// 
-			this.lblbundeCode.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblbundeCode.Location = new System.Drawing.Point(21, 536);
-			this.lblbundeCode.Name = "lblbundeCode";
-			this.lblbundeCode.Size = new System.Drawing.Size(66, 19);
-			this.lblbundeCode.TabIndex = 10;
-			this.lblbundeCode.Text = "radLabel3";
-			this.lblbundeCode.ThemeName = "Crystal";
 			// 
 			// frmBundlecodes
 			// 
@@ -171,13 +171,13 @@
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
 			this.radPanel1.ResumeLayout(false);
 			this.radPanel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblbundeCode)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBundleCode.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBundleCode)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblbundeCode)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 

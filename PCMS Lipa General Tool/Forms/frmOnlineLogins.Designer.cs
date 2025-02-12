@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
 			this.components = new System.ComponentModel.Container();
-			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
+			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition13 = new Telerik.WinControls.UI.TableViewDefinition();
 			Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
 			Telerik.WinControls.UI.RadListDataItem radListDataItem2 = new Telerik.WinControls.UI.RadListDataItem();
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
@@ -107,7 +107,7 @@
 			this.radPanel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radPanel1.Location = new System.Drawing.Point(12, 40);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(981, 308);
+			this.radPanel1.Size = new System.Drawing.Size(909, 291);
 			this.radPanel1.TabIndex = 2;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
@@ -129,9 +129,9 @@
 			this.dgOnlineLogins.MasterTemplate.AllowEditRow = false;
 			this.dgOnlineLogins.MasterTemplate.AllowRowHeaderContextMenu = false;
 			this.dgOnlineLogins.MasterTemplate.AllowRowResize = false;
-			this.dgOnlineLogins.MasterTemplate.ViewDefinition = tableViewDefinition1;
+			this.dgOnlineLogins.MasterTemplate.ViewDefinition = tableViewDefinition13;
 			this.dgOnlineLogins.Name = "dgOnlineLogins";
-			this.dgOnlineLogins.Size = new System.Drawing.Size(981, 308);
+			this.dgOnlineLogins.Size = new System.Drawing.Size(909, 291);
 			this.dgOnlineLogins.TabIndex = 0;
 			this.dgOnlineLogins.ThemeName = "Crystal";
 			this.dgOnlineLogins.Click += new System.EventHandler(this.dgOnlineLogins_SizeChanged);
@@ -142,9 +142,9 @@
 			this.radPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.radPanel2.Controls.Add(this.radGroupBox1);
-			this.radPanel2.Location = new System.Drawing.Point(12, 354);
+			this.radPanel2.Location = new System.Drawing.Point(12, 337);
 			this.radPanel2.Name = "radPanel2";
-			this.radPanel2.Size = new System.Drawing.Size(981, 296);
+			this.radPanel2.Size = new System.Drawing.Size(909, 296);
 			this.radPanel2.TabIndex = 3;
 			this.radPanel2.ThemeName = "Crystal";
 			// 
@@ -179,7 +179,7 @@
 			this.radGroupBox1.HeaderText = "Login Details";
 			this.radGroupBox1.Location = new System.Drawing.Point(0, 0);
 			this.radGroupBox1.Name = "radGroupBox1";
-			this.radGroupBox1.Size = new System.Drawing.Size(981, 296);
+			this.radGroupBox1.Size = new System.Drawing.Size(909, 296);
 			this.radGroupBox1.TabIndex = 0;
 			this.radGroupBox1.Text = "Login Details";
 			this.radGroupBox1.ThemeName = "Crystal";
@@ -187,7 +187,7 @@
 			// chkUpdateDiscord
 			// 
 			this.chkUpdateDiscord.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.chkUpdateDiscord.Location = new System.Drawing.Point(524, 258);
+			this.chkUpdateDiscord.Location = new System.Drawing.Point(538, 258);
 			this.chkUpdateDiscord.Name = "chkUpdateDiscord";
 			this.chkUpdateDiscord.Size = new System.Drawing.Size(192, 18);
 			this.chkUpdateDiscord.TabIndex = 42;
@@ -226,7 +226,7 @@
 			this.txtPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtPassword.Location = new System.Drawing.Point(139, 133);
 			this.txtPassword.Name = "txtPassword";
-			this.txtPassword.Size = new System.Drawing.Size(568, 23);
+			this.txtPassword.Size = new System.Drawing.Size(591, 23);
 			this.txtPassword.TabIndex = 31;
 			this.txtPassword.ThemeName = "Crystal";
 			// 
@@ -235,64 +235,69 @@
 			this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnDelete.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDelete.Location = new System.Drawing.Point(849, 154);
+			this.btnDelete.Location = new System.Drawing.Point(750, 181);
 			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(115, 48);
+			this.btnDelete.Size = new System.Drawing.Size(139, 39);
 			this.btnDelete.TabIndex = 39;
 			this.btnDelete.Text = "&Delete";
 			this.btnDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.btnDelete.ThemeName = "Crystal";
+			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
 			// 
 			// btnOpenLink
 			// 
 			this.btnOpenLink.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnOpenLink.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnOpenLink.Location = new System.Drawing.Point(728, 154);
+			this.btnOpenLink.Location = new System.Drawing.Point(750, 136);
 			this.btnOpenLink.Name = "btnOpenLink";
-			this.btnOpenLink.Size = new System.Drawing.Size(115, 48);
+			this.btnOpenLink.Size = new System.Drawing.Size(139, 39);
 			this.btnOpenLink.TabIndex = 38;
 			this.btnOpenLink.Text = "&Open Link";
 			this.btnOpenLink.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.btnOpenLink.ThemeName = "Crystal";
+			this.btnOpenLink.Click += new System.EventHandler(this.btnOpenLink_Click);
 			// 
 			// btnCancel
 			// 
 			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnCancel.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnCancel.Location = new System.Drawing.Point(728, 208);
+			this.btnCancel.Location = new System.Drawing.Point(750, 226);
 			this.btnCancel.Name = "btnCancel";
-			this.btnCancel.Size = new System.Drawing.Size(236, 48);
+			this.btnCancel.Size = new System.Drawing.Size(139, 39);
 			this.btnCancel.TabIndex = 40;
 			this.btnCancel.Text = "&Cancel";
 			this.btnCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.btnCancel.ThemeName = "Crystal";
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// btnSaveUpdate
 			// 
 			this.btnSaveUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnSaveUpdate.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnSaveUpdate.Location = new System.Drawing.Point(728, 100);
+			this.btnSaveUpdate.Location = new System.Drawing.Point(750, 91);
 			this.btnSaveUpdate.Name = "btnSaveUpdate";
-			this.btnSaveUpdate.Size = new System.Drawing.Size(236, 48);
+			this.btnSaveUpdate.Size = new System.Drawing.Size(139, 39);
 			this.btnSaveUpdate.TabIndex = 37;
 			this.btnSaveUpdate.Text = "&Save";
 			this.btnSaveUpdate.ThemeName = "Crystal";
+			this.btnSaveUpdate.Click += new System.EventHandler(this.btnSaveUpdate_Click);
 			// 
 			// btnNew
 			// 
 			this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnNew.Location = new System.Drawing.Point(728, 46);
+			this.btnNew.Location = new System.Drawing.Point(750, 46);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(236, 48);
+			this.btnNew.Size = new System.Drawing.Size(139, 39);
 			this.btnNew.TabIndex = 36;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.btnNew.ThemeName = "Crystal";
+			this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
 			// 
 			// txtRemarks
 			// 
@@ -303,7 +308,7 @@
 			this.txtRemarks.Location = new System.Drawing.Point(139, 191);
 			this.txtRemarks.Multiline = true;
 			this.txtRemarks.Name = "txtRemarks";
-			this.txtRemarks.Size = new System.Drawing.Size(568, 55);
+			this.txtRemarks.Size = new System.Drawing.Size(591, 55);
 			this.txtRemarks.TabIndex = 34;
 			this.txtRemarks.ThemeName = "Crystal";
 			// 
@@ -315,7 +320,7 @@
 			this.txtaccntOwner.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtaccntOwner.Location = new System.Drawing.Point(138, 162);
 			this.txtaccntOwner.Name = "txtaccntOwner";
-			this.txtaccntOwner.Size = new System.Drawing.Size(568, 23);
+			this.txtaccntOwner.Size = new System.Drawing.Size(591, 23);
 			this.txtaccntOwner.TabIndex = 33;
 			this.txtaccntOwner.ThemeName = "Crystal";
 			// 
@@ -327,7 +332,7 @@
 			this.txtUsername.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtUsername.Location = new System.Drawing.Point(139, 104);
 			this.txtUsername.Name = "txtUsername";
-			this.txtUsername.Size = new System.Drawing.Size(568, 23);
+			this.txtUsername.Size = new System.Drawing.Size(591, 23);
 			this.txtUsername.TabIndex = 30;
 			this.txtUsername.ThemeName = "Crystal";
 			// 
@@ -339,7 +344,7 @@
 			this.txtWebLink.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtWebLink.Location = new System.Drawing.Point(139, 75);
 			this.txtWebLink.Name = "txtWebLink";
-			this.txtWebLink.Size = new System.Drawing.Size(568, 23);
+			this.txtWebLink.Size = new System.Drawing.Size(591, 23);
 			this.txtWebLink.TabIndex = 28;
 			this.txtWebLink.ThemeName = "Crystal";
 			// 
@@ -351,7 +356,7 @@
 			this.txtInsuranceName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtInsuranceName.Location = new System.Drawing.Point(245, 46);
 			this.txtInsuranceName.Name = "txtInsuranceName";
-			this.txtInsuranceName.Size = new System.Drawing.Size(462, 23);
+			this.txtInsuranceName.Size = new System.Drawing.Size(485, 23);
 			this.txtInsuranceName.TabIndex = 23;
 			this.txtInsuranceName.ThemeName = "Crystal";
 			// 
@@ -428,7 +433,7 @@
 			// 
 			this.lblSearchCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSearchCount.Location = new System.Drawing.Point(872, 14);
+			this.lblSearchCount.Location = new System.Drawing.Point(800, 14);
 			this.lblSearchCount.Name = "lblSearchCount";
 			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
 			this.lblSearchCount.TabIndex = 5;
@@ -468,7 +473,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1005, 662);
+			this.ClientSize = new System.Drawing.Size(933, 645);
 			this.Controls.Add(this.txtSearchOnlineLogins);
 			this.Controls.Add(this.radLabel1);
 			this.Controls.Add(this.lblSearchCount);

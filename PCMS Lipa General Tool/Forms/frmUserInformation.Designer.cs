@@ -520,16 +520,16 @@
 			this.radGroupBox2.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.radGroupBox2.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.radGroupBox2.HeaderText = "RD App Credentials";
-			this.radGroupBox2.Location = new System.Drawing.Point(13, 388);
+			this.radGroupBox2.Location = new System.Drawing.Point(13, 371);
 			this.radGroupBox2.Name = "radGroupBox2";
-			this.radGroupBox2.Size = new System.Drawing.Size(369, 163);
+			this.radGroupBox2.Size = new System.Drawing.Size(369, 180);
 			this.radGroupBox2.TabIndex = 50;
 			this.radGroupBox2.Text = "RD App Credentials";
 			this.radGroupBox2.ThemeName = "Crystal";
 			// 
 			// txtLytecPassword
 			// 
-			this.txtLytecPassword.Location = new System.Drawing.Point(149, 122);
+			this.txtLytecPassword.Location = new System.Drawing.Point(149, 131);
 			this.txtLytecPassword.Name = "txtLytecPassword";
 			this.txtLytecPassword.Size = new System.Drawing.Size(180, 24);
 			this.txtLytecPassword.TabIndex = 13;
@@ -537,7 +537,7 @@
 			// 
 			// txtRDWebPassword
 			// 
-			this.txtRDWebPassword.Location = new System.Drawing.Point(149, 62);
+			this.txtRDWebPassword.Location = new System.Drawing.Point(149, 71);
 			this.txtRDWebPassword.Name = "txtRDWebPassword";
 			this.txtRDWebPassword.Size = new System.Drawing.Size(180, 24);
 			this.txtRDWebPassword.TabIndex = 11;
@@ -545,7 +545,7 @@
 			// 
 			// txtLytecUsername
 			// 
-			this.txtLytecUsername.Location = new System.Drawing.Point(149, 92);
+			this.txtLytecUsername.Location = new System.Drawing.Point(149, 101);
 			this.txtLytecUsername.Name = "txtLytecUsername";
 			this.txtLytecUsername.Size = new System.Drawing.Size(180, 24);
 			this.txtLytecUsername.TabIndex = 12;
@@ -553,7 +553,7 @@
 			// 
 			// txtRDWebUsername
 			// 
-			this.txtRDWebUsername.Location = new System.Drawing.Point(149, 32);
+			this.txtRDWebUsername.Location = new System.Drawing.Point(149, 41);
 			this.txtRDWebUsername.Name = "txtRDWebUsername";
 			this.txtRDWebUsername.Size = new System.Drawing.Size(180, 24);
 			this.txtRDWebUsername.TabIndex = 10;
@@ -561,7 +561,7 @@
 			// 
 			// radLabel5
 			// 
-			this.radLabel5.Location = new System.Drawing.Point(8, 126);
+			this.radLabel5.Location = new System.Drawing.Point(9, 131);
 			this.radLabel5.Name = "radLabel5";
 			this.radLabel5.Size = new System.Drawing.Size(111, 20);
 			this.radLabel5.TabIndex = 68;
@@ -570,7 +570,7 @@
 			// 
 			// radLabel4
 			// 
-			this.radLabel4.Location = new System.Drawing.Point(8, 96);
+			this.radLabel4.Location = new System.Drawing.Point(8, 101);
 			this.radLabel4.Name = "radLabel4";
 			this.radLabel4.Size = new System.Drawing.Size(112, 20);
 			this.radLabel4.TabIndex = 67;
@@ -579,7 +579,7 @@
 			// 
 			// radLabel3
 			// 
-			this.radLabel3.Location = new System.Drawing.Point(8, 67);
+			this.radLabel3.Location = new System.Drawing.Point(9, 71);
 			this.radLabel3.Name = "radLabel3";
 			this.radLabel3.Size = new System.Drawing.Size(126, 20);
 			this.radLabel3.TabIndex = 66;
@@ -588,7 +588,7 @@
 			// 
 			// radLabel2
 			// 
-			this.radLabel2.Location = new System.Drawing.Point(8, 37);
+			this.radLabel2.Location = new System.Drawing.Point(8, 41);
 			this.radLabel2.Name = "radLabel2";
 			this.radLabel2.Size = new System.Drawing.Size(127, 20);
 			this.radLabel2.TabIndex = 65;
@@ -877,9 +877,9 @@
 			// btnDelete
 			// 
 			this.btnDelete.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDelete.Location = new System.Drawing.Point(776, 110);
+			this.btnDelete.Location = new System.Drawing.Point(776, 70);
 			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(153, 33);
+			this.btnDelete.Size = new System.Drawing.Size(110, 39);
 			this.btnDelete.TabIndex = 31;
 			this.btnDelete.Text = "&Delete";
 			this.btnDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -889,9 +889,9 @@
 			// btnUpdate
 			// 
 			this.btnUpdate.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnUpdate.Location = new System.Drawing.Point(776, 67);
+			this.btnUpdate.Location = new System.Drawing.Point(776, 27);
 			this.btnUpdate.Name = "btnUpdate";
-			this.btnUpdate.Size = new System.Drawing.Size(153, 33);
+			this.btnUpdate.Size = new System.Drawing.Size(110, 39);
 			this.btnUpdate.TabIndex = 30;
 			this.btnUpdate.Text = "Update/Save";
 			this.btnUpdate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -902,7 +902,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(941, 595);
+			this.ClientSize = new System.Drawing.Size(892, 595);
 			this.Controls.Add(this.radPanel1);
 			this.Controls.Add(this.btnDelete);
 			this.Controls.Add(this.btnUpdate);

@@ -48,16 +48,16 @@
 			this.radPanel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radPanel1.Location = new System.Drawing.Point(13, 13);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(440, 201);
+			this.radPanel1.Size = new System.Drawing.Size(490, 342);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
 			// btnSendSuggestion
 			// 
 			this.btnSendSuggestion.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnSendSuggestion.Location = new System.Drawing.Point(15, 137);
+			this.btnSendSuggestion.Location = new System.Drawing.Point(332, 283);
 			this.btnSendSuggestion.Name = "btnSendSuggestion";
-			this.btnSendSuggestion.Size = new System.Drawing.Size(409, 46);
+			this.btnSendSuggestion.Size = new System.Drawing.Size(145, 39);
 			this.btnSendSuggestion.TabIndex = 1;
 			this.btnSendSuggestion.Text = "Send Suggestion";
 			this.btnSendSuggestion.ThemeName = "Crystal";
@@ -68,7 +68,7 @@
 			this.txtSuggestion.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtSuggestion.Location = new System.Drawing.Point(15, 16);
 			this.txtSuggestion.Name = "txtSuggestion";
-			this.txtSuggestion.Size = new System.Drawing.Size(409, 115);
+			this.txtSuggestion.Size = new System.Drawing.Size(462, 261);
 			this.txtSuggestion.TabIndex = 0;
 			this.txtSuggestion.ThemeName = "Crystal";
 			// 
@@ -76,7 +76,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(465, 226);
+			this.ClientSize = new System.Drawing.Size(525, 367);
 			this.Controls.Add(this.radPanel1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;

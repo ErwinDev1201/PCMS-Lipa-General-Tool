@@ -84,7 +84,7 @@
 			this.radPanel1.Controls.Add(this.btnFlow);
 			this.radPanel1.Controls.Add(this.btnWCProcess);
 			this.radPanel1.Controls.Add(this.btnTerms);
-			this.radPanel1.Location = new System.Drawing.Point(28, 26);
+			this.radPanel1.Location = new System.Drawing.Point(12, 12);
 			this.radPanel1.Name = "radPanel1";
 			this.radPanel1.Size = new System.Drawing.Size(643, 452);
 			this.radPanel1.TabIndex = 0;
@@ -95,7 +95,7 @@
 			this.lblTitle.Font = new System.Drawing.Font("Roboto", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblTitle.Location = new System.Drawing.Point(174, 15);
 			this.lblTitle.Name = "lblTitle";
-			this.lblTitle.Size = new System.Drawing.Size(311, 26);
+			this.lblTitle.Size = new System.Drawing.Size(305, 27);
 			this.lblTitle.TabIndex = 9;
 			this.lblTitle.Text = "Workers Comp Training Materials";
 			// 
@@ -257,7 +257,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(694, 496);
+			this.ClientSize = new System.Drawing.Size(665, 480);
 			this.Controls.Add(this.radPanel1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

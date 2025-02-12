@@ -311,7 +311,7 @@
             this.commandBarSeparator2,
             this.radLabelElement4,
             this.statlblAccess});
-			this.statbottom.Location = new System.Drawing.Point(0, 291);
+			this.statbottom.Location = new System.Drawing.Point(0, 278);
 			this.statbottom.Name = "statbottom";
 			this.statbottom.Size = new System.Drawing.Size(688, 25);
 			this.statbottom.TabIndex = 1;
@@ -380,11 +380,12 @@
 			this.radGroupBox1.Controls.Add(this.rdoTitle);
 			this.radGroupBox1.Controls.Add(this.rdoLower);
 			this.radGroupBox1.Controls.Add(this.rdoUpper);
+			this.radGroupBox1.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.radGroupBox1.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.radGroupBox1.HeaderText = "Casing Options";
 			this.radGroupBox1.Location = new System.Drawing.Point(13, 32);
 			this.radGroupBox1.Name = "radGroupBox1";
-			this.radGroupBox1.Size = new System.Drawing.Size(663, 207);
+			this.radGroupBox1.Size = new System.Drawing.Size(663, 193);
 			this.radGroupBox1.TabIndex = 2;
 			this.radGroupBox1.Text = "Casing Options";
 			this.radGroupBox1.ThemeName = "Crystal";
@@ -392,7 +393,7 @@
 			// btnProcessText
 			// 
 			this.btnProcessText.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnProcessText.Location = new System.Drawing.Point(508, 58);
+			this.btnProcessText.Location = new System.Drawing.Point(508, 42);
 			this.btnProcessText.Name = "btnProcessText";
 			this.btnProcessText.Size = new System.Drawing.Size(138, 134);
 			this.btnProcessText.TabIndex = 5;
@@ -405,10 +406,10 @@
 			this.txtOutputText.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.txtOutputText.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtOutputText.IsReadOnly = true;
-			this.txtOutputText.Location = new System.Drawing.Point(21, 128);
+			this.txtOutputText.Location = new System.Drawing.Point(105, 112);
 			this.txtOutputText.Multiline = true;
 			this.txtOutputText.Name = "txtOutputText";
-			this.txtOutputText.Size = new System.Drawing.Size(474, 64);
+			this.txtOutputText.Size = new System.Drawing.Size(390, 64);
 			this.txtOutputText.TabIndex = 4;
 			this.txtOutputText.ThemeName = "Crystal";
 			// 
@@ -416,11 +417,11 @@
 			// 
 			this.txtInputText.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.txtInputText.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtInputText.Location = new System.Drawing.Point(21, 58);
+			this.txtInputText.Location = new System.Drawing.Point(105, 42);
 			this.txtInputText.Multiline = true;
 			this.txtInputText.Name = "txtInputText";
 			this.txtInputText.ShowClearButton = true;
-			this.txtInputText.Size = new System.Drawing.Size(474, 64);
+			this.txtInputText.Size = new System.Drawing.Size(390, 64);
 			this.txtInputText.TabIndex = 3;
 			this.txtInputText.ThemeName = "Crystal";
 			this.txtInputText.TextChanged += new System.EventHandler(this.txtInputText_TextChanged);
@@ -428,7 +429,7 @@
 			// rdoTitle
 			// 
 			this.rdoTitle.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.rdoTitle.Location = new System.Drawing.Point(303, 31);
+			this.rdoTitle.Location = new System.Drawing.Point(5, 132);
 			this.rdoTitle.Name = "rdoTitle";
 			this.rdoTitle.Size = new System.Drawing.Size(85, 21);
 			this.rdoTitle.TabIndex = 2;
@@ -438,7 +439,7 @@
 			// rdoLower
 			// 
 			this.rdoLower.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.rdoLower.Location = new System.Drawing.Point(163, 31);
+			this.rdoLower.Location = new System.Drawing.Point(5, 96);
 			this.rdoLower.Name = "rdoLower";
 			this.rdoLower.Size = new System.Drawing.Size(96, 21);
 			this.rdoLower.TabIndex = 1;
@@ -448,7 +449,7 @@
 			// rdoUpper
 			// 
 			this.rdoUpper.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.rdoUpper.Location = new System.Drawing.Point(19, 31);
+			this.rdoUpper.Location = new System.Drawing.Point(5, 60);
 			this.rdoUpper.Name = "rdoUpper";
 			this.rdoUpper.Size = new System.Drawing.Size(94, 21);
 			this.rdoUpper.TabIndex = 0;
@@ -458,7 +459,7 @@
 			// btnInsuranceLogin
 			// 
 			this.btnInsuranceLogin.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnInsuranceLogin.Location = new System.Drawing.Point(13, 245);
+			this.btnInsuranceLogin.Location = new System.Drawing.Point(13, 231);
 			this.btnInsuranceLogin.Name = "btnInsuranceLogin";
 			this.btnInsuranceLogin.Size = new System.Drawing.Size(147, 41);
 			this.btnInsuranceLogin.TabIndex = 3;
@@ -469,7 +470,7 @@
 			// btnInsuranceInfo
 			// 
 			this.btnInsuranceInfo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnInsuranceInfo.Location = new System.Drawing.Point(166, 245);
+			this.btnInsuranceInfo.Location = new System.Drawing.Point(166, 231);
 			this.btnInsuranceInfo.Name = "btnInsuranceInfo";
 			this.btnInsuranceInfo.Size = new System.Drawing.Size(159, 41);
 			this.btnInsuranceInfo.TabIndex = 4;
@@ -480,7 +481,7 @@
 			// btnDemoGen
 			// 
 			this.btnDemoGen.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDemoGen.Location = new System.Drawing.Point(331, 245);
+			this.btnDemoGen.Location = new System.Drawing.Point(331, 231);
 			this.btnDemoGen.Name = "btnDemoGen";
 			this.btnDemoGen.Size = new System.Drawing.Size(177, 41);
 			this.btnDemoGen.TabIndex = 5;
@@ -491,7 +492,7 @@
 			// btnPersonalReminder
 			// 
 			this.btnPersonalReminder.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnPersonalReminder.Location = new System.Drawing.Point(521, 245);
+			this.btnPersonalReminder.Location = new System.Drawing.Point(521, 231);
 			this.btnPersonalReminder.Name = "btnPersonalReminder";
 			this.btnPersonalReminder.Size = new System.Drawing.Size(155, 41);
 			this.btnPersonalReminder.TabIndex = 6;
@@ -503,7 +504,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(688, 316);
+			this.ClientSize = new System.Drawing.Size(688, 303);
 			this.Controls.Add(this.btnPersonalReminder);
 			this.Controls.Add(this.btnDemoGen);
 			this.Controls.Add(this.btnInsuranceInfo);

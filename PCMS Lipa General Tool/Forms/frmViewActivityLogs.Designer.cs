@@ -56,25 +56,25 @@
 			// 
 			// radPanel1
 			// 
+			this.radPanel1.Controls.Add(this.lblSearchCount);
 			this.radPanel1.Controls.Add(this.radLabel12);
 			this.radPanel1.Controls.Add(this.cmbAction);
 			this.radPanel1.Controls.Add(this.txtSearch);
 			this.radPanel1.Controls.Add(this.radLabel1);
-			this.radPanel1.Controls.Add(this.lblSearchCount);
 			this.radPanel1.Controls.Add(this.dgActivityLogs);
 			this.radPanel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radPanel1.Location = new System.Drawing.Point(13, 24);
+			this.radPanel1.Location = new System.Drawing.Point(13, 12);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(1070, 719);
+			this.radPanel1.Size = new System.Drawing.Size(874, 570);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
 			// radLabel12
 			// 
 			this.radLabel12.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel12.Location = new System.Drawing.Point(687, 28);
+			this.radLabel12.Location = new System.Drawing.Point(497, 32);
 			this.radLabel12.Name = "radLabel12";
-			this.radLabel12.Size = new System.Drawing.Size(91, 20);
+			this.radLabel12.Size = new System.Drawing.Size(85, 19);
 			this.radLabel12.TabIndex = 13;
 			this.radLabel12.Text = "User Status:  ";
 			this.radLabel12.ThemeName = "Crystal";
@@ -89,7 +89,7 @@
 			this.cmbAction.Items.Add(radListDataItem1);
 			this.cmbAction.Items.Add(radListDataItem2);
 			this.cmbAction.Items.Add(radListDataItem3);
-			this.cmbAction.Location = new System.Drawing.Point(781, 26);
+			this.cmbAction.Location = new System.Drawing.Point(588, 27);
 			this.cmbAction.Name = "cmbAction";
 			this.cmbAction.Size = new System.Drawing.Size(269, 24);
 			this.cmbAction.TabIndex = 12;
@@ -103,7 +103,7 @@
 			this.txtSearch.Location = new System.Drawing.Point(113, 28);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
-			this.txtSearch.Size = new System.Drawing.Size(283, 24);
+			this.txtSearch.Size = new System.Drawing.Size(283, 23);
 			this.txtSearch.TabIndex = 9;
 			this.txtSearch.ThemeName = "Crystal";
 			this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
@@ -113,7 +113,7 @@
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(21, 31);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(90, 20);
+			this.radLabel1.Size = new System.Drawing.Size(84, 19);
 			this.radLabel1.TabIndex = 8;
 			this.radLabel1.Text = "Search here: ";
 			this.radLabel1.ThemeName = "Crystal";
@@ -121,9 +121,9 @@
 			// lblSearchCount
 			// 
 			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSearchCount.Location = new System.Drawing.Point(19, 684);
+			this.lblSearchCount.Location = new System.Drawing.Point(19, 545);
 			this.lblSearchCount.Name = "lblSearchCount";
-			this.lblSearchCount.Size = new System.Drawing.Size(69, 20);
+			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
 			this.lblSearchCount.TabIndex = 5;
 			this.lblSearchCount.Text = "radLabel2";
 			this.lblSearchCount.ThemeName = "Crystal";
@@ -132,7 +132,7 @@
 			// 
 			this.dgActivityLogs.AllowShowFocusCues = true;
 			this.dgActivityLogs.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dgActivityLogs.Location = new System.Drawing.Point(19, 58);
+			this.dgActivityLogs.Location = new System.Drawing.Point(19, 57);
 			// 
 			// 
 			// 
@@ -147,7 +147,7 @@
 			this.dgActivityLogs.MasterTemplate.AllowEditRow = false;
 			this.dgActivityLogs.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgActivityLogs.Name = "dgActivityLogs";
-			this.dgActivityLogs.Size = new System.Drawing.Size(1031, 620);
+			this.dgActivityLogs.Size = new System.Drawing.Size(838, 482);
 			this.dgActivityLogs.TabIndex = 3;
 			this.dgActivityLogs.ThemeName = "Crystal";
 			this.dgActivityLogs.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgActivityLogs_MouseDoubleClick);
@@ -156,7 +156,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1095, 755);
+			this.ClientSize = new System.Drawing.Size(899, 594);
 			this.Controls.Add(this.radPanel1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "frmViewActivityLogs";

@@ -145,7 +145,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.btnLogin.Image = global::PCMS_Lipa_General_Tool.Properties.Resources.login_;
 			this.btnLogin.Location = new System.Drawing.Point(307, 17);
 			this.btnLogin.Name = "btnLogin";
-			this.btnLogin.Size = new System.Drawing.Size(118, 52);
+			this.btnLogin.Size = new System.Drawing.Size(118, 53);
 			this.btnLogin.TabIndex = 3;
 			this.btnLogin.Text = "Login";
 			this.btnLogin.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;

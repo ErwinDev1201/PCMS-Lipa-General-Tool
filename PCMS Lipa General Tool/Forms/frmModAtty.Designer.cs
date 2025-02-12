@@ -91,7 +91,7 @@
 			this.radPanel1.Controls.Add(this.radLabel1);
 			this.radPanel1.Location = new System.Drawing.Point(13, 18);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(534, 334);
+			this.radPanel1.Size = new System.Drawing.Size(500, 334);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
@@ -122,9 +122,9 @@
 			// btnDelete
 			// 
 			this.btnDelete.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDelete.Location = new System.Drawing.Point(384, 133);
+			this.btnDelete.Location = new System.Drawing.Point(372, 96);
 			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(126, 51);
+			this.btnDelete.Size = new System.Drawing.Size(110, 38);
 			this.btnDelete.TabIndex = 8;
 			this.btnDelete.Text = "Delete";
 			this.btnDelete.ThemeName = "Crystal";
@@ -133,9 +133,9 @@
 			// btnUpdateSave
 			// 
 			this.btnUpdateSave.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnUpdateSave.Location = new System.Drawing.Point(384, 63);
+			this.btnUpdateSave.Location = new System.Drawing.Point(372, 52);
 			this.btnUpdateSave.Name = "btnUpdateSave";
-			this.btnUpdateSave.Size = new System.Drawing.Size(126, 51);
+			this.btnUpdateSave.Size = new System.Drawing.Size(110, 38);
 			this.btnUpdateSave.TabIndex = 7;
 			this.btnUpdateSave.Text = "Update/Save";
 			this.btnUpdateSave.ThemeName = "Crystal";
@@ -260,7 +260,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(564, 367);
+			this.ClientSize = new System.Drawing.Size(525, 367);
 			this.Controls.Add(this.radPanel1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

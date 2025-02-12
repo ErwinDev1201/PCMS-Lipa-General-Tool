@@ -31,21 +31,21 @@
 			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBillReviewDirectory));
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
+			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
 			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
 			this.dgBillReview = new Telerik.WinControls.UI.RadGridView();
 			this.btnNew = new Telerik.WinControls.UI.RadButton();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
-			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBillReview)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBillReview.MasterTemplate)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -64,6 +64,16 @@
 			this.radPanel1.Size = new System.Drawing.Size(874, 558);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
+			// 
+			// lblSearchCount
+			// 
+			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSearchCount.Location = new System.Drawing.Point(20, 536);
+			this.lblSearchCount.Name = "lblSearchCount";
+			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
+			this.lblSearchCount.TabIndex = 5;
+			this.lblSearchCount.Text = "radLabel2";
+			this.lblSearchCount.ThemeName = "Crystal";
 			// 
 			// txtSearch
 			// 
@@ -122,22 +132,12 @@
 			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
 			this.btnNew.Location = new System.Drawing.Point(692, 19);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(162, 48);
+			this.btnNew.Size = new System.Drawing.Size(130, 38);
 			this.btnNew.TabIndex = 2;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.btnNew.ThemeName = "Crystal";
 			this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
-			// 
-			// lblSearchCount
-			// 
-			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSearchCount.Location = new System.Drawing.Point(20, 536);
-			this.lblSearchCount.Name = "lblSearchCount";
-			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
-			this.lblSearchCount.TabIndex = 5;
-			this.lblSearchCount.Text = "radLabel2";
-			this.lblSearchCount.ThemeName = "Crystal";
 			// 
 			// frmBillReviewDirectory
 			// 
@@ -158,12 +158,12 @@
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
 			this.radPanel1.ResumeLayout(false);
 			this.radPanel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBillReview.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgBillReview)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 

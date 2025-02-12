@@ -158,5 +158,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 				Close();
 			}
 		}
+
+		private void radPanel1_Paint(object sender, PaintEventArgs e)
+		{
+
+		}
 	}
 }

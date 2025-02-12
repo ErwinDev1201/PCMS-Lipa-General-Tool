@@ -68,14 +68,14 @@
 			this.radPanel1.Controls.Add(this.radLabel1);
 			this.radPanel1.Location = new System.Drawing.Point(14, 18);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(377, 246);
+			this.radPanel1.Size = new System.Drawing.Size(499, 337);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
 			// radLabel5
 			// 
 			this.radLabel5.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel5.Location = new System.Drawing.Point(20, 138);
+			this.radLabel5.Location = new System.Drawing.Point(20, 183);
 			this.radLabel5.Name = "radLabel5";
 			this.radLabel5.Size = new System.Drawing.Size(59, 19);
 			this.radLabel5.TabIndex = 19;
@@ -88,15 +88,15 @@
 			this.txtRemarks.Location = new System.Drawing.Point(124, 109);
 			this.txtRemarks.Multiline = true;
 			this.txtRemarks.Name = "txtRemarks";
-			this.txtRemarks.Size = new System.Drawing.Size(238, 86);
+			this.txtRemarks.Size = new System.Drawing.Size(362, 169);
 			this.txtRemarks.TabIndex = 18;
 			// 
 			// btnSave
 			// 
 			this.btnSave.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnSave.Location = new System.Drawing.Point(124, 200);
+			this.btnSave.Location = new System.Drawing.Point(124, 284);
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(238, 39);
+			this.btnSave.Size = new System.Drawing.Size(362, 38);
 			this.btnSave.TabIndex = 17;
 			this.btnSave.Text = "&Save";
 			this.btnSave.ThemeName = "Crystal";
@@ -163,7 +163,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(401, 276);
+			this.ClientSize = new System.Drawing.Size(525, 367);
 			this.Controls.Add(this.radPanel1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

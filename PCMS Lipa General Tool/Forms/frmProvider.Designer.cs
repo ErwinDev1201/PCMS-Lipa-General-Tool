@@ -206,7 +206,7 @@
 			// txtNPINo
 			// 
 			this.txtNPINo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtNPINo.Location = new System.Drawing.Point(20, 96);
+			this.txtNPINo.Location = new System.Drawing.Point(20, 95);
 			this.txtNPINo.Name = "txtNPINo";
 			this.txtNPINo.Size = new System.Drawing.Size(426, 23);
 			this.txtNPINo.TabIndex = 3;

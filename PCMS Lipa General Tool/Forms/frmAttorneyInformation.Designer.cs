@@ -34,6 +34,7 @@
 			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAttorneyInformation));
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
+			this.lblDefSearchCount = new Telerik.WinControls.UI.RadLabel();
 			this.cmbAttorneyOption = new Telerik.WinControls.UI.RadDropDownList();
 			this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
 			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
@@ -42,9 +43,9 @@
 			this.dgDefAtty = new Telerik.WinControls.UI.RadGridView();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
-			this.lblDefSearchCount = new Telerik.WinControls.UI.RadLabel();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblDefSearchCount)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbAttorneyOption)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).BeginInit();
@@ -52,7 +53,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgDefAtty)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgDefAtty.MasterTemplate)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblDefSearchCount)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -74,6 +74,16 @@
 			this.radPanel1.Size = new System.Drawing.Size(874, 569);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
+			// 
+			// lblDefSearchCount
+			// 
+			this.lblDefSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblDefSearchCount.Location = new System.Drawing.Point(20, 547);
+			this.lblDefSearchCount.Name = "lblDefSearchCount";
+			this.lblDefSearchCount.Size = new System.Drawing.Size(66, 19);
+			this.lblDefSearchCount.TabIndex = 18;
+			this.lblDefSearchCount.Text = "radLabel5";
+			this.lblDefSearchCount.ThemeName = "Crystal";
 			// 
 			// cmbAttorneyOption
 			// 
@@ -131,7 +141,7 @@
 			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
 			this.btnNew.Location = new System.Drawing.Point(692, 18);
 			this.btnNew.Name = "btnNew";
-			this.btnNew.Size = new System.Drawing.Size(162, 48);
+			this.btnNew.Size = new System.Drawing.Size(130, 38);
 			this.btnNew.TabIndex = 13;
 			this.btnNew.Text = "&New";
 			this.btnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -167,16 +177,6 @@
 			this.dgDefAtty.ThemeName = "Crystal";
 			this.dgDefAtty.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgDefAtty_MouseDoubleClick);
 			// 
-			// lblDefSearchCount
-			// 
-			this.lblDefSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblDefSearchCount.Location = new System.Drawing.Point(20, 547);
-			this.lblDefSearchCount.Name = "lblDefSearchCount";
-			this.lblDefSearchCount.Size = new System.Drawing.Size(66, 19);
-			this.lblDefSearchCount.TabIndex = 18;
-			this.lblDefSearchCount.Text = "radLabel5";
-			this.lblDefSearchCount.ThemeName = "Crystal";
-			// 
 			// frmAttorneyInformation
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -196,6 +196,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
 			this.radPanel1.ResumeLayout(false);
 			this.radPanel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblDefSearchCount)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbAttorneyOption)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).EndInit();
@@ -203,7 +204,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgDefAtty.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgDefAtty)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblDefSearchCount)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 
