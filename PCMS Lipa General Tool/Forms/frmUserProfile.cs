@@ -15,25 +15,25 @@ namespace PCMS_Lipa_General_Tool.Forms
 		}
 
 		private void frmUserProfile_Load(object sender, EventArgs e)
-		{
-			txtIntID.ShowEmbeddedLabel = true; txtIntID.EmbeddedLabelText = "Employee ID";
-			txtEmpName.ShowEmbeddedLabel = true; txtEmpName.EmbeddedLabelText = "Employee Name";
-			txtBVNo.ShowEmbeddedLabel = true; txtBVNo.EmbeddedLabelText = "Broadvoice No.";
-			txtDateofBirth.ShowEmbeddedLabel = true; txtDateofBirth.EmbeddedLabelText = "Date of Birth";
-			txtUsername.ShowEmbeddedLabel = true; txtUsername.EmbeddedLabelText = "Username";
-			txtLytecPassword.ShowEmbeddedLabel = true; txtLytecPassword.EmbeddedLabelText = "Lytec Password";
-			txtLytecUsername.ShowEmbeddedLabel = true; txtLytecUsername.EmbeddedLabelText = "Lytec Username";
-			txtRDWebPassword.ShowEmbeddedLabel = true; txtRDWebPassword.EmbeddedLabelText = "RDWeb Username";
-			txtRDWebUsername.ShowEmbeddedLabel = true; txtRDWebUsername.EmbeddedLabelText = "RDWeb Password";
-			txtUserAccess.ShowEmbeddedLabel = true; txtUserAccess.EmbeddedLabelText = "User Access";
-			txtUserPosition.ShowEmbeddedLabel = true; txtUserPosition.EmbeddedLabelText = "User Position";
-			txtWorkEmail.ShowEmbeddedLabel = true; txtWorkEmail.EmbeddedLabelText = "Work Email";
-
-			// new version 05.23
-			txtDiscordUsername.ShowEmbeddedLabel = true; txtDiscordUsername.EmbeddedLabelText = "Discord Username";
-			txtDiscordPassword.ShowEmbeddedLabel = true; txtDiscordPassword.EmbeddedLabelText = "Discord Password";
+		{//
+		//	txtIntID.ShowEmbeddedLabel = true; txtIntID.EmbeddedLabelText = "Employee ID";
+		//	txtEmpName.ShowEmbeddedLabel = true; txtEmpName.EmbeddedLabelText = "Employee Name";
+		//	txtBVNo.ShowEmbeddedLabel = true; txtBVNo.EmbeddedLabelText = "Broadvoice No.";
+		//	txtDateofBirth.ShowEmbeddedLabel = true; txtDateofBirth.EmbeddedLabelText = "Date of Birth";
+		//	txtUsername.ShowEmbeddedLabel = true; txtUsername.EmbeddedLabelText = "Username";
+		//	txtLytecPassword.ShowEmbeddedLabel = true; txtLytecPassword.EmbeddedLabelText = "Lytec Password";
+		//	txtLytecUsername.ShowEmbeddedLabel = true; txtLytecUsername.EmbeddedLabelText = "Lytec Username";
+		//	txtRDWebPassword.ShowEmbeddedLabel = true; txtRDWebPassword.EmbeddedLabelText = "RDWeb Username";
+		//	txtRDWebUsername.ShowEmbeddedLabel = true; txtRDWebUsername.EmbeddedLabelText = "RDWeb Password";
+		//	txtUserAccess.ShowEmbeddedLabel = true; txtUserAccess.EmbeddedLabelText = "User Access";
+		//	txtUserPosition.ShowEmbeddedLabel = true; txtUserPosition.EmbeddedLabelText = "User Position";
+		//	txtWorkEmail.ShowEmbeddedLabel = true; txtWorkEmail.EmbeddedLabelText = "Work Email";
+		 //
+		//	// new version 05.23
+		//	txtDiscordUsername.ShowEmbeddedLabel = true; txtDiscordUsername.EmbeddedLabelText = "Discord Username";
+		//	txtDiscordPassword.ShowEmbeddedLabel = true; txtDiscordPassword.EmbeddedLabelText = "Discord Password";
 		}
-
+		 
 		private void ReadOnly()
 		{
 			txtIntID.ReadOnly = true;
