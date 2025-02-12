@@ -1,12 +1,15 @@
-﻿
-using PCMS_Lipa_General_Tool.Class;
+﻿using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
+using File = System.IO.File;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
@@ -133,6 +136,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				btnSaveUpdate.Enabled = false;
 				btnSaveUpdate.Text = "Update";
 				btnDelete.Enabled = false;
+				btnDelete.ForeColor = System.Drawing.Color.IndianRed;
 				btnCancel.Enabled = true;
 				cmbBrowser.Enabled = false;
 				btnOpenLink.Enabled = true;
@@ -282,76 +286,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//mainProcess.CreateDbId(txtLoginID, onlineID, @"OLID-");
 		}
 
-		
-
-		private void btnSave_Click(object sender, EventArgs e)
-		{
-			if (btnSaveUpdate.Text == "Update")
-			{
-				if (RadMessageBox.Show(
-					"Would you like to go ahead and update this record?",
-					"Confirmation",
-					MessageBoxButtons.YesNo,
-					RadMessageIcon.Question
-				) == DialogResult.Yes)
-				{
-					bool isSuccess = onlineLogin.OnlineLoginDB(
-						"Update",
-						txtLoginID.Text,
-						txtInsuranceName.Text,
-						txtWebLink.Text,
-						txtUsername.Text,
-						txtPassword.Text,
-						txtRemarks.Text,
-						txtaccntOwner.Text,
-						cmbBrowser.Text,
-						chkUpdateDiscord.Checked,
-						empName,
-						out string message);
-					if (isSuccess)
-					{
-						fe.SendToastNotifDesktop(message, "Success");
-					}
-					else
-					{
-						fe.SendToastNotifDesktop(message, "Failed");
-					};
-				}
-			}
-			else
-			{
-				// Validate input fields
-				if (ValidateInputs())
-				{
-					bool isSuccess = onlineLogin.OnlineLoginDB(
-						"Create",
-						txtLoginID.Text,
-						txtInsuranceName.Text,
-						txtWebLink.Text,
-						txtUsername.Text,
-						txtPassword.Text,
-						txtRemarks.Text,
-						txtaccntOwner.Text,
-						cmbBrowser.Text,
-						chkUpdateDiscord.Checked,
-						empName,
-						out string message);
-					if (isSuccess)
-					{
-						fe.SendToastNotifDesktop(message, "Success");
-					}
-					else
-					{
-						fe.SendToastNotifDesktop(message, "Failed");
-					};
-
-				}
-			}
-			Clear();
-			ShowDataUserAccess();
-			UserAccessDefault();
-			txtInsuranceName.Focus();
-		}
 
 		/// <summary>
 		/// Validates user inputs and shows appropriate error messages.
@@ -430,9 +364,74 @@ namespace PCMS_Lipa_General_Tool.Forms
 		//}
 		//
 
+		private void openRDLinkWebsite()
+		{
+			{
+				try
+				{
+					// Get user profile dynamically
+					string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+					// Path to the Edge Remote Desktop shortcut (.lnk)
+					string rdpFilePath = Path.Combine(userProfile,@"AppData\Roaming\Microsoft\Workspaces\{37ACAFE4-CA9D-4774-A3F7-5EFFA63D1B5D}\Resource\EDGE (PCMS Billing).rdp");
+
+					// URL to open inside the remote session
+					//string userUrl = "https://www.google.com"; // Replace with txtYourTextBox.Text in WinForms
+
+					// Ensure the RDP file exists
+					if (!System.IO.File.Exists(rdpFilePath))
+					{
+						error.LogError("openRDLinkWebsite", empName, "frmOnlinelogins", txtLoginID.Text, new Exception("RDP file not found: " + rdpFilePath));
+						//Console.WriteLine("RDP file not found: " + rdpFilePath);
+						return;
+					}
+
+					// Start Remote Desktop Connection (RDP)
+					Process rdpProcess = Process.Start(new ProcessStartInfo
+					{
+						FileName = "mstsc.exe",
+						Arguments = $"\"{rdpFilePath}\"", // Open the RDP session
+						UseShellExecute = true
+					});
+
+					// Wait a few seconds for the RDP session to establish (Adjust timing as needed)
+					//Thread.Sleep(10000); // 10 seconds, can be adjusted
+
+					// Open Microsoft Edge inside the Remote Desktop session with the provided URL
+					//Process.Start(new ProcessStartInfo
+					//{
+					//	FileName = "cmd.exe",
+					//	Arguments = $"/c start msedge.exe \"{urltoOpen}\"",
+					//	UseShellExecute = true
+					//});
+				}
+				catch (Exception ex)
+				{
+					error.LogError("openRDLinkWebsite", empName, "frmOnlinelogins", txtLoginID.Text, ex);
+					//Console.WriteLine("Error launching Edge in Remote Desktop: " + ex.Message);
+				}
+			}
+		}
+
+		// Extracts the target executable path from a .lnk shortcut
+		//private static string GetShortcutTarget(string shortcutPath)
+		//{
+		//	try
+		//	{
+		//		WshShell shell = new WshShell();
+		//		IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
+		//		return shortcut.TargetPath; // Returns the real path to Edge
+		//	}
+		//	catch
+		//	{
+		//		return string.Empty; // Return empty string if an error occurs
+		//	}
+		//}
+
 
 		private void btnOpenLink_Click(object sender, EventArgs e)
 		{
+			string AuditTextContent;
 			if (txtWebLink.Text == "")
 			{
 				RadMessageBox.Show("URL Link is Empty", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
@@ -441,7 +440,21 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				if (officeLoc == "LIPA" && cmbBrowser.Text != "Local Browser")
 				{
-					RadMessageBox.Show("Please use Browser from RD Web (pcmsbilling) to open this sites");
+					DialogResult result = RadMessageBox.Show(
+						"Website provided is intended for RDWeb Browser and will not work in Local Browser. " +
+						"Link is already copied and redy to paste to browser." +
+						"\nDo you want to open Microsoft Edge in Remote?",
+						"Confirmation",
+						MessageBoxButtons.YesNo,
+						RadMessageIcon.Question
+						);
+					if (result == DialogResult.Yes)
+					{
+						Clipboard.SetText(txtWebLink.Text);
+						openRDLinkWebsite();
+						AuditTextContent = empName + " open the link for " + txtInsuranceName.Text + " using Remote Microsoft Edge";
+						log.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
+					}
 					//var remotePCMessage = "I'm using a PCMS Lipa remote PC to access websites that are only available in the US.";
 					////winDiscordAPI.PublishtoDiscord("PCMS Lipa General Tool - Remote PC", "", remotePCMessage, empName, "https://discord.com/api/webhooks/1091534659579551744/3Nb2cboGirv3OCAQ-xhImXI9ck3uJ35JbTHLU34iJ9-EK7MgY3cUbT_uXBtNM28Pwhvx", "https://discord.gg/4Ns5NJaW");
 					//Process.Start(_remotePc);
@@ -463,43 +476,57 @@ namespace PCMS_Lipa_General_Tool.Forms
 							Process.Start(txtWebLink.Text);
 						}
 					}
+					AuditTextContent = empName + " open the link for " + txtInsuranceName.Text;
+					log.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
 				}
-				var AuditTextContent = empName + " open the link for " + txtInsuranceName.Text;
-				log.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
-
 			}
+			//log.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
 			UserAccessDefault();
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
-			{
-				bool isSuccess = onlineLogin.OnlineLoginDB(
-						"Delete",
-						txtLoginID.Text,
-						txtInsuranceName.Text,
-						txtWebLink.Text,
-						txtUsername.Text,
-						txtPassword.Text,
-						txtRemarks.Text,
-						txtaccntOwner.Text,
-						cmbBrowser.Text,
-						chkUpdateDiscord.Checked,
-						empName,
-						out string message);
-				if (isSuccess)
-				{
-					fe.SendToastNotifDesktop(message, "Success");
-				}
-				else
-				{
-					fe.SendToastNotifDesktop(message, "Failed");
-				};
-				ShowDataUserAccess();
-				UserAccessDefault();
-				Clear();
-			}
+			bool isSuccess = onlineLogin.OnlineLoginDB(
+				"Delete",
+				txtLoginID.Text,
+				txtInsuranceName.Text,
+				txtWebLink.Text,
+				txtUsername.Text,
+				txtPassword.Text,
+				txtRemarks.Text,
+				txtaccntOwner.Text,
+				cmbBrowser.Text,
+				chkUpdateDiscord.Checked,
+				empName,
+				out string message);
+			fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
+			//if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
+			//{
+			//	bool isSuccess = onlineLogin.OnlineLoginDB(
+			//			"Delete",
+			//			txtLoginID.Text,
+			//			txtInsuranceName.Text,
+			//			txtWebLink.Text,
+			//			txtUsername.Text,
+			//			txtPassword.Text,
+			//			txtRemarks.Text,
+			//			txtaccntOwner.Text,
+			//			cmbBrowser.Text,
+			//			chkUpdateDiscord.Checked,
+			//			empName,
+			//			out string message);
+			//	if (isSuccess)
+			//	{
+			//		fe.SendToastNotifDesktop(message, "Success");
+			//	}
+			//	else
+			//	{
+			//		fe.SendToastNotifDesktop(message, "Failed");
+			//	};
+			//	ShowDataUserAccess();
+			//	UserAccessDefault();
+			//	Clear();
+			//}
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)
@@ -530,9 +557,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void dgOnlineLogins_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-
 			AutoFill();
-		
 		}   
 
 
@@ -627,6 +652,71 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//	task.SearchTwoColumnOneFieldText(dgOnlineLogins, "[ONLINE LOGINS]", "[Insurance Name]", "[Remarks]", txtSearchOnlineLogins, lblSearchCount, empName);
 			//	dgOnlineLogins.Enabled = true;
 			//}
+		}
+
+		private void btnSaveUpdate_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (btnSaveUpdate.Text.Equals("Update", StringComparison.OrdinalIgnoreCase))
+				{
+					if (RadMessageBox.Show(
+						"Would you like to go ahead and update this record?",
+						"Confirmation",
+						MessageBoxButtons.YesNo,
+						RadMessageIcon.Question
+					) == DialogResult.Yes)
+					{
+						ProcessDatabaseOperation("Update");
+					}
+				}
+				else
+				{
+					if (!ValidateInputs()) return; // Exit early if validation fails
+					ProcessDatabaseOperation("Create");
+				}
+
+				Clear();
+				ShowDataUserAccess();
+				UserAccessDefault();
+				txtInsuranceName.Focus();
+			}
+			catch (Exception ex)
+			{
+				error.LogError("btnSaveUpdate_Click", empName, "OnlineLogins", "N/A", ex);
+				//fe.SendToastNotifDesktop($"An error occurred: {ex.Message}", "Error");
+			}
+		}
+
+		private void ProcessDatabaseOperation(string operationType)
+		{
+			try
+			{
+				bool isSuccess = onlineLogin.OnlineLoginDB(
+					operationType,
+					txtLoginID.Text,
+					txtInsuranceName.Text,
+					txtWebLink.Text,
+					txtUsername.Text,
+					txtPassword.Text,
+					txtRemarks.Text,
+					txtaccntOwner.Text,
+					cmbBrowser.Text,
+					chkUpdateDiscord.Checked,
+					empName,
+					out string message);
+
+				fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
+			}
+			catch (Exception ex)
+			{
+				error.LogError("ProcessDatabaseOperation", empName, "OnlineLogins", "N/A", ex);
+				//fe.SendToastNotifDesktop($"Unexpected error: {ex.Message}", "Error");
+			}
+			Clear();
+			ShowDataUserAccess();
+			UserAccessDefault();
+			txtInsuranceName.Focus();
 		}
 
 		//private void dgOnlineLogins_CellDoubleClick(object sender, GridViewCellEventArgs e)

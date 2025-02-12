@@ -86,7 +86,7 @@
 			this.btnDelete.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btnDelete.Location = new System.Drawing.Point(210, 397);
 			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(140, 45);
+			this.btnDelete.Size = new System.Drawing.Size(130, 38);
 			this.btnDelete.TabIndex = 22;
 			this.btnDelete.Text = "&Delete";
 			this.btnDelete.ThemeName = "Crystal";
@@ -135,7 +135,7 @@
 			this.btnSave.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btnSave.Location = new System.Drawing.Point(20, 397);
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(140, 45);
+			this.btnSave.Size = new System.Drawing.Size(130, 38);
 			this.btnSave.TabIndex = 17;
 			this.btnSave.Text = "Save";
 			this.btnSave.ThemeName = "Crystal";

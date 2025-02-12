@@ -73,7 +73,7 @@
 			this.btnChangeSeq.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btnChangeSeq.Location = new System.Drawing.Point(241, 87);
 			this.btnChangeSeq.Name = "btnChangeSeq";
-			this.btnChangeSeq.Size = new System.Drawing.Size(135, 34);
+			this.btnChangeSeq.Size = new System.Drawing.Size(130, 38);
 			this.btnChangeSeq.TabIndex = 2;
 			this.btnChangeSeq.Text = "Change Sequence";
 			this.btnChangeSeq.ThemeName = "Crystal";

@@ -41,10 +41,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtVersionHistory.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtVersionHistory.Location = new System.Drawing.Point(12, 36);
+			this.txtVersionHistory.Location = new System.Drawing.Point(12, 12);
 			this.txtVersionHistory.Multiline = true;
 			this.txtVersionHistory.Name = "txtVersionHistory";
-			this.txtVersionHistory.Size = new System.Drawing.Size(761, 506);
+			this.txtVersionHistory.Size = new System.Drawing.Size(501, 343);
 			this.txtVersionHistory.TabIndex = 0;
 			this.txtVersionHistory.ThemeName = "Crystal";
 			// 
@@ -52,11 +52,12 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(785, 563);
+			this.ClientSize = new System.Drawing.Size(525, 367);
 			this.Controls.Add(this.txtVersionHistory);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "frmVersion_History";
+			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "frmVersion_History";
 			this.ThemeName = "Crystal";

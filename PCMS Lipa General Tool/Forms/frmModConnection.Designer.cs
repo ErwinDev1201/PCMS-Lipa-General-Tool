@@ -49,16 +49,16 @@
 			this.txtConfiguration.Location = new System.Drawing.Point(12, 24);
 			this.txtConfiguration.Multiline = true;
 			this.txtConfiguration.Name = "txtConfiguration";
-			this.txtConfiguration.Size = new System.Drawing.Size(594, 214);
+			this.txtConfiguration.Size = new System.Drawing.Size(501, 287);
 			this.txtConfiguration.TabIndex = 0;
 			this.txtConfiguration.ThemeName = "Crystal";
 			// 
 			// btnSave
 			// 
 			this.btnSave.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnSave.Location = new System.Drawing.Point(367, 245);
+			this.btnSave.Location = new System.Drawing.Point(288, 317);
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(110, 48);
+			this.btnSave.Size = new System.Drawing.Size(110, 38);
 			this.btnSave.TabIndex = 1;
 			this.btnSave.Text = "&Save";
 			this.btnSave.ThemeName = "Crystal";
@@ -67,9 +67,9 @@
 			// btnCancel
 			// 
 			this.btnCancel.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnCancel.Location = new System.Drawing.Point(496, 245);
+			this.btnCancel.Location = new System.Drawing.Point(404, 317);
 			this.btnCancel.Name = "btnCancel";
-			this.btnCancel.Size = new System.Drawing.Size(110, 48);
+			this.btnCancel.Size = new System.Drawing.Size(110, 38);
 			this.btnCancel.TabIndex = 2;
 			this.btnCancel.Text = "&Cancel";
 			this.btnCancel.ThemeName = "Crystal";
@@ -80,7 +80,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(618, 305);
+			this.ClientSize = new System.Drawing.Size(525, 367);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnSave);
 			this.Controls.Add(this.txtConfiguration);

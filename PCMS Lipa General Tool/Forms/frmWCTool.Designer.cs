@@ -84,9 +84,9 @@
 			this.radPanel1.Controls.Add(this.btnWCInq);
 			this.radPanel1.Controls.Add(this.btnEAMSEarch);
 			this.radPanel1.Controls.Add(this.btnStateofBar);
-			this.radPanel1.Location = new System.Drawing.Point(28, 26);
+			this.radPanel1.Location = new System.Drawing.Point(12, 12);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(651, 463);
+			this.radPanel1.Size = new System.Drawing.Size(641, 456);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
@@ -95,14 +95,14 @@
 			this.lblTitle.Font = new System.Drawing.Font("Roboto Medium", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblTitle.Location = new System.Drawing.Point(177, 17);
 			this.lblTitle.Name = "lblTitle";
-			this.lblTitle.Size = new System.Drawing.Size(330, 30);
+			this.lblTitle.Size = new System.Drawing.Size(319, 29);
 			this.lblTitle.TabIndex = 9;
 			this.lblTitle.Text = "Workers Comp Training Materials";
 			// 
 			// btnCCHISearch
 			// 
 			this.btnCCHISearch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnCCHISearch.Location = new System.Drawing.Point(340, 392);
+			this.btnCCHISearch.Location = new System.Drawing.Point(335, 383);
 			this.btnCCHISearch.Name = "btnCCHISearch";
 			this.btnCCHISearch.Size = new System.Drawing.Size(278, 47);
 			this.btnCCHISearch.TabIndex = 3;
@@ -113,7 +113,7 @@
 			// btnApproveMPN
 			// 
 			this.btnApproveMPN.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnApproveMPN.Location = new System.Drawing.Point(340, 339);
+			this.btnApproveMPN.Location = new System.Drawing.Point(335, 330);
 			this.btnApproveMPN.Name = "btnApproveMPN";
 			this.btnApproveMPN.Size = new System.Drawing.Size(278, 47);
 			this.btnApproveMPN.TabIndex = 4;
@@ -124,7 +124,7 @@
 			// btnLienClaim
 			// 
 			this.btnLienClaim.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnLienClaim.Location = new System.Drawing.Point(340, 286);
+			this.btnLienClaim.Location = new System.Drawing.Point(335, 277);
 			this.btnLienClaim.Name = "btnLienClaim";
 			this.btnLienClaim.Size = new System.Drawing.Size(278, 47);
 			this.btnLienClaim.TabIndex = 5;
@@ -135,7 +135,7 @@
 			// btnInterest
 			// 
 			this.btnInterest.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnInterest.Location = new System.Drawing.Point(340, 233);
+			this.btnInterest.Location = new System.Drawing.Point(335, 224);
 			this.btnInterest.Name = "btnInterest";
 			this.btnInterest.Size = new System.Drawing.Size(278, 47);
 			this.btnInterest.TabIndex = 6;
@@ -146,7 +146,7 @@
 			// btnICD9
 			// 
 			this.btnICD9.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnICD9.Location = new System.Drawing.Point(340, 180);
+			this.btnICD9.Location = new System.Drawing.Point(335, 171);
 			this.btnICD9.Name = "btnICD9";
 			this.btnICD9.Size = new System.Drawing.Size(278, 47);
 			this.btnICD9.TabIndex = 7;
@@ -157,7 +157,7 @@
 			// btnFeeSched
 			// 
 			this.btnFeeSched.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnFeeSched.Location = new System.Drawing.Point(340, 127);
+			this.btnFeeSched.Location = new System.Drawing.Point(335, 118);
 			this.btnFeeSched.Name = "btnFeeSched";
 			this.btnFeeSched.Size = new System.Drawing.Size(278, 47);
 			this.btnFeeSched.TabIndex = 8;
@@ -168,7 +168,7 @@
 			// btnOAPractiseMate
 			// 
 			this.btnOAPractiseMate.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnOAPractiseMate.Location = new System.Drawing.Point(340, 74);
+			this.btnOAPractiseMate.Location = new System.Drawing.Point(335, 65);
 			this.btnOAPractiseMate.Name = "btnOAPractiseMate";
 			this.btnOAPractiseMate.Size = new System.Drawing.Size(278, 47);
 			this.btnOAPractiseMate.TabIndex = 2;
@@ -179,7 +179,7 @@
 			// btnEAMSInt
 			// 
 			this.btnEAMSInt.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnEAMSInt.Location = new System.Drawing.Point(32, 392);
+			this.btnEAMSInt.Location = new System.Drawing.Point(27, 383);
 			this.btnEAMSInt.Name = "btnEAMSInt";
 			this.btnEAMSInt.Size = new System.Drawing.Size(278, 47);
 			this.btnEAMSInt.TabIndex = 1;
@@ -190,7 +190,7 @@
 			// btnPharmacyFS
 			// 
 			this.btnPharmacyFS.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnPharmacyFS.Location = new System.Drawing.Point(32, 339);
+			this.btnPharmacyFS.Location = new System.Drawing.Point(27, 330);
 			this.btnPharmacyFS.Name = "btnPharmacyFS";
 			this.btnPharmacyFS.Size = new System.Drawing.Size(278, 47);
 			this.btnPharmacyFS.TabIndex = 1;
@@ -201,7 +201,7 @@
 			// btnICD10
 			// 
 			this.btnICD10.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnICD10.Location = new System.Drawing.Point(32, 286);
+			this.btnICD10.Location = new System.Drawing.Point(27, 277);
 			this.btnICD10.Name = "btnICD10";
 			this.btnICD10.Size = new System.Drawing.Size(278, 47);
 			this.btnICD10.TabIndex = 1;
@@ -212,7 +212,7 @@
 			// btnEAMSAdmin
 			// 
 			this.btnEAMSAdmin.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnEAMSAdmin.Location = new System.Drawing.Point(32, 233);
+			this.btnEAMSAdmin.Location = new System.Drawing.Point(27, 224);
 			this.btnEAMSAdmin.Name = "btnEAMSAdmin";
 			this.btnEAMSAdmin.Size = new System.Drawing.Size(278, 47);
 			this.btnEAMSAdmin.TabIndex = 1;
@@ -223,7 +223,7 @@
 			// btnWCInq
 			// 
 			this.btnWCInq.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnWCInq.Location = new System.Drawing.Point(32, 180);
+			this.btnWCInq.Location = new System.Drawing.Point(27, 171);
 			this.btnWCInq.Name = "btnWCInq";
 			this.btnWCInq.Size = new System.Drawing.Size(278, 47);
 			this.btnWCInq.TabIndex = 1;
@@ -234,7 +234,7 @@
 			// btnEAMSEarch
 			// 
 			this.btnEAMSEarch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnEAMSEarch.Location = new System.Drawing.Point(32, 127);
+			this.btnEAMSEarch.Location = new System.Drawing.Point(27, 118);
 			this.btnEAMSEarch.Name = "btnEAMSEarch";
 			this.btnEAMSEarch.Size = new System.Drawing.Size(278, 47);
 			this.btnEAMSEarch.TabIndex = 1;
@@ -245,7 +245,7 @@
 			// btnStateofBar
 			// 
 			this.btnStateofBar.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnStateofBar.Location = new System.Drawing.Point(32, 74);
+			this.btnStateofBar.Location = new System.Drawing.Point(27, 65);
 			this.btnStateofBar.Name = "btnStateofBar";
 			this.btnStateofBar.Size = new System.Drawing.Size(278, 47);
 			this.btnStateofBar.TabIndex = 0;
@@ -257,7 +257,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(701, 512);
+			this.ClientSize = new System.Drawing.Size(665, 480);
 			this.Controls.Add(this.radPanel1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

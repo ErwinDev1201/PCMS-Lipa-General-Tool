@@ -75,26 +75,26 @@
 			this.radPanel1.Controls.Add(this.txtIntID);
 			this.radPanel1.Controls.Add(this.radLabel2);
 			this.radPanel1.Controls.Add(this.radLabel1);
-			this.radPanel1.Location = new System.Drawing.Point(19, 18);
+			this.radPanel1.Location = new System.Drawing.Point(12, 18);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(557, 307);
+			this.radPanel1.Size = new System.Drawing.Size(501, 337);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
 			// txtMessage
 			// 
 			this.txtMessage.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtMessage.Location = new System.Drawing.Point(125, 173);
+			this.txtMessage.Location = new System.Drawing.Point(111, 173);
 			this.txtMessage.Multiline = true;
 			this.txtMessage.Name = "txtMessage";
-			this.txtMessage.Size = new System.Drawing.Size(408, 111);
+			this.txtMessage.Size = new System.Drawing.Size(368, 149);
 			this.txtMessage.TabIndex = 6;
 			this.txtMessage.ThemeName = "Crystal";
 			// 
 			// radLabel6
 			// 
 			this.radLabel6.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel6.Location = new System.Drawing.Point(27, 211);
+			this.radLabel6.Location = new System.Drawing.Point(15, 214);
 			this.radLabel6.Name = "radLabel6";
 			this.radLabel6.Size = new System.Drawing.Size(68, 19);
 			this.radLabel6.TabIndex = 3;
@@ -104,25 +104,25 @@
 			// txtDCLogs
 			// 
 			this.txtDCLogs.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtDCLogs.Location = new System.Drawing.Point(125, 144);
+			this.txtDCLogs.Location = new System.Drawing.Point(111, 144);
 			this.txtDCLogs.Name = "txtDCLogs";
-			this.txtDCLogs.Size = new System.Drawing.Size(408, 23);
+			this.txtDCLogs.Size = new System.Drawing.Size(368, 23);
 			this.txtDCLogs.TabIndex = 3;
 			this.txtDCLogs.ThemeName = "Crystal";
 			// 
 			// txtAction
 			// 
 			this.txtAction.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtAction.Location = new System.Drawing.Point(125, 115);
+			this.txtAction.Location = new System.Drawing.Point(111, 115);
 			this.txtAction.Name = "txtAction";
-			this.txtAction.Size = new System.Drawing.Size(408, 23);
+			this.txtAction.Size = new System.Drawing.Size(368, 23);
 			this.txtAction.TabIndex = 3;
 			this.txtAction.ThemeName = "Crystal";
 			// 
 			// radLabel5
 			// 
 			this.radLabel5.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel5.Location = new System.Drawing.Point(27, 145);
+			this.radLabel5.Location = new System.Drawing.Point(15, 148);
 			this.radLabel5.Name = "radLabel5";
 			this.radLabel5.Size = new System.Drawing.Size(92, 19);
 			this.radLabel5.TabIndex = 2;
@@ -132,16 +132,16 @@
 			// txtActionMake
 			// 
 			this.txtActionMake.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtActionMake.Location = new System.Drawing.Point(125, 86);
+			this.txtActionMake.Location = new System.Drawing.Point(111, 86);
 			this.txtActionMake.Name = "txtActionMake";
-			this.txtActionMake.Size = new System.Drawing.Size(405, 23);
+			this.txtActionMake.Size = new System.Drawing.Size(368, 23);
 			this.txtActionMake.TabIndex = 5;
 			this.txtActionMake.ThemeName = "Crystal";
 			// 
 			// radLabel4
 			// 
 			this.radLabel4.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel4.Location = new System.Drawing.Point(27, 116);
+			this.radLabel4.Location = new System.Drawing.Point(15, 119);
 			this.radLabel4.Name = "radLabel4";
 			this.radLabel4.Size = new System.Drawing.Size(52, 19);
 			this.radLabel4.TabIndex = 2;
@@ -151,7 +151,7 @@
 			// radLabel3
 			// 
 			this.radLabel3.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel3.Location = new System.Drawing.Point(27, 87);
+			this.radLabel3.Location = new System.Drawing.Point(15, 90);
 			this.radLabel3.Name = "radLabel3";
 			this.radLabel3.Size = new System.Drawing.Size(92, 19);
 			this.radLabel3.TabIndex = 4;
@@ -161,25 +161,25 @@
 			// txtTimeStamp
 			// 
 			this.txtTimeStamp.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtTimeStamp.Location = new System.Drawing.Point(125, 57);
+			this.txtTimeStamp.Location = new System.Drawing.Point(111, 57);
 			this.txtTimeStamp.Name = "txtTimeStamp";
-			this.txtTimeStamp.Size = new System.Drawing.Size(405, 23);
+			this.txtTimeStamp.Size = new System.Drawing.Size(368, 23);
 			this.txtTimeStamp.TabIndex = 3;
 			this.txtTimeStamp.ThemeName = "Crystal";
 			// 
 			// txtIntID
 			// 
 			this.txtIntID.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtIntID.Location = new System.Drawing.Point(125, 28);
+			this.txtIntID.Location = new System.Drawing.Point(111, 28);
 			this.txtIntID.Name = "txtIntID";
-			this.txtIntID.Size = new System.Drawing.Size(136, 23);
+			this.txtIntID.Size = new System.Drawing.Size(150, 23);
 			this.txtIntID.TabIndex = 1;
 			this.txtIntID.ThemeName = "Crystal";
 			// 
 			// radLabel2
 			// 
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel2.Location = new System.Drawing.Point(27, 58);
+			this.radLabel2.Location = new System.Drawing.Point(15, 61);
 			this.radLabel2.Name = "radLabel2";
 			this.radLabel2.Size = new System.Drawing.Size(86, 19);
 			this.radLabel2.TabIndex = 2;
@@ -189,7 +189,7 @@
 			// radLabel1
 			// 
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(27, 29);
+			this.radLabel1.Location = new System.Drawing.Point(15, 32);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(73, 19);
 			this.radLabel1.TabIndex = 0;
@@ -200,7 +200,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(592, 340);
+			this.ClientSize = new System.Drawing.Size(525, 367);
 			this.Controls.Add(this.radPanel1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

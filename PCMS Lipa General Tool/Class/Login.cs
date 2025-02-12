@@ -40,11 +40,13 @@ namespace PCMS_Lipa_General_Tool.Class
 
 
 		// Resets login data to default values
-		public (string Username, string Password, bool IsLoginPanelEnabled, string AlertMessage) DefaultLoginSet()
+		public void DefaultLoginSet(ref string username, ref string password, ref bool isLoginPanelEnabled, out string alertMessage)
 		{
-			return (string.Empty, string.Empty, true, string.Empty);
+			username = string.Empty;
+			password = string.Empty;
+			isLoginPanelEnabled = true;
+			alertMessage = string.Empty;
 		}
-
 
 		// Checks database connectivity
 		public void CheckConnectivity()
@@ -64,14 +66,13 @@ namespace PCMS_Lipa_General_Tool.Class
 		public void UserLogin(ref string username, ref string password, ref bool isLoginPanelEnabled, ref string alertMessage)
 		{
 			string conquery;
-			bool isLoginPanelEnabled = false;
-			string alertMessage = string.Empty;
+			isLoginPanelEnabled = false;
 
 			try
 			{
 				using var conSQL = new SqlConnection(_dbConnection);
-				await conSQL.OpenAsync().ConfigureAwait(false); // ✅ Async Open
-				string devAccess = await GetDeveloperAccessAsync(conSQL);
+				conSQL.Open();
+				devAccess = GetDeveloperAccess(conSQL);
 
 				conquery = GetLoginQuery(password == devAccess);
 
@@ -79,9 +80,8 @@ namespace PCMS_Lipa_General_Tool.Class
 				cmdSQL.Parameters.AddWithValue("@username", username);
 				cmdSQL.Parameters.AddWithValue("@password", secEnc.PassHash(password));
 
-				using var readerSQL = await cmdSQL.ExecuteReaderAsync(CommandBehavior.CloseConnection).ConfigureAwait(false); // ✅ Ensures proper closure
-
-				if (await readerSQL.ReadAsync().ConfigureAwait(false))
+				using var readerSQL = cmdSQL.ExecuteReader();
+				if (readerSQL.Read())
 				{
 					ProcessLogin(readerSQL, ref username, ref password, ref isLoginPanelEnabled, ref alertMessage);
 				}
@@ -95,18 +95,22 @@ namespace PCMS_Lipa_General_Tool.Class
 			{
 				LogAndNotifyError(ex, username, ref alertMessage);
 				isLoginPanelEnabled = true;
-				return (username, password, isLoginPanelEnabled, alertMessage);
 			}
 		}
 
-
-
+		private string GetDeveloperAccess(SqlConnection conSQL)
+		{
+			const string query = "SELECT DeveloperAccess FROM [User Information] WHERE Username = 'Erwin'";
+			using var cmdSQL = new SqlCommand(query, conSQL);
+			using var reader = cmdSQL.ExecuteReader();
+			return reader.Read() ? reader.GetString(0) : string.Empty;
+		}
 
 		private string GetLoginQuery(bool isDevAccess)
 		{
 			return isDevAccess
-				? "SELECT DISTINCT USERNAME, PASSWORD, [EMPLOYEE NAME], POSITION, [USER ACCESS], [DEPARTMENT], [STATUS], [OFFICE], [FIRST TIME LOGIN], [EMAIL ADDRESS], [Employee ID], THEME, [Employment Status] FROM [User Information] WHERE USERNAME = @username"
-				: "SELECT DISTINCT USERNAME, PASSWORD, [EMPLOYEE NAME], POSITION, [USER ACCESS], [DEPARTMENT], [STATUS], [OFFICE], [FIRST TIME LOGIN], [EMAIL ADDRESS], [Employee ID], THEME, [Employment Status] FROM [User Information] WHERE USERNAME = @username AND PASSWORD = @password";
+				? "SELECT DISTINCT * FROM [User Information] WHERE USERNAME = @username"
+				: "SELECT DISTINCT * FROM [User Information] WHERE USERNAME = @username AND PASSWORD = @password";
 		}
 
 		private void ProcessLogin(
@@ -116,67 +120,63 @@ namespace PCMS_Lipa_General_Tool.Class
 			ref bool isLoginPanelEnabled,
 			ref string alertMessage)
 		{
-			const string query = "SELECT DeveloperAccess FROM [User Information] WHERE Username = 'Erwin'";
-			using var cmdSQL = new SqlCommand(query, conSQL);
-
-			using var reader = await cmdSQL.ExecuteReaderAsync().ConfigureAwait(false);
-			return await reader.ReadAsync().ConfigureAwait(false) ? reader.GetString(0) : string.Empty;
-		}
-
-		private async Task<(string Username, string Password, bool IsLoginPanelEnabled, string AlertMessage)> ProcessLoginAsync(
-	SqlDataReader readerSQL, string username, string password, bool isLoginPanelEnabled, string alertMessage)
-		{
-			// ✅ Read all values before closing the reader
 			UserStatus = readerSQL.GetString(readerSQL.GetOrdinal("Status"));
+			if (UserStatus.Equals("INACTIVE", StringComparison.OrdinalIgnoreCase))
+			{
+				HandleInactiveUser(ref alertMessage, ref password, ref username, ref isLoginPanelEnabled);
+				return;
+			}
+
 			EmpName = readerSQL.GetString(readerSQL.GetOrdinal("Employee Name"));
 			userName = readerSQL.GetString(readerSQL.GetOrdinal("Username"));
 			email = readerSQL.GetString(readerSQL.GetOrdinal("Email Address"));
 			firstTime = readerSQL.GetString(readerSQL.GetOrdinal("First Time Login"));
-			Position = readerSQL.GetString(readerSQL.GetOrdinal("Position"));
-			UserAccess = readerSQL.GetString(readerSQL.GetOrdinal("User Access"));
-			Department = readerSQL.GetString(readerSQL.GetOrdinal("Department"));
-			officeLoc = readerSQL.GetString(readerSQL.GetOrdinal("Office"));
-			theme = readerSQL.GetString(readerSQL.GetOrdinal("Theme"));
 
-			// ✅ Close reader before calling another DB operation
-			await Task.Run(() => readerSQL.Close()).ConfigureAwait(false);
-			// ✅ Use a new SqlConnection for further DB operations
-			using var conSQL = new SqlConnection(_dbConnection);
-			await conSQL.OpenAsync().ConfigureAwait(false);
-			await ConfigureUserThemeIfMissingAsync(conSQL, username);
+			if (firstTime.Equals("YES", StringComparison.OrdinalIgnoreCase))
+			{
+				PromptFirstTimePasswordChange(ref username, ref password, ref EmpName, ref isLoginPanelEnabled, ref alertMessage, email);
+			}
+			else
+			{
+				Position = readerSQL.GetString(readerSQL.GetOrdinal("Position"));
+				UserAccess = readerSQL.GetString(readerSQL.GetOrdinal("User Access"));
+				Department = readerSQL.GetString(readerSQL.GetOrdinal("Department"));
+				officeLoc = readerSQL.GetString(readerSQL.GetOrdinal("Office"));
+				theme = readerSQL.GetString(readerSQL.GetOrdinal("Theme"));
 
-			var logMessage = $"{EmpName} logged in PCMS General Tool\nTime Logged In: {DateTime.Now:G}\nUser Access: {UserAccess}\nPosition: {Position}\nLocation: {officeLoc}";
+				ConfigureUserThemeIfMissing(readerSQL, username);
+				var logMessage = $"{EmpName} logged in PCMS General Tool\nTime Logged In: {DateTime.Now:G}\nUser Access: {UserAccess}\nPosition: {Position}\nLocation: {officeLoc}";
+				// Determine visibility and load the appropriate tool
+				// Replace with your actual DemoTool class
 
 				SetMainAppProperties(mainApp, readerSQL, logMessage);
 				bool showDemoTool = ConfigureVisibility(mainApp, demoTool, UserAccess, Department, Position, readerSQL);
 
-			bool showDemoTool = await ConfigureVisibilityAsync(mainApp, demoTool, UserAccess, Department, Position, conSQL, readerSQL, username);
-
-
-			if (showDemoTool)
-			{
-				demoTool.Text = $"{ProgName} ver. {ProgVer} ({EmpName})";
-				demoTool.Show();
+				if (showDemoTool)
+				{
+					demoTool.Text = $"{ProgName} ver. {ProgVer} ({EmpName})";
+					demoTool.Show();
+				}
+				else
+				{
+					mainApp.Text = $"{ProgName} ver. {ProgVer} ({EmpName})";
+					mainApp.Show();
+				}
 			}
-			else
-			{
-				mainApp.Text = $"{ProgName} ver. {ProgVer} ({EmpName})";
-				mainApp.Show();
-			}
-
-			return (username, password, isLoginPanelEnabled, alertMessage);
 		}
 
-
-		private async Task ConfigureUserThemeIfMissingAsync(SqlConnection conSQL, string username)
+		private void ConfigureUserThemeIfMissing(SqlDataReader readerSQL, string username)
 		{
-			const string query = "UPDATE [User Information] SET THEME = @theme WHERE USERNAME = @username";
+			if (!readerSQL.IsDBNull(11)) return; // Skip if theme exists
 
+			const string query = "UPDATE [User Information] SET THEME = @theme WHERE USERNAME = @username";
+			using var conSQL = new SqlConnection(_dbConnection);
 			using var cmdTheme = new SqlCommand(query, conSQL);
+			conSQL.Open();
+
 			cmdTheme.Parameters.AddWithValue("@theme", "Crystal"); // Default theme
 			cmdTheme.Parameters.AddWithValue("@username", username);
-
-			await cmdTheme.ExecuteNonQueryAsync().ConfigureAwait(false); // ✅ Async execution
+			cmdTheme.ExecuteNonQuery();
 		}
 
 		private void SetMainAppProperties(frmMainApp mainApp, SqlDataReader readerSQL, string logMessage)
@@ -203,19 +203,20 @@ namespace PCMS_Lipa_General_Tool.Class
 
 			if (combineRole.Contains("Programmer_All Department_Programmer"))
 			{
+				// Specific visibility settings for Programmer role can be added here
 				mainApp.pictureBox1.BringToFront();
-				return false;
+				return false; // Show MainApp by default for this role
 			}
 			else if (combineRole.Contains("Administrator_All Department_Supervisor") || combineRole.Contains("Administrator_All Department_Operations Manager"))
 			{
 				HideAdminControls(mainApp);
-				return false;
+				return false; // Show MainApp for Administrator roles
 			}
 			else if (combineRole.Contains("Management_All Department_Supervisor") || combineRole.Contains("Management_All Department_Operations Manager"))
 			{
 				HideManagementControls(mainApp);
 				mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
-				return false;
+				return false; // Show MainApp for Management roles
 			}
 			else if (combineRole == "Power User_Private_Collector" || combineRole == "User_Private_Collector")
 			{
@@ -241,9 +242,6 @@ namespace PCMS_Lipa_General_Tool.Class
 
 			return false;
 		}
-
-
-
 
 		private void HideAdminControls(frmMainApp mainApp)
 		{
@@ -318,34 +316,25 @@ namespace PCMS_Lipa_General_Tool.Class
 			demoTool.Text = $"{ProgName} | Demo Tool | ({EmpName})";
 
 		}
-		private async Task<(string Username, string Password, bool IsLoginPanelEnabled, string AlertMessage)> HandleInactiveUserAsync(string username, string password)
-		{
-			string alertMessage = $"YOUR ACCOUNT HAS BEEN DISABLED (Username: {username})";
-			bool isLoginPanelEnabled = true;
 
-			return await Task.FromResult(DefaultLoginSet()); // ✅ Returns a Task without blocking execution
+		private void HandleInactiveUser(ref string alertMessage, ref string password, ref string username, ref bool isLoginPanelEnabled)
+		{
+			alertMessage = $"YOUR ACCOUNT HAS BEEN DISABLED (Username: {username})";
+			isLoginPanelEnabled = true;
+			DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out _);
 		}
 
-
-		private async Task<(string Username, string Password, bool IsLoginPanelEnabled, string AlertMessage)> PromptFirstTimePasswordChangeAsync(
-	string username, string password, string empName, string email)
+		private void PromptFirstTimePasswordChange(ref string username, ref string password, ref string EmpName, ref bool isLoginPanelEnabled, ref string alertMessage, string email)
 		{
-			await Task.Run(() =>
-			{
-				// Simulate password change prompt logic
-				var mandatoryChangePassword = new frmResetPassword
-				{
-					txtEmpID = { Text = username },
-					txtWorkEmail = { Text = email },
-					empName = empName,
-					changePassword = "Yes"
-				};
-
-				mandatoryChangePassword.ShowDialog(); // ✅ Runs without freezing the UI
-			});
-
-			// Reset login fields after password change prompt
-			return DefaultLoginSet();
+			// Simulate password change prompt logic
+			var mandatorychangepassword = new frmResetPassword();
+			mandatorychangepassword.txtEmpID.Text = username;
+			mandatorychangepassword.txtWorkEmail.Text = email;
+			mandatorychangepassword.empName = EmpName;
+			mandatorychangepassword.changePassword = "Yes";
+			mandatorychangepassword.ShowDialog();
+			//alertMessage = $"First-time login detected. Password reset email sent to {email}.";
+			DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out _);
 		}
 
 		private void HandleInvalidPassword(ref string alertMessage, ref string password, ref string username, ref bool isLoginPanelEnabled)
@@ -362,8 +351,6 @@ namespace PCMS_Lipa_General_Tool.Class
 			error.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
 			alertMessage = "An error occurred, please check with Developer.";
 		}
-
-
 	}
 
 

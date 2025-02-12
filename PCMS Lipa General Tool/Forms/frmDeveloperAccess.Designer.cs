@@ -48,7 +48,7 @@
 			this.btnUpdateDevPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btnUpdateDevPassword.Location = new System.Drawing.Point(15, 78);
 			this.btnUpdateDevPassword.Name = "btnUpdateDevPassword";
-			this.btnUpdateDevPassword.Size = new System.Drawing.Size(315, 34);
+			this.btnUpdateDevPassword.Size = new System.Drawing.Size(315, 38);
 			this.btnUpdateDevPassword.TabIndex = 2;
 			this.btnUpdateDevPassword.Text = "Update Password";
 			this.btnUpdateDevPassword.ThemeName = "Crystal";
@@ -59,7 +59,7 @@
 			this.txtNewPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtNewPassword.Location = new System.Drawing.Point(137, 48);
 			this.txtNewPassword.Name = "txtNewPassword";
-			this.txtNewPassword.Size = new System.Drawing.Size(193, 24);
+			this.txtNewPassword.Size = new System.Drawing.Size(193, 23);
 			this.txtNewPassword.TabIndex = 3;
 			this.txtNewPassword.ThemeName = "Crystal";
 			// 
@@ -68,7 +68,7 @@
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel2.Location = new System.Drawing.Point(15, 52);
 			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(119, 20);
+			this.radLabel2.Size = new System.Drawing.Size(113, 19);
 			this.radLabel2.TabIndex = 4;
 			this.radLabel2.Text = "Developer Access";
 			this.radLabel2.ThemeName = "Crystal";
@@ -78,7 +78,7 @@
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(15, 22);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(120, 20);
+			this.radLabel1.Size = new System.Drawing.Size(113, 19);
 			this.radLabel1.TabIndex = 6;
 			this.radLabel1.Text = "Current Password";
 			this.radLabel1.ThemeName = "Crystal";
@@ -88,7 +88,7 @@
 			this.txtcurrPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtcurrPassword.Location = new System.Drawing.Point(137, 18);
 			this.txtcurrPassword.Name = "txtcurrPassword";
-			this.txtcurrPassword.Size = new System.Drawing.Size(193, 24);
+			this.txtcurrPassword.Size = new System.Drawing.Size(193, 23);
 			this.txtcurrPassword.TabIndex = 5;
 			this.txtcurrPassword.ThemeName = "Crystal";
 			// 

@@ -334,9 +334,16 @@ namespace PCMS_Lipa_General_Tool.Class
 				return true;
 				///fe.SendToastNotifDesktop(message, "Success");
 			}
+			catch (SqlException sqlex)
+			{
+				error.LogError("OnlineLoginDB - SQlEx", empName, "OnlineLogins", insID, sqlex);
+				message = $"Failed to {request.ToLower()} {insID}, Please try again later";
+				return false;
+				///throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
+			}
 			catch (Exception ex)
 			{
-				error.LogError("OnlineLoginDB", empName, "OnlineLogins", insID, ex);
+				error.LogError("OnlineLoginDB - General Error", empName, "OnlineLogins", insID, ex);
 				message = $"Failed to {request.ToLower()} {insID}, Please try again later";
 				return false;
 				///throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
