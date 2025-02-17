@@ -12,6 +12,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		public static string Dev = "PCMS-0081 - Erwin Alcantara";
 		public static string errorNameSender = "PCMS Lipa Gen Tool - App Error Support";
 		public static string AppLogger = "PCMS Lipa Gen Tool - User Activity Logs";
+		public static string TaskNameSender = "PCMS Lipa Gen Tool - Task IT";
 		public static string Onloginwebhook = "https://discord.com/api/webhooks/1069052004271407235/X1u8oGuPi9RJoMK2TP3B2sUW2ABTZfOYt0AqHGA4K04e4PSKwL21mtJdi3MRelH2Kbq_";
 		public static string onlogininvite = "https://discord.gg/cx3zY9XF";
 		public static string leavewebhook = "https://discord.com/api/webhooks/1307793257295511602/cz1UqZYccVWqi3Ax5ku3hjxjm5iZDrbRNvfpcJMTnEPZ7NE-0GowjlrKgS5xOUYc5d0a";
@@ -22,6 +23,8 @@ namespace PCMS_Lipa_General_Tool.Class
 		public static string DCLogsInvite = "https://discord.gg/cx3zY9X0";
 		public static string DCActivityLoggerWebhook = "https://discord.com/api/webhooks/1069107476764577832/_LfIkZvikzQ3o_nFm3rLNBJRNAT2OLgyIAhO48uQQAq8u-D8az1b2Q6Vty8iaqIkG1U-";
 		public static string DCActivityLoggerInvite = "https://discord.gg/TZtjnUQW";
+		public static string DCTaskInvite = "https://discord.gg/3ngcaFMCSe";
+		public static string DCTaskWebHook = "https://discord.com/api/webhooks/1340989335234678784/-x2XSSeBn5rJFmlNa5o9AWJTumPVtJGOk1qkGR4CruvW9eq7vfC0VCDrcbiWkffuLT8G";
 		public static string DescDemo = "A tool created to help the Demographers. Enhance their productivity/speed in doing the Demo. Thanks to the Management Team and Demo Team for the support in creating this tool. Open for suggestion and feedback. \n \n" +
 										"07/30/2016 - Initial Release as Upper Lower case Tool (version 1.00.00) \n \t \t Converts lower upper case, word in output you desire \n" +
 										"12/07/2017 - Upper Lower case Tool (version 1.00.00) \n \t \t Removes all the punctuation copied from the input, added Title Case \n" +

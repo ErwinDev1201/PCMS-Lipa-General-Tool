@@ -11,7 +11,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmProvider : Telerik.WinControls.UI.RadForm
 	{
 		private readonly Provider provider = new();
-		private readonly Error error = new();
+		private readonly Notification notif = new();
 		private readonly FEWinForm fe = new();
 		public string accessLevel;
 		public string EmpName;
@@ -247,7 +247,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//txtProviderName.ShowEmbeddedLabel = true; txtProviderName.EmbeddedLabelText = "Provider Name";
 			//txtPTANo.ShowEmbeddedLabel = true; txtPTANo.EmbeddedLabelText = "PTAN No.";
 			//txtRemarks.ShowEmbeddedLabel = true; txtRemarks.EmbeddedLabelText = "Remarks";
-			dgProviderInfo.BestFitColumns(BestFitColumnMode.AllCells);
+			dgProviderInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			//dgProviderInfo.ReadOnly = true;
 		}
 
@@ -268,59 +268,76 @@ namespace PCMS_Lipa_General_Tool.Forms
 			ProvDoubleClickEnable();
 			try
 			{
+			
+				if (accessLevel == "User")
+				{
+					btnDelete.Enabled = false;
+					//btnNew.Enabled = false;
+					btnCancel.Enabled = false;
+					btnUpdateSave.Enabled = false;
+				}
 				if (dgProviderInfo.SelectedRows.Count > 0)
 				{
-					if (accessLevel == "User")
-					{
-						btnDelete.Enabled = false;
-						//btnNew.Enabled = false;
-						btnCancel.Enabled = false;
-						btnUpdateSave.Enabled = false;
-					}
-					txtNoProv.Text = dgProviderInfo.SelectedRows[0].Cells[0].Value + string.Empty;
-					txtProviderName.Text = dgProviderInfo.SelectedRows[0].Cells[1].Value + string.Empty;
-					txtNPINo.Text = dgProviderInfo.SelectedRows[0].Cells[2].Value + string.Empty;
-					txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[3].Value + string.Empty;
-					txtTaxID.Text = dgProviderInfo.SelectedRows[0].Cells[4].Value + string.Empty;
-					txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[5].Value + string.Empty;
-					txtPhysicalAdd.Text = dgProviderInfo.SelectedRows[0].Cells[6].Value + string.Empty;
-					txtBillingAdd.Text = dgProviderInfo.SelectedRows[0].Cells[7].Value + string.Empty;
-					txtRemarks.Text = dgProviderInfo.SelectedRows[0].Cells[8].Value + string.Empty;
-					//if (accessLevel == "User")
-					//{
-					//	txtNoProv.Text = dgProviderInfo.SelectedRows[0].Cells[0].Value + string.Empty;
-					//	txtProviderName.Text = dgProviderInfo.SelectedRows[0].Cells[1].Value + string.Empty;
-					//	txtNPINo.Text = dgProviderInfo.SelectedRows[0].Cells[2].Value + string.Empty;
-					//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[3].Value + string.Empty;
-					//	txtTaxID.Text = dgProviderInfo.SelectedRows[0].Cells[4].Value + string.Empty;
-					//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[5].Value + string.Empty;
-					//	txtPhysicalAdd.Text = dgProviderInfo.SelectedRows[0].Cells[6].Value + string.Empty;
-					//	txtBillingAdd.Text = dgProviderInfo.SelectedRows[0].Cells[7].Value + string.Empty;
-					//	btnDelete.Enabled = false;
-					//	btnNew.Enabled = false;
-					//	btnCancel.Enabled = false;
-					//	btnUpdateSave.Enabled = false;
-					//}
-					//else
-					//{
-					//	txtNoProv.Text = dgProviderInfo.SelectedRows[0].Cells[0].Value + string.Empty;
-					//	txtProviderName.Text = dgProviderInfo.SelectedRows[0].Cells[1].Value + string.Empty;
-					//	txtNPINo.Text = dgProviderInfo.SelectedRows[0].Cells[2].Value + string.Empty;
-					//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[3].Value + string.Empty;
-					//	txtTaxID.Text = dgProviderInfo.SelectedRows[0].Cells[4].Value + string.Empty;
-					//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[5].Value + string.Empty;
-					//	txtPhysicalAdd.Text = dgProviderInfo.SelectedRows[0].Cells[6].Value + string.Empty;
-					//	txtBillingAdd.Text = dgProviderInfo.SelectedRows[0].Cells[7].Value + string.Empty;
-					//	btnDelete.Enabled = true;						
-					//	btnCancel.Enabled = true;
-					//	btnUpdateSave.Enabled = true;
-					//	btnUpdateSave.Text = "Update";
-					//}
+					var selectedRow = dgProviderInfo.SelectedRows[0];
+
+					txtNoProv.Text = selectedRow.Cells["Provider ID"]?.Value?.ToString() ?? string.Empty;
+					txtProviderName.Text = selectedRow.Cells["Provider Name"]?.Value?.ToString() ?? string.Empty;
+					txtNPINo.Text = selectedRow.Cells["NPI"]?.Value?.ToString() ?? string.Empty;
+					txtPTANo.Text = selectedRow.Cells["PTAN"]?.Value?.ToString() ?? string.Empty;
+					txtPalPTANo.Text = selectedRow.Cells["RailRoad PTAN"]?.Value?.ToString() ?? string.Empty;
+					txtTaxID.Text = selectedRow.Cells["Tax ID"]?.Value?.ToString() ?? string.Empty;
+					txtPhysicalAdd.Text = selectedRow.Cells["Physical Address"]?.Value?.ToString() ?? string.Empty;
+					txtBillingAdd.Text = selectedRow.Cells["Billing Address"]?.Value?.ToString() ?? string.Empty;
+					txtRemarks.Text = selectedRow.Cells["Remarks"]?.Value?.ToString() ?? string.Empty;
 				}
+				else
+				{
+					//MessageBox.Show("No row selected. Please select a provider.", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				}
+				//txtNoProv.Text = dgProviderInfo.SelectedRows[0].Cells[0].Value + string.Empty;
+				//txtProviderName.Text = dgProviderInfo.SelectedRows[0].Cells[1].Value + string.Empty;
+				//txtNPINo.Text = dgProviderInfo.SelectedRows[0].Cells[2].Value + string.Empty;
+				//txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[3].Value + string.Empty;
+				//txtTaxID.Text = dgProviderInfo.SelectedRows[0].Cells[4].Value + string.Empty;
+				//txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[5].Value + string.Empty;
+				//txtPhysicalAdd.Text = dgProviderInfo.SelectedRows[0].Cells[6].Value + string.Empty;
+				//txtBillingAdd.Text = dgProviderInfo.SelectedRows[0].Cells[7].Value + string.Empty;
+				//txtRemarks.Text = dgProviderInfo.SelectedRows[0].Cells[8].Value + string.Empty;
+				//if (accessLevel == "User")
+				//{
+				//	txtNoProv.Text = dgProviderInfo.SelectedRows[0].Cells[0].Value + string.Empty;
+				//	txtProviderName.Text = dgProviderInfo.SelectedRows[0].Cells[1].Value + string.Empty;
+				//	txtNPINo.Text = dgProviderInfo.SelectedRows[0].Cells[2].Value + string.Empty;
+				//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[3].Value + string.Empty;
+				//	txtTaxID.Text = dgProviderInfo.SelectedRows[0].Cells[4].Value + string.Empty;
+				//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[5].Value + string.Empty;
+				//	txtPhysicalAdd.Text = dgProviderInfo.SelectedRows[0].Cells[6].Value + string.Empty;
+				//	txtBillingAdd.Text = dgProviderInfo.SelectedRows[0].Cells[7].Value + string.Empty;
+				//	btnDelete.Enabled = false;
+				//	btnNew.Enabled = false;
+				//	btnCancel.Enabled = false;
+				//	btnUpdateSave.Enabled = false;
+				//}
+				//else
+				//{
+				//	txtNoProv.Text = dgProviderInfo.SelectedRows[0].Cells[0].Value + string.Empty;
+				//	txtProviderName.Text = dgProviderInfo.SelectedRows[0].Cells[1].Value + string.Empty;
+				//	txtNPINo.Text = dgProviderInfo.SelectedRows[0].Cells[2].Value + string.Empty;
+				//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[3].Value + string.Empty;
+				//	txtTaxID.Text = dgProviderInfo.SelectedRows[0].Cells[4].Value + string.Empty;
+				//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[5].Value + string.Empty;
+				//	txtPhysicalAdd.Text = dgProviderInfo.SelectedRows[0].Cells[6].Value + string.Empty;
+				//	txtBillingAdd.Text = dgProviderInfo.SelectedRows[0].Cells[7].Value + string.Empty;
+				//	btnDelete.Enabled = true;						
+				//	btnCancel.Enabled = true;
+				//	btnUpdateSave.Enabled = true;
+				//	btnUpdateSave.Text = "Update";
+				//}
+				
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgProviderInfo_MouseDoubleClick", EmpName, "frmProvider", txtNoProv.Text, ex);
+				notif.LogError("dgProviderInfo_MouseDoubleClick", EmpName, "frmProvider", txtNoProv.Text, ex);
 			}
 		}
 
@@ -339,7 +356,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmProvider", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmProvider", null, ex);
 			}
 			//task.SearchTwoColumnOneFieldText(dgProviderInfo, "[Provider Information]", "[Provider Name]", "REMARKS", txtSearch, lblSearchCount, EmpName);
 		}

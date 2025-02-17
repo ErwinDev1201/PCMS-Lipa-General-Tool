@@ -14,7 +14,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 
 	public class OfficeFiles
 	{
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 
 
 		public void CreateRtfFile(string filename)
@@ -69,7 +69,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ExportTableToExcel", empName, "CommonTask", "N/A", ex);
+				notif.LogError("ExportTableToExcel", empName, "CommonTask", "N/A", ex);
 				throw new Exception("An error occurred during the export process.", ex);
 			}
 		}

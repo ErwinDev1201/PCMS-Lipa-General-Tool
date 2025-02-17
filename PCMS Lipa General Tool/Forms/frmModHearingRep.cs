@@ -9,7 +9,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmModHearingRep : Telerik.WinControls.UI.RadForm
 	{
 		private readonly HearingRep hearing = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
 		private readonly Database db = new();

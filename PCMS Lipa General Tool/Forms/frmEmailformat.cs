@@ -10,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmEmailFormat : Telerik.WinControls.UI.RadForm
 	{
 		private readonly EmailFormatDB emailDB = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
 		public string EmpName;
@@ -25,9 +25,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			dgEmail.BestFitColumns(BestFitColumnMode.AllCells);
 			var dataTable = emailDB.ViewEmailFormatList(EmpName, out string lblCount);
-
 			dgEmail.DataSource = dataTable;
-
 			lblSearchCount.Text = lblCount;
 		}
 
@@ -57,7 +55,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmAdjusterinformation_Load(object sender, EventArgs e)
 		{
-			dgEmail.BestFitColumns(BestFitColumnMode.AllCells);
+			dgEmail.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			//this.dgBillDiagnosis.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;			
 			//this.dgEmail.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 			dgEmail.ReadOnly = true;
@@ -73,10 +71,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgEmail.SelectedRows[0];
 				var modEmail = new frmModEmailformat
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtEmailFormat = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty }
+					txtIntID = { Text = selectedRow.Cells["Format ID"].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells["Insurance"].Value?.ToString() ?? string.Empty },
+					txtEmailFormat = { Text = selectedRow.Cells["Email Format"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty }
 				};
 
 				if (accessLevel != "User")
@@ -95,7 +93,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgEmail_MouseDoubleClick", EmpName, "frmEmailormat", null, ex);
+				notif.LogError("dgEmail_MouseDoubleClick", EmpName, "frmEmailormat", null, ex);
 			}
 			
 		}
@@ -122,7 +120,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmEmailFormat", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmEmailFormat", null, ex);
 			}
 		}
 	}

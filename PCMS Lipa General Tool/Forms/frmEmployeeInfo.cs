@@ -10,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmEmployeeInfo : Telerik.WinControls.UI.RadForm
 	{
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private readonly User user = new();
 		public string EmpName;
 		public string accessLevel;
@@ -59,7 +59,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("AutoFillEmp", EmpName, "frmEmployeeInfo", txtEmpID.Text, ex);
+				notif.LogError("AutoFillEmp", EmpName, "frmEmployeeInfo", txtEmpID.Text, ex);
 			}
 			//user.FillEmployeeData(dgEmpInfo, txtEmpID, txtEmpName, txtemailAdd, txtBVNo, cmbUserDept, cmbUserPosition, cmbOfficeLoc, cmbempStatus, txtRemarks, EmpName);
 		}
@@ -96,22 +96,36 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 		}
 
+
+
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
 			try
 			{
-				DataTable resultTable = user.SearchData(
-				txtSearch.Text,
-				out string searchcount, EmpName);
-
-				dgEmpInfo.DataSource = resultTable;
-				lblSearchCount
-					.Text = searchcount;
+				if (!string.IsNullOrEmpty(txtSearch.Text))
+				{
+					DataTable resultTable = user.GetSearch(txtSearch.Text, "Active", out string searchCount, EmpName, "EmpInfo");
+					dgEmpInfo.DataSource = resultTable;
+					lblSearchCount.Text = searchCount;
+				}
+				else
+				{
+					LoadEmployeeInformation();
+				}
+				
+				//DataTable
+				//DataTable resultTable = user.SearchData(
+				//txtSearch.Text,
+				//out string searchcount, EmpName);
+				//
+				//dgEmpInfo.DataSource = resultTable;
+				//lblSearchCount
+				//	.Text = searchcount;
 
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
 			}
 			//if (txtSearch.Text == "")
 			//{

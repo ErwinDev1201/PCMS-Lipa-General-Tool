@@ -11,7 +11,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	{
 		private readonly CollectorNotes cx = new();
 		private readonly Provider provider = new();
-		private readonly Error error = new();  
+		private readonly Notification notif = new();  
 		//private readonly MailSender mailSender = new MailSender();
 		public string txtID;
 		public string empName;

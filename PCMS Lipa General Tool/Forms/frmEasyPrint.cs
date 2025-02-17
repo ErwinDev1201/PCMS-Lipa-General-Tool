@@ -12,7 +12,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	{
 		private const string frmTitle = "New Easy Print Denial";
 		private readonly EasyPrint easyPrint = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
 		public string EmpName;
@@ -29,9 +29,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ShowEpDenRes()
 		{
 			var dataTable = easyPrint.ViewEasyPrintList(EmpName, out string lblCount);
-
 			dgEasyPrint.DataSource = dataTable;
-
 			lblCountResult.Text = lblCount;
 		}
 		//The code does not have any bugs.
@@ -76,12 +74,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgEasyPrint.SelectedRows[0];
 				var modEP = new frmModEasyPrintDenial
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtEPCode = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtInsuranceName = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtDenialDescrption = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
-					txtPossibleSolution = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty }
+					txtIntID = { Text = selectedRow.Cells["EP ID"].Value?.ToString() ?? string.Empty },
+					txtEPCode = { Text = selectedRow.Cells["Easy Print Code"].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells["Insurance"].Value?.ToString() ?? string.Empty },
+					txtDenialDescrption = { Text = selectedRow.Cells["Description"].Value?.ToString() ?? string.Empty },
+					txtPossibleSolution = { Text = selectedRow.Cells["Possible Resolution"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty }
 				};
 
 				if (accessLevel != "User")
@@ -101,7 +99,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgEasyPrint_MouseDoubleClick", EmpName, "frmEasyPrint", null, ex);
+				notif.LogError("dgEasyPrint_MouseDoubleClick", EmpName, "frmEasyPrint", null, ex);
 			}
 		}
 
@@ -127,7 +125,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmEasyprint", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmEasyprint", null, ex);
 			}
 		}
 	}

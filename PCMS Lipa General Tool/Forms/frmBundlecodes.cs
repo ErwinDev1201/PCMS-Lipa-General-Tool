@@ -13,7 +13,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private readonly Bundle bundle = new();
 		public string accessLevel;
 		public string EmpName;
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 
 		public frmBundlecodes()
 		{
@@ -47,14 +47,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgBundleCode.SelectedRows[0];
 				var modBundleCodes = new frmModBundleCodes
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtCPTCode = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtDescription = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtBundleCodes = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty },
+					txtIntID = { Text = selectedRow.Cells["Treatment ID"].Value?.ToString() ?? string.Empty },
+					txtCPTCode = { Text = selectedRow.Cells["CPT Code"].Value?.ToString() ?? string.Empty },
+					txtDescription = { Text = selectedRow.Cells["Description"].Value?.ToString() ?? string.Empty },
+					txtBundleCodes = { Text = selectedRow.Cells["Bundle Codes"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty },
 					empName = EmpName
 				};
-				bundleOptions = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
+				bundleOptions = selectedRow.Cells["Indicator"].Value?.ToString() ?? string.Empty;
 				if (bundleOptions == "Y")
 				{
 					modBundleCodes.rdoYes.IsChecked = true;
@@ -81,7 +81,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgBundleCode_MouseDoubleClick", EmpName, "frmBundleCodes", null, ex);
+				notif.LogError("dgBundleCode_MouseDoubleClick", EmpName, "frmBundleCodes", null, ex);
 			}
 		}
 
@@ -130,7 +130,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
 			}
 			//task.SearchTwoColumnOneFieldText(dgBundleCode, "[Bundle Codes]", "[CPT Code]", "[Bundle Codes]", txtSearch, lblbundeCode, EmpName);
 		}

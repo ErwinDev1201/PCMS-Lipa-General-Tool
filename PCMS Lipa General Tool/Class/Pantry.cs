@@ -16,7 +16,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class Pantry
 	{
 		private readonly string _dbConnection = db.GetDbConnection();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
 
@@ -36,7 +36,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBListID", empName, "Pantry", "N/A", ex);
+				notif.LogError("GetDBListID", empName, "Pantry", "N/A", ex);
 			}
 
 			//db.GetSequenceNo("textbox", "PantryListSeq", txtIntID.Text, null, "PL-");
@@ -68,7 +68,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("FillUpPantryListField", empName, "Pantry", "N/A", ex);
+		//		notif.LogError("FillUpPantryListField", empName, "Pantry", "N/A", ex);
 		//
 		//	}
 		//	finally
@@ -166,7 +166,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("PantryAutoFillUp", empName, "Pantry", "N/A", ex);
+		//		notif.LogError("PantryAutoFillUp", empName, "Pantry", "N/A", ex);
 		//	}
 		//}
 
@@ -186,7 +186,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("FillItemPrice", empName, "Pantry", "N/A", ex);
+				notif.LogError("FillItemPrice", empName, "Pantry", "N/A", ex);
 			}
 			return string.Empty; // Return empty string if no result or error occurs
 		}
@@ -218,7 +218,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("FillItemPrice", empName, "Pantry", "N/A", ex);
+		//		notif.LogError("FillItemPrice", empName, "Pantry", "N/A", ex);
 		//	}
 		//}
 		//
@@ -242,7 +242,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("FillProductInfo", empName, "Pantry", "N/A", ex);
+		//		notif.LogError("FillProductInfo", empName, "Pantry", "N/A", ex);
 		//	}
 		//	finally
 		//	{
@@ -276,7 +276,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	catch (Exception ex)
 		//	{
 		//
-		//		error.LogError("FillProductInfo", empName, "Pantry", txtIntID.Text, ex);
+		//		notif.LogError("FillProductInfo", empName, "Pantry", txtIntID.Text, ex);
 		//	}
 		//}
 		//
@@ -306,7 +306,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("CheckProductExist", empName, "Pantry", txtName, ex);
+				notif.LogError("CheckProductExist", empName, "Pantry", txtName, ex);
 				message = "\"An error occurred while checking the product";
 			}
 		}
@@ -382,7 +382,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID, ex);
+				notif.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID, ex);
 				message = $"Failed to {request.ToLower()} {itemID}, Please try again later";
 				return false;
 				//throw new InvalidOperationException($"Error during {request} operation: {ex.Message}", ex);
@@ -446,7 +446,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
+		//		notif.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
 		//		throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 		//	}
 		//	finally
@@ -475,7 +475,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
+				notif.LogError("ViewAttorneyList", empName, "CommonTask", "N/A", ex);
 			}
 
 			return data;
@@ -508,7 +508,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			catch (Exception ex)
 			{
 				// Log errors for debugging and monitoring
-				error.LogError("ViewPantryList", empName, "Pantry", "N/A", ex);
+				notif.LogError("ViewPantryList", empName, "Pantry", "N/A", ex);
 			}
 		}
 
@@ -530,7 +530,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("FillComboDropdown", empName, "Pantry", "N/A", ex);
+				notif.LogError("FillComboDropdown", empName, "Pantry", "N/A", ex);
 			}
 			return items;
 		}
@@ -574,7 +574,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//		}
 		//		catch (Exception ex)
 		//		{
-		//			error.LogError("ViewDatagrid", empName, "Pantry", "N/A", ex);
+		//			notif.LogError("ViewDatagrid", empName, "Pantry", "N/A", ex);
 		//		}
 		//	}
 		//	else
@@ -596,7 +596,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//		}
 		//		catch (Exception ex)
 		//		{
-		//			error.LogError("ViewDatagrid", empName, "Pantry", "N/A", ex);
+		//			notif.LogError("ViewDatagrid", empName, "Pantry", "N/A", ex);
 		//		}
 		//	}
 		//
@@ -654,7 +654,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//					}
 		//					catch (Exception ex)
 		//					{
-		//						error.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
+		//						notif.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
 		//						RadMessageBox.Show(ErrorMessageUpdate + itemID.Text, "Failed to Update", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//					}
 		//					finally
@@ -694,7 +694,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//
 		//					catch (Exception ex)
 		//					{
-		//						error.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
+		//						notif.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
 		//						RadMessageBox.Show(ErrorMessageCreate + itemID.Text + "Please try again later", "Failed to Create", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//					}
 		//					finally
@@ -729,7 +729,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//					}
 		//					catch (Exception ex)
 		//					{
-		//						error.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
+		//						notif.LogError($"PantryProductDBRequest - {request}", empName, "Pantry", itemID.Text, ex);
 		//						RadMessageBox.Show(ErrorMessageDelete + itemID.Text, "Failed to Delete", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//					}
 		//					finally
@@ -818,7 +818,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("PantryListDBRequest", authorName, "Pantry", itemID, ex);
+				notif.LogError("PantryListDBRequest", authorName, "Pantry", itemID, ex);
 				message = $"Failed to {request.ToLower()} {itemID}, Please try again later";
 				return false;
 				//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
@@ -906,7 +906,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("PantryListDBRequest", authorName, "Pantry", itemID.Text, ex);
+		//		notif.LogError("PantryListDBRequest", authorName, "Pantry", itemID.Text, ex);
 		//		RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//	}
 		//	finally
@@ -935,7 +935,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"FillPanindaniTmCombo", empName, "Pantry", "N/A", ex);
+				notif.LogError($"FillPanindaniTmCombo", empName, "Pantry", "N/A", ex);
 			}
 		}
 
@@ -966,7 +966,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("CalculateTotalPantryExpense", "System", "frmPantry", null, ex);
+				notif.LogError("CalculateTotalPantryExpense", "System", "frmPantry", null, ex);
 				totalAmount = 0;
 				throw;
 			}
@@ -1005,7 +1005,7 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("SearchData", empName, "Adjuster", null, ex);
+				notif.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -1033,7 +1033,7 @@ OR [Remarks] LIKE @searchTerm";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("SumPantryExpense", "System", "frmPantry", null, ex);
+		//		notif.LogError("SumPantryExpense", "System", "frmPantry", null, ex);
 		//		totalAmount = 0;
 		//		throw;
 		//	}
@@ -1059,7 +1059,7 @@ OR [Remarks] LIKE @searchTerm";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError($"SumTotalAmount", "N/A", "Pantry", "N/A", ex);
+		//		notif.LogError($"SumTotalAmount", "N/A", "Pantry", "N/A", ex);
 		//	}
 		//}
 

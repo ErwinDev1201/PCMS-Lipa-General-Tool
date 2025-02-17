@@ -11,7 +11,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class Bundle
 	{
 		private readonly string _dbConnection = db.GetDbConnection();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
 
@@ -31,7 +31,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetProvID", empName, "Bundle", "N/A", ex);
+				notif.LogError("GetProvID", empName, "Bundle", "N/A", ex);
 			}
 			//db.GetSequenceNo("textbox", "BundleCodeSeq", txtIntID.Text, null, "TX-");
 		}
@@ -56,7 +56,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewBundleCodes", empName, "Bundle", "N/A", ex);
+				notif.LogError("ViewBundleCodes", empName, "Bundle", "N/A", ex);
 			}
 
 			return data;
@@ -91,7 +91,7 @@ OR [Adjuster Name] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("SearchData", empName, "Bundle", null, ex);
+				notif.LogError("SearchData", empName, "Bundle", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -164,7 +164,7 @@ OR [Adjuster Name] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("BundleCodesDBRequest", empName, "Bundle", treatmentID, ex);
+				notif.LogError("BundleCodesDBRequest", empName, "Bundle", treatmentID, ex);
 				message = $"Failed to {request.ToLower()} {treatmentID}, Please try again later";
 				return false;
 				//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);

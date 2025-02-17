@@ -59,15 +59,15 @@
 			this.radPanel1.Controls.Add(this.radLabel1);
 			this.radPanel1.Controls.Add(this.dgEmail);
 			this.radPanel1.Controls.Add(this.btnNew);
-			this.radPanel1.Location = new System.Drawing.Point(13, 24);
+			this.radPanel1.Location = new System.Drawing.Point(12, 12);
 			this.radPanel1.Name = "radPanel1";
-			this.radPanel1.Size = new System.Drawing.Size(874, 558);
+			this.radPanel1.Size = new System.Drawing.Size(875, 570);
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
 			// lblSearchCount
 			// 
-			this.lblSearchCount.Location = new System.Drawing.Point(21, 535);
+			this.lblSearchCount.Location = new System.Drawing.Point(20, 547);
 			this.lblSearchCount.Name = "lblSearchCount";
 			this.lblSearchCount.Size = new System.Drawing.Size(68, 20);
 			this.lblSearchCount.TabIndex = 5;
@@ -119,7 +119,7 @@
 			this.dgEmail.MasterTemplate.AllowRowResize = false;
 			this.dgEmail.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgEmail.Name = "dgEmail";
-			this.dgEmail.Size = new System.Drawing.Size(835, 473);
+			this.dgEmail.Size = new System.Drawing.Size(836, 485);
 			this.dgEmail.TabIndex = 3;
 			this.dgEmail.ThemeName = "Crystal";
 			this.dgEmail.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgEmail_MouseDoubleClick);
@@ -127,7 +127,6 @@
 			// btnNew
 			// 
 			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnNew.Image = global::PCMS_Lipa_General_Tool.Properties.Resources._new;
 			this.btnNew.Location = new System.Drawing.Point(744, 12);
 			this.btnNew.Name = "btnNew";
 			this.btnNew.Size = new System.Drawing.Size(110, 39);

@@ -13,7 +13,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private readonly Diagnosis dx = new();
 		public string EmpName;
 		public string accessLevel;
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 
 
 		public frmDiagnosis()
@@ -84,12 +84,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgBillDiagnosis.SelectedRows[0];
 				var modDx = new frmModDiagnosis
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtDiagnosis = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtICD10 = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtICD9 = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
-					txtBodyPart = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty }
+					txtIntID = { Text = selectedRow.Cells["Diagnosis ID"].Value?.ToString() ?? string.Empty },
+					txtDiagnosis = { Text = selectedRow.Cells["ICD-10"].Value?.ToString() ?? string.Empty },
+					txtICD10 = { Text = selectedRow.Cells["ICD-9"].Value?.ToString() ?? string.Empty },
+					txtICD9 = { Text = selectedRow.Cells["Diagnosis"].Value?.ToString() ?? string.Empty },
+					txtBodyPart = { Text = selectedRow.Cells["Body Parts"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty }
 				};
 
 				if (accessLevel != "User")
@@ -109,7 +109,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgBillDiagnosis_MouseDoubleClick", EmpName, "frmDiagnosis", null, ex);
+				notif.LogError("dgBillDiagnosis_MouseDoubleClick", EmpName, "frmDiagnosis", null, ex);
 			}
 			
 		}
@@ -151,7 +151,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("LoadSearchandFilter", EmpName, "frmDiagnosis", null, ex);
+				notif.LogError("LoadSearchandFilter", EmpName, "frmDiagnosis", null, ex);
 			}
 		}
 

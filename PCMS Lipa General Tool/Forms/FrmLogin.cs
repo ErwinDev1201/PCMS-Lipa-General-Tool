@@ -11,9 +11,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class FrmLogin : Telerik.WinControls.UI.RadForm
 	{
 		private readonly Login pushLogin = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly User user = new();
-		private readonly Database db = new();
 
 
 		public FrmLogin()
@@ -58,7 +57,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 			var loginManager = new Login();
 			loginManager.UserLogin(ref username, ref password, ref isLoginPanelEnabled, ref alertMessage);
-			//alertMessage = lblalert.Text;
 			lblalert.Text = alertMessage;
 			lblalert.Visible = true;
 			txtPassword.Text = "";
@@ -75,17 +73,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		}
 
-		//private void btnLogin_Click(object sender, EventArgs e)
-		//{
-		//	 var loginUI = new FrmLogin();
-		//	pushLogin.UserLogin(txtUsername.Text, txtPassword, loginPanel, lblalert, loginUI);
-		//	if (lblalert.Text == "")
-		//	{
-		//		loginUI.Hide();
-		//		Hide();
-		//	}
-		//}
-
 
 		private void txtUsername_TextChanged(object sender, EventArgs e)
 		{
@@ -96,7 +83,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				if (Text == "Disconnected | Login")
 				{
 					RadMessageBox.Show("Server is offline. Please contact your Sys Admin for assistance or Retry again later. \n Sorry for the inconvenience.", "Offine", MessageBoxButtons.OK, RadMessageIcon.Error);
-					error.LogError("txtUsername_TextChanged", "Server Offline", "FrmLogin", null, null);
+					notif.LogError("txtUsername_TextChanged", "Server Offline", "FrmLogin", null, null);
 				}
 				else
 				{

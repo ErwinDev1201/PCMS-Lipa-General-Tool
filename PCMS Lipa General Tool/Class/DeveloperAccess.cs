@@ -12,7 +12,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		private readonly string _dbConnection = db.GetDbConnection();
 		private static readonly FEWinForm fe = new();
 		private static readonly Database db = new();
-		private static readonly Error error = new();	
+		private static readonly Notification notif = new();	
 
 
 		public void UpdateDevPasswordAccess(string empName, string password)
@@ -32,7 +32,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("UpdateDevPasswordAccess", empName, "DeveloperAccess", "N/A", ex);
+				notif.LogError("UpdateDevPasswordAccess", empName, "DeveloperAccess", "N/A", ex);
 				throw new InvalidOperationException($"Error during update operation. Please try again later.");
 			}
 		}
@@ -56,7 +56,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("FillComboDropdown", empName, "CommonTask", "N/A", ex);
+				notif.LogError("FillComboDropdown", empName, "CommonTask", "N/A", ex);
 			}
 			return items;
 		}

@@ -13,7 +13,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private readonly Attorney atty = new();
 		public string accessLevel;
 		public string EmpName;
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 
 		public frmAttorneyInformation()
 		{
@@ -42,13 +42,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgDefAtty.SelectedRows[0];
 				var modAtty = new frmModAtty
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					cmbAttyType = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtAttyName = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtPhoneNo = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
-					txtFaxNo = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtEmailAdd = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty }
+					txtIntID = { Text = selectedRow.Cells["Attorney ID"].Value?.ToString() ?? string.Empty },
+					cmbAttyType = { Text = selectedRow.Cells["Attorney Type"].Value?.ToString() ?? string.Empty },
+					txtAttyName = { Text = selectedRow.Cells["Attorney Name"].Value?.ToString() ?? string.Empty },
+					txtPhoneNo = { Text = selectedRow.Cells["Phone No."].Value?.ToString() ?? string.Empty },
+					txtFaxNo = { Text = selectedRow.Cells["Fax No."].Value?.ToString() ?? string.Empty },
+					txtEmailAdd = { Text = selectedRow.Cells["Email"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty }
 				};
 
 				if (accessLevel != "User")
@@ -68,7 +68,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
+				notif.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
 			}
 		}
 
@@ -132,7 +132,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("LoadSearchFilter", EmpName, "frmAttorneyInformation", null, ex);
+				notif.LogError("LoadSearchFilter", EmpName, "frmAttorneyInformation", null, ex);
 			}
 		}
 

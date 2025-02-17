@@ -11,7 +11,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmMPN : Telerik.WinControls.UI.RadForm
 	{
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private readonly MPN mpn = new();
 		public string accessLevel;
 		public string EmpName;
@@ -62,13 +62,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				else
 				{
-					modMPN.txtIntID.Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty;
-					modMPN.txtInsuranceName.Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty;
-					modMPN.txtMPNName.Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty;
-					modMPN.txtMPNUserName.Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
-					modMPN.txtPassword.Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty;
-					modMPN.txtWebLink.Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty;
-					modMPN.txtRemarks.Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty;
+					modMPN.txtIntID.Text = selectedRow.Cells["MPN ID"].Value?.ToString() ?? string.Empty;
+					modMPN.txtInsuranceName.Text = selectedRow.Cells["Insurance Name"].Value?.ToString() ?? string.Empty;
+					modMPN.txtMPNName.Text = selectedRow.Cells["MPN"].Value?.ToString() ?? string.Empty;
+					modMPN.txtMPNUserName.Text = selectedRow.Cells["Username"].Value?.ToString() ?? string.Empty;
+					modMPN.txtPassword.Text = selectedRow.Cells["Password"].Value?.ToString() ?? string.Empty;
+					modMPN.txtWebLink.Text = selectedRow.Cells["Website"].Value?.ToString() ?? string.Empty;
+					modMPN.txtRemarks.Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty;
 
 					if (accessLevel != "User")
 					{
@@ -88,7 +88,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgMPN_MouseDoubleClick", EmpName, "frmMPN", null, ex);
+				notif.LogError("dgMPN_MouseDoubleClick", EmpName, "frmMPN", null, ex);
 			}
 			
 		}
@@ -139,7 +139,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
 			}
 			///task.SearchTwoColumnOneFieldText(dgMPN, "[MPN Information]", "[Insurance Name]", "[Remarks]", txtSearch, lblSearchCount, EmpName);
 		}

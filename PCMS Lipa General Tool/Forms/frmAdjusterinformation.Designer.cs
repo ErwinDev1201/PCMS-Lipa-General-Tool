@@ -59,6 +59,7 @@
 			this.radPanel1.Controls.Add(this.radLabel1);
 			this.radPanel1.Controls.Add(this.dgAdjusterInfo);
 			this.radPanel1.Controls.Add(this.btnNew);
+			this.radPanel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radPanel1.Location = new System.Drawing.Point(12, 14);
 			this.radPanel1.Name = "radPanel1";
 			this.radPanel1.Size = new System.Drawing.Size(874, 558);
@@ -67,19 +68,21 @@
 			// 
 			// lblCountSearch
 			// 
+			this.lblCountSearch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblCountSearch.Location = new System.Drawing.Point(19, 535);
 			this.lblCountSearch.Name = "lblCountSearch";
-			this.lblCountSearch.Size = new System.Drawing.Size(68, 20);
+			this.lblCountSearch.Size = new System.Drawing.Size(68, 19);
 			this.lblCountSearch.TabIndex = 10;
 			this.lblCountSearch.Text = "radLabel2";
 			this.lblCountSearch.ThemeName = "Crystal";
 			// 
 			// txtSearch
 			// 
+			this.txtSearch.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtSearch.Location = new System.Drawing.Point(110, 24);
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.ShowClearButton = true;
-			this.txtSearch.Size = new System.Drawing.Size(283, 24);
+			this.txtSearch.Size = new System.Drawing.Size(283, 23);
 			this.txtSearch.TabIndex = 9;
 			this.txtSearch.ThemeName = "Crystal";
 			this.txtSearch.WordWrap = false;
@@ -90,7 +93,7 @@
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(20, 25);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(84, 19);
+			this.radLabel1.Size = new System.Drawing.Size(85, 19);
 			this.radLabel1.TabIndex = 8;
 			this.radLabel1.Text = "Search here: ";
 			this.radLabel1.ThemeName = "Crystal";
@@ -100,6 +103,7 @@
 			this.dgAdjusterInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.dgAdjusterInfo.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.dgAdjusterInfo.Location = new System.Drawing.Point(19, 55);
 			// 
 			// 
@@ -125,6 +129,7 @@
 			// 
 			this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btnNew.Location = new System.Drawing.Point(744, 10);
 			this.btnNew.Name = "btnNew";
 			this.btnNew.Size = new System.Drawing.Size(110, 39);
@@ -140,6 +145,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(899, 594);
 			this.Controls.Add(this.radPanel1);
+			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;

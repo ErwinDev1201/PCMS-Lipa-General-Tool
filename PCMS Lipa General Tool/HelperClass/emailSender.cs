@@ -33,12 +33,12 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 
 				// Use the App Password generated from Google
 				
-				using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587))
+				using (SmtpClient smtpClient = new("smtp.gmail.com", 587))
 				{
 					smtpClient.Credentials = new NetworkCredential(senderEmail, appPassword);
 					smtpClient.EnableSsl = true;
 
-					using (MailMessage mailMessage = new MailMessage())
+					using (MailMessage mailMessage = new())
 					{
 						mailMessage.From = new MailAddress(senderEmail, senderName); // Custom Sender Name
 						mailMessage.To.Add(new MailAddress(recipient));
@@ -72,7 +72,6 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 				dc.PublishtoDiscord("Email Sender", "", afterAttempt, null, DCErrorWebHook, DCErrorInvite);
 				Thread.Sleep(delay); // Exponential backoff delay
 				delay *= 2;
-				//RadMessageBox.Show($"Error: {ex.Message}", "Email Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
 

@@ -10,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 
 		private readonly string _dbConnection = db.GetDbConnection();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
 
@@ -30,7 +30,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBID", empName, "Adjuster", "N/A", ex);
+				notif.LogError("GetDBID", empName, "Adjuster", "N/A", ex);
 			}
 			////db.GetSequenceNo("textbox", "AdjusterInfo", txtIntID.Text, null, "ADJ-");
 		}
@@ -54,7 +54,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
+				notif.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
 			}
 
 			return data;
@@ -133,7 +133,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"adjusterDBRequest {request}", empName, "Adjuster", adjID, ex);
+				notif.LogError($"adjusterDBRequest {request}", empName, "Adjuster", adjID, ex);
 				message = $"Failed to {request.ToLower()} {adjID}, Please try again later";
 				return false;
 				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
@@ -174,7 +174,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("SearchData", empName, "Adjuster", null, ex);
+				notif.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 

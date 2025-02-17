@@ -98,7 +98,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.lblDeveloper.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblDeveloper.Location = new System.Drawing.Point(117, 62);
 			this.lblDeveloper.Name = "lblDeveloper";
-			this.lblDeveloper.Size = new System.Drawing.Size(66, 19);
+			this.lblDeveloper.Size = new System.Drawing.Size(68, 19);
 			this.lblDeveloper.TabIndex = 2;
 			this.lblDeveloper.Text = "radLabel5";
 			this.lblDeveloper.ThemeName = "Crystal";
@@ -108,7 +108,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.lblProgVersion.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblProgVersion.Location = new System.Drawing.Point(117, 37);
 			this.lblProgVersion.Name = "lblProgVersion";
-			this.lblProgVersion.Size = new System.Drawing.Size(66, 19);
+			this.lblProgVersion.Size = new System.Drawing.Size(67, 19);
 			this.lblProgVersion.TabIndex = 1;
 			this.lblProgVersion.Text = "radLabel4";
 			this.lblProgVersion.ThemeName = "Crystal";
@@ -118,7 +118,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.lblProgName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblProgName.Location = new System.Drawing.Point(117, 12);
 			this.lblProgName.Name = "lblProgName";
-			this.lblProgName.Size = new System.Drawing.Size(66, 19);
+			this.lblProgName.Size = new System.Drawing.Size(67, 19);
 			this.lblProgName.TabIndex = 0;
 			this.lblProgName.Text = "radLabel3";
 			this.lblProgName.ThemeName = "Crystal";
@@ -157,14 +157,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel2.Location = new System.Drawing.Point(14, 50);
 			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(69, 19);
+			this.radLabel2.Size = new System.Drawing.Size(67, 19);
 			this.radLabel2.TabIndex = 8;
 			this.radLabel2.Text = "Password:";
 			this.radLabel2.ThemeName = "Crystal";
 			// 
 			// radLabel1
 			// 
-			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(14, 21);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(71, 19);
@@ -190,7 +190,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.linkLabel1.LinkColor = System.Drawing.Color.CornflowerBlue;
 			this.linkLabel1.Location = new System.Drawing.Point(192, 72);
 			this.linkLabel1.Name = "linkLabel1";
-			this.linkLabel1.Size = new System.Drawing.Size(109, 15);
+			this.linkLabel1.Size = new System.Drawing.Size(107, 16);
 			this.linkLabel1.TabIndex = 5;
 			this.linkLabel1.TabStop = true;
 			this.linkLabel1.Text = "Forgot Password?";
@@ -213,7 +213,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.lblalert.ForeColor = System.Drawing.Color.Red;
 			this.lblalert.Location = new System.Drawing.Point(13, 234);
 			this.lblalert.Name = "lblalert";
-			this.lblalert.Size = new System.Drawing.Size(66, 19);
+			this.lblalert.Size = new System.Drawing.Size(67, 19);
 			this.lblalert.TabIndex = 2;
 			this.lblalert.Text = "radLabel3";
 			this.lblalert.ThemeName = "Crystal";

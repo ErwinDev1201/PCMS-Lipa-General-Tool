@@ -8,7 +8,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmModPrivateInfoIns : Telerik.WinControls.UI.RadForm
 	{
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly FEWinForm fe = new();
 		private readonly Database db = new();
 		private readonly Insurance insurance = new();
@@ -43,7 +43,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBID", empName, "frmModPrivaateIns", "N/A", ex);
+				notif.LogError("GetDBID", empName, "frmModPrivaateIns", "N/A", ex);
 			}
 			///db.GetSequenceNo("textbox", "InsuranceInfoSeq", txtIntID.Text, null, "INS-");
 		}

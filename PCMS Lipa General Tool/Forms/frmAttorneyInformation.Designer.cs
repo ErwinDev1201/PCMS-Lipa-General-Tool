@@ -80,7 +80,7 @@
 			this.lblDefSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblDefSearchCount.Location = new System.Drawing.Point(20, 547);
 			this.lblDefSearchCount.Name = "lblDefSearchCount";
-			this.lblDefSearchCount.Size = new System.Drawing.Size(66, 19);
+			this.lblDefSearchCount.Size = new System.Drawing.Size(68, 19);
 			this.lblDefSearchCount.TabIndex = 18;
 			this.lblDefSearchCount.Text = "radLabel5";
 			this.lblDefSearchCount.ThemeName = "Crystal";
@@ -88,7 +88,7 @@
 			// cmbAttorneyOption
 			// 
 			this.cmbAttorneyOption.DropDownAnimationEnabled = true;
-			this.cmbAttorneyOption.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.cmbAttorneyOption.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			radListDataItem1.Text = "All";
 			radListDataItem2.Text = "Applicant";
 			radListDataItem3.Text = "Defense";
@@ -104,10 +104,10 @@
 			// 
 			// radLabel2
 			// 
-			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel2.Location = new System.Drawing.Point(15, 47);
 			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(67, 19);
+			this.radLabel2.Size = new System.Drawing.Size(69, 19);
 			this.radLabel2.TabIndex = 16;
 			this.radLabel2.Text = "Category: ";
 			this.radLabel2.ThemeName = "Crystal";
@@ -128,7 +128,7 @@
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel1.Location = new System.Drawing.Point(15, 17);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(84, 19);
+			this.radLabel1.Size = new System.Drawing.Size(85, 19);
 			this.radLabel1.TabIndex = 14;
 			this.radLabel1.Text = "Search here: ";
 			this.radLabel1.ThemeName = "Crystal";
@@ -137,7 +137,7 @@
 			// 
 			this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnNew.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.btnNew.Location = new System.Drawing.Point(744, 28);
 			this.btnNew.Name = "btnNew";
 			this.btnNew.Size = new System.Drawing.Size(110, 39);
@@ -153,7 +153,7 @@
 			this.dgDefAtty.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.dgDefAtty.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.dgDefAtty.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.dgDefAtty.Location = new System.Drawing.Point(20, 73);
 			// 
 			// 
@@ -182,7 +182,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(899, 594);
 			this.Controls.Add(this.radPanel1);
-			this.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;

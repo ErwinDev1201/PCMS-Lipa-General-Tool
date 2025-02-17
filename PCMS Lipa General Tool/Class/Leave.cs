@@ -12,11 +12,11 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private readonly string _dbConnection = db.GetDbConnection();
 		private readonly User user = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
 		readonly emailSender mail = new();
-		private readonly string email;
+		//private readonly string email;
 
 		public void GetDBListID(out string ID, string empName)
 		{
@@ -34,7 +34,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBListID", empName, "Leave", "ID", ex);
+				notif.LogError("GetDBListID", empName, "Leave", "ID", ex);
 			}
 			//db.GetSequenceNo("label", "LeaveSeq", null, lblLeaveID.Text, "LV-");
 		}
@@ -48,20 +48,17 @@ namespace PCMS_Lipa_General_Tool.Class
 				con.Open();
 				var query = "SELECT Position, [Employment Status] FROM [User Information] WHERE [Employee ID] = @empID";
 				using var cmd = new SqlCommand(query, con);
-
 				cmd.Parameters.AddWithValue("@empID", empID);
-
 				using var reader = cmd.ExecuteReader();
 				if (reader.Read())
 				{
-					//employeeName = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
-					position = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
-					empStat = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+					position = reader.IsDBNull(reader.GetOrdinal("Position")) ? string.Empty : reader.GetString(reader.GetOrdinal("Position"));
+					empStat = reader.IsDBNull(reader.GetOrdinal("Employment Status")) ? string.Empty : reader.GetString(reader.GetOrdinal("Employment Status"));
 				}
 			}
 			catch (Exception ex)
 			{
-				error.LogError("FillUpSupportLeaveForm", empName, "Leave", empID, ex);
+				notif.LogError("FillUpSupportLeaveForm", empName, "Leave", empID, ex);
 			}
 		}
 
@@ -88,7 +85,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("FillUpSupportLeaveForm", empName, "Leave", empID, ex);
+		//		notif.LogError("FillUpSupportLeaveForm", empName, "Leave", empID, ex);
 		//	}
 		//}
 		//
@@ -290,7 +287,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			catch (Exception ex)
 			{
 				// Log error (adjust the logging mechanism as needed)
-				error.LogError("FillUpLeaveFields", empName, "Leave", selectedLeaveID, ex);
+				notif.LogError("FillUpLeaveFields", empName, "Leave", selectedLeaveID, ex);
 				//throw; // Re-throw the exception if necessary
 			}
 		}
@@ -412,7 +409,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("FillUpLeaveFields", empName, "Leave", leaveID.Text, ex);
+		//		notif.LogError("FillUpLeaveFields", empName, "Leave", leaveID.Text, ex);
 		//	}
 		//}
 		//
@@ -577,7 +574,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewDatagrid", empName, "CommonTask", "N/A", ex);
+				notif.LogError("ViewDatagrid", empName, "CommonTask", "N/A", ex);
 			}
 			finally
 			{
@@ -662,7 +659,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"LeaveFiling ({request})", empName, "Leave", leaveID, ex);
+				notif.LogError($"LeaveFiling ({request})", empName, "Leave", leaveID, ex);
 				notifmessage = $"Failed to {request.ToLower()} {leaveID}, Please try again later";
 				return false;
 				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
@@ -850,7 +847,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
+				notif.LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
 			}
 		}
 		//private string GenerateEmailContent(string employeeName, string startDate, string endDate, string paymentOption, string typeofLeave, string reason)

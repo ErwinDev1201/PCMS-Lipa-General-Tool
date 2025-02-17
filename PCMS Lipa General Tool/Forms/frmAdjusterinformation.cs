@@ -14,7 +14,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
 		public string EmpName;
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 
 
 		public FrmAdjusterinformation()
@@ -44,15 +44,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgAdjusterInfo.SelectedRows[0];
 				var modAdj = new frmModAdjusterInfo
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtAdjusterName = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtphoneno = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
-					txtExtension = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtFax = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty },
-					txtEmailAdd = { Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty },
-					txtSupervisor = { Text = selectedRow.Cells[7].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[8].Value?.ToString() ?? string.Empty },
+					txtIntID = { Text = selectedRow.Cells["Adjuster ID"].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells["Insurance Name"].Value?.ToString() ?? string.Empty },
+					txtAdjusterName = { Text = selectedRow.Cells["Adjuster Name"].Value?.ToString() ?? string.Empty },
+					txtphoneno = { Text = selectedRow.Cells["Phone No."].Value?.ToString() ?? string.Empty },
+					txtExtension = { Text = selectedRow.Cells["Extension"].Value?.ToString() ?? string.Empty },
+					txtFax = { Text = selectedRow.Cells["Fax No."].Value?.ToString() ?? string.Empty },
+					txtEmailAdd = { Text = selectedRow.Cells["Email"].Value?.ToString() ?? string.Empty },
+					txtSupervisor = { Text = selectedRow.Cells["Supervisor"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty },
 					empName = EmpName
 				};
 
@@ -73,7 +73,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
+				notif.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
 			}
 		}
 
@@ -132,7 +132,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
 			}
 			
 			//task.SearchTwoColumnOneFieldText(dgAdjusterInfo, "[Adjuster Information]", "[Insurance Name]", "[Remarks]", txtSearch, lblCountSearch, EmpName);

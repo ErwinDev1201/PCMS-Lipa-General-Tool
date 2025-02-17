@@ -10,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmInsuranceInfo : Telerik.WinControls.UI.RadForm
 	{
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private readonly Insurance insurance = new();
 		//private readonly MailSender mailSender = new MailSender();				
 		public string txtID;
@@ -27,7 +27,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmAdjusterinformation_Load(object sender, EventArgs e)
 		{
-			dgInsuranceInfo.BestFitColumns(BestFitColumnMode.AllCells);
+			dgInsuranceInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			dgInsuranceInfo.ReadOnly = true;
 		}
 
@@ -56,12 +56,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgInsuranceInfo.SelectedRows[0];
 				var modPrivIns = new frmModPrivateInfoIns
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtInsCode = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtInsuranceAddress = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
-					txtPayerID = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[8].Value?.ToString() ?? string.Empty }
+					txtIntID = { Text = selectedRow.Cells["Insurance ID"].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells["Insurance Name"].Value?.ToString() ?? string.Empty },
+					txtInsCode = { Text = selectedRow.Cells["Insurance Code"].Value?.ToString() ?? string.Empty },
+					txtInsuranceAddress = { Text = selectedRow.Cells["Address"].Value?.ToString() ?? string.Empty },
+					txtPayerID = { Text = selectedRow.Cells["Payer ID"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty }
 				};
 
 				if (accessLevel != "User")
@@ -81,7 +81,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgInsuranceInfo_MouseDoubleClick", EmpName, "frmInsuranceInfo", null, ex);
+				notif.LogError("dgInsuranceInfo_MouseDoubleClick", EmpName, "frmInsuranceInfo", null, ex);
 			}
 		}
 
@@ -122,7 +122,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmHearingRep", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmHearingRep", null, ex);
 			}
 			//task.SearchTwoColumnOneFieldText(dgInsuranceInfo, "[Insurance Info]", "[Insurance Name]", "[Address]", txtSearch, lblcountSearchResult, EmpName);
 		}

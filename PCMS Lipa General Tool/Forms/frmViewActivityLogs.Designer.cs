@@ -34,21 +34,21 @@
 			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmViewActivityLogs));
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
+			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel12 = new Telerik.WinControls.UI.RadLabel();
 			this.cmbAction = new Telerik.WinControls.UI.RadDropDownList();
 			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
-			this.lblSearchCount = new Telerik.WinControls.UI.RadLabel();
 			this.dgActivityLogs = new Telerik.WinControls.UI.RadGridView();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel12)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbAction)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgActivityLogs)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgActivityLogs.MasterTemplate)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -69,14 +69,24 @@
 			this.radPanel1.TabIndex = 0;
 			this.radPanel1.ThemeName = "Crystal";
 			// 
+			// lblSearchCount
+			// 
+			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSearchCount.Location = new System.Drawing.Point(19, 545);
+			this.lblSearchCount.Name = "lblSearchCount";
+			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
+			this.lblSearchCount.TabIndex = 5;
+			this.lblSearchCount.Text = "radLabel2";
+			this.lblSearchCount.ThemeName = "Crystal";
+			// 
 			// radLabel12
 			// 
 			this.radLabel12.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel12.Location = new System.Drawing.Point(497, 32);
 			this.radLabel12.Name = "radLabel12";
-			this.radLabel12.Size = new System.Drawing.Size(85, 19);
+			this.radLabel12.Size = new System.Drawing.Size(88, 19);
 			this.radLabel12.TabIndex = 13;
-			this.radLabel12.Text = "User Status:  ";
+			this.radLabel12.Text = "Action Filter:  ";
 			this.radLabel12.ThemeName = "Crystal";
 			// 
 			// cmbAction
@@ -118,16 +128,6 @@
 			this.radLabel1.Text = "Search here: ";
 			this.radLabel1.ThemeName = "Crystal";
 			// 
-			// lblSearchCount
-			// 
-			this.lblSearchCount.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSearchCount.Location = new System.Drawing.Point(19, 545);
-			this.lblSearchCount.Name = "lblSearchCount";
-			this.lblSearchCount.Size = new System.Drawing.Size(66, 19);
-			this.lblSearchCount.TabIndex = 5;
-			this.lblSearchCount.Text = "radLabel2";
-			this.lblSearchCount.ThemeName = "Crystal";
-			// 
 			// dgActivityLogs
 			// 
 			this.dgActivityLogs.AllowShowFocusCues = true;
@@ -168,11 +168,11 @@
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
 			this.radPanel1.ResumeLayout(false);
 			this.radPanel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel12)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbAction)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblSearchCount)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgActivityLogs.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgActivityLogs)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();

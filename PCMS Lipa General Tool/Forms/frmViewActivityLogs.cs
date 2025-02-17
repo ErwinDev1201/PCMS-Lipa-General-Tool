@@ -10,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmViewActivityLogs : Telerik.WinControls.UI.RadForm
 	{
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
 
@@ -107,7 +107,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("LoadSearchFilter", empName, "frmUserActivty", null, ex);
+				notif.LogError("LoadSearchFilter", empName, "frmUserActivty", null, ex);
 			}
 		}
 

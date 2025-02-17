@@ -15,7 +15,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 		private readonly string _dbConnection = db.GetDbConnection();
 
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
 
@@ -36,7 +36,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetProvID", empName, "Provider", ID, ex);
+				notif.LogError("GetProvID", empName, "Provider", ID, ex);
 			}
 			//db.GetSequenceNo("textbox", "ProvInfoSeq", txtNoProv.Text, null, "PROV-");
 		}
@@ -60,7 +60,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewProviderAssignee", empName, "Provider", "N/A", ex);
+				notif.LogError("ViewProviderAssignee", empName, "Provider", "N/A", ex);
 			}
 
 			return data;
@@ -85,7 +85,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewProviderList", empName, "Provider", "N/A", ex);
+				notif.LogError("ViewProviderList", empName, "Provider", "N/A", ex);
 			}
 
 			return data;
@@ -118,7 +118,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("FillUpProvTxtBox", empName, "Provider", "N/A", ex);
+		//		notif.LogError("FillUpProvTxtBox", empName, "Provider", "N/A", ex);
 		//	}
 		//	finally
 		//	{
@@ -193,7 +193,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ProviderInfoDBRequest", empName, "Provider", "N/A", ex);
+				notif.LogError("ProviderInfoDBRequest", empName, "Provider", "N/A", ex);
 				message = $"Failed to {request.ToLower()} {provID}, Please try again later";
 				return false;
 				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
@@ -266,7 +266,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"HRRepDBRequest - {request}", empName, "Provider", assignedID, ex);
+				notif.LogError($"HRRepDBRequest - {request}", empName, "Provider", assignedID, ex);
 				message = $"Failed to {request.ToLower()} {assignedID}, Please try again later";
 				return false;
 				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
@@ -317,7 +317,7 @@ Additional Remarks: {remarks}";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("SearchData", empName, "Adjuster", null, ex);
+				notif.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -346,7 +346,7 @@ Additional Remarks: {remarks}";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("GenerateActivityMessage", empName, "Provider", "N/A", ex);
+		//		notif.LogError("GenerateActivityMessage", empName, "Provider", "N/A", ex);
 		//	}
 		//	finally
 		//	{
@@ -372,7 +372,7 @@ Additional Remarks: {remarks}";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetProviderList", empName, "Pantry", "N/A", ex);
+				notif.LogError("GetProviderList", empName, "Pantry", "N/A", ex);
 			}
 			return items;
 		}
@@ -396,7 +396,7 @@ Additional Remarks: {remarks}";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetProviderListperCollector", empName, "Pantry", "N/A", ex);
+				notif.LogError("GetProviderListperCollector", empName, "Pantry", "N/A", ex);
 			}
 			return items;
 		}

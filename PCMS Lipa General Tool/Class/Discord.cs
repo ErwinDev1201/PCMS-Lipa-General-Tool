@@ -8,7 +8,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class Discord
 	{
 		private readonly string _dbConnection = db.GetDbConnection();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
 		private static readonly Database db = new();
@@ -29,7 +29,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("UpdateValues", empName, "CommonTask", "N/A", ex);
+				notif.LogError("UpdateValues", empName, "CommonTask", "N/A", ex);
 			}
 		}
 	}
