@@ -10,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 	public class Database
 	{
 		private readonly string _dbConnection;
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 
 		readonly SqlConnection cn;
 
@@ -36,7 +36,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 				catch (Exception ex)
 				{
 					// Log error and return false
-					error.LogError("IsConnected", null, "Database", null, ex); // Assuming Error has a Log method
+					notif.LogError("IsConnected", null, "Database", null, ex); // Assuming Error has a Log method
 					return false;
 				}
 			}
@@ -102,7 +102,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"AlterDBSequence", empName, "CommonTask", "N/A", ex);
+				notif.LogError($"AlterDBSequence", empName, "CommonTask", "N/A", ex);
 			}
 			finally
 			{
@@ -127,7 +127,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetSequenceNoPre", "N/A", "CommonTask", "N/A", ex);
+				notif.LogError("GetSequenceNoPre", "N/A", "CommonTask", "N/A", ex);
 			}
 
 			return currSeq; // Return the sequence number
@@ -158,7 +158,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetSequenceNo", "N/A", "CommonTask", "N/A", ex);
+				notif.LogError("GetSequenceNo", "N/A", "CommonTask", "N/A", ex);
 				return null; // Return null in case of an error
 			}
 			finally

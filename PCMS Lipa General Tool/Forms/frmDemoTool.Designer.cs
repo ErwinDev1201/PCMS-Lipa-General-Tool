@@ -348,7 +348,7 @@
 			// 
 			this.statlblPosition.Name = "statlblPosition";
 			this.statbottom.SetSpring(this.statlblPosition, false);
-			this.statlblPosition.Text = "Admini";
+			this.statlblPosition.Text = "Administrator";
 			this.statlblPosition.TextWrap = true;
 			// 
 			// commandBarSeparator2
@@ -431,7 +431,7 @@
 			this.rdoTitle.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.rdoTitle.Location = new System.Drawing.Point(5, 132);
 			this.rdoTitle.Name = "rdoTitle";
-			this.rdoTitle.Size = new System.Drawing.Size(85, 21);
+			this.rdoTitle.Size = new System.Drawing.Size(86, 21);
 			this.rdoTitle.TabIndex = 2;
 			this.rdoTitle.Text = "Title Case";
 			this.rdoTitle.ThemeName = "Crystal";
@@ -451,7 +451,7 @@
 			this.rdoUpper.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.rdoUpper.Location = new System.Drawing.Point(5, 60);
 			this.rdoUpper.Name = "rdoUpper";
-			this.rdoUpper.Size = new System.Drawing.Size(94, 21);
+			this.rdoUpper.Size = new System.Drawing.Size(96, 21);
 			this.rdoUpper.TabIndex = 0;
 			this.rdoUpper.Text = "Upper Case";
 			this.rdoUpper.ThemeName = "Crystal";

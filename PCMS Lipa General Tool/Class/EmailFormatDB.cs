@@ -12,7 +12,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class EmailFormatDB
 	{
 		private readonly string _dbConnection = db.GetDbConnection();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
 
@@ -32,7 +32,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBID", empName, "EmailFormatDB", "N/A", ex);
+				notif.LogError("GetDBID", empName, "EmailFormatDB", "N/A", ex);
 			}
 			//db.GetSequenceNo("textbox", "EmailFormatSeq", txtIntID.Text, null, "EF-");
 		}
@@ -56,7 +56,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewEmailFormatList", empName, "EmailFormatDB", "N/A", ex);
+				notif.LogError("ViewEmailFormatList", empName, "EmailFormatDB", "N/A", ex);
 			}
 
 			return data;
@@ -124,7 +124,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"EmailFormatDBRequest - {request}", empName, "EmailFormatDB", formatID, ex);
+				notif.LogError($"EmailFormatDBRequest - {request}", empName, "EmailFormatDB", formatID, ex);
 				message = $"Failed to {request.ToLower()} {formatID}, Please try again later";
 				return false;
 				//throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
@@ -163,7 +163,7 @@ OR [Email Format] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("SearchData", empName, "BillReviews", null, ex);
+				notif.LogError("SearchData", empName, "BillReviews", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 

@@ -14,7 +14,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class CollectorNotes
 	{
 		private readonly string _dbConnection = db.GetDbConnection();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
 
@@ -36,7 +36,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBID", empName, "CollectorNotes", "intID", ex);
+				notif.LogError("GetDBID", empName, "CollectorNotes", "intID", ex);
 			}
 
 			// If we reach here, the out parameter already has a default value (string.Empty).
@@ -65,7 +65,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("FillNotesInfo", empName, "ModifyNotes", "N/A", ex);
+				notif.LogError("FillNotesInfo", empName, "ModifyNotes", "N/A", ex);
 			}
 			finally
 			{
@@ -149,7 +149,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("CollectorNotes", empName, "NoteDBRequest", noteID, ex);
+				notif.LogError("CollectorNotes", empName, "NoteDBRequest", noteID, ex);
 				RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			finally
@@ -176,7 +176,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError($"ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
+		//		notif.LogError($"ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
 		//	}
 		//	finally
 		//	{
@@ -203,7 +203,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
+				notif.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
 			}
 
 			return data;
@@ -243,7 +243,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"ViewNotesMonth", empName, "CollectorNotes", "N/A", ex);
+				notif.LogError($"ViewNotesMonth", empName, "CollectorNotes", "N/A", ex);
 			}
 			finally
 			{
@@ -279,7 +279,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
+				notif.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
 			}
 
 			return data;
@@ -312,7 +312,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError($"ViewNotes", empName, "CollectorNotes", "N/A", ex);
+		//		notif.LogError($"ViewNotes", empName, "CollectorNotes", "N/A", ex);
 		//	}
 		//	finally
 		//	{
@@ -350,7 +350,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"SearchTextAcrossColumns", empName, "CollectorNotes", "N/A", ex);
+				notif.LogError($"SearchTextAcrossColumns", empName, "CollectorNotes", "N/A", ex);
 			}
 		}
 
@@ -420,7 +420,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"filterCollectorNotes", empName, "CollectorNotes", "N/A", ex);
+				notif.LogError($"filterCollectorNotes", empName, "CollectorNotes", "N/A", ex);
 			}
 		}
 

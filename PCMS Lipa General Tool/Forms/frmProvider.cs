@@ -11,7 +11,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmProvider : Telerik.WinControls.UI.RadForm
 	{
 		private readonly Provider provider = new();
-		private readonly Error error = new();
+		private readonly Notification notif = new();
 		private readonly FEWinForm fe = new();
 		public string accessLevel;
 		public string EmpName;
@@ -320,7 +320,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgProviderInfo_MouseDoubleClick", EmpName, "frmProvider", txtNoProv.Text, ex);
+				notif.LogError("dgProviderInfo_MouseDoubleClick", EmpName, "frmProvider", txtNoProv.Text, ex);
 			}
 		}
 
@@ -339,7 +339,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmProvider", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmProvider", null, ex);
 			}
 			//task.SearchTwoColumnOneFieldText(dgProviderInfo, "[Provider Information]", "[Provider Name]", "REMARKS", txtSearch, lblSearchCount, EmpName);
 		}

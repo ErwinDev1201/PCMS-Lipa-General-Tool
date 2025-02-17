@@ -234,6 +234,7 @@
     <Compile Include="Class\Global.cs" />
     <Compile Include="Class\HearingRep.cs" />
     <Compile Include="Class\Insurance.cs" />
+    <Compile Include="Class\ITTaskList.cs" />
     <Compile Include="Class\Leave.cs" />
     <Compile Include="Class\Login.cs" />
     <Compile Include="Class\MPN.cs" />
@@ -318,6 +319,12 @@
     </Compile>
     <Compile Include="Forms\frmEmailformat.Designer.cs">
       <DependentUpon>frmEmailformat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmITTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmITTask.Designer.cs">
+      <DependentUpon>frmITTask.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmUserInformation.cs">
       <SubType>Form</SubType>
@@ -499,12 +506,6 @@
     <Compile Include="Forms\frmSuggestion.Designer.cs">
       <DependentUpon>frmSuggestion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmTicketingTask.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmTicketingTask.Designer.cs">
-      <DependentUpon>frmTicketingTask.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\frmUpdateDCPassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -547,10 +548,16 @@
     <Compile Include="Forms\frmWCTrainingtools.Designer.cs">
       <DependentUpon>frmWCTrainingtools.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmModTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmModTask.Designer.cs">
+      <DependentUpon>frmModTask.cs</DependentUpon>
+    </Compile>
     <Compile Include="HelperClass\Database.cs" />
     <Compile Include="HelperClass\OfficeFiles.cs" />
     <Compile Include="HelperClass\emailSender.cs" />
-    <Compile Include="HelperClass\Error.cs" />
+    <Compile Include="HelperClass\Notification.cs" />
     <Compile Include="HelperClass\FEWinForm.cs" />
     <Compile Include="HelperClass\SecurityEncryption.cs" />
     <Compile Include="HelperClass\WinDiscordAPI.cs" />
@@ -592,6 +599,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmEmailformat.resx">
       <DependentUpon>frmEmailformat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmITTask.resx">
+      <DependentUpon>frmITTask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmUserInformation.resx">
       <DependentUpon>frmUserInformation.cs</DependentUpon>
@@ -683,9 +693,6 @@
     <EmbeddedResource Include="Forms\frmSuggestion.resx">
       <DependentUpon>frmSuggestion.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmTicketingTask.resx">
-      <DependentUpon>frmTicketingTask.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmUpdateDCPassword.resx">
       <DependentUpon>frmUpdateDCPassword.cs</DependentUpon>
     </EmbeddedResource>
@@ -706,6 +713,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmWCTrainingtools.resx">
       <DependentUpon>frmWCTrainingtools.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmModTask.resx">
+      <DependentUpon>frmModTask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <Compile Include="Program.cs" />

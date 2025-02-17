@@ -14,7 +14,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
 		public string EmpName;
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 
 
 		public FrmAdjusterinformation()
@@ -73,7 +73,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
+				notif.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
 			}
 		}
 
@@ -132,7 +132,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmAdjusterInfo", null, ex);
 			}
 			
 			//task.SearchTwoColumnOneFieldText(dgAdjusterInfo, "[Adjuster Information]", "[Insurance Name]", "[Remarks]", txtSearch, lblCountSearch, EmpName);

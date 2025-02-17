@@ -13,7 +13,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private readonly Diagnosis dx = new();
 		public string EmpName;
 		public string accessLevel;
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 
 
 		public frmDiagnosis()
@@ -109,7 +109,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgBillDiagnosis_MouseDoubleClick", EmpName, "frmDiagnosis", null, ex);
+				notif.LogError("dgBillDiagnosis_MouseDoubleClick", EmpName, "frmDiagnosis", null, ex);
 			}
 			
 		}
@@ -151,7 +151,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("LoadSearchandFilter", EmpName, "frmDiagnosis", null, ex);
+				notif.LogError("LoadSearchandFilter", EmpName, "frmDiagnosis", null, ex);
 			}
 		}
 

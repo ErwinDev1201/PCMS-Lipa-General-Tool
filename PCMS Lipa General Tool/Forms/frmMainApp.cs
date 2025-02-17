@@ -26,7 +26,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		private readonly string _genR = privSupport + @"\Private_GenReminder.rtf";
 
 		private static readonly string privSupport = ConfigurationManager.AppSettings["privsupportpath"];
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
 		private readonly User user = new();
@@ -217,7 +217,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				error.LogError("mnuInsBilCollection_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuInsBilCollection_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show("Unable to open the file, please check with the developer/programmer", "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -232,7 +232,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnMedimedi_Click \n\n Detailed Error: " + ex.ToString());
-				error.LogError("mnuMedimedi_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuMedimedi_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -247,7 +247,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnMemoCollection_Click \n\n Detailed Error: " + ex.ToString());
-				error.LogError("mnuMemoColl_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuMemoColl_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -263,7 +263,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnInsPolicies_Click \n\n Detailed Error: " + ex.ToString());
-				error.LogError("mnuUnInsPolicies_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuUnInsPolicies_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -278,7 +278,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnmodRef_Click \n\n Detailed Error: " + ex.ToString());
-				error.LogError("mnuModRefGuide_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuModRefGuide_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -293,7 +293,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnRejectClaims_Click \n\n Detailed Error: " + ex.ToString());
-				error.LogError("mnuRejClaims_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuRejClaims_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -308,7 +308,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnEvalCodes_Click \n\n Detailed Error: " + ex.ToString());
-				error.LogError("mnuEvalCodes_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuEvalCodes_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -322,7 +322,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				error.LogError("mnuPPOvsHMO_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuPPOvsHMO_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show("Unable to open the file, please check with the developer/programmer", "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -337,7 +337,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail("Unable to locate file \n\n File: " + filepath + "\n Module: CollectorWindows \n Process: btnPTCodes_Click \n\n Detailed Error: " + ex.ToString());
-				error.LogError("mnuListofPT_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuListofPT_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -350,7 +350,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				error.LogError("mnuICD10_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuICD10_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open link", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -370,7 +370,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				error.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open File", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -390,7 +390,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				error.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex);
+				notif.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex);
 				RadMessageBox.Show(ex.Message, "Failed to Open link", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -411,7 +411,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			catch (Exception ex)
 			{
 				//mailSender.SendEmail(ex.Message +"\n\n Name: " + EmpName + "\n Module: CollectorWindows \n Process: btnDelCodesDx_Click \n\n Detailed Error: " + ex.ToString());
-				error.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex); ;
+				notif.LogError("mnuNewDxCodes_Click", EmpName, "frmMainApp", null, ex); ;
 				RadMessageBox.Show(ex.Message, "Failed to Open link", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 		}
@@ -683,7 +683,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			}
 			catch (Exception ex)
 			{
-				error.LogError("PopulateTelerikThemes", EmpName, "frmMainApp", null, ex);
+				notif.LogError("PopulateTelerikThemes", EmpName, "frmMainApp", null, ex);
 			}
 		}
 
@@ -1242,6 +1242,17 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			RadMessageBox.Show("Still under development", "Under Development");
 			//var ai = new frmAIAssistant();
 			//ai.ShowDialog();
+		}
+
+		private void mnuErwin_Click(object sender, EventArgs e)
+		{
+			var dlgITask = new frmITTask()
+			{
+				empName = EmpName,
+				accessLevel = accessLevel,
+				Text = "Assign Task to IT"
+			};
+			dlgITask.ShowDialog();
 		}
 	}
 }

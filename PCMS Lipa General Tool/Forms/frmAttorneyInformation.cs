@@ -13,7 +13,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private readonly Attorney atty = new();
 		public string accessLevel;
 		public string EmpName;
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 
 		public frmAttorneyInformation()
 		{
@@ -68,7 +68,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
+				notif.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
 			}
 		}
 
@@ -132,7 +132,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("LoadSearchFilter", EmpName, "frmAttorneyInformation", null, ex);
+				notif.LogError("LoadSearchFilter", EmpName, "frmAttorneyInformation", null, ex);
 			}
 		}
 

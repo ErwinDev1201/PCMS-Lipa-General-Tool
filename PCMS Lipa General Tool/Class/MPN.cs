@@ -13,7 +13,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class MPN
 	{
 		private readonly string _dbConnection = db.GetDbConnection();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
 
@@ -35,7 +35,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBListID", empName, "frmMODMPN", "N/A", ex);
+				notif.LogError("GetDBListID", empName, "frmMODMPN", "N/A", ex);
 			}
 			///db.GetSequenceNo("textbox", "MPNInfoSeq", txtIntID.Text, null, "MPN-");
 		}
@@ -60,7 +60,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewMPNList", empName, "MPN", "N/A", ex);
+				notif.LogError("ViewMPNList", empName, "MPN", "N/A", ex);
 			}
 
 			return data;
@@ -135,7 +135,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("MPNDBRequest", empName, "MPN", mpnID, ex);
+				notif.LogError("MPNDBRequest", empName, "MPN", mpnID, ex);
 				message = $"Failed to {request.ToLower()} {mpnID}, Please try again later";
 				return false;
 				////throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
@@ -174,7 +174,7 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("SearchData", empName, "MPN", null, ex);
+				notif.LogError("SearchData", empName, "MPN", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 

@@ -10,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmEmailFormat : Telerik.WinControls.UI.RadForm
 	{
 		private readonly EmailFormatDB emailDB = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
 		public string EmpName;
@@ -95,7 +95,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgEmail_MouseDoubleClick", EmpName, "frmEmailormat", null, ex);
+				notif.LogError("dgEmail_MouseDoubleClick", EmpName, "frmEmailormat", null, ex);
 			}
 			
 		}
@@ -122,7 +122,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmEmailFormat", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmEmailFormat", null, ex);
 			}
 		}
 	}

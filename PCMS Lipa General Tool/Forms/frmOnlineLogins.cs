@@ -15,7 +15,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmOnlineLogins : Telerik.WinControls.UI.RadForm
 	{
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
 		private readonly Database db = new();
@@ -248,7 +248,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 
-				error.LogError($"AutoFill", empName, "Online Logins", txtLoginID.Text, ex);
+				notif.LogError($"AutoFill", empName, "Online Logins", txtLoginID.Text, ex);
 				RadMessageBox.Show($"Error during updating text field information. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			DoubleClickEnable();
@@ -381,7 +381,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					// Ensure the RDP file exists
 					if (!System.IO.File.Exists(rdpFilePath))
 					{
-						error.LogError("openRDLinkWebsite", empName, "frmOnlinelogins", txtLoginID.Text, new Exception("RDP file not found: " + rdpFilePath));
+						notif.LogError("openRDLinkWebsite", empName, "frmOnlinelogins", txtLoginID.Text, new Exception("RDP file not found: " + rdpFilePath));
 						//Console.WriteLine("RDP file not found: " + rdpFilePath);
 						return;
 					}
@@ -407,7 +407,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				catch (Exception ex)
 				{
-					error.LogError("openRDLinkWebsite", empName, "frmOnlinelogins", txtLoginID.Text, ex);
+					notif.LogError("openRDLinkWebsite", empName, "frmOnlinelogins", txtLoginID.Text, ex);
 					//Console.WriteLine("Error launching Edge in Remote Desktop: " + ex.Message);
 				}
 			}
@@ -439,7 +439,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		//		}
 		//		catch (Exception ex)
 		//		{
-		//			error.LogError("openRDLinkWebsite", empName, "frmOnlinelogins", txtLoginID.Text, ex);
+		//			notif.LogError("openRDLinkWebsite", empName, "frmOnlinelogins", txtLoginID.Text, ex);
 		//			//Console.WriteLine("Error launching Edge in Remote Desktop: " + ex.Message);
 		//		}
 		//	}
@@ -677,7 +677,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", empName, "frmAdjusterInfo", null, ex);
+				notif.LogError("txtSearch_TextChanged", empName, "frmAdjusterInfo", null, ex);
 			}
 			//if (txtSearchOnlineLogins.TextLength > 0)
 			//{
@@ -715,7 +715,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("btnSaveUpdate_Click", empName, "OnlineLogins", "N/A", ex);
+				notif.LogError("btnSaveUpdate_Click", empName, "OnlineLogins", "N/A", ex);
 				//fe.SendToastNotifDesktop($"An error occurred: {ex.Message}", "Error");
 			}
 		}
@@ -742,7 +742,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ProcessDatabaseOperation", empName, "OnlineLogins", "N/A", ex);
+				notif.LogError("ProcessDatabaseOperation", empName, "OnlineLogins", "N/A", ex);
 				//fe.SendToastNotifDesktop($"Unexpected error: {ex.Message}", "Error");
 			}
 			Clear();

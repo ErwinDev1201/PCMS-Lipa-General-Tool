@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,10 +21,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public string accessLevel;
 		//private static readonly string dbBackupcoll = ConfigurationManager.AppSettings["StoragePath"];
 		private readonly Pantry pantry = new();
-		private static readonly Error error = new();
-		private static readonly ActivtiyLogs log = new();
+		private static readonly Notification notif = new();
 		private static readonly FEWinForm fe = new();
-		private readonly Database db = new();
 		private readonly User user = new();
 		private readonly OfficeFiles office = new();
 
@@ -96,13 +95,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			else
 			{
-				txtRemarks.Height = 94;
-				cmbItemEmpList.Visible = false;
+				//cmbItemEmpList.Visible = false;
 				btnExport.Enabled = false;
 				btnExport.Visible = false;
+				cmbEmployee.Visible = true;
 				cmbEmployee.Enabled = false;
-				btnCancelFilter.Location = new System.Drawing.Point(419, 38);
-				btnCancelFilter.Height = 103;
+				cmbItemEmpList.Visible = false;
+				btnCancelFilter.Height = 79;
+				btnCancelFilter.Location = new System.Drawing.Point(385, 35);
 			}
 		}
 
@@ -146,9 +146,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnCancelFilter.Enabled = false;
 			btnAdditem.Text = "Add Item";
 			btnAdditem.Enabled = true;
-			btnCancel.Width = 114;
 			btnCancel.Enabled = false;
-			btnCancel.Location = new System.Drawing.Point(274, 465);
 			dtpFrom.Enabled = false;
 			dtpTo.Enabled = false;
 			btnCancel.Enabled = true;
@@ -156,19 +154,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnNew.Enabled = false;
 			btnExport.Enabled = false;
 			cmbEmployee.Enabled = false;
-			cmbItemEmpList.Enabled = true;
 			cmbProductList.ReadOnly = false;
 			txtQuantity.ReadOnly = false;
 			Clear();
-			//cmbItemEmpList.Text = EmpName;
 			if (EmpName == "Edimson Escalona" || EmpName == "Erwin Alcantara")
 			{
 				cmbItemEmpList.Text = EmpName;
+				cmbEmployee.Text = EmpName;
 			}
 			else
 			{
-				cmbItemEmpList.Text = EmpName;
-				cmbItemEmpList.ReadOnly = true;
+				cmbEmployee.Text = EmpName;
+				cmbItemEmpList.Visible = false;
+				cmbEmployee.Enabled = false;
+
 			}
 			dgPantryList.Enabled = false;
 			pantry.GetDBListID(out string ID, EmpName);
@@ -211,76 +210,68 @@ namespace PCMS_Lipa_General_Tool.Forms
 				txtTotalPrice.Text = "";
 		}
 
+		private void ProcessPantryItem()
+		{
+			try
+			{
+				if (string.IsNullOrWhiteSpace(txtQuantity.Text) ||
+					string.IsNullOrWhiteSpace(txtPrice.Text) ||
+					string.IsNullOrWhiteSpace(txtTotalPrice.Text))
+				{
+					RadMessageBox.Show("Cannot save your item, please select the product and enter the quantity.",
+						"Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
+					return;
+				}
+
+				string action = btnAdditem.Text == "Update" ? "Update" : "Create";
+				bool isUpdate = action == "Update";
+
+				if (isUpdate &&
+					DialogResult.Yes != RadMessageBox.Show("Are you sure you want to update this record?",
+					"Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
+				{
+					return;
+				}
+
+				bool isSuccess = pantry.PantryListDBRequest(
+					action,
+					txtIntID.Text,
+					cmbItemEmpList.Text,
+					cmbProductList.Text,
+					int.TryParse(txtQuantity.Text, out int quantity) ? quantity : 0,
+					decimal.TryParse(txtPrice.Text, out decimal price) ? price : 0,
+					decimal.TryParse(txtTotalPrice.Text, out decimal totalPrice) ? totalPrice : 0,
+					txtSummary.Text,
+					txtRemarks.Text,
+					EmpName,
+					out string message);
+
+				string status = isSuccess ? "Success" : "Failed";
+				fe.SendToastNotifDesktop(message, status);
+
+				// Resetting the UI after processing
+				dtpFrom.Value = DateTime.Now;
+				LoadPantryListwithFilter();
+				ListPantryNoChangeinName();
+				DefaultFields();
+			}
+			catch (FormatException ex)
+			{
+				notif.LogError("ProcessPantryItem", EmpName, "frmPantry", null, ex);
+				fe.SendToastNotifDesktop($"Invalid input format", "Error");
+				//RadMessageBox.Show($"Invalid input format: {ex.Message}", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+			}
+			catch (Exception ex)
+			{
+				notif.LogError("ProcessPantryItem", EmpName, "frmPantry", null, ex);
+				fe.SendToastNotifDesktop($"An unexpected error occurred", "Error");
+			}
+		}
+
+
 		private void btnAdditem_Click(object sender, EventArgs e)
 		{
-			if (btnAdditem.Text == "Update")
-			{
-				if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
-				{
-					if (txtQuantity.Text == "" || txtPrice.Text == "" || txtTotalPrice.Text == "")
-					{
-						RadMessageBox.Show("Cannot save your item, please select the product and put in the quantity", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
-					}
-					else
-					{
-						bool isSuccess = pantry.PantryListDBRequest(
-							"Update",
-							txtIntID.Text,
-							cmbItemEmpList.Text,
-							cmbProductList.Text,
-							int.Parse(txtQuantity.Text),
-							decimal.Parse(txtPrice.Text),
-							decimal.Parse(txtTotalPrice.Text),
-							txtSummary.Text,
-							txtRemarks.Text,
-							EmpName,
-							out string message);
-						if (isSuccess)
-						{
-							fe.SendToastNotifDesktop(message, "Success");
-						}
-						else
-						{
-							fe.SendToastNotifDesktop(message, "Failed");
-						}
-					}
-				}
-			}
-			else
-			{
-				if (txtQuantity.Text == "" || txtPrice.Text == "" || txtTotalPrice.Text == "")
-				{
-					RadMessageBox.Show("Cannot save your item, please select the product and put in the quantity", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
-				}
-				else
-				{
-					bool isSuccess = pantry.PantryListDBRequest(
-						"Create",
-						txtIntID.Text,
-						cmbItemEmpList.Text,
-						cmbProductList.Text,
-						int.Parse(txtQuantity.Text),
-						decimal.Parse(txtPrice.Text),
-						decimal.Parse(txtTotalPrice.Text),
-						txtSummary.Text,
-						txtRemarks.Text,
-						EmpName,
-						out string message);
-					if (isSuccess)
-					{
-						fe.SendToastNotifDesktop(message, "Success");
-					}
-					else
-					{
-						fe.SendToastNotifDesktop(message, "Failed");
-					}
-
-				}
-			}
-			dtpFrom.Value = DateTime.Now;
-			LoadPantryListwithFilter();
-			ListPantryNoChangeinName();
-			DefaultFields();
+			ProcessPantryItem();
 		}
 
 
@@ -315,18 +306,6 @@ of
 		{
 			try
 			{
-				//string query;
-				//if (cmbEmployee.Text == "Edimson Escalona" || cmbEmployee.Text == "")
-				//{
-				//	query = $"SELECT SUM([TOTAL PRICE]) FROM [Pantry Listahan] WHERE DATE BETWEEN '{dtpFrom.Value:yyyy-MM-dd}' AND '{dtpTo.Value:yyyy-MM-dd}'";
-				//	
-				//
-				//}
-				//else
-				//{
-				//	query = $"SELECT SUM([TOTAL PRICE]) FROM [Pantry Listahan] WHERE [Employee Name] LIKE '%{cmbEmployee.Text}%' AND DATE BETWEEN '{dtpFrom.Value:yyyy-MM-dd}' AND '{dtpTo.Value:yyyy-MM-dd}'";
-				//	
-				//}
 				pantry.CalculateTotalPantryExpense(cmbEmployee.Text, dtpFrom.Value, dtpTo.Value, out decimal totalPrice);
 				txtTotalPrice.Text = totalPrice.ToString();
 				txtSummary.Enabled = true;
@@ -335,7 +314,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				error.LogError("SumPantryExpense", EmpName, "frmPantry", null, ex); 
+				notif.LogError("SumPantryExpense", EmpName, "frmPantry", null, ex); 
 			}
 		}
 
@@ -343,60 +322,20 @@ of
 		{
 			try
 			{
-				// Default to the current employee's name if none is selected
 				if (string.IsNullOrWhiteSpace(cmbEmployee.Text))
 				{
 					cmbEmployee.Text = EmpName;
 				}
-
-				// Automatically adjust column sizes
 				dgPantryList.BestFitColumns(BestFitColumnMode.AllCells);
-
-				// Build the query dynamically based on the selected employee
-				
-
-				// Load data into the datagrid and calculate expenses
 				pantry.ViewPantryList(dgPantryList, "withFilter", lblsearchCount, EmpName, cmbEmployee.Text, dtpFrom.Value, dtpTo.Value);
 				SumPantryExpense();
 			}
 			catch (Exception ex)
 			{
-				error.LogError("LoadPantryListwithFilter", EmpName, "frmPantry", null, ex);
+				notif.LogError("LoadPantryListwithFilter", EmpName, "frmPantry", null, ex);
 			}
 		}
 
-
-		
-
-		//private void LoadPantryListwithFilter()
-		//{
-		//	try
-		//	{
-		//		if (cmbEmployee.Text == "")
-		//		{
-		//			cmbEmployee.Text = EmpName;
-		//		}
-		//		dgPantryList.BestFitColumns(BestFitColumnMode.AllCells);
-		//		if (cmbEmployee.Text == "Edimson Escalona" || cmbEmployee.Text == "")
-		//		{
-		//			string tableList = $"SELECT * FROM [Pantry Listahan] WHERE [DATE] BETWEEN '{this.dtpFrom.Value:yyyy-MM-dd}' AND '{this.dtpTo.Value:yyyy-MM-dd}' order by [List ID] DESC";
-		//			task.ViewDatagrid(dgPantryList, tableList, lblsearchCount, EmpName);
-		//			SumPantryExpense();
-		//		}
-		//		else
-		//		{
-		//			string tableList = $"SELECT * FROM [Pantry Listahan] WHERE [Employee Name] LIKE '%{cmbEmployee.Text}%' AND [DATE] BETWEEN '{this.dtpFrom.Value:yyyy-MM-dd}' AND '{dtpTo.Value:yyyy-MM-dd}' order by [List ID] DESC";
-		//			task.ViewDatagrid(dgPantryList, tableList, lblsearchCount, EmpName);
-		//			SumPantryExpense();
-		//		}
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		error.LogError("LoadPantryListwithFilter", EmpName, "frmPantry", null, ex);
-		//	}
-		//
-		//}
-		//
 
 		private void cmbProductList_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
 		{
@@ -424,7 +363,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				error.LogError("cmbProductList_SelectedIndexChanged", EmpName, "frmPantry", null, ex);
+				notif.LogError("cmbProductList_SelectedIndexChanged", EmpName, "frmPantry", null, ex);
 			}
 		}
 
@@ -472,27 +411,8 @@ of
 				MessageBox.Show($"An error occurred during export:\n{ex.Message}", "Export Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				filePath = string.Empty; // Ensure filePath is assigned even on error
 			}
-			//try
-			//{
-			//	// Convert RadGridView to DataTable
-			//	DataTable dataTable = GetDataTableFromRadGridView(dgPantryList);
-			//	string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-			//	filePath = Path.Combine(desktopPath, $"Pantry List {dtpFrom.Value:yyyy-MM-dd} - {dtpTo.Value:yyyy-MM-dd}.xlsx");
-			//
-			//	// Call the export method
-			//		task.ExportTableToExcel(dataTable, $"Pantry List {dtpFrom.Value:yyyy-MM-dd} - {dtpTo.Value:yyyy-MM-dd}", EmpName);
-			//
-			//	// Optionally notify the user and open the file
-			//
-			//
-			//	// MessageBox or file open can be uncommented if needed
-			//}
-			//catch (Exception ex)
-			//{
-			//	MessageBox.Show($"An error occurred during export:\n{ex.Message}", "Export Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			//	filePath = string.Empty; // Ensure filePath is assigned even on error
-			//}
-		}   //
+			
+		} 
 
 		private string GenerateValidSheetName(string input)
 		{
@@ -585,7 +505,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				error.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
+				notif.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
 				//MessageBox.Show($"An error occurred:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
@@ -727,7 +647,7 @@ of
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
+		//		notif.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
 		//	}
 		//}
 		//
@@ -884,7 +804,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				error.LogError("AutoFillUp", EmpName, "frmPantry", null, ex);
+				notif.LogError("AutoFillUp", EmpName, "frmPantry", null, ex);
 			}
 		}
 
@@ -911,118 +831,6 @@ of
 				}
 			}
 		}
-
-
-		//private void AutoFillUp()
-		//{
-		//	try
-		//	{
-		//		//SELECT [INT ID], DATE, [TIME STAMP], [Employee Name], PRODUCT, QUANTITY, PRICE, [TOTAL PRICE], SUMMARY, REMARKS FROM [Pantry Listahan]
-		//		if (EmpName == "Edimson Escalona" || EmpName == "Erwin Alcantara" || EmpName == "Dimz Escalona")
-		//		{
-		//			grpItems.Enabled = true;
-		//			txtPrice.ReadOnly = false;
-		//			cmbEmployee.Enabled = false;
-		//			cmbProductList.Enabled = true;
-		//			cmbItemEmpList.Enabled = true;
-		//			cmbItemEmpList.Visible = true;
-		//			cmbItemEmpList.ReadOnly = false;
-		//			txtPrice.Enabled = true;
-		//			txtQuantity.Enabled = true;
-		//			txtTotalPrice.Enabled = true;
-		//			txtSummary.Enabled = true;
-		//			txtRemarks.Enabled = true;
-		//			btnAdditem.Enabled = false;
-		//			btnCancel.Visible = true;
-		//			btnCancel.Enabled = true;
-		//			btnNew.Enabled = false;
-		//			btnRemove.Enabled = true;
-		//			btnAdditem.Enabled = true;
-		//			btnAdditem.Text = "Update";
-		//			btnRemove.Visible = true;
-		//			btnAdditem.Visible = true;
-		//			dtpFrom.Visible = true;
-		//			dtpTo.Visible = true;
-		//
-		//			if (dgPantryList.SelectedRows.Count > 0)
-		//			{
-		//				string intID = dgPantryList.SelectedRows[0].Cells[0].Value + string.Empty;
-		//				string Name = dgPantryList.SelectedRows[0].Cells[3].Value + string.Empty;
-		//				string productName = dgPantryList.SelectedRows[0].Cells[4].Value + string.Empty;
-		//				string price = dgPantryList.SelectedRows[0].Cells[6].Value + string.Empty;
-		//				string quantity = dgPantryList.SelectedRows[0].Cells[5].Value + string.Empty;
-		//				string totalprice = dgPantryList.SelectedRows[0].Cells[7].Value + string.Empty;
-		//				string summary = dgPantryList.SelectedRows[0].Cells[8].Value + string.Empty;
-		//				string remarks = dgPantryList.SelectedRows[0].Cells[9].Value + string.Empty;
-		//
-		//				txtIntID.Text = intID;
-		//				cmbItemEmpList.Text = Name;
-		//				cmbProductList.Text = productName;
-		//				txtPrice.Text = price;
-		//				txtQuantity.Text = quantity;
-		//				txtTotalPrice.Text = totalprice;
-		//				txtSummary.Text = summary;
-		//				txtRemarks.Text = remarks;
-		//			}
-		//		}
-		//		else
-		//		{
-		//			grpItems.Enabled = true;
-		//			txtPrice.ReadOnly = true;
-		//			cmbProductList.ReadOnly = true;
-		//			txtQuantity.ReadOnly = true;
-		//			txtRemarks.IsReadOnly = true;
-		//			txtSummary.IsReadOnly = true;
-		//			txtTotalPrice.IsReadOnly = true;
-		//			cmbEmployee.Enabled = false;
-		//			cmbProductList.Enabled = true;
-		//			txtPrice.Enabled = true;
-		//			txtQuantity.Enabled = true;
-		//			txtTotalPrice.Enabled = true;
-		//			txtSummary.Enabled = true;
-		//			txtRemarks.Enabled = true;
-		//			btnAdditem.Enabled = false;
-		//			btnCancel.Visible = true;
-		//			btnCancel.Enabled = true;
-		//			btnCancel.Width = 366;
-		//			btnCancel.Location = new System.Drawing.Point(22, 467);
-		//			btnNew.Enabled = false;
-		//			txtRemarks.Height = 94;
-		//			btnAdditem.Text = "Update";
-		//			btnRemove.Visible = false;
-		//			btnAdditem.Visible = false;
-		//			dtpFrom.Visible = true;
-		//			dtpTo.Visible = true;
-		//
-		//			if (dgPantryList.SelectedRows.Count > 0)
-		//			{
-		//				string intID = dgPantryList.SelectedRows[0].Cells[0].Value + string.Empty;
-		//				string Name = dgPantryList.SelectedRows[0].Cells[3].Value + string.Empty;
-		//				string productName = dgPantryList.SelectedRows[0].Cells[4].Value + string.Empty;
-		//				string price = dgPantryList.SelectedRows[0].Cells[6].Value + string.Empty;
-		//				string quantity = dgPantryList.SelectedRows[0].Cells[5].Value + string.Empty;
-		//				string totalprice = dgPantryList.SelectedRows[0].Cells[7].Value + string.Empty;
-		//				string summary = dgPantryList.SelectedRows[0].Cells[8].Value + string.Empty;
-		//				string remarks = dgPantryList.SelectedRows[0].Cells[9].Value + string.Empty;
-		//
-		//				txtIntID.Text = intID;
-		//				cmbItemEmpList.Text = Name;
-		//				cmbProductList.Text = productName;
-		//				txtPrice.Text = price;
-		//				txtQuantity.Text = quantity;
-		//				txtTotalPrice.Text = totalprice;
-		//				txtSummary.Text = summary;
-		//				txtRemarks.Text = remarks;
-		//			}
-		//		}
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		error.LogError("AutoFillUp", EmpName, "frmPantry", null, ex);
-		//
-		//	}
-		//}
-
 		private void dtpFrom_ValueChanged(object sender, EventArgs e)
 		{
 			if (dtpFrom.Value.ToString("MMMM") == "February")
@@ -1071,6 +879,12 @@ of
 		{
 			dtpFrom.Value = DateTime.Now;
 			cmbEmployee.Text = EmpName;
+			//cmbItemEmpList.Visible = false;
+			if (EmpName == "Edimson Escalona" || EmpName == "Erwin Alcantara")
+			{
+				cmbEmployee.Enabled = true;
+				cmbItemEmpList.Visible = true;
+			}
 		}
 
 

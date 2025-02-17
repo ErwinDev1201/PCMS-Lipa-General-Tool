@@ -12,7 +12,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	{
 
 		private readonly string _dbConnection = db.GetDbConnection();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
 
@@ -31,7 +31,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBID", empName, "Attoryney", "N/A", ex);
+				notif.LogError("GetDBID", empName, "Attoryney", "N/A", ex);
 			}
 			//db.GetSequenceNo("textbox", "AttyInfo", txtIntID.Text, null, "ATTY-");
 		}
@@ -55,7 +55,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewAttorneyList", empName, "Attorney", "N/A", ex);
+				notif.LogError("ViewAttorneyList", empName, "Attorney", "N/A", ex);
 			}
 
 			return data;
@@ -102,7 +102,7 @@ OR [Remarks] LIKE @searchTerm)";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("SearchData", empName, "Adjuster", null, ex);
+				notif.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -177,7 +177,7 @@ OR [Remarks] LIKE @searchTerm)";
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"AttorneyDBRequest {request}", empName, "Attorney", attyID, ex);
+				notif.LogError($"AttorneyDBRequest {request}", empName, "Attorney", attyID, ex);
 				message = $"Failed to {request.ToLower()} {attyID}, Please try again later";
 				return false;
 				///throw new InvalidOperationException($"Error during {request} operation. Please try again later.");

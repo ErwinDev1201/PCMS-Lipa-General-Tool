@@ -22,7 +22,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			InitializeComponent();
 			lblIDValidation.Visible = false;
 			lblPasswordValidation.Visible = false;
-			lblValidation.Visible = false;
+			lblEmailValidation.Visible = false;
+			clearValidationmessage();
 
 			//show eye
 			this.txtNewPassword.UseSystemPasswordChar = true;
@@ -111,8 +112,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (!user.IsValidEmail(txtWorkEmail.Text))
 			{
-				lblValidation.Visible = true;
-				lblValidation.Text = "Invalid Email";
+				lblEmailValidation.Visible = true;
+				lblEmailValidation.Text = "Invalid Email";
 				btnOK.Enabled = false;
 			}
 		}
@@ -120,8 +121,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void clearValidationmessage()
 		{
 			lblPasswordValidation.Text = "";
+			lblEmailValidation.Text = "";
 			lblIDValidation.Text = "";
-			lblValidation.Text = "";
 
 		}
 

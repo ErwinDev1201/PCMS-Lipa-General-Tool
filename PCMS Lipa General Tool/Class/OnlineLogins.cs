@@ -10,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private readonly string _dbConnection = db.GetDbConnection();
 		readonly WinDiscordAPI dc = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
 
@@ -29,7 +29,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBID", empName, "OnlineLogins", ID, ex);
+				notif.LogError("GetDBID", empName, "OnlineLogins", ID, ex);
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("OnlineLoginDB", empName, "OnlineLogins", "", ex);
+		//		notif.LogError("OnlineLoginDB", empName, "OnlineLogins", "", ex);
 		//	}
 		//}
 
@@ -72,7 +72,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("FetchOnlineLoginsData", empName, "OnlineLogins", string.Empty, ex);
+		//		notif.LogError("FetchOnlineLoginsData", empName, "OnlineLogins", string.Empty, ex);
 		//		throw;
 		//	}
 		//
@@ -96,7 +96,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("GetOnlineLoginInfo", "N/A", "OnlineLogins", "N/A", ex);
+		//		notif.LogError("GetOnlineLoginInfo", "N/A", "OnlineLogins", "N/A", ex);
 		//		throw new Exception("Error fetching online logins information.", ex);
 		//	}
 		//
@@ -126,7 +126,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("ExtractOnlineLoginInfoFromRow", "N/A", "Attorney", "N/A", ex);
+		//		notif.LogError("ExtractOnlineLoginInfoFromRow", "N/A", "Attorney", "N/A", ex);
 		//		throw new Exception("Error extracting online login information from the selected row.", ex);
 		//	}
 		//}
@@ -174,7 +174,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	catch (Exception ex)
 		//	{
 		//
-		//		error.LogError("FillAttyEmpInfo", empName, "OnlineLogins", intID, ex);
+		//		notif.LogError("FillAttyEmpInfo", empName, "OnlineLogins", intID, ex);
 		//	}
 		//}
 		//
@@ -205,7 +205,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("NewFillUpTextBoxwcmb", empName, "OnlineLogins", "", ex);
+		//		notif.LogError("NewFillUpTextBoxwcmb", empName, "OnlineLogins", "", ex);
 		//	}
 		//	finally
 		//	{
@@ -242,7 +242,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("SearchData", empName, "Adjuster", null, ex);
+				notif.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -336,14 +336,14 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (SqlException sqlex)
 			{
-				error.LogError("OnlineLoginDB - SQlEx", empName, "OnlineLogins", insID, sqlex);
+				notif.LogError("OnlineLoginDB - SQlEx", empName, "OnlineLogins", insID, sqlex);
 				message = $"Failed to {request.ToLower()} {insID}, Please try again later";
 				return false;
 				///throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
 			}
 			catch (Exception ex)
 			{
-				error.LogError("OnlineLoginDB - General Error", empName, "OnlineLogins", insID, ex);
+				notif.LogError("OnlineLoginDB - General Error", empName, "OnlineLogins", insID, ex);
 				message = $"Failed to {request.ToLower()} {insID}, Please try again later";
 				return false;
 				///throw new InvalidOperationException($"Error during {request} operation. Please try again later.");
@@ -429,7 +429,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("OnlineLoginDB", empName, "OnlineLogins", insID.Text, ex);
+		//		notif.LogError("OnlineLoginDB", empName, "OnlineLogins", insID.Text, ex);
 		//		RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//	}
 		//	finally
@@ -457,7 +457,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewOnlineLogins", empName, "OnlineLogins", "N/A", ex);
+				notif.LogError("ViewOnlineLogins", empName, "OnlineLogins", "N/A", ex);
 			}
 
 			return data;

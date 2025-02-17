@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
 			this.components = new System.ComponentModel.Container();
-			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition13 = new Telerik.WinControls.UI.TableViewDefinition();
+			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
 			Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
 			Telerik.WinControls.UI.RadListDataItem radListDataItem2 = new Telerik.WinControls.UI.RadListDataItem();
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
@@ -129,7 +129,7 @@
 			this.dgOnlineLogins.MasterTemplate.AllowEditRow = false;
 			this.dgOnlineLogins.MasterTemplate.AllowRowHeaderContextMenu = false;
 			this.dgOnlineLogins.MasterTemplate.AllowRowResize = false;
-			this.dgOnlineLogins.MasterTemplate.ViewDefinition = tableViewDefinition13;
+			this.dgOnlineLogins.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgOnlineLogins.Name = "dgOnlineLogins";
 			this.dgOnlineLogins.Size = new System.Drawing.Size(909, 291);
 			this.dgOnlineLogins.TabIndex = 0;
@@ -353,11 +353,12 @@
 			this.txtInsuranceName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtInsuranceName.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtInsuranceName.Font = new System.Drawing.Font("Proxima Nova Rg", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtInsuranceName.Location = new System.Drawing.Point(245, 46);
 			this.txtInsuranceName.Name = "txtInsuranceName";
 			this.txtInsuranceName.Size = new System.Drawing.Size(485, 23);
 			this.txtInsuranceName.TabIndex = 23;
+			this.txtInsuranceName.Text = "this a a test";
 			this.txtInsuranceName.ThemeName = "Crystal";
 			// 
 			// txtLoginID

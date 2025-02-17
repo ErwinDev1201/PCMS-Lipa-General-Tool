@@ -3,7 +3,7 @@ using System;
 
 namespace PCMS_Lipa_General_Tool.HelperClass
 {
-	public class Error
+	public class Notification
 	{
 		readonly WinDiscordAPI dc = new();
 		public void LogError(string processName, string empName, string module, string ID, Exception ex)
@@ -31,6 +31,22 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 				empName,
 				Global.DCErrorWebHook,
 				Global.DCErrorInvite);
+		}
+		
+		public void NotifyTask(string empName, string taskName, string taskID, string taskStatus, string descripiton, string reportedby)
+		{
+			string message = $@"
+			{taskName} has been {taskStatus}.
+			Task ID: {taskID}
+			Description: {descripiton}
+			Reported by: {reportedby}";
+			dc.PublishtoDiscord(
+				Global.TaskNameSender,
+				string.Empty,
+				message,
+				empName,
+				Global.DCTaskWebHook,
+				Global.DCTaskInvite);
 		}
 	}
 }

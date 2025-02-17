@@ -25,9 +25,9 @@ namespace PCMS_Lipa_General_Tool.Class
 		readonly SecurityEncryption sec = new();
 		readonly emailSender mailSender = new();
 		readonly ActivtiyLogs log = new();
-		readonly Error error = new();
+		readonly Notification notif = new();
 		
-		private string email;
+		//private string email;
 		public string EmpName;
 
 
@@ -44,7 +44,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBID", empName, "User", "N/A", ex);
+				notif.LogError("GetDBID", empName, "User", "N/A", ex);
 			}
 			////db.GetSequenceNo("textbox", "UserInfoSeq", txtIntID.Text, null, "PCMS-0");
 		}
@@ -112,7 +112,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			catch (Exception ex)
 			{
 				// Handle exceptions appropriately
-				error.LogError("FillAdminUserProfile", empName, "User", txtIntID, ex);
+				notif.LogError("FillAdminUserProfile", empName, "User", txtIntID, ex);
 			}
 		}
 
@@ -172,7 +172,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("FillUserProfile", empName, "User", txtIntID, ex);           //task.ExecutedbCollBackupCsv(empName);
+		//		notif.LogError("FillUserProfile", empName, "User", txtIntID, ex);           //task.ExecutedbCollBackupCsv(empName);
 		//	}
 		//}
 		//
@@ -209,17 +209,17 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	{
 		//		using var con = new SqlConnection(_dbConnection);
 		//		using var cmd = new SqlCommand(@"
-        //    SELECT 
-        //        [Employee ID], [EMPLOYEE NAME], [RDWEB USERNAME], [RDWEB PASSWORD],
-        //        [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [EMAIL PASSWORD],
-        //        [BROADVOICE NO.], [Broadvoice Username], [Broadvoice Password],
-        //        [PC Assigned], [PC USERNAME], [PC PASSWORD], TEAM, REMARKS,
-        //        [DATE OF BIRTH], [Employment Status], [FIRST TIME LOGIN],
-        //        [Discord Username], [Discord Password]
-        //    FROM 
-        //        [User Information]
-        //    WHERE 
-        //        [Employee ID] = @EmployeeID", con);
+		//    SELECT 
+		//        [Employee ID], [EMPLOYEE NAME], [RDWEB USERNAME], [RDWEB PASSWORD],
+		//        [LYTEC USERNAME], [LYTEC PASSWORD], [EMAIL ADDRESS], [EMAIL PASSWORD],
+		//        [BROADVOICE NO.], [Broadvoice Username], [Broadvoice Password],
+		//        [PC Assigned], [PC USERNAME], [PC PASSWORD], TEAM, REMARKS,
+		//        [DATE OF BIRTH], [Employment Status], [FIRST TIME LOGIN],
+		//        [Discord Username], [Discord Password]
+		//    FROM 
+		//        [User Information]
+		//    WHERE 
+		//        [Employee ID] = @EmployeeID", con);
 		//
 		//		cmd.Parameters.AddWithValue("@EmployeeID", EmpID);
 		//
@@ -249,7 +249,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("FillAdminUserProfile", empName, "User", EmpID, ex);
+		//		notif.LogError("FillAdminUserProfile", empName, "User", EmpID, ex);
 		//	}
 		//}
 
@@ -323,11 +323,11 @@ namespace PCMS_Lipa_General_Tool.Class
 		//}
 		//catch (Exception ex)
 		//{
-		//	error.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
+		//	notif.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
 		//}
 		//catch (Exception ex)
 		//{
-		//	error.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
+		//	notif.LogError("FillAdminUserProfile", empName, "User", txtIDNumber.Text, ex);
 		//}
 
 
@@ -409,7 +409,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("FillAdminUserProfile", empName, "User", null, ex);
+		//		notif.LogError("FillAdminUserProfile", empName, "User", null, ex);
 		//		//task.ExecutedbCollBackupCsv(empName);
 		//	}
 		//	finally
@@ -544,7 +544,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//	catch (Exception ex)
 		//	{
 		//		//MessageBox.Show("Error connecting Database \n \n" + ex + "\n \n" + "Inform the Programmer/Author/Developer \n Erwin Alcantara (Skype: aerwin0629; Email: Erwin@pcmsbilling.net", Global.ProgName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-		//		error.LogError("FillUpUserTxtBox", empName, "User", null, ex);
+		//		notif.LogError("FillUpUserTxtBox", empName, "User", null, ex);
 		//	}
 		//	finally
 		//	{
@@ -604,72 +604,146 @@ namespace PCMS_Lipa_General_Tool.Class
 		//
 
 		public DataTable GetSearch(
-			string itemToSearch,
-			string statusColumn,
-			out string searchCount, string empName)
+	string itemToSearch,
+	string statusColumn,
+	out string searchCount,
+	string empName,
+	string window)
 		{
 			DataTable resultTable = new();
+			searchCount = "No records found";
 
 			using SqlConnection conn = new(_dbConnection);
 			try
 			{
 				conn.Open();
 
-				// Define the base query
-				string query = $@"
-      SELECT 
-	  [Employee ID]
-      ,[Employee Name]
-      ,[Username]
-      ,[Department]
-      ,[Position]
-      ,[RDWeb Username]
-      ,[Lytec Username]
-      ,[Email Address]
-      ,[Broadvoice No.]
-      ,[PC Assigned]
-      ,[PC Username]
-      ,[Team]
-      ,[Status]
-      ,[Employment Status]
-      ,[Date of Birth]
-      ,[Office]
-      ,[First Time Login]
-      ,[Discord Username]
-      ,[Remarks] FROM [User Information]
-WHERE USERNAME LIKE @itemToSearch";
+				// Base Query
+				string query = (window == "EmpInfo")
+					? @"SELECT [EMPLOYEE ID], [EMPLOYEE NAME], [EMAIL ADDRESS], 
+                      [BROADVOICE NO.], [DEPARTMENT], POSITION, OFFICE, STATUS, REMARKS 
+               FROM [User Information] WHERE 1=1"
+					: @"SELECT * FROM [User Information] WHERE 1=1";
 
-				// Add the STATUS filter only if statusColumn is not "All"
-				if (statusColumn != "All")
+				// Search by name or username if `itemToSearch` is not null or empty
+				if (!string.IsNullOrEmpty(itemToSearch))
 				{
-					query += " AND STATUS LIKE @statusSearch";
+					query += " AND (USERNAME LIKE @itemToSearch OR [EMPLOYEE NAME] LIKE @itemToSearch)";
+				}
+
+				// Apply status filter only if it's not "All"
+				if (!string.IsNullOrEmpty(statusColumn) && statusColumn != "All")
+				{
+					query += " AND STATUS = @statusSearch";
 				}
 
 				using SqlCommand cmd = new(query, conn);
-				cmd.Parameters.AddWithValue("@itemToSearch", $"%{itemToSearch}%");
 
-				// Add the @statusSearch parameter only if statusColumn is not "All"
-				if (statusColumn != "All")
+				// Add parameters only when necessary
+				if (!string.IsNullOrEmpty(itemToSearch))
 				{
-					cmd.Parameters.AddWithValue("@statusSearch", $"%{statusColumn}%");
+					cmd.Parameters.AddWithValue("@itemToSearch", $"%{itemToSearch}%");
+				}
+
+				if (!string.IsNullOrEmpty(statusColumn) && statusColumn != "All")
+				{
+					cmd.Parameters.AddWithValue("@statusSearch", statusColumn);
 				}
 
 				using SqlDataAdapter adapter = new(cmd);
 				adapter.Fill(resultTable);
 
-				// Calculate the search count
-				searchCount = $"Total records: {resultTable.Rows.Count}";
+				// Set search count message
+				searchCount = resultTable.Rows.Count > 0
+					? $"Total records: {resultTable.Rows.Count}"
+					: "No records found";
+			}
+			catch (SqlException sqlEx)
+			{
+				notif.LogError("GetSearch", empName, "Database", "SQL Error", sqlEx);
+				searchCount = "Database error occurred while fetching records.";
 			}
 			catch (Exception ex)
 			{
-				// Log the error and provide feedback
-				error.LogError("GetSearch", empName, "User", "N/A", ex);
-				searchCount = "Error occurred while fetching records.";
+				notif.LogError("GetSearch", empName, "Application", "General Error", ex);
+				searchCount = "Unexpected error occurred.";
 			}
 
 			return resultTable;
 		}
 
+
+		//		public DataTable GetSearch(
+		//			string itemToSearch,
+		//			string statusColumn,
+		//			out string searchCount, string empName, string window)
+		//		{
+		//			DataTable resultTable = new();
+		//
+		//			using SqlConnection conn = new(_dbConnection);
+		//			try
+		//			{
+		//				conn.Open();
+		//				string query = window == "EmpInfo"
+		//	? "SELECT [EMPLOYEE ID], [EMPLOYEE NAME], [EMAIL ADDRESS], [BROADVOICE NO.], [DEPARTMENT], POSITION, OFFICE, STATUS, REMARKS FROM [User Information] WHERE USERNAME LIKE @itemToSearch OR [EMPLOYEE NAME] LIKE @itemToSearch"
+		//	: "SELECT * FROM [User Information] WHERE USERNAME LIKE @itemToSearch OR [EMPLOYEE NAME] LIKE @itemToSearch";
+		//
+		//
+		////				// Define the base query
+		////				string query = $@"
+		////      SELECT 
+		////	  [Employee ID]
+		////      ,[Employee Name]
+		////      ,[Username]
+		////      ,[Department]
+		////      ,[Position]
+		////      ,[RDWeb Username]
+		////      ,[Lytec Username]
+		////      ,[Email Address]
+		////      ,[Broadvoice No.]
+		////      ,[PC Assigned]
+		////      ,[PC Username]
+		////      ,[Team]
+		////      ,[Status]
+		////      ,[Employment Status]
+		////      ,[Date of Birth]
+		////      ,[Office]
+		////      ,[First Time Login]
+		////      ,[Discord Username]
+		////      ,[Remarks] FROM [User Information]
+		////WHERE USERNAME LIKE @itemToSearch";
+		//
+		//				// Add the STATUS filter only if statusColumn is not "All"
+		//				if (statusColumn != "All")
+		//				{
+		//					query += " AND STATUS LIKE @statusSearch";
+		//				}
+		//
+		//				using SqlCommand cmd = new(query, conn);
+		//				cmd.Parameters.AddWithValue("@itemToSearch", $"%{itemToSearch}%");
+		//
+		//				// Add the @statusSearch parameter only if statusColumn is not "All"
+		//				if (statusColumn != "All")
+		//				{
+		//					cmd.Parameters.AddWithValue("@statusSearch", $"%{statusColumn}%");
+		//				}
+		//
+		//				using SqlDataAdapter adapter = new(cmd);
+		//				adapter.Fill(resultTable);
+		//
+		//				// Calculate the search count
+		//				searchCount = $"Total records: {resultTable.Rows.Count}";
+		//			}
+		//			catch (Exception ex)
+		//			{
+		//				// Log the error and provide feedback
+		//				notif.LogError("GetSearch", empName, "User", "N/A", ex);
+		//				searchCount = "Error occurred while fetching records.";
+		//			}
+		//
+		//			return resultTable;
+		//		}
+		//
 		public string CheckIfExistinDB(string username, string modLoc, string request)
 		{
 			using SqlConnection conn = new(_dbConnection);
@@ -701,12 +775,12 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 			catch (SqlException sqlEx)
 			{
-				error.LogError("CheckIfExistinDB", "N/A", "CommonTask", "SQL Exception", sqlEx);
+				notif.LogError("CheckIfExistinDB", "N/A", "CommonTask", "SQL Exception", sqlEx);
 				return "A database error occurred. Please try again later.";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("CheckIfExistinDB", "N/A", "CommonTask", "General Exception", ex);
+				notif.LogError("CheckIfExistinDB", "N/A", "CommonTask", "General Exception", ex);
 				return "An unexpected error occurred. Please contact support.";
 			}
 			finally
@@ -736,7 +810,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
+				notif.LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
 			}
 			return email;
 		}
@@ -757,7 +831,7 @@ WHERE USERNAME LIKE @itemToSearch";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
+		//		notif.LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
 		//	}
 		//	finally
 		//	{
@@ -796,13 +870,13 @@ WHERE USERNAME LIKE @itemToSearch";
 		//	}
 		//	catch (SqlException sqlEx)
 		//	{
-		//		error.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", sqlEx);
+		//		notif.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", sqlEx);
 		//		message = $"SQL Error: {sqlEx.Message}";
 		//		return false;
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", ex);
+		//		notif.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", ex);
 		//		message = $"An error occurred: {ex.Message}";
 		//		return false;
 		//	}
@@ -826,7 +900,7 @@ WHERE USERNAME LIKE @itemToSearch";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", ex);
+		//		notif.LogError("UpdateFirstLoginInfo", empName, "CommonTask", "N/A", ex);
 		//		message = $"Failed to Update FirstLoginInfo";
 		//		return false;
 		//	}
@@ -892,7 +966,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("UpdateUserPassword", empName, "User", "N/A", ex);
+				notif.LogError("UpdateUserPassword", empName, "User", "N/A", ex);
 				message = "An error occurred while updating the user password.";
 				status = "Error";
 				return false;
@@ -1189,7 +1263,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
+				notif.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
 			}
 			return items;
 		}
@@ -1213,7 +1287,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
+				notif.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
 			}
 			return items;
 		}
@@ -1369,7 +1443,7 @@ WHERE USERNAME LIKE @itemToSearch";
 //			}
 //			catch (Exception ex)
 //			{
-//				error.LogError("MoreEmployeeDatabase", authorName, "User", empID, ex);
+//				notif.LogError("MoreEmployeeDatabase", authorName, "User", empID, ex);
 //				message = $"Failed to update {empID}, Please try again later";
 //				return false;
 //				///MessageBox.Show($"{ex.Message} {empID}", "Failed to Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1545,7 +1619,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 			catch (Exception ex)
 			{
-				error.LogError($"EmployeeDatabase {request}", authorName, "User", empID, ex);
+				notif.LogError($"EmployeeDatabase {request}", authorName, "User", empID, ex);
 				message = $"Failed to {request.ToLower()} {empID}, Please try again later";
 				return false;
 				//MessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1660,7 +1734,7 @@ WHERE USERNAME LIKE @itemToSearch";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError($"EmployeeDatabase {request}", authorName, "User", newEmp, ex);
+		//		notif.LogError($"EmployeeDatabase {request}", authorName, "User", newEmp, ex);
 		//		message = $"Failed to {request.ToLower()} {empID}, Please try again later";
 		//		return false;
 		//		//MessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1770,7 +1844,7 @@ WHERE USERNAME LIKE @itemToSearch";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError($"EmployeeDatabase {request}", empName, "Adjuster", newEmp, ex);
+		//		notif.LogError($"EmployeeDatabase {request}", empName, "Adjuster", newEmp, ex);
 		//		RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//	}
 		//	finally
@@ -1829,7 +1903,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 			catch (Exception ex)
 			{
-				error.LogError(nameof(SendCredentialstoEmail), empName, "User", recipientEmail, ex);
+				notif.LogError(nameof(SendCredentialstoEmail), empName, "User", recipientEmail, ex);
 			}
 		}
 
@@ -1873,7 +1947,7 @@ WHERE USERNAME LIKE @itemToSearch";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError($"SendCredentialstoEmail", empName,"User", recipientEmail, ex);
+		//		notif.LogError($"SendCredentialstoEmail", empName,"User", recipientEmail, ex);
 		//		//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);/ ShowNotification($"Error sending email: {ex.Message}", NotificationType.Error);
 		//	}
 		//}
@@ -1951,7 +2025,7 @@ WHERE USERNAME LIKE @itemToSearch";
 		//	{
 		//		if (attempt == retryCount)
 		//		{
-		//			error.LogError("SendEmail", null, "User", recipient, ex);
+		//			notif.LogError("SendEmail", null, "User", recipient, ex);
 		//			return;
 		//		}
 		//
@@ -1999,7 +2073,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewEmployeeInformationUser", empName, "User", "N/A", ex);
+				notif.LogError("ViewEmployeeInformationUser", empName, "User", "N/A", ex);
 			}
 
 			return data;
@@ -2023,7 +2097,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("UpdateUserTheme", empName, "User", "N/A", ex);
+				notif.LogError("UpdateUserTheme", empName, "User", "N/A", ex);
 				message = $"Failed to update theme for {empName}, Please try again later";
 				//return false;
 			}
@@ -2330,7 +2404,7 @@ WHERE USERNAME LIKE @itemToSearch";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("MoreEmployeeDatabase", authorName, "User", empID, ex);
+		//		notif.LogError("MoreEmployeeDatabase", authorName, "User", empID, ex);
 		//		message = $"Failed to update {empID}, Please try again later";
 		//		return false;
 		//		///MessageBox.Show($"{ex.Message} {empID}", "Failed to Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -2400,7 +2474,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			catch (Exception ex)
 			{
 				// Log the error and provide feedback
-				error.LogError("GetAdminSearch", empName, "CommonTask", "N/A", ex);
+				notif.LogError("GetAdminSearch", empName, "CommonTask", "N/A", ex);
 				searchCount = "Error occurred while fetching records.";
 			}
 
@@ -2436,7 +2510,7 @@ OR [Remarks] LIKE @searchTerm";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("SearchData", empName, "Adjuster", null, ex);
+				notif.LogError("SearchData", empName, "Adjuster", null, ex);
 				searchCount = "An error occurred while fetching records.";
 			}
 
@@ -2510,7 +2584,7 @@ OR [Remarks] LIKE @searchTerm";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		error.LogError("MoreEmployeeDatabase", empName, "User", "N/A", ex);
+		//		notif.LogError("MoreEmployeeDatabase", empName, "User", "N/A", ex);
 		//		RadMessageBox.Show($@"{ex.Message} {txtempID.Text}", "Failed to Update", MessageBoxButtons.OK, RadMessageIcon.Error);
 		//	}
 		//	finally

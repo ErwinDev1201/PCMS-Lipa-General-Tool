@@ -11,7 +11,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	{
 		private readonly Provider provider = new();
 		private readonly User user = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly Database db = new();
 		private static readonly FEWinForm fe = new();
 
@@ -40,7 +40,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBListID", empName, "frmAssignProvider", "N/A", ex);
+				notif.LogError("GetDBListID", empName, "frmAssignProvider", "N/A", ex);
 			}
 
 			//db.GetSequenceNo("textbox", "PantryListSeq", txtIntID.Text, null, "PL-");
@@ -153,7 +153,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("PullDataFromTabletoTextBox", empName, "frmAssignProvider", "N/A", ex);
+				notif.LogError("PullDataFromTabletoTextBox", empName, "frmAssignProvider", "N/A", ex);
 			}
 		}
 

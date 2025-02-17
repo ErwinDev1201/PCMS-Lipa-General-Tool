@@ -1,14 +1,15 @@
 ﻿using PCMS_Lipa_General_Tool.HelperClass;
 using System;
-using System.Configuration;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-
-
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PCMS_Lipa_General_Tool.Class
 {
-	public class Diagnosis
+	public class ITTaskList
 	{
 		private readonly string _dbConnection = db.GetDbConnection();
 		private static readonly Notification notif = new();
@@ -19,7 +20,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		{
 			ID = string.Empty;
 
-			string nextSequence = db.GetSequenceNo("DiagSeq", "DX-");
+			string nextSequence = db.GetSequenceNo("ITTaskSeq", "IT-");
 
 			try
 			{
@@ -31,14 +32,14 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("GetDBID", empName, "Diagnosis", "N/A", ex);
+				notif.LogError("GetDBID", empName, "ITTaskList", "N/A", ex);
 			}
 			/////db.GetSequenceNo("textbox", "DiagSeq", txtIntID.Text, null, "DX-");
 		}
 
-		public DataTable ViewDxList(string empName, out string lblCount)
+		public DataTable ViewTaskList(string empName, out string lblCount)
 		{
-			var query = "SELECT * FROM [Diagnosis]";
+			var query = "SELECT * FROM [IT Task]";
 			var data = new DataTable();
 			lblCount = string.Empty;
 
@@ -55,7 +56,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("ViewDxList", empName, "Diagnosis", "N/A", ex);
+				notif.LogError("ViewTaskList", empName, "ITTaskList", "N/A", ex);
 			}
 
 			return data;
@@ -110,14 +111,18 @@ WHERE Diagnosis LIKE @searchItem";
 			return resultTable;
 		}
 
-		public bool DiagnosisDBRequest(
+		public bool TaskDBRequest(
 			string request,
-			string dxID,
-			string icd10,
-			string icd9,
-			string Diagnosis,
-			string BodyParts,
-			string remarks,
+			string taskID,
+			string category,
+			string priority,
+			string summary,
+			string description,
+			string assignedTo,
+			string status,
+			string reporter,
+			string createdDate,
+			string updatedDate,
 			string empName,
 			out string message)
 		{
@@ -134,47 +139,52 @@ WHERE Diagnosis LIKE @searchItem";
 
 				cmd.CommandText = request switch
 				{
-					"Update" => @"UPDATE [Diagnosis]
-								SET [ICD-10] = @ICD10, [ICD-9] = @ICD9, [Diagnosis] = @DIAGNOSIS,
-								[Body Parts] = @BODYPARTS, REMARKS = @REMARKS 
-								WHERE
-								[Diagnosis ID] = @DXID",
-					"Create" => @"INSERT INTO [Diagnosis]
-								([Diagnosis ID], [ICD-10], [ICD-9], [Diagnosis], [Body Parts], [Remarks])
-								VALUES ( @DXID, @ICD10, @ICD9, @DIAGNOSIS, @BODYPARTS, @REMARKS)",
-					"Delete" => @"DELETE FROM [Diagnosis] WHERE [Diagnosis ID] = @DXID",
+					"Update" => @"UPDATE [IT Task]
+								SET [Category] = @Category, [Priority] = @Priority,
+								[Summary] = @Summary, [Description] = @Description, [Assigned To] = @AssignedTo,
+`								[Status] = @Status, [Reporter] = @Reporter, [Created Date] = @CreatedDate, [Updated Date] = @UpdatedDate
+								WHERE [Task ID] = @TaskID",
+					"Create" => @"INSERT INTO [IT Task]
+								([Task ID], [Category], [Priority], [Summary], [Description], [Assigned To],
+								[Status], [Reporter], [Created Date], [Updated Date])
+								VALUES (@TaskID, @Category, @Priority, @Summary, @Description, @AssignedTo,
+								@Status, @Reporter, @CreatedDate, @UpdatedDate)",
+					"Delete" => @"DELETE FROM [IT Task] WHERE [Task ID] = @TaskID",
 					_ => throw new ArgumentException("Invalid request type."),
 				};
 
 				// Add parameters common to Patch and Create
 				if (request != "Delete")
 				{
-					//cmd.Parameters.AddWithValue("@DXID", dxID);
-					cmd.Parameters.AddWithValue("@ICD10", icd10);
-					cmd.Parameters.AddWithValue("@ICD9", icd9);
-					cmd.Parameters.AddWithValue("@DIAGNOSIS", Diagnosis);
-					cmd.Parameters.AddWithValue("@BODYPARTS", BodyParts);
-					cmd.Parameters.AddWithValue("@REMARKS", remarks);
+					cmd.Parameters.AddWithValue("@Category", category);
+					cmd.Parameters.AddWithValue("@Priority", priority);
+					cmd.Parameters.AddWithValue("@Summary", summary);
+					cmd.Parameters.AddWithValue("@Description", description);
+					cmd.Parameters.AddWithValue("@AssignedTo", assignedTo);
+					cmd.Parameters.AddWithValue("@Status", status);
+					cmd.Parameters.AddWithValue("@Reporter", reporter);
+					cmd.Parameters.AddWithValue("@CreatedDate", createdDate);
+					cmd.Parameters.AddWithValue("@UpdatedDate", updatedDate);
 				}
 
 				// Common parameter for all requests
-				cmd.Parameters.AddWithValue("@DXID", dxID);
+				cmd.Parameters.AddWithValue("@TaskID", taskID);
 
 				// Execute query
 				cmd.ExecuteNonQuery();
 
 				// Log activity
-				logs = $"{empName} {request.ToLower()}d Diagnosis ID: {dxID}";
-				message = $"Done! {dxID} has been successfully {request.ToLower()}d.";
-				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} DIAGNOSIS INFORMATION");
+				logs = $"{empName} {request.ToLower()}d Diagnosis ID: {taskID}";
+				message = $"Done! {taskID} has been successfully {request.ToLower()}d.";
+				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} IT TASK INFORMATION");
 				///fe.SendToastNotifDesktop(message, "Success");
 				return true;
 
 			}
 			catch (Exception ex)
 			{
-				notif.LogError($"DiagnosisDBRequest - {request}", empName, "Diagnosis", dxID, ex);
-				message = $"Failed to {request.ToLower()} {dxID}, Please try again later";
+				notif.LogError($"DiagnosisDBRequest - {request}", empName, "Diagnosis", taskID, ex);
+				message = $"Failed to {request.ToLower()} {taskID}, Please try again later";
 				return false;
 				//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}

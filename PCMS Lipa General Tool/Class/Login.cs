@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using Telerik.WinControls;
 using PCMS_Lipa_General_Tool.HelperClass;
 using Telerik.WinControls.UI;
+using System.Collections.Generic;
+using System.Data;
 
 
 namespace PCMS_Lipa_General_Tool.Class
@@ -24,7 +26,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		private string userName;
 		private string Position;
 		private string Department;
-		private string UserStatus;
+		//private string UserStatus;
 		private string UserAccess;
 		private string officeLoc;
 		private string firstTime;
@@ -34,9 +36,10 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		readonly frmMainApp mainApp = new();
 		readonly frmDemoTool demoTool = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
+		private static readonly WinDiscordAPI dc = new();
 
 
 		// Resets login data to default values
@@ -88,7 +91,6 @@ namespace PCMS_Lipa_General_Tool.Class
 				else
 				{
 					HandleInvalidPassword(ref alertMessage, ref password, ref username, ref isLoginPanelEnabled);
-					//Console.WriteLine($"DEBUG: AlertMessage after failed login: {alertMessage}"); // Debugging line
 				}
 			}
 			catch (Exception ex)
@@ -114,70 +116,130 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 		private void ProcessLogin(
-			SqlDataReader readerSQL,
-			ref string username,
-			ref string password,
-			ref bool isLoginPanelEnabled,
-			ref string alertMessage)
+	SqlDataReader readerSQL,
+	ref string username,
+	ref string password,
+	ref bool isLoginPanelEnabled,
+	ref string alertMessage)
 		{
-			UserStatus = readerSQL.GetString(readerSQL.GetOrdinal("Status"));
-			if (UserStatus.Equals("INACTIVE", StringComparison.OrdinalIgnoreCase))
+			try
 			{
-				HandleInactiveUser(ref alertMessage, ref password, ref username, ref isLoginPanelEnabled);
-				return;
-			}
+				// Ensure readerSQL is valid
+				if (readerSQL == null || readerSQL.IsClosed)
+				{
+					alertMessage = "Database error: Unable to retrieve user data.";
+					return;
+				}
 
-			EmpName = readerSQL.GetString(readerSQL.GetOrdinal("Employee Name"));
-			userName = readerSQL.GetString(readerSQL.GetOrdinal("Username"));
-			email = readerSQL.GetString(readerSQL.GetOrdinal("Email Address"));
-			firstTime = readerSQL.GetString(readerSQL.GetOrdinal("First Time Login"));
+				// Read and validate user status
+				string userStatus = readerSQL.GetString(readerSQL.GetOrdinal("Status"));
+				if (userStatus.Equals("INACTIVE", StringComparison.OrdinalIgnoreCase))
+				{
+					HandleInactiveUser(ref alertMessage, ref password, ref username, ref isLoginPanelEnabled);
+					return;
+				}
 
-			if (firstTime.Equals("YES", StringComparison.OrdinalIgnoreCase))
-			{
-				PromptFirstTimePasswordChange(ref username, ref password, ref EmpName, ref isLoginPanelEnabled, ref alertMessage, email);
-			}
-			else
-			{
+				// Extract user details
+				EmpName = readerSQL.GetString(readerSQL.GetOrdinal("Employee Name"));
+				userName = readerSQL.GetString(readerSQL.GetOrdinal("Username"));
+				email = readerSQL.GetString(readerSQL.GetOrdinal("Email Address"));
+				firstTime = readerSQL.GetString(readerSQL.GetOrdinal("First Time Login"));
+
+				// First-time login check
+				if (firstTime.Equals("YES", StringComparison.OrdinalIgnoreCase))
+				{
+					PromptFirstTimePasswordChange(ref username, ref password, ref EmpName, ref isLoginPanelEnabled, ref alertMessage, email);
+					return;
+				}
+
+				// Load additional user details
 				Position = readerSQL.GetString(readerSQL.GetOrdinal("Position"));
 				UserAccess = readerSQL.GetString(readerSQL.GetOrdinal("User Access"));
 				Department = readerSQL.GetString(readerSQL.GetOrdinal("Department"));
 				officeLoc = readerSQL.GetString(readerSQL.GetOrdinal("Office"));
 				theme = readerSQL.GetString(readerSQL.GetOrdinal("Theme"));
 
-				ConfigureUserThemeIfMissing(readerSQL, username);
-				var logMessage = $"{EmpName} logged in PCMS General Tool\nTime Logged In: {DateTime.Now:G}\nUser Access: {UserAccess}\nPosition: {Position}\nLocation: {officeLoc}";
-				// Determine visibility and load the appropriate tool
-				// Replace with your actual DemoTool class
+				// Configure user theme if missing
+				if (string.IsNullOrWhiteSpace(theme))
+				{
+					ConfigureUserThemeIfMissing(readerSQL, username, ref alertMessage);
+				}
 
+				// Log user information
+				string logMessage = $"{EmpName} logged in PCMS General Tool\nTime Logged In: {DateTime.Now:G}\nUser Access: {UserAccess}\nPosition: {Position}\nLocation: {officeLoc}";
 				SetMainAppProperties(mainApp, readerSQL, logMessage);
+
+				// Determine visibility of mainApp or demoTool
 				bool showDemoTool = ConfigureVisibility(mainApp, demoTool, UserAccess, Department, Position, readerSQL);
 
+				// Display the correct form
 				if (showDemoTool)
 				{
-					demoTool.Text = $"{ProgName} ver. {ProgVer} ({EmpName})";
-					demoTool.Show();
+					ConfigureAndShowForm(demoTool, EmpName);
 				}
 				else
 				{
-					mainApp.Text = $"{ProgName} ver. {ProgVer} ({EmpName})";
-					mainApp.Show();
+					ConfigureAndShowForm(mainApp, EmpName);
 				}
+			}
+			catch (SqlException ex)
+			{
+				notif.LogError("ProcessLogin", EmpName, "Login", ex.Message, ex);
+				alertMessage = "Something went wrong";
+				fe.SendToastNotifDesktop(alertMessage, "Something went wrong");
+			}
+			catch (Exception ex)
+			{
+				notif.LogError("ProcessLogin", EmpName, "Login", ex.Message, ex);
+				alertMessage = "Something went wrong";
+				fe.SendToastNotifDesktop(alertMessage, "Something went wrong");
 			}
 		}
 
-		private void ConfigureUserThemeIfMissing(SqlDataReader readerSQL, string username)
+		// Helper method to configure and show form
+		private void ConfigureAndShowForm(Form form, string employeeName)
 		{
-			if (!readerSQL.IsDBNull(11)) return; // Skip if theme exists
-
-			const string query = "UPDATE [User Information] SET THEME = @theme WHERE USERNAME = @username";
-			using var conSQL = new SqlConnection(_dbConnection);
-			using var cmdTheme = new SqlCommand(query, conSQL);
-			conSQL.Open();
-
-			cmdTheme.Parameters.AddWithValue("@theme", "Crystal"); // Default theme
-			cmdTheme.Parameters.AddWithValue("@username", username);
-			cmdTheme.ExecuteNonQuery();
+			form.Text = $"{ProgName} ver. {ProgVer} ({employeeName})";
+			form.Show();
 		}
+
+		private void ConfigureUserThemeIfMissing(SqlDataReader readerSQL, string username, ref string alertmessaged)
+		{
+			try
+			{
+				// Check if the "Theme" column is NULL before updating
+				int themeOrdinal = readerSQL.GetOrdinal("Theme");
+				if (!readerSQL.IsDBNull(themeOrdinal))
+				{
+					return;
+				}
+
+				const string query = "UPDATE [User Information] SET THEME = @theme WHERE USERNAME = @username";
+
+				using var conSQL = new SqlConnection(_dbConnection);
+				using var cmdTheme = new SqlCommand(query, conSQL);
+				conSQL.Open();
+				cmdTheme.Parameters.Add("@theme", SqlDbType.VarChar, 50).Value = "Crystal"; // Default theme
+				cmdTheme.Parameters.Add("@username", SqlDbType.VarChar, 50).Value = username;
+
+				int rowsAffected = cmdTheme.ExecuteNonQuery();
+				//if (rowsAffected > 0)
+				//{
+				//	Console.WriteLine($"Theme set to default for user: {username}");
+				//}
+			}
+			catch (SqlException ex)
+			{
+				notif.LogError("ConfigureUserThemeIfMissing", EmpName, "Login", ex.Message, ex);
+				alertmessaged = "Something went wrong";
+			}
+			catch (Exception ex)
+			{
+				notif.LogError("ConfigureUserThemeIfMissing", EmpName, "Login", ex.Message, ex);
+				alertmessaged = "Something went wrong";
+			}
+		}
+
 
 		private void SetMainAppProperties(frmMainApp mainApp, SqlDataReader readerSQL, string logMessage)
 		{
@@ -198,50 +260,126 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private bool ConfigureVisibility(frmMainApp mainApp, frmDemoTool demoTool, string role, string department, string position, SqlDataReader readerSQL)
 		{
-			//mainApp.pgViewCollectorNotes.Visible = false;
+			HashSet<string> programmerRoles = ["Programmer_All Department_Programmer"];
+			HashSet<string> adminRoles =
+			[
+			"Administrator_All Department_Supervisor",
+			"Administrator_All Department_Operations Manager"
+		];
+			HashSet<string> managementRoles =
+			[
+			"Management_All Department_Supervisor",
+			"Management_All Department_Operations Manager"
+		];
+			HashSet<string> privateCollectorRoles =
+			[
+			"Power User_Private_Collector",
+			"User_Private_Collector"
+		];
+			HashSet<string> workersCollectorRoles =
+			[
+			"Power User_Workers Comp_Private_Collector",
+			"User_Workers Comp_Collector"
+		];
+			HashSet<string> backOfficeRoles =
+			[
+			"Power User_Private_Back Office",
+			"Power User_Worker Comp_Back Office",
+			"User_Private_Back Office",
+			"User_Workers Comp_Back Office"
+		];
+
 			string combineRole = $"{role}_{department}_{position}";
 
-			if (combineRole.Contains("Programmer_All Department_Programmer"))
+			if (programmerRoles.Contains(combineRole))
 			{
-				// Specific visibility settings for Programmer role can be added here
-				mainApp.pictureBox1.BringToFront();
-				return false; // Show MainApp by default for this role
+				mainApp.pictureBox1.Visible = true;
+				return false;
 			}
-			else if (combineRole.Contains("Administrator_All Department_Supervisor") || combineRole.Contains("Administrator_All Department_Operations Manager"))
+			else if (adminRoles.Contains(combineRole))
 			{
 				HideAdminControls(mainApp);
-				return false; // Show MainApp for Administrator roles
+				return false;
 			}
-			else if (combineRole.Contains("Management_All Department_Supervisor") || combineRole.Contains("Management_All Department_Operations Manager"))
+			else if (managementRoles.Contains(combineRole))
 			{
 				HideManagementControls(mainApp);
 				mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
-				return false; // Show MainApp for Management roles
+				return false;
 			}
-			else if (combineRole == "Power User_Private_Collector" || combineRole == "User_Private_Collector")
+			else if (privateCollectorRoles.Contains(combineRole))
 			{
 				HidePrivateCollectorControls(mainApp);
 				return false;
 			}
-			else if (combineRole == "Power User_Workers Comp_Private_Collector" || combineRole == "User_Workers Comp_Collector")
+			else if (workersCollectorRoles.Contains(combineRole))
 			{
 				HideWorkersCollectorControls(mainApp);
 				return false;
 			}
-			else if (combineRole == "Power User_Private_Back Office" || combineRole == "Power User_Worker Comp_Back Office" ||
-					 combineRole == "User_Private_Back Office" || combineRole == "User_Workers Comp_Back Office")
+			else if (backOfficeRoles.Contains(combineRole))
 			{
-				SetupBackOfficeUser(demoTool, readerSQL);
-				return true;
+				if (readerSQL != null && !readerSQL.IsClosed)
+				{
+					SetupBackOfficeUser(demoTool, readerSQL);
+					return true;
+				}
 			}
 			else
 			{
-				fe.SendToastNotifDesktop("Your role or access is not configured Properly, Please check with Erwin", "Error");
+				notif.LogError("ConfigureVisibility", EmpName, "Login", @$"Role not configured properly
+Name: {EmpName}
+Access: {role}
+Position: {position}
+Departmen: {department}", null);
+				//fe.SendToastNotifDesktop("Your role or access is not configured properly. Please check with Erwin.", "Error");
 				Application.Exit();
 			}
-
 			return false;
-		}
+			//mainApp.pgViewCollectorNotes.Visible = false;
+			//string combineRole = $"{role}_{department}_{position}";
+			//
+			//if (combineRole.Contains("Programmer_All Department_Programmer"))
+			//{
+			//	// Specific visibility settings for Programmer role can be added here
+			//	mainApp.pictureBox1.BringToFront();
+			//	return false; // Show MainApp by default for this role
+			//}
+			//else if (combineRole.Contains("Administrator_All Department_Supervisor") || combineRole.Contains("Administrator_All Department_Operations Manager"))
+			//{
+			//	HideAdminControls(mainApp);
+			//	return false; // Show MainApp for Administrator roles
+			//}
+			//else if (combineRole.Contains("Management_All Department_Supervisor") || combineRole.Contains("Management_All Department_Operations Manager"))
+			//{
+			//	HideManagementControls(mainApp);
+			//	mainApp.mnuManageProduct.Visibility = ElementVisibility.Collapsed;
+			//	return false; // Show MainApp for Management roles
+			//}
+			//else if (combineRole == "Power User_Private_Collector" || combineRole == "User_Private_Collector")
+			//{
+			//	HidePrivateCollectorControls(mainApp);
+			//	return false;
+			//}
+			//else if (combineRole == "Power User_Workers Comp_Private_Collector" || combineRole == "User_Workers Comp_Collector")
+			//{
+			//	HideWorkersCollectorControls(mainApp);
+			//	return false;
+			//}
+			//else if (combineRole == "Power User_Private_Back Office" || combineRole == "Power User_Worker Comp_Back Office" ||
+			//		 combineRole == "User_Private_Back Office" || combineRole == "User_Workers Comp_Back Office")
+			//{
+			//	SetupBackOfficeUser(demoTool, readerSQL);
+			//	return true;
+			//}
+			//else
+			//{
+			//	fe.SendToastNotifDesktop("Your role or access is not configured Properly, Please check with Erwin", "Error");
+			//	Application.Exit();
+			//}
+			//
+			//return false;
+		}	//
 
 		private void HideAdminControls(frmMainApp mainApp)
 		{
@@ -348,7 +486,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		private void LogAndNotifyError(Exception ex, string username, ref string alertMessage)
 		{
 			string errorMessage = $"Error processing login for {username}:\n{ex.Message}";
-			error.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
+			notif.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
 			alertMessage = "An error occurred, please check with Developer.";
 		}
 	}
@@ -510,7 +648,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//	private void LogAndNotifyError(Exception ex, string username, ref string alertMessage)
 	//	{
 	//		string errorMessage = $"Error processing login for {username}:\n{ex}";
-	//		error.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
+	//		notif.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
 	//		alertMessage = "An error occurred, please check with Developer.";
 	//	}
 	//}
@@ -693,7 +831,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//			}
 	//			catch (Exception ex)
 	//			{
-	//				error.LogError("ProcessLogin", EmpName, "Login", txtUsername.Text, ex);
+	//				notif.LogError("ProcessLogin", EmpName, "Login", txtUsername.Text, ex);
 	//				lblalert.Text = "Something went wrong, please contact the developer.";
 	//				loginPanel.Enabled = true;
 	//			}
@@ -750,7 +888,7 @@ namespace PCMS_Lipa_General_Tool.Class
 	//	private void LogAndNotifyError(Exception ex, string username, RadLabel lblalert)
 	//	{
 	//		string errorMessage = $"Error processing login for {username}:\n{ex}";
-	//		error.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
+	//		notif.LogError("LogAndNotifyError", EmpName, "Login", errorMessage, ex);
 	//		lblalert.Text = "An error occurred, please check with Developer.";
 	//	}
 	//

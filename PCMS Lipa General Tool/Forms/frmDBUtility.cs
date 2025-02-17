@@ -9,7 +9,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmDBUtility : Telerik.WinControls.UI.RadForm
 	{
 
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private readonly Database db = new();
 
@@ -42,7 +42,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			catch (Exception ex)
 			{
 
-				error.LogError("PopulateDatabaseTable", empName, "frmDBUtility", null, ex);
+				notif.LogError("PopulateDatabaseTable", empName, "frmDBUtility", null, ex);
 			}
 			
 		}

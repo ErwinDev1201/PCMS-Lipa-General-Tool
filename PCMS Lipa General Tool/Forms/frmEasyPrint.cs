@@ -12,7 +12,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	{
 		private const string frmTitle = "New Easy Print Denial";
 		private readonly EasyPrint easyPrint = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
 		public string EmpName;
@@ -101,7 +101,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgEasyPrint_MouseDoubleClick", EmpName, "frmEasyPrint", null, ex);
+				notif.LogError("dgEasyPrint_MouseDoubleClick", EmpName, "frmEasyPrint", null, ex);
 			}
 		}
 
@@ -127,7 +127,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmEasyprint", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmEasyprint", null, ex);
 			}
 		}
 	}

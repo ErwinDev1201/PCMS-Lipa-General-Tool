@@ -9,7 +9,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmModDiagnosis : Telerik.WinControls.UI.RadForm
 	{
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
 		private readonly Database db = new();
@@ -113,6 +113,31 @@ namespace PCMS_Lipa_General_Tool.Forms
 			ClearData();
 			Close();
 		}
+
+
+		// **Extracted common logic to avoid duplication**
+		private bool ProcessDiagnosisRequest(string operationType, out string message)
+		{
+			try
+			{
+				return dx.DiagnosisDBRequest(
+					operationType,
+					txtIntID.Text,
+					txtICD10.Text,
+					txtICD9.Text,
+					txtDiagnosis.Text,
+					txtBodyPart.Text,
+					txtRemarks.Text,
+					empName,
+					out message);
+			}
+			catch (Exception ex)
+			{
+				message = $"Database error: {ex.Message}";
+				return false;
+			}
+		}
+
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{

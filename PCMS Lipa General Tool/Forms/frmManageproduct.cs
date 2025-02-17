@@ -10,7 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmManageproduct : Telerik.WinControls.UI.RadForm
 	{
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
 		private readonly Database db = new();
@@ -132,7 +132,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetDBListID", empName, "frmManageProduct", "N/A", ex);
+				notif.LogError("GetDBListID", empName, "frmManageProduct", "N/A", ex);
 			}
 			///db.GetSequenceNo("textbox", "PantryProdSeq", txtIntID.Text, null, "PD -");
 		}
@@ -284,7 +284,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", empName, "frmAdjusterInfo", null, ex);
+				notif.LogError("txtSearch_TextChanged", empName, "frmAdjusterInfo", null, ex);
 			}
 			//task.SearchTwoColumnOneFieldText(dgPantryProduct, "[Pantry Product]", "[Product Name]", "[Remarks]", txtSearch, lblSearchCount, empName);
 

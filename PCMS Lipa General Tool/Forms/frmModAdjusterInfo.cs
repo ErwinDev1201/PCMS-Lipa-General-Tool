@@ -8,7 +8,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmModAdjusterInfo : Telerik.WinControls.UI.RadForm
 	{
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly FEWinForm fe = new();
 		private readonly Database db = new();
 		private readonly Adjuster adj = new();

@@ -21,7 +21,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private readonly string _personalreminderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\PersonalReminder.rtf";
 		private readonly Leave leave = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
 		private readonly User user = new();
@@ -201,7 +201,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ProcessInputText", EmpName,"frmDemoTool", null, ex);
+				notif.LogError("ProcessInputText", EmpName,"frmDemoTool", null, ex);
 			}
 		}
 

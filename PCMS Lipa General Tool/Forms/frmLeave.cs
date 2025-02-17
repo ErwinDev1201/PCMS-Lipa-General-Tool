@@ -11,7 +11,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	{
 		private readonly Leave leave = new();
 		private readonly User user = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
 		public string EmpName;
@@ -321,7 +321,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgLeave_DoubleClick", EmpName, "frmLeave", selectedLeaveID, ex);
+				notif.LogError("dgLeave_DoubleClick", EmpName, "frmLeave", selectedLeaveID, ex);
 			}
 
 

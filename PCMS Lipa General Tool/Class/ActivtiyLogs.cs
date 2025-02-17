@@ -13,7 +13,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		private readonly string _dbConnection = db.GetDbConnection();
 
 		readonly WinDiscordAPI dc = new();
-		readonly Error error = new();
+		readonly Notification notif = new();
 
 
 		public DataTable ViewActivityLogs(string empName, out string lblCount)
@@ -35,7 +35,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				error.LogError("ViewActivityLogs", empName, "ActivityLogs", "N/A", ex);
+				notif.LogError("ViewActivityLogs", empName, "ActivityLogs", "N/A", ex);
 			}
 
 			return data;
@@ -84,7 +84,7 @@ OR Message LIKE @itemToSearch";
 			catch (Exception ex)
 			{
 				// Log the error and provide feedback
-				error.LogError("GetSearch", empName, "CommonTask", "N/A", ex);
+				notif.LogError("GetSearch", empName, "CommonTask", "N/A", ex);
 				searchCount = "Error occurred while fetching records.";
 			}
 
@@ -109,7 +109,7 @@ OR Message LIKE @itemToSearch";
 			}
 			catch (Exception ex)
 			{
-				error.LogError("GetListofAction", empName, "ActivityLogs", "N/A", ex);
+				notif.LogError("GetListofAction", empName, "ActivityLogs", "N/A", ex);
 			}
 			return items;
 		}
@@ -121,7 +121,7 @@ OR Message LIKE @itemToSearch";
 			{
 				conn.Open();
 
-				string logdate = DateTime.Now.ToString("yyyyMMdd-HHmmss");
+				string logdate = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
 				using (SqlCommand cmd = new("INSERT INTO [Activity Logs] ([TIME STAMP], NAME, ACTION, MESSAGE, [DISCORD LOGS])" +
 					"VALUES (@TIMESTAMP, @EMPNAME, @ACTION, @MESSAGE, @DCLOGS)", conn))
 				{
@@ -137,7 +137,7 @@ OR Message LIKE @itemToSearch";
 			catch (Exception ex)
 			{
 
-				error.LogError("AddActivityLog", empName, "ActivtiyLogs", "N/A", ex);
+				notif.LogError("AddActivityLog", empName, "ActivtiyLogs", "N/A", ex);
 
 			}
 			finally

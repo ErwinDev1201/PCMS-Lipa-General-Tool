@@ -29,8 +29,8 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
-			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition2 = new Telerik.WinControls.UI.TableViewDefinition();
+			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition7 = new Telerik.WinControls.UI.TableViewDefinition();
+			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition8 = new Telerik.WinControls.UI.TableViewDefinition();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainApp));
 			this.mnuTool = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuPrivateCollectors = new Telerik.WinControls.UI.RadMenuItem();
@@ -74,6 +74,7 @@
 			this.mnuViewCollectorNotes = new Telerik.WinControls.UI.RadMenuItem();
 			this.radMenuSeparatorItem2 = new Telerik.WinControls.UI.RadMenuSeparatorItem();
 			this.mnuAIAssist = new Telerik.WinControls.UI.RadMenuItem();
+			this.mnuErwin = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuPantryStore = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuPantryList = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuManageProduct = new Telerik.WinControls.UI.RadMenuItem();
@@ -215,9 +216,10 @@
             this.mnuPersonaReminders,
             this.mnuViewCollectorNotes,
             this.radMenuSeparatorItem2,
-            this.mnuAIAssist});
+            this.mnuAIAssist,
+            this.mnuErwin});
 			this.mnuTool.Name = "mnuTool";
-			this.mnuTool.Text = "&Tools";
+			this.mnuTool.Text = "Tools";
 			// 
 			// mnuPrivateCollectors
 			// 
@@ -532,6 +534,12 @@
 			this.mnuAIAssist.Name = "mnuAIAssist";
 			this.mnuAIAssist.Text = "AI Assistant (Coming Soon)";
 			this.mnuAIAssist.Click += new System.EventHandler(this.mnuAIAssist_Click);
+			// 
+			// mnuErwin
+			// 
+			this.mnuErwin.Name = "mnuErwin";
+			this.mnuErwin.Text = "Assign Task to IT";
+			this.mnuErwin.Click += new System.EventHandler(this.mnuErwin_Click);
 			// 
 			// mnuPantryStore
 			// 
@@ -1012,7 +1020,7 @@
 			this.dgCurrentNotes.MasterTemplate.AllowEditRow = false;
 			this.dgCurrentNotes.MasterTemplate.AllowRowHeaderContextMenu = false;
 			this.dgCurrentNotes.MasterTemplate.AllowRowResize = false;
-			this.dgCurrentNotes.MasterTemplate.ViewDefinition = tableViewDefinition1;
+			this.dgCurrentNotes.MasterTemplate.ViewDefinition = tableViewDefinition7;
 			this.dgCurrentNotes.Name = "dgCurrentNotes";
 			this.dgCurrentNotes.Size = new System.Drawing.Size(1168, 582);
 			this.dgCurrentNotes.TabIndex = 0;
@@ -1228,7 +1236,7 @@
 			// 
 			this.dgallNotesView.MasterTemplate.AllowAddNewRow = false;
 			this.dgallNotesView.MasterTemplate.AllowCellContextMenu = false;
-			this.dgallNotesView.MasterTemplate.ViewDefinition = tableViewDefinition2;
+			this.dgallNotesView.MasterTemplate.ViewDefinition = tableViewDefinition8;
 			this.dgallNotesView.Name = "dgallNotesView";
 			this.dgallNotesView.Size = new System.Drawing.Size(905, 591);
 			this.dgallNotesView.TabIndex = 0;
@@ -1444,5 +1452,6 @@
 		private Telerik.WinControls.Themes.Office2010BlueTheme office2010BlueTheme1;
 		private Telerik.WinControls.Themes.DesertTheme desertTheme1;
 		private Telerik.WinControls.UI.RadMenuItem mnuAIAssist;
+		private Telerik.WinControls.UI.RadMenuItem mnuErwin;
 	}
 }

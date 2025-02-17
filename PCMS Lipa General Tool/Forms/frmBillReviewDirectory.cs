@@ -12,7 +12,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmBillReviewDirectory : Telerik.WinControls.UI.RadForm
 	{
 		private readonly BillReview bill = new();
-		private static readonly Error error = new();
+		private static readonly Notification notif = new();
 
 		//private readonly MailSender mailSender = new MailSender();						
 		public string accessLevel;
@@ -77,7 +77,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
+				notif.LogError("dgAdjusterInfo_DoubleClick", EmpName, "frmAdjusterInfo", null, ex);
 			}
 		}
 
@@ -131,7 +131,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("txtSearch_TextChanged", EmpName, "frmBillReviewDirectory", null, ex);
+				notif.LogError("txtSearch_TextChanged", EmpName, "frmBillReviewDirectory", null, ex);
 			}
 		}
 

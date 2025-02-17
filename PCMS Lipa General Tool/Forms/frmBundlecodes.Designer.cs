@@ -73,7 +73,7 @@
 			this.lblbundeCode.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblbundeCode.Location = new System.Drawing.Point(21, 536);
 			this.lblbundeCode.Name = "lblbundeCode";
-			this.lblbundeCode.Size = new System.Drawing.Size(66, 19);
+			this.lblbundeCode.Size = new System.Drawing.Size(67, 19);
 			this.lblbundeCode.TabIndex = 10;
 			this.lblbundeCode.Text = "radLabel3";
 			this.lblbundeCode.ThemeName = "Crystal";
@@ -92,9 +92,9 @@
 			// radLabel1
 			// 
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(21, 31);
+			this.radLabel1.Location = new System.Drawing.Point(19, 31);
 			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(84, 19);
+			this.radLabel1.Size = new System.Drawing.Size(85, 19);
 			this.radLabel1.TabIndex = 8;
 			this.radLabel1.Text = "Search here: ";
 			this.radLabel1.ThemeName = "Crystal";
@@ -104,7 +104,7 @@
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel2.Location = new System.Drawing.Point(19, 56);
 			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(796, 19);
+			this.radLabel2.Size = new System.Drawing.Size(802, 19);
 			this.radLabel2.TabIndex = 4;
 			this.radLabel2.Text = "NOTE:  USE OF MODIFIER 59 IS ALLOWED WHEN THE BUNDLED CPT CODES ARE PERFORMED IN " +
     "A DIFFERENT REGION THAN CMT.";
