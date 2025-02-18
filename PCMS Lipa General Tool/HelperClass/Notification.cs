@@ -33,12 +33,14 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 				Global.DCErrorInvite);
 		}
 		
-		public void NotifyTask(string empName, string taskName, string taskID, string taskStatus, string descripiton, string reportedby)
+		public void NotifyTask(string empName, string taskName, string taskID, string taskStatus, string descripiton, string reportedby, string assignedTo)
 		{
 			string message = $@"
-			{taskName} has been {taskStatus}.
 			Task ID: {taskID}
+			Task Name: {taskName}
 			Description: {descripiton}
+			Status: {taskStatus}
+			Assigned To: {assignedTo}
 			Reported by: {reportedby}";
 			dc.PublishtoDiscord(
 				Global.TaskNameSender,

@@ -161,7 +161,7 @@ namespace PCMS_Lipa_General_Tool
 
 				// Logging should happen only after successful execution
 				log.AddActivityLog(message, empName, $"Task {txtTaskID.Text} has been {operationType}ed.", operationType);
-				notif.NotifyTask(empName, txtSummary.Text, txtTaskID.Text, cmbStatus.Text, txtDescription.Text, cmbReporter.Text);
+				notif.NotifyTask(empName, txtSummary.Text, txtTaskID.Text, cmbStatus.Text, txtDescription.Text, cmbReporter.Text, cmbAssigne.Text);
 
 				return result;
 			}
