@@ -326,6 +326,12 @@
     <Compile Include="Forms\frmITTask.Designer.cs">
       <DependentUpon>frmITTask.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmUserInformation - Copy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmUserInformation - Copy.Designer.cs">
+      <DependentUpon>frmUserInformation - Copy.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmUserInformation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -602,6 +608,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmITTask.resx">
       <DependentUpon>frmITTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmUserInformation - Copy.resx">
+      <DependentUpon>frmUserInformation - Copy.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmUserInformation.resx">
       <DependentUpon>frmUserInformation.cs</DependentUpon>
