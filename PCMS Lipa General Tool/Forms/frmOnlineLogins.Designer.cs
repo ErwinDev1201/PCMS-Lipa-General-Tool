@@ -358,6 +358,7 @@
 			this.txtInsuranceName.Name = "txtInsuranceName";
 			this.txtInsuranceName.Size = new System.Drawing.Size(485, 22);
 			this.txtInsuranceName.TabIndex = 23;
+			this.txtInsuranceName.Text = "this a a test";
 			this.txtInsuranceName.ThemeName = "Crystal";
 			// 
 			// txtLoginID

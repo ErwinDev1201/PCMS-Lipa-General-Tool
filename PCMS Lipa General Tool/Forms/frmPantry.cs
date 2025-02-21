@@ -326,7 +326,7 @@ of
 				{
 					cmbEmployee.Text = EmpName;
 				}
-				dgPantryList.BestFitColumns(BestFitColumnMode.DisplayedCells);
+				dgPantryList.BestFitColumns(BestFitColumnMode.AllCells);
 				pantry.ViewPantryList(dgPantryList, "withFilter", lblsearchCount, EmpName, cmbEmployee.Text, dtpFrom.Value, dtpTo.Value);
 				SumPantryExpense();
 			}
