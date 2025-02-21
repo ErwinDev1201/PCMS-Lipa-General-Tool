@@ -135,7 +135,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmLeave_Load(object sender, EventArgs e)
 		{
-			dgLeave.BestFitColumns(BestFitColumnMode.AllCells);
+			dgLeave.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			//this.dgAdjusterInfo.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 			dgLeave.ReadOnly = true;
 			ShowLeaveList();

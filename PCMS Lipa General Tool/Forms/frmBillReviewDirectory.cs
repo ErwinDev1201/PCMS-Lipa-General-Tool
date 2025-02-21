@@ -48,16 +48,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgBillReview.SelectedRows[0];
 				var modBR = new frmModBillReviewInfo
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtPhoneNo = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtFax = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
-					txtURPhone = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtURFaxNo = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty },
-					txtBRPhoneNo = { Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty },
-					txtBRFaxNo = { Text = selectedRow.Cells[7].Value?.ToString() ?? string.Empty },
-					txtOnlineEmail = { Text = selectedRow.Cells[8].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[9].Value?.ToString() ?? string.Empty }
+					txtIntID = { Text = selectedRow.Cells["Reviewer ID"].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells["Insurance Name"].Value?.ToString() ?? string.Empty },
+					txtPhoneNo = { Text = selectedRow.Cells["Phone No."].Value?.ToString() ?? string.Empty },
+					txtFax = { Text = selectedRow.Cells["Fax No."].Value?.ToString() ?? string.Empty },
+					txtURPhone = { Text = selectedRow.Cells["UR Phone No."].Value?.ToString() ?? string.Empty },
+					txtURFaxNo = { Text = selectedRow.Cells["UR Fax No."].Value?.ToString() ?? string.Empty },
+					txtBRPhoneNo = { Text = selectedRow.Cells["BR Phone No."].Value?.ToString() ?? string.Empty },
+					txtBRFaxNo = { Text = selectedRow.Cells["BR Fax No."].Value?.ToString() ?? string.Empty },
+					txtOnlineEmail = { Text = selectedRow.Cells["Email"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty }
 				};
 
 				if (accessLevel != "User")

@@ -236,10 +236,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 				return;
 
 			var selectedRow = dgPantryProduct.SelectedRows[0];
-			txtIntID.Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty;
-			txtProductName.Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty;
-			txtPrice.Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty;
-			txtRemarks.Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
+			txtIntID.Text = selectedRow.Cells["Product ID"].Value?.ToString() ?? string.Empty;
+			txtProductName.Text = selectedRow.Cells["Product Name"].Value?.ToString() ?? string.Empty;
+			txtPrice.Text = selectedRow.Cells["Price"].Value?.ToString() ?? string.Empty;
+			txtRemarks.Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty;
 			DoubleClickEnable();
 		}
 

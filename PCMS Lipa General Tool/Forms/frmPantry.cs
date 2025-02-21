@@ -792,14 +792,14 @@ of
 				if (dgPantryList.SelectedRows.Count > 0)
 				{
 					var selectedRow = dgPantryList.SelectedRows[0];
-					txtIntID.Text = selectedRow.Cells[0].Value?.ToString();
-					cmbItemEmpList.Text = selectedRow.Cells[3].Value?.ToString();
-					cmbProductList.Text = selectedRow.Cells[4].Value?.ToString();
-					txtPrice.Text = selectedRow.Cells[6].Value?.ToString();
-					txtQuantity.Text = selectedRow.Cells[5].Value?.ToString();
-					txtTotalPrice.Text = selectedRow.Cells[7].Value?.ToString();
-					txtSummary.Text = selectedRow.Cells[8].Value?.ToString();
-					txtRemarks.Text = selectedRow.Cells[9].Value?.ToString();
+					txtIntID.Text = selectedRow.Cells["List ID"].Value?.ToString();
+					cmbItemEmpList.Text = selectedRow.Cells["Employee Name"].Value?.ToString();
+					cmbProductList.Text = selectedRow.Cells["Product"].Value?.ToString();
+					txtPrice.Text = selectedRow.Cells["Price"].Value?.ToString();
+					txtQuantity.Text = selectedRow.Cells["Quantity"].Value?.ToString();
+					txtTotalPrice.Text = selectedRow.Cells["Total Price"].Value?.ToString();
+					txtSummary.Text = selectedRow.Cells["Summary"].Value?.ToString();
+					txtRemarks.Text = selectedRow.Cells["Remarks"].Value?.ToString();
 				}
 			}
 			catch (Exception ex)

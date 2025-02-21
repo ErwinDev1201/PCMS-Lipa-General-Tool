@@ -62,13 +62,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				else
 				{
-					modMPN.txtIntID.Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty;
-					modMPN.txtInsuranceName.Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty;
-					modMPN.txtMPNName.Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty;
-					modMPN.txtMPNUserName.Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
-					modMPN.txtPassword.Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty;
-					modMPN.txtWebLink.Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty;
-					modMPN.txtRemarks.Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty;
+					modMPN.txtIntID.Text = selectedRow.Cells["MPN ID"].Value?.ToString() ?? string.Empty;
+					modMPN.txtInsuranceName.Text = selectedRow.Cells["Insurance Name"].Value?.ToString() ?? string.Empty;
+					modMPN.txtMPNName.Text = selectedRow.Cells["MPN"].Value?.ToString() ?? string.Empty;
+					modMPN.txtMPNUserName.Text = selectedRow.Cells["Username"].Value?.ToString() ?? string.Empty;
+					modMPN.txtPassword.Text = selectedRow.Cells["Password"].Value?.ToString() ?? string.Empty;
+					modMPN.txtWebLink.Text = selectedRow.Cells["Website"].Value?.ToString() ?? string.Empty;
+					modMPN.txtRemarks.Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty;
 
 					if (accessLevel != "User")
 					{

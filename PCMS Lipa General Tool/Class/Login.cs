@@ -102,10 +102,13 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private string GetDeveloperAccess(SqlConnection conSQL)
 		{
-			const string query = "SELECT DeveloperAccess FROM [User Information] WHERE Username = 'Erwin'";
+			const string query = "SELECT DeveloperAccess FROM [User Information] WHERE Username = @Username";
 			using var cmdSQL = new SqlCommand(query, conSQL);
+			cmdSQL.Parameters.AddWithValue("@Username", "Erwin"); // Parameterized query to prevent SQL Injection
+
 			using var reader = cmdSQL.ExecuteReader();
-			return reader.Read() ? reader.GetString(0) : string.Empty;
+			return reader.Read() ? reader.GetString(reader.GetOrdinal("DeveloperAccess")) : string.Empty;
+
 		}
 
 		private string GetLoginQuery(bool isDevAccess)
