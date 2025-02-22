@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Telerik.WinControls;
 using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
+using System.Data.SqlClient;
 
 namespace PCMS_Lipa_General_Tool
 {
@@ -140,10 +141,36 @@ namespace PCMS_Lipa_General_Tool
 
 		}
 
+		private void GetITList()
+		{
+			cmbAssigne.Items.Clear();
+			List<string> items = user.GetUserITList(empName);
+			cmbAssigne.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbAssigne.Items.Add(item);
+			}
+		}
+
 		private bool ProcessTaskRequest(string operationType, out string message)
 		{
 			try
 			{
+				// Determine Created and Updated Dates based on operationType
+				string createdDate = operationType.Equals("Create", StringComparison.OrdinalIgnoreCase)
+					? DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt")
+					: string.Empty;
+
+				string updatedDate = operationType.Equals("Update", StringComparison.OrdinalIgnoreCase)
+					? DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt")
+					: string.Empty;
+
+				// Ensure txtComment is only updated for 'Update' operation
+				string comment = operationType.Equals("Update", StringComparison.OrdinalIgnoreCase)
+					? txtComment.Text
+					: string.Empty;
+
+				// Execute Database Request
 				bool result = task.TaskDBRequest(
 					operationType,
 					txtTaskID.Text,
@@ -151,27 +178,41 @@ namespace PCMS_Lipa_General_Tool
 					cmbPriority.Text,
 					txtSummary.Text,
 					txtDescription.Text,
+					comment,  // Conditioned update for txtComment
 					cmbAssigne.Text,
 					cmbStatus.Text,
 					cmbReporter.Text,
-					DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt"), //12 hour format
-					DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt"),
+					createdDate,
+					updatedDate,
 					empName,
-					out message);
+					out message
+				);
 
-				// Logging should happen only after successful execution
-				log.AddActivityLog(message, empName, $"Task {txtTaskID.Text} has been {operationType}ed.", operationType);
-				notif.NotifyTask(empName, txtSummary.Text, txtTaskID.Text, cmbStatus.Text, txtDescription.Text, cmbReporter.Text, cmbAssigne.Text);
+				if (result)
+				{
+					// Logging activity after successful execution
+					log.AddActivityLog(message, empName, $"Task {txtTaskID.Text} has been {operationType}ed.", operationType);
+
+					// Sending notification
+					notif.NotifyTask(empName, txtSummary.Text, txtTaskID.Text, cmbStatus.Text, txtDescription.Text, cmbReporter.Text, cmbAssigne.Text);
+				}
 
 				return result;
 			}
+			catch (SqlException sqlEx)
+			{
+				notif.LogError("ProcessTaskRequest", empName, "frmModTask", "SQL_ERROR", sqlEx);
+				message = "A database error occurred while processing the task.";
+				return false;
+			}
 			catch (Exception ex)
 			{
-				notif.LogError("ProcessTaskRequest", empName, "frmModTask", "N/A", ex);
+				notif.LogError("ProcessTaskRequest", empName, "frmModTask", "GENERAL_ERROR", ex);
 				message = "Something went wrong while processing the task.";
 				return false;
 			}
 		}
+
 
 
 		private void btnDelete_Click(object sender, EventArgs e)
@@ -226,6 +267,11 @@ This will only close this window pop-up.",
 				return;
 			}
 			Close();
+		}
+
+		private void cmbAssigne_PopupOpening(object sender, CancelEventArgs e)
+		{
+			GetITList();
 		}
 	}
 

@@ -27,7 +27,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmAdjusterinformation_Load(object sender, EventArgs e)
 		{
-			dgInsuranceInfo.BestFitColumns(BestFitColumnMode.AllCells);
+			dgInsuranceInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			dgInsuranceInfo.ReadOnly = true;
 		}
 
@@ -38,7 +38,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ShowInsInfo()
 		{
-
+			dgInsuranceInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			var dataTable = insurance.ViewInsuraceList(EmpName, out string lblCount);
 
 			dgInsuranceInfo.DataSource = dataTable;
@@ -56,12 +56,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgInsuranceInfo.SelectedRows[0];
 				var modPrivIns = new frmModPrivateInfoIns
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtInsCode = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtInsuranceAddress = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
-					txtPayerID = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[8].Value?.ToString() ?? string.Empty }
+					txtIntID = { Text = selectedRow.Cells["Insurance ID"].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells["Insurance Name"].Value?.ToString() ?? string.Empty },
+					txtInsCode = { Text = selectedRow.Cells["Insurance Code"].Value?.ToString() ?? string.Empty },
+					txtInsuranceAddress = { Text = selectedRow.Cells["Address"].Value?.ToString() ?? string.Empty },
+					txtPayerID = { Text = selectedRow.Cells["Payer ID"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty }
 				};
 
 				if (accessLevel != "User")
@@ -112,6 +112,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			try
 			{
+				dgInsuranceInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);	
 				DataTable resultTable = insurance.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);

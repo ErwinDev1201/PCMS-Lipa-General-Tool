@@ -1,6 +1,7 @@
 ﻿
 using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool__WinForm_;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -54,7 +55,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			string password = txtPassword.Text;
 			bool isLoginPanelEnabled = true;
 			string alertMessage = string.Empty; // Initialize here to avoid the error
-
+			Hide();
 			var loginManager = new Login();
 			loginManager.UserLogin(ref username, ref password, ref isLoginPanelEnabled, ref alertMessage);
 			lblalert.Text = alertMessage;
@@ -66,9 +67,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			// Update login panel state
 			loginPanel.Enabled = isLoginPanelEnabled;
 
-			if (string.IsNullOrEmpty(alertMessage))
+			if (!string.IsNullOrEmpty(alertMessage))
 			{
-				Hide(); // Close the login form if successful
+				Show(); // Close the login form if successful
 			}
 
 		}

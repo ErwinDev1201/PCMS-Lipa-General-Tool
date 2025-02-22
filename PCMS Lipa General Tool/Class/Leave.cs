@@ -48,15 +48,12 @@ namespace PCMS_Lipa_General_Tool.Class
 				con.Open();
 				var query = "SELECT Position, [Employment Status] FROM [User Information] WHERE [Employee ID] = @empID";
 				using var cmd = new SqlCommand(query, con);
-
 				cmd.Parameters.AddWithValue("@empID", empID);
-
 				using var reader = cmd.ExecuteReader();
 				if (reader.Read())
 				{
-					//employeeName = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
-					position = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
-					empStat = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+					position = reader.IsDBNull(reader.GetOrdinal("Position")) ? string.Empty : reader.GetString(reader.GetOrdinal("Position"));
+					empStat = reader.IsDBNull(reader.GetOrdinal("Employment Status")) ? string.Empty : reader.GetString(reader.GetOrdinal("Employment Status"));
 				}
 			}
 			catch (Exception ex)
@@ -573,7 +570,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					dataGrid.DataSource = data.DefaultView;
 					lblcount.Text = $"Total records: {dataGrid.RowCount}";
 				}
-				dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+				dataGrid.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			}
 			catch (Exception ex)
 			{

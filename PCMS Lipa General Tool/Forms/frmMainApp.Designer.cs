@@ -29,8 +29,8 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition7 = new Telerik.WinControls.UI.TableViewDefinition();
-			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition8 = new Telerik.WinControls.UI.TableViewDefinition();
+			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
+			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition2 = new Telerik.WinControls.UI.TableViewDefinition();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainApp));
 			this.mnuTool = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuPrivateCollectors = new Telerik.WinControls.UI.RadMenuItem();
@@ -74,7 +74,6 @@
 			this.mnuViewCollectorNotes = new Telerik.WinControls.UI.RadMenuItem();
 			this.radMenuSeparatorItem2 = new Telerik.WinControls.UI.RadMenuSeparatorItem();
 			this.mnuAIAssist = new Telerik.WinControls.UI.RadMenuItem();
-			this.mnuErwin = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuPantryStore = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuPantryList = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuManageProduct = new Telerik.WinControls.UI.RadMenuItem();
@@ -96,6 +95,7 @@
 			this.mnuAbout = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuSuggestion = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuverHistory = new Telerik.WinControls.UI.RadMenuItem();
+			this.mnuITHelp = new Telerik.WinControls.UI.RadMenuItem();
 			this.radStatusStrip1 = new Telerik.WinControls.UI.RadStatusStrip();
 			this.radLabelElement1 = new Telerik.WinControls.UI.RadLabelElement();
 			this.statlblUsername = new Telerik.WinControls.UI.RadLabelElement();
@@ -123,7 +123,6 @@
 			this.mnuLogout = new Telerik.WinControls.UI.RadMenuItem();
 			this.radMenuSeparatorItem1 = new Telerik.WinControls.UI.RadMenuSeparatorItem();
 			this.mnuExit = new Telerik.WinControls.UI.RadMenuItem();
-			this.radMenu1 = new Telerik.WinControls.UI.RadMenu();
 			this.pgViewCollectorNotes = new Telerik.WinControls.UI.RadPageView();
 			this.pgCollectorStats = new Telerik.WinControls.UI.RadPageViewPage();
 			this.collectorPanel = new Telerik.WinControls.UI.RadPanel();
@@ -161,8 +160,8 @@
 			this.office2010BlueTheme1 = new Telerik.WinControls.Themes.Office2010BlueTheme();
 			this.desertTheme1 = new Telerik.WinControls.Themes.DesertTheme();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.radMenu1 = new Telerik.WinControls.UI.RadMenu();
 			((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radMenu1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pgViewCollectorNotes)).BeginInit();
 			this.pgViewCollectorNotes.SuspendLayout();
 			this.pgCollectorStats.SuspendLayout();
@@ -200,6 +199,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgallNotesView.MasterTemplate)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.radMenu1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// mnuTool
@@ -216,8 +216,7 @@
             this.mnuPersonaReminders,
             this.mnuViewCollectorNotes,
             this.radMenuSeparatorItem2,
-            this.mnuAIAssist,
-            this.mnuErwin});
+            this.mnuAIAssist});
 			this.mnuTool.Name = "mnuTool";
 			this.mnuTool.Text = "Tools";
 			// 
@@ -535,12 +534,6 @@
 			this.mnuAIAssist.Text = "AI Assistant (Coming Soon)";
 			this.mnuAIAssist.Click += new System.EventHandler(this.mnuAIAssist_Click);
 			// 
-			// mnuErwin
-			// 
-			this.mnuErwin.Name = "mnuErwin";
-			this.mnuErwin.Text = "Assign Task to IT";
-			this.mnuErwin.Click += new System.EventHandler(this.mnuErwin_Click);
-			// 
 			// mnuPantryStore
 			// 
 			this.mnuPantryStore.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -676,7 +669,8 @@
 			this.mnuHelp.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.mnuAbout,
             this.mnuSuggestion,
-            this.mnuverHistory});
+            this.mnuverHistory,
+            this.mnuITHelp});
 			this.mnuHelp.Name = "mnuHelp";
 			this.mnuHelp.Text = "&Help";
 			// 
@@ -700,6 +694,12 @@
 			this.mnuverHistory.Name = "mnuverHistory";
 			this.mnuverHistory.Text = "Version History";
 			this.mnuverHistory.Click += new System.EventHandler(this.mnuverHistory_Click);
+			// 
+			// mnuITHelp
+			// 
+			this.mnuITHelp.Name = "mnuITHelp";
+			this.mnuITHelp.Text = "IT Assistance Request";
+			this.mnuITHelp.Click += new System.EventHandler(this.mnuITHelp_Click);
 			// 
 			// radStatusStrip1
 			// 
@@ -894,23 +894,6 @@
 			this.mnuExit.Text = "E&xit";
 			this.mnuExit.Click += new System.EventHandler(this.mnuExit_Click);
 			// 
-			// radMenu1
-			// 
-			this.radMenu1.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.mnuFile,
-            this.mnuTool,
-            this.mnuPantryStore,
-            this.mnuLeave,
-            this.mnuUser,
-            this.mnuAdmin,
-            this.mnuThemes,
-            this.mnuHelp});
-			this.radMenu1.Location = new System.Drawing.Point(0, 0);
-			this.radMenu1.Name = "radMenu1";
-			this.radMenu1.Size = new System.Drawing.Size(1193, 34);
-			this.radMenu1.TabIndex = 1;
-			this.radMenu1.ThemeName = "Crystal";
-			// 
 			// pgViewCollectorNotes
 			// 
 			this.pgViewCollectorNotes.Controls.Add(this.pgCollectorStats);
@@ -1020,7 +1003,7 @@
 			this.dgCurrentNotes.MasterTemplate.AllowEditRow = false;
 			this.dgCurrentNotes.MasterTemplate.AllowRowHeaderContextMenu = false;
 			this.dgCurrentNotes.MasterTemplate.AllowRowResize = false;
-			this.dgCurrentNotes.MasterTemplate.ViewDefinition = tableViewDefinition7;
+			this.dgCurrentNotes.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgCurrentNotes.Name = "dgCurrentNotes";
 			this.dgCurrentNotes.Size = new System.Drawing.Size(1168, 582);
 			this.dgCurrentNotes.TabIndex = 0;
@@ -1236,7 +1219,7 @@
 			// 
 			this.dgallNotesView.MasterTemplate.AllowAddNewRow = false;
 			this.dgallNotesView.MasterTemplate.AllowCellContextMenu = false;
-			this.dgallNotesView.MasterTemplate.ViewDefinition = tableViewDefinition8;
+			this.dgallNotesView.MasterTemplate.ViewDefinition = tableViewDefinition2;
 			this.dgallNotesView.Name = "dgallNotesView";
 			this.dgallNotesView.Size = new System.Drawing.Size(905, 591);
 			this.dgallNotesView.TabIndex = 0;
@@ -1259,6 +1242,23 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1193, 754);
+			// 
+			// radMenu1
+			// 
+			this.radMenu1.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.mnuFile,
+            this.mnuTool,
+            this.mnuPantryStore,
+            this.mnuLeave,
+            this.mnuUser,
+            this.mnuAdmin,
+            this.mnuThemes,
+            this.mnuHelp});
+			this.radMenu1.Location = new System.Drawing.Point(0, 0);
+			this.radMenu1.Name = "radMenu1";
+			this.radMenu1.Size = new System.Drawing.Size(1193, 34);
+			this.radMenu1.TabIndex = 1;
+			this.radMenu1.ThemeName = "Crystal";
 			this.Controls.Add(this.radStatusStrip1);
 			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.radMenu1);
@@ -1273,7 +1273,6 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMainApp_FormClosing);
 			this.Load += new System.EventHandler(this.frmMainApp_Load);
 			((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radMenu1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pgViewCollectorNotes)).EndInit();
 			this.pgViewCollectorNotes.ResumeLayout(false);
 			this.pgCollectorStats.ResumeLayout(false);
@@ -1316,6 +1315,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgallNotesView.MasterTemplate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgallNotesView)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.radMenu1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -1408,7 +1408,6 @@
 		public Telerik.WinControls.UI.RadMenuItem mnuDevAccountAccess;
 		private Telerik.WinControls.UI.RadMenuSeparatorItem radMenuSeparatorItem2;
 		private Telerik.WinControls.UI.RadMenuItem mnuLeave;
-		private Telerik.WinControls.UI.RadMenu radMenu1;
 		private Telerik.WinControls.UI.RadMenuItem mnuFileLeave;
 		private Telerik.WinControls.UI.RadMenuItem mnuViewLeave;
 		private Telerik.WinControls.UI.RadMenuItem mnuBVAvailablity;
@@ -1452,6 +1451,7 @@
 		private Telerik.WinControls.Themes.Office2010BlueTheme office2010BlueTheme1;
 		private Telerik.WinControls.Themes.DesertTheme desertTheme1;
 		private Telerik.WinControls.UI.RadMenuItem mnuAIAssist;
-		private Telerik.WinControls.UI.RadMenuItem mnuErwin;
+		private Telerik.WinControls.UI.RadMenuItem mnuITHelp;
+		private Telerik.WinControls.UI.RadMenu radMenu1;
 	}
 }

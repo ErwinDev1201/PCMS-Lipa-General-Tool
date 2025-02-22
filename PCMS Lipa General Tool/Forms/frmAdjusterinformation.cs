@@ -26,9 +26,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ShowAdjInfo()
 		{
 			var dataTable = adj.ViewAdjusterList(EmpName, out string lblCount);
-
 			dgAdjusterInfo.DataSource = dataTable;
-
+			dgAdjusterInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			lblCountSearch.Text = lblCount;
 		}
 
@@ -44,15 +43,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgAdjusterInfo.SelectedRows[0];
 				var modAdj = new frmModAdjusterInfo
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtAdjusterName = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtphoneno = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
-					txtExtension = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtFax = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty },
-					txtEmailAdd = { Text = selectedRow.Cells[6].Value?.ToString() ?? string.Empty },
-					txtSupervisor = { Text = selectedRow.Cells[7].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[8].Value?.ToString() ?? string.Empty },
+					txtIntID = { Text = selectedRow.Cells["Adjuster ID"].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells["Insurance Name"].Value?.ToString() ?? string.Empty },
+					txtAdjusterName = { Text = selectedRow.Cells["Adjuster Name"].Value?.ToString() ?? string.Empty },
+					txtphoneno = { Text = selectedRow.Cells["Phone No."].Value?.ToString() ?? string.Empty },
+					txtExtension = { Text = selectedRow.Cells["Extension"].Value?.ToString() ?? string.Empty },
+					txtFax = { Text = selectedRow.Cells["Fax No."].Value?.ToString() ?? string.Empty },
+					txtEmailAdd = { Text = selectedRow.Cells["Email"].Value?.ToString() ?? string.Empty },
+					txtSupervisor = { Text = selectedRow.Cells["Supervisor"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty },
 					empName = EmpName
 				};
 
@@ -77,14 +76,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 		}
 
-		//No bugs found.
-
-		//private void txtSearch_TextChanged(object sender, EventArgs e)
-		//{
-		//	
-		//
-		//}
-
+		
 		private void btnNew_Click(object sender, EventArgs e)
 		{
 			var modifyAdjInfo = new frmModAdjusterInfo
@@ -105,7 +97,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmAdjusterinformation_Load(object sender, EventArgs e)
 		{
-			dgAdjusterInfo.BestFitColumns(BestFitColumnMode.AllCells);
+			dgAdjusterInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			//this.dgAdjusterInfo.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 			dgAdjusterInfo.ReadOnly = true;
 		}
@@ -125,8 +117,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				DataTable resultTable = adj.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);
-
 				dgAdjusterInfo.DataSource = resultTable;
+				dgAdjusterInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				lblCountSearch.Text = searchcount;
 
 			}

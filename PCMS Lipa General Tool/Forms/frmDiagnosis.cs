@@ -26,9 +26,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ShowMePTDxCodes()
 		{
 			var dataTable = dx.ViewDxList(EmpName, out string lblCount);
-
 			dgBillDiagnosis.DataSource = dataTable;
-
+			dgBillDiagnosis.BestFitColumns(BestFitColumnMode.DisplayedDataCells);	
 			lblSearchCount.Text = lblCount;
 
 		}
@@ -84,12 +83,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgBillDiagnosis.SelectedRows[0];
 				var modDx = new frmModDiagnosis
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtDiagnosis = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtICD10 = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtICD9 = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
-					txtBodyPart = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty }
+					txtIntID = { Text = selectedRow.Cells["Diagnosis ID"].Value?.ToString() ?? string.Empty },
+					txtDiagnosis = { Text = selectedRow.Cells["ICD-10"].Value?.ToString() ?? string.Empty },
+					txtICD10 = { Text = selectedRow.Cells["ICD-9"].Value?.ToString() ?? string.Empty },
+					txtICD9 = { Text = selectedRow.Cells["Diagnosis"].Value?.ToString() ?? string.Empty },
+					txtBodyPart = { Text = selectedRow.Cells["Body Parts"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty }
 				};
 
 				if (accessLevel != "User")
@@ -124,7 +123,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmBillDiagnosis_Load(object sender, EventArgs e)
 		{
-			dgBillDiagnosis.BestFitColumns(BestFitColumnMode.AllCells);
+			dgBillDiagnosis.BestFitColumns(BestFitColumnMode.DisplayedDataCells);
 			dgBillDiagnosis.ReadOnly = true;
 		}
 
@@ -144,8 +143,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				txtDiagnosis.Text,
 				txtBodyParts.Text,
 				out string searchcount, EmpName);
-
 				dgBillDiagnosis.DataSource = resultTable;
+				dgBillDiagnosis.BestFitColumns(BestFitColumnMode.DisplayedDataCells);
 				lblSearchCount.Text = searchcount;
 
 			}

@@ -55,6 +55,7 @@
 			this.mnuHelp = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuSendSuggestion = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuAbout = new Telerik.WinControls.UI.RadMenuItem();
+			this.mnuaskIT = new Telerik.WinControls.UI.RadMenuItem();
 			this.statbottom = new Telerik.WinControls.UI.RadStatusStrip();
 			this.radLabelElement1 = new Telerik.WinControls.UI.RadLabelElement();
 			this.statlblUsername = new Telerik.WinControls.UI.RadLabelElement();
@@ -283,7 +284,8 @@
 			this.mnuHelp.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.mnuHelp.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.mnuSendSuggestion,
-            this.mnuAbout});
+            this.mnuAbout,
+            this.mnuaskIT});
 			this.mnuHelp.Name = "mnuHelp";
 			this.mnuHelp.Text = "Help";
 			// 
@@ -298,6 +300,12 @@
 			this.mnuAbout.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.mnuAbout.Name = "mnuAbout";
 			this.mnuAbout.Text = "About";
+			// 
+			// mnuaskIT
+			// 
+			this.mnuaskIT.Name = "mnuaskIT";
+			this.mnuaskIT.Text = "IT Assistance Request";
+			this.mnuaskIT.Click += new System.EventHandler(this.mnuaskIT_Click);
 			// 
 			// statbottom
 			// 
@@ -431,7 +439,7 @@
 			this.rdoTitle.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.rdoTitle.Location = new System.Drawing.Point(5, 132);
 			this.rdoTitle.Name = "rdoTitle";
-			this.rdoTitle.Size = new System.Drawing.Size(86, 21);
+			this.rdoTitle.Size = new System.Drawing.Size(85, 21);
 			this.rdoTitle.TabIndex = 2;
 			this.rdoTitle.Text = "Title Case";
 			this.rdoTitle.ThemeName = "Crystal";
@@ -451,7 +459,7 @@
 			this.rdoUpper.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.rdoUpper.Location = new System.Drawing.Point(5, 60);
 			this.rdoUpper.Name = "rdoUpper";
-			this.rdoUpper.Size = new System.Drawing.Size(96, 21);
+			this.rdoUpper.Size = new System.Drawing.Size(94, 21);
 			this.rdoUpper.TabIndex = 0;
 			this.rdoUpper.Text = "Upper Case";
 			this.rdoUpper.ThemeName = "Crystal";
@@ -591,5 +599,6 @@
 		private Telerik.WinControls.UI.RadMenuItem mnuLeave;
 		private Telerik.WinControls.UI.RadMenuItem mnuFileLeave;
 		private Telerik.WinControls.UI.RadMenuItem mnuViewLeave;
+		private Telerik.WinControls.UI.RadMenuItem mnuaskIT;
 	}
 }

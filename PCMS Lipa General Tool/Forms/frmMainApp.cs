@@ -100,7 +100,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 				onlineLogins.btnDelete.Enabled = false;
 				onlineLogins.chkUpdateDiscord.Visible = false;
 			}
-			else
+			else if (accessLevel == "Administrator")
 			{
 				onlineLogins.chkUpdateDiscord.Visible = true;
 
@@ -1246,12 +1246,23 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		private void mnuErwin_Click(object sender, EventArgs e)
 		{
-			var dlgITask = new frmITTask()
+			
+		}
+
+		private void mnuITHelp_Click(object sender, EventArgs e)
+		{
+			var dlgITask = new frmITTask
 			{
-				empName = EmpName,
-				accessLevel = accessLevel,
+				_empName = EmpName,
+				_accessLevel = accessLevel,
 				Text = "Assign Task to IT"
 			};
+			//var dlgITask = new frmITTask()
+			//{
+			//	empName = EmpName,
+			//	accessLevel = accessLevel,
+			//	Text = "Assign Task to IT"
+			//};
 			dlgITask.ShowDialog();
 		}
 	}

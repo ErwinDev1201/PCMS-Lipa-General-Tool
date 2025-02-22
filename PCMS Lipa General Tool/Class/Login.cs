@@ -102,10 +102,13 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private string GetDeveloperAccess(SqlConnection conSQL)
 		{
-			const string query = "SELECT DeveloperAccess FROM [User Information] WHERE Username = 'Erwin'";
+			const string query = "SELECT DeveloperAccess FROM [User Information] WHERE Username = @Username";
 			using var cmdSQL = new SqlCommand(query, conSQL);
+			cmdSQL.Parameters.AddWithValue("@Username", "Erwin"); // Parameterized query to prevent SQL Injection
+
 			using var reader = cmdSQL.ExecuteReader();
-			return reader.Read() ? reader.GetString(0) : string.Empty;
+			return reader.Read() ? reader.GetString(reader.GetOrdinal("DeveloperAccess")) : string.Empty;
+
 		}
 
 		private string GetLoginQuery(bool isDevAccess)
@@ -260,11 +263,15 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private bool ConfigureVisibility(frmMainApp mainApp, frmDemoTool demoTool, string role, string department, string position, SqlDataReader readerSQL)
 		{
-			HashSet<string> programmerRoles = ["Programmer_All Department_Programmer"];
+			HashSet<string> programmerRoles =
+			[
+				"Programmer_All Department_Programmer",
+				"Programmer_IT_Programmer"];
 			HashSet<string> adminRoles =
 			[
 			"Administrator_All Department_Supervisor",
-			"Administrator_All Department_Operations Manager"
+			"Administrator_All Department_Operations Manager",
+			"Administrator_IT_Operations Manager"
 		];
 			HashSet<string> managementRoles =
 			[

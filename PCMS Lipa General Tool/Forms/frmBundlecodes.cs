@@ -26,9 +26,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ShowBundleCodes()
 		{
 			var dataTable = bundle.ViewBundleCodes(EmpName, out string lblCount);
-
 			dgBundleCode.DataSource = dataTable;
-
+			dgBundleCode.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			lblbundeCode.Text = lblCount;
 		}
 
@@ -47,14 +46,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgBundleCode.SelectedRows[0];
 				var modBundleCodes = new frmModBundleCodes
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtCPTCode = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtDescription = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtBundleCodes = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty },
+					txtIntID = { Text = selectedRow.Cells["Treatment ID"].Value?.ToString() ?? string.Empty },
+					txtCPTCode = { Text = selectedRow.Cells["CPT Code"].Value?.ToString() ?? string.Empty },
+					txtDescription = { Text = selectedRow.Cells["Description"].Value?.ToString() ?? string.Empty },
+					txtBundleCodes = { Text = selectedRow.Cells["Bundle Codes"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty },
 					empName = EmpName
 				};
-				bundleOptions = selectedRow.Cells[3].Value?.ToString() ?? string.Empty;
+				bundleOptions = selectedRow.Cells["Indicator"].Value?.ToString() ?? string.Empty;
 				if (bundleOptions == "Y")
 				{
 					modBundleCodes.rdoYes.IsChecked = true;
@@ -104,7 +103,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmBundlecodes_Load(object sender, EventArgs e)
 		{
-			dgBundleCode.BestFitColumns(BestFitColumnMode.AllCells);
+			dgBundleCode.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			dgBundleCode.ReadOnly = true;
 		}
 
@@ -123,8 +122,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				DataTable resultTable = bundle.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);
-
 				dgBundleCode.DataSource = resultTable;
+				dgBundleCode.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				lblbundeCode.Text = searchcount;
 
 			}

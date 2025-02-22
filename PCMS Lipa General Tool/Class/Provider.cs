@@ -162,7 +162,7 @@ namespace PCMS_Lipa_General_Tool.Class
 								[Physical Address], [Billing Address], [Remarks])
 								VALUES (@PROVIDERID, @PROVIDERNAME, @NPI, @PTAN, @TAXID, @RRPTAN, @PHYSICALADD, @BILLINGADD, @REMARKS)",
 					"Delete" => @"DELETE FROM [Provider Information]
-								WHERE [Provider ID] = @PROVIDERID.",
+								WHERE [Provider ID] = @PROVIDERID",
 					_ => throw new ArgumentException("Invalid request type."),
 				};
 

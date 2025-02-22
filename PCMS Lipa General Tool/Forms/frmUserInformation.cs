@@ -4,6 +4,7 @@ using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -20,6 +21,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	{
 		private readonly User user = new();
 		private static readonly FEWinForm fe = new();
+		private static readonly Notification error = new();
 		public string txtNoProv;
 		public string EmpName;
 		public string accessLevel;
@@ -29,12 +31,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public frmUserInformation()
 		{
 			InitializeComponent();
-			FillManagementName();
+			//FillManagementName();
 			_originalBackColor = GetThemeBackColor(txtWorkEmail);
 			//mainProcess.CreateDbId(txtEmpID, Sql, @"PCMS-");
 			txtEmpID.Enabled = false;
+			UIInitializattion();
 			//cmbThemeSelection.Enabled = false;
 
+
+		}
+
+		private void UIInitializattion()
+		{
 			// show the eye in password field
 			this.txtRDWebPassword.UseSystemPasswordChar = true;
 			this.txtLytecPassword.UseSystemPasswordChar = true;
@@ -90,6 +98,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnBVPass.CustomFont = font1.Name;
 			btnBVPass.CustomFontSize = 5;
 			btnBVPass.Text = "\ue052";
+
+			// show null helper
+			txtUsername.NullText = "Add Username here";
+			txtEmpName.NullText = "Add Employee Name here";
+			txtWorkEmailMain.NullText = "Add Work Email here";
 		}
 
 		private void BtnLyPass_Click(object sender, EventArgs e)
@@ -353,18 +366,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void DefaultItem(string action)
 		{
-			cmbUserStatus.Text = "Active";
-			cmbUserAccess.Items.Add("Administrator");
-			cmbUserAccess.Items.Add("Management");
-			cmbUserAccess.Items.Add("Power User");
-			cmbUserAccess.Items.Add("User");
-			cmbUserAccess.Items.Add("Programmer");
-			cmbUserAccess.SelectedIndex = 3;
-			lblResult.Visible = false;
 			if (action == "New")
 			{
 				btnUpdate.Text = "Save";
 				txtRDWebUsername.Text = @"hsn-pcms\";
+				cmbUserStatus.Text = "Active";
+				cmbUserAccess.Items.Add("Administrator");
+				cmbUserAccess.Items.Add("Management");
+				cmbUserAccess.Items.Add("Power User");
+				cmbUserAccess.Items.Add("User");
+				cmbUserAccess.Items.Add("Programmer");
+				cmbUserAccess.SelectedIndex = 3;
+				lblResult.Visible = false;
 			}
 			else
 			{
@@ -374,59 +387,86 @@ namespace PCMS_Lipa_General_Tool.Forms
 		}
 		private void cmbUserAccess_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
 		{
-			if (cmbUserAccess.SelectedItem == null)
+			LoadDropdownValues();
+		}
+
+		private void LoadDropdownValues()
+		{
+			try
 			{
-				cmbUserDept.Text = "";
-				cmbPosition.Text = "";
-				//RadMessageBox.Show("Department, Position and User Access are mandatory, Please don't leave them empty");
-			}
-			else
-			{
-				string userAccess = cmbUserAccess.SelectedItem.Text;
+				if (string.IsNullOrWhiteSpace(cmbUserAccess.Text))
+				{
+					RadMessageBox.Show("Please select user access first.", "Warning", MessageBoxButtons.OK, RadMessageIcon.Info);
+					cmbUserDept.Text = "";
+					cmbPosition.Text = "";
+					return;
+				}
+
+				// Preserve current selections before clearing
+				string selectedDepartment = cmbUserDept.SelectedItem?.Text ?? cmbUserDept.Text;
+				string selectedPosition = cmbPosition.SelectedItem?.Text ?? cmbPosition.Text;
+
+				string userAccess = cmbUserAccess.SelectedItem != null ? cmbUserAccess.SelectedItem.Text : cmbUserAccess.Text;
+
 				cmbUserDept.Items.Clear();
 				cmbPosition.Items.Clear();
 
 				switch (userAccess)
 				{
 					case "Administrator":
-						cmbUserDept.Items.Add("All Department");
-						cmbPosition.Items.Add("Operations Manager");
-						cmbPosition.Items.Add("Supervisor");
+						cmbUserDept.Items.AddRange(new[] { "All Department", "IT" });
+						cmbPosition.Items.AddRange(new[] { "IT Manager", "Operations Manager", "Supervisor" });
 						break;
 
 					case "Management":
 						cmbUserDept.Items.Add("All Department");
-						cmbPosition.Items.Add("Operations Manager");
-						cmbPosition.Items.Add("Supervisor");
+						cmbPosition.Items.AddRange(new[] { "Operations Manager", "Supervisor" });
 						break;
 
 					case "Power User":
-						cmbUserDept.Items.Add("Workers Comp");
-						cmbUserDept.Items.Add("Private");
-						cmbPosition.Items.Add("Collector");
-						cmbPosition.Items.Add("Back Office");
-						break;
-
 					case "User":
-						cmbUserDept.Items.Add("Workers Comp");
-						cmbUserDept.Items.Add("Private");
-						cmbPosition.Items.Add("Collector");
-						cmbPosition.Items.Add("Back Office");
+						cmbUserDept.Items.AddRange(new[] { "Workers Comp", "Private" });
+						cmbPosition.Items.AddRange(new[] { "Collector", "Back Office" });
 						break;
 
 					case "Programmer":
-						cmbUserDept.Items.Add("All Department");
+						cmbUserDept.Items.AddRange(new[] { "All Department", "IT" });
 						cmbPosition.Items.Add("Programmer");
 						break;
+
+					default:
+						RadMessageBox.Show("Invalid selection. Please choose a valid user access.", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+						return;
 				}
 
-				// Optionally, set a default selection for radDropDownList2
-				if (cmbUserDept.Items.Count > 0)
-					cmbUserDept.SelectedIndex = 0;
-				if (cmbPosition.Items.Count > 0)
-					cmbPosition.SelectedIndex = 0;
+				// Restore previous selections if they still exist
+				var matchedDepartment = cmbUserDept.Items.FirstOrDefault(item => item.Text == selectedDepartment);
+				if (matchedDepartment != null)
+				{
+					cmbUserDept.SelectedItem = matchedDepartment;
+				}
+				else
+				{
+					cmbUserDept.SelectedIndex = 0; // Select the first available option
+				}
+
+				var matchedPosition = cmbPosition.Items.FirstOrDefault(item => item.Text == selectedPosition);
+				if (matchedPosition != null)
+				{
+					cmbPosition.SelectedItem = matchedPosition;
+				}
+				else
+				{
+					cmbPosition.SelectedIndex = 0; // Select the first available option
+				}
+			}
+			catch (Exception ex)
+			{
+				error.LogError("LoadDropdownValues", EmpName, "frmUserInformation", null, ex);
 			}
 		}
+
+
 
 		private void txtUsername_TextChanged(object sender, EventArgs e)
 		{
@@ -508,7 +548,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void cmbPosition_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
 		{
-			if (cmbPosition.SelectedIndex == 0)
+			// Set the default management name based on the selected position
+			if (cmbPosition.Text == "Collector")
 			{
 				cmbManagement.Text = "Angeline Uy";
 			}
@@ -518,13 +559,134 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 		}
 
-		private void cmbManagement_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
+
+
+		private void cmbUserAccess_PopupOpening(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			List<string> items = user.GetManagementList(EmpName);
-			cmbManagement.Items.Clear(); // Clear existing items, if any
-			foreach (var item in items)
+			cmbUserAccess.Items.Add("Administrator");
+			cmbUserAccess.Items.Add("Management");
+			cmbUserAccess.Items.Add("Power User");
+			cmbUserAccess.Items.Add("User");
+			cmbUserAccess.Items.Add("Programmer");
+		}
+
+		private void cmbManagement_PopupOpening(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			cmbManagement.Items.Add("Angeline Uy");
+			cmbManagement.Items.Add("Edimson Escalona");
+		}
+
+		private void LoadDepartmentValues()
+		{
+			try
 			{
-				cmbManagement.Items.Add(item);
+				string userAccess = cmbUserAccess.SelectedItem != null ? cmbUserAccess.SelectedItem.Text : cmbUserAccess.Text;
+				if (string.IsNullOrEmpty(userAccess)) return;
+
+				string selectedDepartment = cmbUserDept.SelectedItem?.Text ?? cmbUserDept.Text;
+				cmbUserDept.Items.Clear();
+
+				switch (userAccess)
+				{
+					case "Administrator":
+						cmbUserDept.Items.AddRange(new[] { "All Department", "IT" });
+						break;
+					case "Management":
+						cmbUserDept.Items.Add("All Department");
+						break;
+					case "Power User":
+					case "User":
+						cmbUserDept.Items.AddRange(new[] { "Workers Comp", "Private" });
+						break;
+					case "Programmer":
+						cmbUserDept.Items.AddRange(new[] { "All Department", "IT" });
+						break;
+				}
+
+				// Restore selection
+				var matchedItem = cmbUserDept.Items.FirstOrDefault(item => item.Text == selectedDepartment);
+				if (matchedItem != null) cmbUserDept.SelectedItem = matchedItem;
+			}
+			catch (Exception ex)
+			{
+				error.LogError("LoadDepartmentValues", EmpName, "frmUserInformation", null, ex);
+			}
+		}
+
+		private void LoadPositionValues()
+		{
+			try
+			{
+				string userAccess = cmbUserAccess.SelectedItem != null ? cmbUserAccess.SelectedItem.Text : cmbUserAccess.Text;
+				if (string.IsNullOrEmpty(userAccess)) return;
+
+				string selectedPosition = cmbPosition.SelectedItem?.Text ?? cmbPosition.Text;
+				cmbPosition.Items.Clear();
+
+				switch (userAccess)
+				{
+					case "Administrator":
+						cmbPosition.Items.AddRange(new[] { "IT Manager", "Operations Manager", "Supervisor" });
+						break;
+					case "Management":
+						cmbPosition.Items.AddRange(new[] { "Operations Manager", "Supervisor" });
+						break;
+					case "Power User":
+					case "User":
+						cmbPosition.Items.AddRange(new[] { "Collector", "Back Office" });
+						break;
+					case "Programmer":
+						cmbPosition.Items.Add("Programmer");
+						break;
+				}
+
+				// Restore selection
+				var matchedItem = cmbPosition.Items.FirstOrDefault(item => item.Text == selectedPosition);
+				if (matchedItem != null) cmbPosition.SelectedItem = matchedItem;
+			}
+			catch (Exception ex)
+			{
+				error.LogError("LoadPositionValues", EmpName, "frmUserInformation", null, ex);
+			}
+		}
+
+
+		private void cmbUserDept_PopupOpening(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+
+			try
+			{
+				if (string.IsNullOrWhiteSpace(cmbUserAccess.Text))
+				{
+					RadMessageBox.Show("Please select user access first.", "Warning", MessageBoxButtons.OK, RadMessageIcon.Info);
+					e.Cancel = true; // Prevents opening the dropdown
+					return;
+				}
+
+				LoadDepartmentValues();
+			}
+			catch (Exception ex)
+			{
+				error.LogError("cmbUserDept_PopupOpening", EmpName, "frmUserInformation", null, ex);
+			}
+		}
+
+		private void cmbPosition_PopupOpening(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			try
+			{
+				if (string.IsNullOrWhiteSpace(cmbUserAccess.Text))
+				{
+					RadMessageBox.Show("Please select user access first.", "Warning", MessageBoxButtons.OK, RadMessageIcon.Info);
+					e.Cancel = true; // Prevents opening the dropdown
+					return;
+				}
+
+				LoadPositionValues();
+			}
+			catch (Exception ex)
+			{
+				error.LogError("cmbPosition_PopupOpening", EmpName, "frmUserInformation", null, ex);
 			}
 		}
 	}

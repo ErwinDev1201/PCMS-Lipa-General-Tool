@@ -82,7 +82,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmEmployeeInfo_Load(object sender, EventArgs e)
 		{
-			dgEmpInfo.BestFitColumns(BestFitColumnMode.AllCells);
+			dgEmpInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			//this.dgBillDiagnosis.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;			
 			//this.dgEmpInfo.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 			dgEmpInfo.ReadOnly = true;

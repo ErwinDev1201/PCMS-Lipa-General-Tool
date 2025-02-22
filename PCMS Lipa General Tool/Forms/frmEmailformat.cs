@@ -23,11 +23,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ViewEmailFormat()
 		{
-			dgEmail.BestFitColumns(BestFitColumnMode.AllCells);
+			dgEmail.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			var dataTable = emailDB.ViewEmailFormatList(EmpName, out string lblCount);
-
 			dgEmail.DataSource = dataTable;
-
 			lblSearchCount.Text = lblCount;
 		}
 
@@ -57,7 +55,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmAdjusterinformation_Load(object sender, EventArgs e)
 		{
-			dgEmail.BestFitColumns(BestFitColumnMode.AllCells);
+			dgEmail.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			//this.dgBillDiagnosis.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;			
 			//this.dgEmail.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 			dgEmail.ReadOnly = true;
@@ -73,10 +71,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgEmail.SelectedRows[0];
 				var modEmail = new frmModEmailformat
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtInsuranceName = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtEmailFormat = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty }
+					txtIntID = { Text = selectedRow.Cells["Format ID"].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells["Insurance"].Value?.ToString() ?? string.Empty },
+					txtEmailFormat = { Text = selectedRow.Cells["Email Format"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty }
 				};
 
 				if (accessLevel != "User")
@@ -112,10 +110,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			try
 			{
+				dgEmail.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				DataTable resultTable = emailDB.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);
-
 				dgEmail.DataSource = resultTable;
 				lblSearchCount.Text = searchcount;
 

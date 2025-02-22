@@ -29,9 +29,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ShowEpDenRes()
 		{
 			var dataTable = easyPrint.ViewEasyPrintList(EmpName, out string lblCount);
-
 			dgEasyPrint.DataSource = dataTable;
-
+			dgEasyPrint.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			lblCountResult.Text = lblCount;
 		}
 		//The code does not have any bugs.
@@ -61,7 +60,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmEasyPrint_Load(object sender, EventArgs e)
 		{
-			dgEasyPrint.BestFitColumns(BestFitColumnMode.AllCells);
+			dgEasyPrint.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			//this.dgEasyPrint.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 			dgEasyPrint.ReadOnly = true;
 		}
@@ -76,12 +75,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgEasyPrint.SelectedRows[0];
 				var modEP = new frmModEasyPrintDenial
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtEPCode = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtInsuranceName = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtDenialDescrption = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
-					txtPossibleSolution = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty }
+					txtIntID = { Text = selectedRow.Cells["EP ID"].Value?.ToString() ?? string.Empty },
+					txtEPCode = { Text = selectedRow.Cells["Easy Print Code"].Value?.ToString() ?? string.Empty },
+					txtInsuranceName = { Text = selectedRow.Cells["Insurance"].Value?.ToString() ?? string.Empty },
+					txtDenialDescrption = { Text = selectedRow.Cells["Description"].Value?.ToString() ?? string.Empty },
+					txtPossibleSolution = { Text = selectedRow.Cells["Possible Resolution"].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty }
 				};
 
 				if (accessLevel != "User")
@@ -117,10 +116,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			try
 			{
+				dgEasyPrint.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				DataTable resultTable = easyPrint.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);
-
 				dgEasyPrint.DataSource = resultTable;
 				lblCountResult.Text = searchcount;
 

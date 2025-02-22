@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.ModelBinding;
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -15,6 +16,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
+
 
 		public void GetDBID(out string ID, string empName)
 		{
@@ -37,79 +39,119 @@ namespace PCMS_Lipa_General_Tool.Class
 			/////db.GetSequenceNo("textbox", "DiagSeq", txtIntID.Text, null, "DX-");
 		}
 
-		public DataTable ViewTaskList(string empName, out string lblCount)
+		public DataTable ViewTaskList(string empName, out string lblCount, string accessLevel, string taskStatus)
 		{
-			var query = "SELECT * FROM [IT Task]";
+			string query = string.Empty; // Initialize query to avoid "use of unassigned local variable" error
 			var data = new DataTable();
 			lblCount = string.Empty;
 
 			try
 			{
 				using var con = new SqlConnection(_dbConnection);
-				using var adp = new SqlDataAdapter(query, con);
+				using var cmd = new SqlCommand();
+				cmd.Connection = con;
 
-				// Fill the DataTable with data from the query
+				// Allow only "Administrator" and "Programmer" to see all tasks
+				if (accessLevel == "Administrator" || accessLevel == "Programmer")
+				{
+					query = "SELECT * FROM [IT Task] WHERE [STATUS] = @Status";
+					cmd.Parameters.AddWithValue("@Status", taskStatus);
+				}
+				else
+				{
+					query = "SELECT * FROM [IT Task] WHERE [Reporter] = @empName AND [STATUS] = @Status";
+					cmd.Parameters.AddWithValue("@empName", empName);
+					cmd.Parameters.AddWithValue("@Status", taskStatus);
+				}
+
+				cmd.CommandText = query;
+
+				using var adp = new SqlDataAdapter(cmd);
 				adp.Fill(data);
 
-				// Calculate the record count
+				// Format record count
 				lblCount = $"Total records: {data.Rows.Count}";
+			}
+			catch (SqlException sqlEx)
+			{
+				notif.LogError("SQL Error in ViewTaskList", empName, "ITTaskList", query ?? "Query Unavailable", sqlEx);
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("ViewTaskList", empName, "ITTaskList", "N/A", ex);
+				notif.LogError("General Error in ViewTaskList", empName, "ITTaskList", "N/A", ex);
 			}
 
 			return data;
 		}
 
-		public DataTable SearchData(
-			string searchItem,
-			string bodyParts,
-			out string searchCount, string empName)
+
+		public DataTable GetSearch(
+	string itemToSearch,
+	string statusColumn,
+	out string searchCount,
+	string empName, string accessLevel)
 		{
 			DataTable resultTable = new();
+			searchCount = "No records found";
 
 			using SqlConnection conn = new(_dbConnection);
 			try
 			{
 				conn.Open();
+				using SqlCommand cmd = new SqlCommand();
+				cmd.Connection = conn;
 
-				// Define the base query
-				string query = $@"
-SELECT *
-FROM [Diagnosis]
-WHERE Diagnosis LIKE @searchItem";
+				// Base Query
+				string query = "SELECT * FROM [IT Task]";
 
-				// Add the STATUS filter only if statusColumn is not "All"
-				if (bodyParts != "All")
+				List<string> conditions = new();
+				if (accessLevel != "Administrator" && accessLevel != "Programmer")
 				{
-					query += " AND [Body Parts] LIKE @bodyParts";
+					conditions.Add("[Assigned To] = @empName");
+					cmd.Parameters.Add("@empName", SqlDbType.NVarChar).Value = empName;
 				}
 
-				using SqlCommand cmd = new(query, conn);
-				cmd.Parameters.AddWithValue("@bodyParts", $"%{bodyParts}%");
-
-				// Add the @statusSearch parameter only if statusColumn is not "All"
-				if (bodyParts == "")
+				if (!string.IsNullOrEmpty(itemToSearch))
 				{
-					cmd.Parameters.AddWithValue("@searchItem", $"%{searchItem}%");
+					conditions.Add("(Description LIKE @itemToSearch OR [Summary] LIKE @itemToSearch)");
+					cmd.Parameters.Add("@itemToSearch", SqlDbType.NVarChar).Value = $"%{itemToSearch}%";
 				}
+
+				if (!string.IsNullOrEmpty(statusColumn) && statusColumn != "All")
+				{
+					conditions.Add("STATUS = @statusSearch");
+					cmd.Parameters.Add("@statusSearch", SqlDbType.NVarChar).Value = statusColumn;
+				}
+
+				if (conditions.Count > 0)
+				{
+					query += " WHERE " + string.Join(" AND ", conditions);
+				}
+
+				cmd.CommandText = query;
 
 				using SqlDataAdapter adapter = new(cmd);
 				adapter.Fill(resultTable);
 
-				// Calculate the search count
-				searchCount = $"Total records: {resultTable.Rows.Count}";
+				// Set search count message
+				searchCount = resultTable.Rows.Count > 0
+					? $"Total records: {resultTable.Rows.Count}"
+					: "No records found";
+			}
+			catch (SqlException sqlEx)
+			{
+				notif.LogError("GetSearch", empName, "Database", "SQL Error", sqlEx);
+				searchCount = "Database error occurred while fetching records.";
 			}
 			catch (Exception ex)
 			{
-				// Log the error and provide feedback
-				notif.LogError("SearchEmpTwoColumnOneFieldText", empName, "CommonTask", "N/A", ex);
-				searchCount = "Error occurred while fetching records.";
+				notif.LogError("GetSearch", empName, "Application", "General Error", ex);
+				searchCount = "Unexpected error occurred.";
 			}
 
 			return resultTable;
 		}
+
 
 		public bool TaskDBRequest(
 			string request,
@@ -118,6 +160,7 @@ WHERE Diagnosis LIKE @searchItem";
 			string priority,
 			string summary,
 			string description,
+			string commment,
 			string assignedTo,
 			string status,
 			string reporter,
@@ -141,7 +184,7 @@ WHERE Diagnosis LIKE @searchItem";
 				{
 					"Update" => @"UPDATE [IT Task]
 								SET [Category] = @Category, [Priority] = @Priority,
-								[Summary] = @Summary, [Description] = @Description, [Assigned To] = @AssignedTo,
+								[Summary] = @Summary, [Description] = @Description, [Comment] = @Comment, [Assigned To] = @AssignedTo,
 `								[Status] = @Status, [Reporter] = @Reporter, [Created Date] = @CreatedDate, [Updated Date] = @UpdatedDate
 								WHERE [Task ID] = @TaskID",
 					"Create" => @"INSERT INTO [IT Task]
@@ -157,6 +200,7 @@ WHERE Diagnosis LIKE @searchItem";
 				if (request != "Delete")
 				{
 					cmd.Parameters.AddWithValue("@Category", category);
+					cmd.Parameters.AddWithValue("@Comment", commment);
 					cmd.Parameters.AddWithValue("@Priority", priority);
 					cmd.Parameters.AddWithValue("@Summary", summary);
 					cmd.Parameters.AddWithValue("@Description", description);
