@@ -313,12 +313,12 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Log activity
 				dcmessage = $@"Hi, I just {request.ToLower()}d the a online access for {insName}. Here are the details you might want to check:
 
-                Insurance Name: {insName}
-                Website Link: {webLink}
-                Username: {userName}
-                Password: {passWord}
-                Account Owner: {owner}
-                Remarks: {remarks}";
+        Insurance Name: {insName}
+        Website Link: {webLink}
+        Username: {userName}
+        Password: {passWord}
+        Account Owner: {owner}
+        Remarks: {remarks}";
 
 				logs = $"{empName} {request.ToLower()}d OnlineLogin ID: {insID}";
 				message = $"Done! {insID} has been successfully {request.ToLower()}d.";

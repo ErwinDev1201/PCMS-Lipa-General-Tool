@@ -23,7 +23,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ViewEmailFormat()
 		{
-			dgEmail.BestFitColumns(BestFitColumnMode.AllCells);
+			dgEmail.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			var dataTable = emailDB.ViewEmailFormatList(EmpName, out string lblCount);
 			dgEmail.DataSource = dataTable;
 			lblSearchCount.Text = lblCount;
@@ -110,10 +110,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			try
 			{
+				dgEmail.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				DataTable resultTable = emailDB.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);
-
 				dgEmail.DataSource = resultTable;
 				lblSearchCount.Text = searchcount;
 

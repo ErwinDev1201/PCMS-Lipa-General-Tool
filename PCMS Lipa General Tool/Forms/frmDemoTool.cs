@@ -499,5 +499,22 @@ namespace PCMS_Lipa_General_Tool.Forms
 			leave.ShowDialog();
 			leave.ShowLeaveList();
 		}
+
+		private void mnuaskIT_Click(object sender, EventArgs e)
+		{
+			var dlgITask = new frmITTask
+			{
+				_empName = EmpName,
+				_accessLevel = accessLevel,
+				Text = "Assign Task to IT"
+			};
+			//var dlgITask = new frmITTask()
+			//{
+			//	empName = EmpName,
+			//	accessLevel = accessLevel,
+			//	Text = "Assign Task to IT"
+			//};
+			dlgITask.ShowDialog();
+		}
 	}
 }

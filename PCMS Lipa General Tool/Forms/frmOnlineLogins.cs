@@ -18,7 +18,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();
-		private readonly Database db = new();
 		private readonly OnlineLogins onlineLogin = new();
 
 		//private readonly MailSender mailSender = new MailSender();		
@@ -63,6 +62,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void UserAccessDefault()
 		{
+			dgOnlineLogins.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			chkUpdateDiscord.Visible = false;
 			if (accessLevel == "Programmer")
 			{
@@ -208,6 +208,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtPassword.Clear();
 			txtRemarks.Clear();
 			txtaccntOwner.Clear();
+			//txtSearchOnlineLogins.Clear();
 			//chkShowPassword.IsChecked = false;
 		}
 
@@ -219,6 +220,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtUsername.Clear();
 			txtPassword.Clear();
 			txtRemarks.Clear();
+			txtSearchOnlineLogins.Clear();
 			//txtSearchLogins.Clear();
 			//txtSearchLogins.Focus();
 			txtaccntOwner.Clear();
@@ -472,13 +474,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 				if (officeLoc == "LIPA" && cmbBrowser.Text != "Local Browser")
 				{
 					DialogResult result = RadMessageBox.Show(
-						"Website provided is intended for RDWeb Browser and will not work in Local Browser. " +
-						"\nLink is already copied and redy to paste to browser." +
-						"\nDo you want to open Microsoft Edge in Remote?",
-						"Confirmation",
-						MessageBoxButtons.YesNo,
-						RadMessageIcon.Question
-						);
+	"The provided website is designed for RD Web Browser and may not function correctly in a local browser." +
+	"\nThe link has been copied and is ready to be pasted into RD Web Browser." +
+	"\nWould you like to open Microsoft Edge in Remote Desktop?",
+	"Confirmation",
+	MessageBoxButtons.YesNo,
+	RadMessageIcon.Question);
+
 					if (result == DialogResult.Yes)
 					{
 						Clipboard.SetText(txtWebLink.Text);
@@ -517,47 +519,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-			bool isSuccess = onlineLogin.OnlineLoginDB(
-				"Delete",
-				txtLoginID.Text,
-				txtInsuranceName.Text,
-				txtWebLink.Text,
-				txtUsername.Text,
-				txtPassword.Text,
-				txtRemarks.Text,
-				txtaccntOwner.Text,
-				cmbBrowser.Text,
-				chkUpdateDiscord.Checked,
-				empName,
-				out string message);
-			fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
-			//if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
-			//{
-			//	bool isSuccess = onlineLogin.OnlineLoginDB(
-			//			"Delete",
-			//			txtLoginID.Text,
-			//			txtInsuranceName.Text,
-			//			txtWebLink.Text,
-			//			txtUsername.Text,
-			//			txtPassword.Text,
-			//			txtRemarks.Text,
-			//			txtaccntOwner.Text,
-			//			cmbBrowser.Text,
-			//			chkUpdateDiscord.Checked,
-			//			empName,
-			//			out string message);
-			//	if (isSuccess)
-			//	{
-			//		fe.SendToastNotifDesktop(message, "Success");
-			//	}
-			//	else
-			//	{
-			//		fe.SendToastNotifDesktop(message, "Failed");
-			//	};
-			//	ShowDataUserAccess();
-			//	UserAccessDefault();
-			//	Clear();
-			//}
+			if (RadMessageBox.Show(
+						"Would you like to go ahead and delete this record?",
+						"Confirmation",
+						MessageBoxButtons.YesNo,
+						RadMessageIcon.Question
+					) == DialogResult.Yes)
+			{
+				ProcessDatabaseOperation("Delete");
+			}
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)
@@ -566,25 +536,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 			Clear();
 		}
 
-		//private void txtSearchLogins_TextChanged(object sender, EventArgs e)
-		//{
-		//	ClearforSearchFunc();
-		//	try
-		//	{
-		//		//chkShowPassword.IsChecked = false;
-		//		//var query = "SELECT DAID, INSURANCE, [WEB LINK], BROWSER, USERNAME, [ACCOUNT OWNER], REMARKS FROM [ONLINE LOGINS] WHERE INSURANCE LIKE '%" + txtSearchLogins.Text + "%' OR [WEB LINK] LIKE '%" + txtSearchLogins.Text + "%' OR USERNAME LIKE '%" +
-		//		//	txtSearchLogins.Text + "%' OR REMARKS LIKE '%" +
-		//		//txtSearchLogins.Text + "%'";
-		//		//mainProcess.SearchDatagrid(dgOnlineLogins, query);
-		//		//mainProcess.SearchTwoColumnOneFieldText(dgOnlineLogins, "[ONLINE LOGINS]", "[Insurance Name]", "[Remarks]", txtSearchLogins, lblCount, empName);
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		//mailSender.SendEmail(ex.Message +"\n\n Name: " + lblName.Content + "\n Module: DemoOnlineLogins \n Process: txtSearchOL_TextChanged \n\n Detailed Error: " + ex.ToString());
-		//		var ErrorMessage = ex.Message + "\n\n Name: " + empName + "\n Module: DemoOnlineLogins \n Process: txtSearchOL_TextChanged \n\n Detailed Error: " + ex.ToString();
-		//		winDiscordAPI.PublishtoDiscord(Global.errorNameSender, "", ErrorMessage, "", Global.DCErrorWebHook, Global.DCErrorInvite);
-		//	}
-		//}
 
 		private void dgOnlineLogins_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
@@ -592,35 +543,16 @@ namespace PCMS_Lipa_General_Tool.Forms
 		}   
 
 
-
-
-
-
-
 		private void dgOnlineLogins_KeyUp(object sender, KeyEventArgs e)
 		{
 			//DisplayOnlineLoginsInfoInControls();
 		}
 
-		//private void chkShowPassword_CheckStateChanged(object sender, EventArgs e)
-		//{
-		//	if (chkShowPassword.Checked)
-		//	{
-		//		txtPassword.UseSystemPasswordChar = false;
-		//	}
-		//	else
-		//	{
-		//		txtPassword.UseSystemPasswordChar = true;
-		//	}
-		//}
-
 		private void frmOnlineLogins_Load(object sender, EventArgs e)
 		{
-			//this.dgOnlineLogins.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 			this.dgOnlineLogins.BestFitColumns(BestFitColumnMode.DisplayedCells);
-			//AdjustLastColumnSize();
-			//this.dgOnlineLogins.SizeChanged += dgOnlineLogins_SizeChanged;
-
+			dgOnlineLogins.ReadOnly = true;
+	
 		}
 
 		private void dgOnlineLogins_SizeChanged(object sender, EventArgs e)
@@ -636,10 +568,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 			var calculatedLastColWidth = this.dgOnlineLogins.Width - totalColumnsWidth -
 				this.dgOnlineLogins.TableElement.RowHeaderColumnWidth - this.dgOnlineLogins.TableElement.VScrollBar.Size.Width;
-			//if (calculatedLastColWidth > 0)
-			//{
-			//	this.dgOnlineLogins.Columns.Last().Width = calculatedLastColWidth - 5;
-			//}
 		}  //
 
 		private void lblCount_KeyDown(object sender, KeyEventArgs e)
@@ -668,7 +596,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				DataTable resultTable = onlineLogin.SearchData(
 				txtSearchOnlineLogins.Text,
 				out string searchcount, empName);
-
+				dgOnlineLogins.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				dgOnlineLogins.DataSource = resultTable;
 				lblSearchCount.Text = searchcount;
 				dgOnlineLogins.Enabled = true;
@@ -678,11 +606,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				notif.LogError("txtSearch_TextChanged", empName, "frmAdjusterInfo", null, ex);
 			}
-			//if (txtSearchOnlineLogins.TextLength > 0)
-			//{
-			//	task.SearchTwoColumnOneFieldText(dgOnlineLogins, "[ONLINE LOGINS]", "[Insurance Name]", "[Remarks]", txtSearchOnlineLogins, lblSearchCount, empName);
-			//	dgOnlineLogins.Enabled = true;
-			//}
 		}
 
 		private void btnSaveUpdate_Click(object sender, EventArgs e)
@@ -749,36 +672,5 @@ namespace PCMS_Lipa_General_Tool.Forms
 			UserAccessDefault();
 			txtInsuranceName.Focus();
 		}
-
-		//private void dgOnlineLogins_CellDoubleClick(object sender, GridViewCellEventArgs e)
-		//{
-		//	try
-		//	{
-		//		// Ensure the clicked cell is valid
-		//		if (e.Row == null || e.Column == null)
-		//			return;
-		//
-		//		// Get the clicked row
-		//		var selectedRow = e.Row;
-		//
-		//		// Populate the fields with data from the selected row
-		//		txtLoginID.Text = selectedRow.Cells["LoginID"].Value?.ToString() ?? string.Empty;
-		//		txtInsuranceName.Text = selectedRow.Cells["InsuranceName"].Value?.ToString() ?? string.Empty;
-		//		txtWebLink.Text = selectedRow.Cells["WebLink"].Value?.ToString() ?? string.Empty;
-		//		txtUsername.Text = selectedRow.Cells["Username"].Value?.ToString() ?? string.Empty;
-		//		txtPassword.Text = selectedRow.Cells["Password"].Value?.ToString() ?? string.Empty;
-		//		txtaccntOwner.Text = selectedRow.Cells["AccountOwner"].Value?.ToString() ?? string.Empty;
-		//		txtRemarks.Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty;
-		//		cmbBrowser.Text = selectedRow.Cells["Browser"].Value?.ToString() ?? string.Empty;
-		//
-		//		// Trigger any additional logic you need
-		//		DoubleClickEnable();
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		// Display an error message if something goes wrong
-		//		MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-		//	}
-		//}
 	}
 }

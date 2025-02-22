@@ -83,11 +83,11 @@
 			// btnNewTicket
 			// 
 			this.btnNewTicket.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnNewTicket.Location = new System.Drawing.Point(747, 52);
+			this.btnNewTicket.Location = new System.Drawing.Point(726, 52);
 			this.btnNewTicket.Name = "btnNewTicket";
-			this.btnNewTicket.Size = new System.Drawing.Size(110, 39);
+			this.btnNewTicket.Size = new System.Drawing.Size(131, 39);
 			this.btnNewTicket.TabIndex = 12;
-			this.btnNewTicket.Text = "&New Ticket";
+			this.btnNewTicket.Text = "&Assign New Task";
 			this.btnNewTicket.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.btnNewTicket.ThemeName = "Crystal";
 			this.btnNewTicket.Click += new System.EventHandler(this.btnNewTicket_Click);
@@ -119,6 +119,7 @@
 			this.cmbEmployeeStat.Size = new System.Drawing.Size(181, 24);
 			this.cmbEmployeeStat.TabIndex = 10;
 			this.cmbEmployeeStat.ThemeName = "Crystal";
+			this.cmbEmployeeStat.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.cmbEmployeeStat_SelectedIndexChanged);
 			// 
 			// txtSearch
 			// 
@@ -129,6 +130,7 @@
 			this.txtSearch.Size = new System.Drawing.Size(249, 23);
 			this.txtSearch.TabIndex = 9;
 			this.txtSearch.ThemeName = "Crystal";
+			this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
 			// 
 			// radLabel11
 			// 
@@ -186,6 +188,8 @@
 			this.ClientSize = new System.Drawing.Size(899, 596);
 			this.Controls.Add(this.radGroupBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "frmITTask";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "frmITTask";

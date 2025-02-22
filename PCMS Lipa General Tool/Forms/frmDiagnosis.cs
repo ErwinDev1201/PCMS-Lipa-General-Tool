@@ -26,9 +26,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ShowMePTDxCodes()
 		{
 			var dataTable = dx.ViewDxList(EmpName, out string lblCount);
-
 			dgBillDiagnosis.DataSource = dataTable;
-
+			dgBillDiagnosis.BestFitColumns(BestFitColumnMode.DisplayedDataCells);	
 			lblSearchCount.Text = lblCount;
 
 		}
@@ -124,7 +123,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmBillDiagnosis_Load(object sender, EventArgs e)
 		{
-			dgBillDiagnosis.BestFitColumns(BestFitColumnMode.AllCells);
+			dgBillDiagnosis.BestFitColumns(BestFitColumnMode.DisplayedDataCells);
 			dgBillDiagnosis.ReadOnly = true;
 		}
 
@@ -144,8 +143,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				txtDiagnosis.Text,
 				txtBodyParts.Text,
 				out string searchcount, EmpName);
-
 				dgBillDiagnosis.DataSource = resultTable;
+				dgBillDiagnosis.BestFitColumns(BestFitColumnMode.DisplayedDataCells);
 				lblSearchCount.Text = searchcount;
 
 			}

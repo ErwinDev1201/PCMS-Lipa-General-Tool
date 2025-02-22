@@ -409,7 +409,7 @@
 			this.cmbManagement.Size = new System.Drawing.Size(180, 24);
 			this.cmbManagement.TabIndex = 26;
 			this.cmbManagement.ThemeName = "Crystal";
-			this.cmbManagement.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.cmbManagement_SelectedIndexChanged);
+			this.cmbManagement.PopupOpening += new System.ComponentModel.CancelEventHandler(this.cmbManagement_PopupOpening);
 			// 
 			// txtPCUsername
 			// 
@@ -734,6 +734,7 @@
 			this.cmbUserDept.Size = new System.Drawing.Size(185, 24);
 			this.cmbUserDept.TabIndex = 5;
 			this.cmbUserDept.ThemeName = "Crystal";
+			this.cmbUserDept.PopupOpening += new System.ComponentModel.CancelEventHandler(this.cmbUserDept_PopupOpening);
 			// 
 			// radLabel23
 			// 
@@ -743,9 +744,9 @@
 			this.radLabel23.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.radLabel23.Location = new System.Drawing.Point(14, 188);
 			this.radLabel23.Name = "radLabel23";
-			this.radLabel23.Size = new System.Drawing.Size(110, 19);
+			this.radLabel23.Size = new System.Drawing.Size(114, 19);
 			this.radLabel23.TabIndex = 112;
-			this.radLabel23.Text = "User Deparment: ";
+			this.radLabel23.Text = "User Department: ";
 			this.radLabel23.ThemeName = "Crystal";
 			// 
 			// cmbUserAccess
@@ -760,6 +761,7 @@
 			this.cmbUserAccess.Size = new System.Drawing.Size(185, 24);
 			this.cmbUserAccess.TabIndex = 4;
 			this.cmbUserAccess.ThemeName = "Crystal";
+			this.cmbUserAccess.PopupOpening += new System.ComponentModel.CancelEventHandler(this.cmbUserAccess_PopupOpening);
 			this.cmbUserAccess.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.cmbUserAccess_SelectedIndexChanged);
 			// 
 			// cmbPosition
@@ -774,6 +776,7 @@
 			this.cmbPosition.Size = new System.Drawing.Size(185, 24);
 			this.cmbPosition.TabIndex = 6;
 			this.cmbPosition.ThemeName = "Crystal";
+			this.cmbPosition.PopupOpening += new System.ComponentModel.CancelEventHandler(this.cmbPosition_PopupOpening);
 			this.cmbPosition.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.cmbPosition_SelectedIndexChanged);
 			// 
 			// cmbUserStatus

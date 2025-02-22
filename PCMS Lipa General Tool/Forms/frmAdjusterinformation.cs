@@ -26,9 +26,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ShowAdjInfo()
 		{
 			var dataTable = adj.ViewAdjusterList(EmpName, out string lblCount);
-
 			dgAdjusterInfo.DataSource = dataTable;
-
+			dgAdjusterInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			lblCountSearch.Text = lblCount;
 		}
 
@@ -77,14 +76,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 		}
 
-		//No bugs found.
-
-		//private void txtSearch_TextChanged(object sender, EventArgs e)
-		//{
-		//	
-		//
-		//}
-
+		
 		private void btnNew_Click(object sender, EventArgs e)
 		{
 			var modifyAdjInfo = new frmModAdjusterInfo
@@ -105,7 +97,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmAdjusterinformation_Load(object sender, EventArgs e)
 		{
-			dgAdjusterInfo.BestFitColumns(BestFitColumnMode.AllCells);
+			dgAdjusterInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			//this.dgAdjusterInfo.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 			dgAdjusterInfo.ReadOnly = true;
 		}
@@ -125,8 +117,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				DataTable resultTable = adj.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);
-
 				dgAdjusterInfo.DataSource = resultTable;
+				dgAdjusterInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				lblCountSearch.Text = searchcount;
 
 			}

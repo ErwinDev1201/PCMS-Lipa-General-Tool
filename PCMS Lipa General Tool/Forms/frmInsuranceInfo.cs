@@ -38,7 +38,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ShowInsInfo()
 		{
-
+			dgInsuranceInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			var dataTable = insurance.ViewInsuraceList(EmpName, out string lblCount);
 
 			dgInsuranceInfo.DataSource = dataTable;
@@ -112,6 +112,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			try
 			{
+				dgInsuranceInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);	
 				DataTable resultTable = insurance.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);

@@ -36,11 +36,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtPhysicalAdd.Enabled = false;
 			txtBillingAdd.Enabled = false;
 			txtRemarks.Enabled = false;
+			btnNew.Enabled = true;
 			//txtSearch.Enabled = true;
 			//btnNew.Enabled = true;
 			btnCancel.Enabled = false;
-			btnUpdateSave.Enabled = true;
-			btnUpdateSave.Text = "New";
+			btnUpdateSave.Enabled = false;
 			btnDelete.Enabled = false;
 			//txtSearch.Clear();
 			//txtSearch.Enabled = true;
@@ -49,10 +49,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ShowProviderInfo()
 		{
+			dgProviderInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			var dataTable = provider.ViewProviderList(EmpName, out string lblCount);
 			dgProviderInfo.DataSource = dataTable;
 			lblSearchCount.Text = lblCount;
-			dgProviderInfo.BestFitColumns(BestFitColumnMode.AllCells);
+
 		}
 
 
@@ -125,107 +126,83 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		}
 
+		private bool ProcessProviderRequest(string actionType, out string message)
+		{
+			bool isSuccess = provider.ProviderInfoDBRequest(
+				actionType,
+				txtNoProv.Text,
+				txtProviderName.Text,
+				txtNPINo.Text,
+				txtPTANo.Text,
+				txtTaxID.Text,
+				txtPalPTANo.Text,
+				txtPhysicalAdd.Text,
+				txtBillingAdd.Text,
+				txtRemarks.Text,
+				EmpName,
+				out message);
+
+			// Execute additional actions only if the request was successful
+			if (isSuccess)
+			{
+				ClearProvInfo();
+				ShowProviderInfo();
+				ProvInDefault();
+				txtProviderName.Focus();
+			}
+
+			return isSuccess;
+		}
+
+
 		private void btnUpdateSave_Click(object sender, EventArgs e)
 		{
-			if (btnUpdateSave.Text == "Save")
+			try
 			{
-				bool isSuccess = provider.ProviderInfoDBRequest(
-					"Create",
-					txtNoProv.Text,
-					txtProviderName.Text,
-					txtNPINo.Text,
-					txtPTANo.Text,
-					txtTaxID.Text,
-					txtPalPTANo.Text,
-					txtPhysicalAdd.Text,
-					txtBillingAdd.Text,
-					txtRemarks.Text,
-					EmpName,
-					out string message);
-			
-				if (isSuccess)
+				// Determine action type based on button text
+				string actionType = btnUpdateSave.Text == "Save" ? "Create" : "Update";
+
+				// If updating, ask for confirmation
+				if (actionType == "Update" &&
+					RadMessageBox.Show("Are you sure you want to update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question) != DialogResult.Yes)
 				{
-					fe.SendToastNotifDesktop(message, "Success");
+					return;
 				}
-				else
-				{
-					fe.SendToastNotifDesktop(message, "Failed");
-				}
+
+				// Process database request
+				bool isSuccess = ProcessProviderRequest(actionType, out string message);
+
+				// Show toast notification based on success/failure
+				fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
 			}
-			else if (btnUpdateSave.Text == "Update")
+			catch (Exception ex)
 			{
-				if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
-				{
-					bool isSuccess = provider.ProviderInfoDBRequest(
-					"Update",
-					txtNoProv.Text,
-					txtProviderName.Text,
-					txtNPINo.Text,
-					txtPTANo.Text,
-					txtTaxID.Text,
-					txtPalPTANo.Text,
-					txtPhysicalAdd.Text,
-					txtBillingAdd.Text,
-					txtRemarks.Text,
-					EmpName,
-					out string message);
-
-					if (isSuccess)
-					{
-						fe.SendToastNotifDesktop(message, "Success");
-					}
-					else
-					{
-						fe.SendToastNotifDesktop(message, "Failed");
-					}
-
-				}
+				notif.LogError("btnUpdateSave_Click", EmpName, "frmProvider", txtNoProv.Text, ex);
 			}
-			else
-			{
-				btnUpdateSave.Text = "Save";
-				btnDelete.Enabled = false;
-				provider.GetProvID(out string ID, EmpName);
-				txtNoProv.Text = ID;
-			}
-			ClearProvInfo();
-			ShowProviderInfo();
-			ProvInDefault();
-			txtProviderName.Focus();
-
-
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
+			try
 			{
-				bool isSuccess = provider.ProviderInfoDBRequest(
-					"Delete",
-					txtNoProv.Text,
-					txtProviderName.Text,
-					txtNPINo.Text,
-					txtPTANo.Text,
-					txtTaxID.Text,
-					txtPalPTANo.Text,
-					txtPhysicalAdd.Text,
-					txtBillingAdd.Text,
-					txtRemarks.Text,
-					EmpName,
-					out string message);
+				// Confirm deletion before proceeding
+				if (RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation",
+					MessageBoxButtons.YesNo, RadMessageIcon.Question) != DialogResult.Yes)
+				{
+					return;
+				}
 
-				if (isSuccess)
-				{
-					fe.SendToastNotifDesktop(message, "Success");
-				}
-				else
-				{
-					fe.SendToastNotifDesktop(message, "Failed");
-				}
-				ProvInDefault();
-				ClearProvInfo();
-				ShowProviderInfo();
+				// Process delete request
+				bool isSuccess = ProcessProviderRequest("Delete", out string message);
+
+				// Show toast notification based on success/failure
+				fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
 			}
+			catch (Exception ex)
+			{
+				notif.LogError("btnDelete_Click", EmpName, "frmProvider", txtNoProv.Text, ex);
+			}
+
 		}
 
 		private void frmProvider_KeyDown(object sender, KeyEventArgs e)
@@ -234,6 +211,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			{
 				Close();
 			}
+
 		}
 
 		private void frmProvider_Load(object sender, EventArgs e)
@@ -248,19 +226,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//txtPTANo.ShowEmbeddedLabel = true; txtPTANo.EmbeddedLabelText = "PTAN No.";
 			//txtRemarks.ShowEmbeddedLabel = true; txtRemarks.EmbeddedLabelText = "Remarks";
 			dgProviderInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
-			//dgProviderInfo.ReadOnly = true;
+			dgProviderInfo.ReadOnly = true;
 		}
 
-		private void btnNew_Click(object sender, EventArgs e)
-		{
-			ClearProvInfo();
-			ProvDoubleClickEnable();
-			txtProviderName.Focus();
-			btnUpdateSave.Text = "Save";
-			btnDelete.Enabled = false;
-			provider.GetProvID(out string ID, EmpName);
-			txtNoProv.Text = ID;
-		}
 
 		private void dgProviderInfo_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
@@ -276,6 +244,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					btnCancel.Enabled = false;
 					btnUpdateSave.Enabled = false;
 				}
+				dgProviderInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				if (dgProviderInfo.SelectedRows.Count > 0)
 				{
 					var selectedRow = dgProviderInfo.SelectedRows[0];
@@ -292,47 +261,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				}
 				else
 				{
-					//MessageBox.Show("No row selected. Please select a provider.", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					RadMessageBox.Show("No row selected. Please try again.", "Selection Error", MessageBoxButtons.OK, RadMessageIcon.Info);
 				}
-				//txtNoProv.Text = dgProviderInfo.SelectedRows[0].Cells[0].Value + string.Empty;
-				//txtProviderName.Text = dgProviderInfo.SelectedRows[0].Cells[1].Value + string.Empty;
-				//txtNPINo.Text = dgProviderInfo.SelectedRows[0].Cells[2].Value + string.Empty;
-				//txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[3].Value + string.Empty;
-				//txtTaxID.Text = dgProviderInfo.SelectedRows[0].Cells[4].Value + string.Empty;
-				//txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[5].Value + string.Empty;
-				//txtPhysicalAdd.Text = dgProviderInfo.SelectedRows[0].Cells[6].Value + string.Empty;
-				//txtBillingAdd.Text = dgProviderInfo.SelectedRows[0].Cells[7].Value + string.Empty;
-				//txtRemarks.Text = dgProviderInfo.SelectedRows[0].Cells[8].Value + string.Empty;
-				//if (accessLevel == "User")
-				//{
-				//	txtNoProv.Text = dgProviderInfo.SelectedRows[0].Cells[0].Value + string.Empty;
-				//	txtProviderName.Text = dgProviderInfo.SelectedRows[0].Cells[1].Value + string.Empty;
-				//	txtNPINo.Text = dgProviderInfo.SelectedRows[0].Cells[2].Value + string.Empty;
-				//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[3].Value + string.Empty;
-				//	txtTaxID.Text = dgProviderInfo.SelectedRows[0].Cells[4].Value + string.Empty;
-				//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[5].Value + string.Empty;
-				//	txtPhysicalAdd.Text = dgProviderInfo.SelectedRows[0].Cells[6].Value + string.Empty;
-				//	txtBillingAdd.Text = dgProviderInfo.SelectedRows[0].Cells[7].Value + string.Empty;
-				//	btnDelete.Enabled = false;
-				//	btnNew.Enabled = false;
-				//	btnCancel.Enabled = false;
-				//	btnUpdateSave.Enabled = false;
-				//}
-				//else
-				//{
-				//	txtNoProv.Text = dgProviderInfo.SelectedRows[0].Cells[0].Value + string.Empty;
-				//	txtProviderName.Text = dgProviderInfo.SelectedRows[0].Cells[1].Value + string.Empty;
-				//	txtNPINo.Text = dgProviderInfo.SelectedRows[0].Cells[2].Value + string.Empty;
-				//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[3].Value + string.Empty;
-				//	txtTaxID.Text = dgProviderInfo.SelectedRows[0].Cells[4].Value + string.Empty;
-				//	txtPalPTANo.Text = dgProviderInfo.SelectedRows[0].Cells[5].Value + string.Empty;
-				//	txtPhysicalAdd.Text = dgProviderInfo.SelectedRows[0].Cells[6].Value + string.Empty;
-				//	txtBillingAdd.Text = dgProviderInfo.SelectedRows[0].Cells[7].Value + string.Empty;
-				//	btnDelete.Enabled = true;						
-				//	btnCancel.Enabled = true;
-				//	btnUpdateSave.Enabled = true;
-				//	btnUpdateSave.Text = "Update";
-				//}
 				
 			}
 			catch (Exception ex)
@@ -349,7 +279,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				DataTable resultTable = provider.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);
-
+				dgProviderInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				dgProviderInfo.DataSource = resultTable;
 				lblSearchCount.Text = searchcount;
 
@@ -359,6 +289,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 				notif.LogError("txtSearch_TextChanged", EmpName, "frmProvider", null, ex);
 			}
 			//task.SearchTwoColumnOneFieldText(dgProviderInfo, "[Provider Information]", "[Provider Name]", "REMARKS", txtSearch, lblSearchCount, EmpName);
+		}
+
+		private void btnNew_Click(object sender, EventArgs e)
+		{
+			ClearProvInfo();
+			ProvDoubleClickEnable();
+			txtProviderName.Focus();
+			btnUpdateSave.Text = "Save";
+			btnDelete.Enabled = false;
+			provider.GetProvID(out string ID, EmpName);
+			txtNoProv.Text = ID;
+			btnNew.Enabled = false;
 		}
 
 		//private void txtSearch_TextChanged(object sender, EventArgs e)

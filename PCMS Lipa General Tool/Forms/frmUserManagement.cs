@@ -26,7 +26,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void ShowAllUserAccess()
 		{
-			dgEmployeeInfo.BestFitColumns(BestFitColumnMode.DisplayedDataCells);
+			dgEmployeeInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			var dataTable = user.ViewEmployeeInformationUser(empName, out string lblCount, "frmUserMgmt");
 			dgEmployeeInfo.DataSource = dataTable;
 			lblSearchCount.Text = lblCount;
@@ -54,59 +54,71 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void PullDataFromTabletoTextBox()
 		{
-
 			try
 			{
-				
 				if (dgEmployeeInfo.SelectedRows.Count == 0)
 					return;
 
 				var selectedRow = dgEmployeeInfo.SelectedRows[0];
 				var modUser = new frmUserInformation
 				{
-					txtEmpID = { Text = selectedRow.Cells["Employee ID"].Value?.ToString() ?? string.Empty },
-					txtUsername = { Text = selectedRow.Cells["Username"].Value?.ToString() ?? string.Empty },
-					txtEmpName = { Text = selectedRow.Cells["Employee Name"].Value?.ToString() ?? string.Empty },
-					txtWorkEmailMain = { Text = selectedRow.Cells["Email Address"].Value?.ToString() ?? string.Empty },
-					cmbUserAccess = { Text = selectedRow.Cells["User Access"].Value?.ToString() ?? string.Empty },
-					cmbUserDept = { Text = selectedRow.Cells["Department"].Value?.ToString() ?? string.Empty },
-					cmbPosition = { Text = selectedRow.Cells["Position"].Value?.ToString() ?? string.Empty },
-					cmbUserStatus = { Text = selectedRow.Cells["Status"].Value?.ToString() ?? string.Empty },
-					cmbOffice = { Text = selectedRow.Cells["Office"].Value?.ToString() ?? string.Empty },
-
-					/// second group
-					txtRDWebUsername = { Text = selectedRow.Cells["RDWeb Username"].Value?.ToString() ?? string.Empty },
-					txtRDWebPassword = { Text = selectedRow.Cells["RDWeb Password"].Value?.ToString() ?? string.Empty },
-					txtLytecUsername = { Text = selectedRow.Cells["Lytec Username"].Value?.ToString() ?? string.Empty },
-					txtLytecPassword = { Text = selectedRow.Cells["Lytec Password"].Value?.ToString() ?? string.Empty },
-
-					/// third group
-					txtBVNo = { Text = selectedRow.Cells["Broadvoice No."].Value?.ToString() ?? string.Empty },
-					txtBVUsername = { Text = selectedRow.Cells["Broadvoice Username"].Value?.ToString() ?? string.Empty },
-					txtBVPassword = { Text = selectedRow.Cells["Broadvoice Password"].Value?.ToString() ?? string.Empty },
-					txtPCName = { Text = selectedRow.Cells["PC Assigned"].Value?.ToString() ?? string.Empty },
-					txtPCUsername = { Text = selectedRow.Cells["PC Username"].Value?.ToString() ?? string.Empty },
-					txtPCPassword = { Text = selectedRow.Cells["PC Password"].Value?.ToString() ?? string.Empty },
-					txtWorkEmail = { Text = selectedRow.Cells["Email Address"].Value?.ToString() ?? string.Empty },
-					txtWorkEmailPass = { Text = selectedRow.Cells["Email Password"].Value?.ToString() ?? string.Empty },
-					txtDCUsernaem = { Text = selectedRow.Cells["Discord Username"].Value?.ToString() ?? string.Empty },
-					txtDCPassword = { Text = selectedRow.Cells["Discord Password"].Value?.ToString() ?? string.Empty },
-					dtpDateofBirth = { Text = selectedRow.Cells["Date of Birth"].Value?.ToString() ?? string.Empty },
-					cmbManagement = { Text = selectedRow.Cells["Team"].Value?.ToString() ?? string.Empty },
-					cmbEmploymentStatus = { Text = selectedRow.Cells["Employment Status"].Value?.ToString() ?? string.Empty },
-					cmbFirstTime = { Text = selectedRow.Cells["First Time Login"].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty },
-
-					//
-					lblResult = { Visible = false },
-					EmpName = empName,
 					Text = "Modify User",
-					//btnUpdate = { Text = "Update" },
-					accessLevel = accessLevel,
-					
+					EmpName = empName,
+					accessLevel = accessLevel
 				};
+
+				// Populate text fields safely
+				modUser.txtEmpID.Text = selectedRow.Cells["Employee ID"].Value?.ToString() ?? string.Empty;
+				modUser.txtUsername.Text = selectedRow.Cells["Username"].Value?.ToString() ?? string.Empty;
+				modUser.txtEmpName.Text = selectedRow.Cells["Employee Name"].Value?.ToString() ?? string.Empty;
+				modUser.txtWorkEmailMain.Text = selectedRow.Cells["Email Address"].Value?.ToString() ?? string.Empty;
+				modUser.cmbUserAccess.Text = selectedRow.Cells["User Access"].Value?.ToString() ?? string.Empty;
+				modUser.cmbUserDept.Text = selectedRow.Cells["Department"].Value?.ToString() ?? string.Empty;
+				modUser.cmbPosition.Text = selectedRow.Cells["Position"].Value?.ToString() ?? string.Empty;
+				modUser.cmbUserStatus.Text = selectedRow.Cells["Status"].Value?.ToString() ?? string.Empty;
+				modUser.cmbOffice.Text = selectedRow.Cells["Office"].Value?.ToString() ?? string.Empty;
+
+				// Second group
+				modUser.txtRDWebUsername.Text = selectedRow.Cells["RDWeb Username"].Value?.ToString() ?? string.Empty;
+				modUser.txtRDWebPassword.Text = selectedRow.Cells["RDWeb Password"].Value?.ToString() ?? string.Empty;
+				modUser.txtLytecUsername.Text = selectedRow.Cells["Lytec Username"].Value?.ToString() ?? string.Empty;
+				modUser.txtLytecPassword.Text = selectedRow.Cells["Lytec Password"].Value?.ToString() ?? string.Empty;
+
+				// Third group
+				modUser.txtBVNo.Text = selectedRow.Cells["Broadvoice No."].Value?.ToString() ?? string.Empty;
+				modUser.txtBVUsername.Text = selectedRow.Cells["Broadvoice Username"].Value?.ToString() ?? string.Empty;
+				modUser.txtBVPassword.Text = selectedRow.Cells["Broadvoice Password"].Value?.ToString() ?? string.Empty;
+				modUser.txtPCName.Text = selectedRow.Cells["PC Assigned"].Value?.ToString() ?? string.Empty;
+				modUser.txtPCUsername.Text = selectedRow.Cells["PC Username"].Value?.ToString() ?? string.Empty;
+				modUser.txtPCPassword.Text = selectedRow.Cells["PC Password"].Value?.ToString() ?? string.Empty;
+				modUser.txtWorkEmail.Text = selectedRow.Cells["Email Address"].Value?.ToString() ?? string.Empty;
+				modUser.txtWorkEmailPass.Text = selectedRow.Cells["Email Password"].Value?.ToString() ?? string.Empty;
+				modUser.txtDCUsernaem.Text = selectedRow.Cells["Discord Username"].Value?.ToString() ?? string.Empty;
+				modUser.txtDCPassword.Text = selectedRow.Cells["Discord Password"].Value?.ToString() ?? string.Empty;
+
+				// Handle date field safely
+				if (selectedRow.Cells["Date of Birth"].Value != null && DateTime.TryParse(selectedRow.Cells["Date of Birth"].Value.ToString(), out DateTime dob))
+				{
+					modUser.dtpDateofBirth.Value = dob;
+				}
+				else
+				{
+					modUser.dtpDateofBirth.Value = DateTime.Now; // Default value
+				}
+
+				modUser.cmbManagement.Text = selectedRow.Cells["Team"].Value?.ToString() ?? string.Empty;
+				modUser.cmbEmploymentStatus.Text = selectedRow.Cells["Employment Status"].Value?.ToString() ?? string.Empty;
+				modUser.cmbFirstTime.Text = selectedRow.Cells["First Time Login"].Value?.ToString() ?? string.Empty;
+				modUser.txtRemarks.Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty;
+
+				// Hide error label and set update mode
+				modUser.lblResult.Visible = false;
 				modUser.DefaultItem("Update");
-				modUser.btnDelete.Visible = accessLevel != "Administrator";
+
+				// Set button visibility based on access level
+				modUser.btnDelete.Visible = accessLevel == "Administrator";
+
+				// Show the form
 				modUser.ShowDialog();
 				ShowAllUserAccess();
 			}
@@ -115,13 +127,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 				notif.LogError("frmUserInformation", empName, "frmDiagnosis", null, ex);
 				RadMessageBox.Show($@"
 Oops!
-We're having a little trouble retrieving the information right now. Please try again later, or feel free to reach out to the Software Developer if you need help.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+We're having a little trouble retrieving the information right now. Please try again later, or feel free to reach out to the Software Developer if you need help.",
+				"Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
-
 		}
+
 		private void frmUserManagement_Load(object sender, EventArgs e)
 		{
 			//this.dgEmployeeInfo.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
+			dgEmployeeInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			cmbEmployeeStat.Text = "Active";
 			dgEmployeeInfo.ReadOnly = true;
 			ShowAllUserAccess();
@@ -161,42 +175,13 @@ We're having a little trouble retrieving the information right now. Please try a
 				Console.WriteLine($"Rows returned: {resultTable.Rows.Count}");
 
 				// Ensure the data grid gets updated in both cases
+				dgEmployeeInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				dgEmployeeInfo.DataSource = null;
 				dgEmployeeInfo.DataSource = resultTable;
 				dgEmployeeInfo.Refresh();
 				// Ensure the search count message updates properly
 				lblSearchCount.Text = searchCountMessage;
-				//if (!string.IsNullOrEmpty(txtSearch.Text))
-				//{
-				//	// check what the dropdown is firing
-				//	Console.WriteLine($"Selected status: {cmbEmployeeStat.Text}");
-				//	// Input values for the search
-				//	// Call the back-end method to perform the search
-				//	DataTable resultTable = user.GetSearch(
-				//		txtSearch.Text,
-				//		cmbEmployeeStat.Text,
-				//		out string searchCountMessage, empName, "Admin");
-				//
-				//	// Bind the result to the RadGridView
-				//	dgEmployeeInfo.DataSource = resultTable;
-				//
-				//	// Display the search count in a label or message box
-				//	lblSearchCount.Text = searchCountMessage; // Ensure lblSearchCount is a valid label in your form
-				//}
-				//else
-				//{
-				//	// Call the back-end method to perform the search using filter status only
-				//	DataTable resultTable = user.GetSearch(
-				//		null,
-				//		cmbEmployeeStat.Text,
-				//		out string searchCountMessage, empName, "Admin");
-				//	dgEmployeeInfo.DataSource = resultTable;
-				//
-				//	// Display the search count in a label or message box
-				//	lblSearchCount.Text = searchCountMessage;
-				//
-				//}
-				dgEmployeeInfo.BestFitColumns(BestFitColumnMode.AllCells);
+				dgEmployeeInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				HideColumns();
 			}
 			catch (Exception ex)
@@ -209,19 +194,6 @@ We're having a little trouble retrieving the information right now. Please try a
 		{
 			Console.WriteLine($"SelectedIndexChanged triggered: {cmbEmployeeStat.Text}");
 			LoadSearchandFilter();
-			
-			//if (cmbEmployeeStat.Text == "All")
-			//{
-			//	//var bothquery = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS] FROM [User Information]";
-			//	//mainProcess.SearchDatagrid(dgEmployeeInfo, bothquery);
-			//	//task.SearchEmpTwoColumnOneFieldText(dgEmployeeInfo, "[User Information]", "[Employee Name]", "[Employee Name]", txtSearch, lblSearchCount, empName);
-			//}
-			//else
-			//{
-			//	//var query = "SELECT [Employee ID], [EMPLOYEE NAME], USERNAME, [DEPARTMENT], [USER ACCESS], POSITION, STATUS, OFFICE, [EMAIL ADDRESS] FROM [User Information] WHERE STATUS = '" + cmbEmployeeStat.Text + "'";
-			//	//mainProcess.SearchDatagrid(dgEmployeeInfo, query);
-			//	task.SearchEmpTwoColumnTwoFieldText(dgEmployeeInfo, "[User Information]", "[Employee Name]", "[Status]", txtSearch, cmbEmployeeStat, lblSearchCount, empName);
-			//}
 
 		}
 

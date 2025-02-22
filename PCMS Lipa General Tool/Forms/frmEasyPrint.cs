@@ -30,6 +30,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			var dataTable = easyPrint.ViewEasyPrintList(EmpName, out string lblCount);
 			dgEasyPrint.DataSource = dataTable;
+			dgEasyPrint.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			lblCountResult.Text = lblCount;
 		}
 		//The code does not have any bugs.
@@ -59,7 +60,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmEasyPrint_Load(object sender, EventArgs e)
 		{
-			dgEasyPrint.BestFitColumns(BestFitColumnMode.AllCells);
+			dgEasyPrint.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			//this.dgEasyPrint.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 			dgEasyPrint.ReadOnly = true;
 		}
@@ -115,10 +116,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			try
 			{
+				dgEasyPrint.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				DataTable resultTable = easyPrint.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);
-
 				dgEasyPrint.DataSource = resultTable;
 				lblCountResult.Text = searchcount;
 

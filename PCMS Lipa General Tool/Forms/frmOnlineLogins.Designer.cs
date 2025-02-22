@@ -356,9 +356,8 @@
 			this.txtInsuranceName.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtInsuranceName.Location = new System.Drawing.Point(245, 46);
 			this.txtInsuranceName.Name = "txtInsuranceName";
-			this.txtInsuranceName.Size = new System.Drawing.Size(485, 22);
+			this.txtInsuranceName.Size = new System.Drawing.Size(485, 23);
 			this.txtInsuranceName.TabIndex = 23;
-			this.txtInsuranceName.Text = "this a a test";
 			this.txtInsuranceName.ThemeName = "Crystal";
 			// 
 			// txtLoginID

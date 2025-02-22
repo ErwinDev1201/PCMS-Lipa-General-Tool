@@ -503,7 +503,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				lblCount.Text = $"Total records: {dataTable.Rows.Count}";
 
 				// Optimize column visibility
-				dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+				dataGrid.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			}
 			catch (Exception ex)
 			{
@@ -570,7 +570,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//			lblCount.Text = $"Total records: {data.Rows.Count}";
 		//
 		//			// Optimize column width for better visibility
-		//			dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+		//			dataGrid.BestFitColumns(BestFitColumnMode.DisplayedCells);
 		//		}
 		//		catch (Exception ex)
 		//		{
@@ -592,7 +592,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//			lblCount.Text = $"Total records: {data.Rows.Count}";
 		//
 		//			// Optimize column width for better visibility
-		//			dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+		//			dataGrid.BestFitColumns(BestFitColumnMode.DisplayedCells);
 		//		}
 		//		catch (Exception ex)
 		//		{

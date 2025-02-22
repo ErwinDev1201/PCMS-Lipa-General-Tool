@@ -26,9 +26,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ListAtty()
 		{
 			var dataTable = atty.ViewAttorneyList(EmpName, out string lblCount);
-
 			dgDefAtty.DataSource = dataTable;
-
+			dgDefAtty.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			lblDefSearchCount.Text = lblCount;
 		}
 
@@ -74,7 +73,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmAttorneyInformation_Load(object sender, EventArgs e)
 		{
-			dgDefAtty.BestFitColumns(BestFitColumnMode.AllCells);
+			dgDefAtty.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			dgDefAtty.ReadOnly = true;
 		}
 
@@ -121,11 +120,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			try
 			{
+				dgDefAtty.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				DataTable resultTable = atty.SearchData(
 					txtSearch.Text,
 					cmbAttorneyOption.Text,
 				out string searchcount, EmpName);
-
 				dgDefAtty.DataSource = resultTable;
 				lblDefSearchCount.Text = searchcount;
 

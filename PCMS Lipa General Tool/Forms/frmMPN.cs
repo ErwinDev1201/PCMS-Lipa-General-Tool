@@ -119,7 +119,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmMPN_Load(object sender, EventArgs e)
 		{
-			dgMPN.BestFitColumns(BestFitColumnMode.AllCells);
+			dgMPN.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			txtLink.Visible = false;
 			dgMPN.ReadOnly = true;
 		}
