@@ -61,12 +61,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public void ShowLeaveList()
 		{
 			bool isElevatedAccess = accessLevel == "Administrator" || accessLevel == "Programmer";
-
 			string filterName = cmbFilterName.Text ?? string.Empty;
 			string filterStatus = cmbFilterStatus.Text ?? string.Empty;
-
 			string query = leave.GetLeaveQuery(filterName, filterStatus, isElevatedAccess);
-
+			dgLeave.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			leave.ViewLeave(dgLeave, query, lblCountSearch, EmpName);
 		}
 

@@ -326,7 +326,7 @@ of
 				{
 					cmbEmployee.Text = EmpName;
 				}
-				dgPantryList.BestFitColumns(BestFitColumnMode.AllCells);
+				dgPantryList.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				pantry.ViewPantryList(dgPantryList, "withFilter", lblsearchCount, EmpName, cmbEmployee.Text, dtpFrom.Value, dtpTo.Value);
 				SumPantryExpense();
 			}
@@ -867,7 +867,7 @@ of
 			DefaultFields();
 			//this.dgPantryList.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			DgFormatting();
-			dgPantryList.BestFitColumns(BestFitColumnMode.AllCells);
+			dgPantryList.BestFitColumns(BestFitColumnMode.DisplayedCells);
 		}
 
 		private void dgPantryList_MouseDoubleClick(object sender, MouseEventArgs e)

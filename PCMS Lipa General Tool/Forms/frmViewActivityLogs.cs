@@ -26,7 +26,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ViewLog()
 		{
-			dgActivityLogs.BestFitColumns(BestFitColumnMode.AllCells);
+			dgActivityLogs.BestFitColumns(BestFitColumnMode.DisplayedDataCells);
 			var dataTable = log.ViewActivityLogs(empName, out string lblCount);
 			dgActivityLogs.DataSource = dataTable;
 			lblSearchCount.Text = lblCount;
@@ -37,7 +37,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		//
 		private void frmViewActivityLogs_Load(object sender, EventArgs e)
 		{
-			dgActivityLogs.BestFitColumns(BestFitColumnMode.AllCells);
+			dgActivityLogs.BestFitColumns(BestFitColumnMode.DisplayedDataCells);
 			dgActivityLogs.ReadOnly = true;
 		}
 
@@ -100,6 +100,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					out string searchCountMessage, empName);
 
 				// Bind the result to the RadGridView
+				dgActivityLogs.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				dgActivityLogs.DataSource = resultTable;
 
 				// Display the search count in a label or message box

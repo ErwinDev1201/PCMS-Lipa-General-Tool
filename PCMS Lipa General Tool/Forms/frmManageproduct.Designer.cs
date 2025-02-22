@@ -87,7 +87,7 @@
 			this.paneltable.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.paneltable.Location = new System.Drawing.Point(12, 12);
 			this.paneltable.Name = "paneltable";
-			this.paneltable.Size = new System.Drawing.Size(511, 402);
+			this.paneltable.Size = new System.Drawing.Size(478, 402);
 			this.paneltable.TabIndex = 0;
 			this.paneltable.ThemeName = "Crystal";
 			// 
@@ -133,7 +133,7 @@
 			this.dgPantryProduct.MasterTemplate.AllowRowResize = false;
 			this.dgPantryProduct.MasterTemplate.ViewDefinition = tableViewDefinition1;
 			this.dgPantryProduct.Name = "dgPantryProduct";
-			this.dgPantryProduct.Size = new System.Drawing.Size(475, 334);
+			this.dgPantryProduct.Size = new System.Drawing.Size(446, 334);
 			this.dgPantryProduct.TabIndex = 2;
 			this.dgPantryProduct.ThemeName = "Crystal";
 			this.dgPantryProduct.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgPantryProduct_MouseDoubleClick);
@@ -156,7 +156,7 @@
 			this.radPanel2.Controls.Add(this.btnSave);
 			this.radPanel2.Controls.Add(this.btnNew);
 			this.radPanel2.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radPanel2.Location = new System.Drawing.Point(529, 12);
+			this.radPanel2.Location = new System.Drawing.Point(496, 13);
 			this.radPanel2.Name = "radPanel2";
 			this.radPanel2.Size = new System.Drawing.Size(334, 402);
 			this.radPanel2.TabIndex = 1;
@@ -321,7 +321,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(874, 427);
+			this.ClientSize = new System.Drawing.Size(838, 427);
 			this.Controls.Add(this.radPanel2);
 			this.Controls.Add(this.paneltable);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

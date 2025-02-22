@@ -27,9 +27,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ShowInsuranceInfo()
 		{
 			var dataTable = bill.ViewBillReviewList(EmpName, out string lblCount);
-
 			dgBillReview.DataSource = dataTable;
-
+			dgBillReview.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			lblSearchCount.Text = lblCount;
 		}
 
@@ -83,7 +82,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmInsBillReviewDirectory_Load(object sender, EventArgs e)
 		{
-			dgBillReview.BestFitColumns(BestFitColumnMode.AllCells);
+			dgBillReview.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			//this.dgBillDiagnosis.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;			
 			dgBillReview.ReadOnly = true;
 		}
@@ -124,8 +123,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				DataTable resultTable = bill.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);
-
 				dgBillReview.DataSource = resultTable;
+				dgBillReview.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				lblSearchCount.Text = searchcount;
 
 			}

@@ -570,7 +570,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					dataGrid.DataSource = data.DefaultView;
 					lblcount.Text = $"Total records: {dataGrid.RowCount}";
 				}
-				dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+				dataGrid.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			}
 			catch (Exception ex)
 			{

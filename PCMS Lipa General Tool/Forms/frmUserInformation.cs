@@ -20,6 +20,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	{
 		private readonly User user = new();
 		private static readonly FEWinForm fe = new();
+		private static readonly Notification error = new();
 		public string txtNoProv;
 		public string EmpName;
 		public string accessLevel;
@@ -29,12 +30,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public frmUserInformation()
 		{
 			InitializeComponent();
-			FillManagementName();
+			//FillManagementName();
 			_originalBackColor = GetThemeBackColor(txtWorkEmail);
 			//mainProcess.CreateDbId(txtEmpID, Sql, @"PCMS-");
 			txtEmpID.Enabled = false;
+			UIInitializattion();
 			//cmbThemeSelection.Enabled = false;
 
+
+		}
+
+		private void UIInitializattion()
+		{
 			// show the eye in password field
 			this.txtRDWebPassword.UseSystemPasswordChar = true;
 			this.txtLytecPassword.UseSystemPasswordChar = true;
@@ -90,6 +97,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnBVPass.CustomFont = font1.Name;
 			btnBVPass.CustomFontSize = 5;
 			btnBVPass.Text = "\ue052";
+
+			// show null helper
+			txtUsername.NullText = "Add Username here";
+			txtEmpName.NullText = "Add Employee Name here";
+			txtWorkEmailMain.NullText = "Add Work Email here";
 		}
 
 		private void BtnLyPass_Click(object sender, EventArgs e)
@@ -353,18 +365,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void DefaultItem(string action)
 		{
-			cmbUserStatus.Text = "Active";
-			cmbUserAccess.Items.Add("Administrator");
-			cmbUserAccess.Items.Add("Management");
-			cmbUserAccess.Items.Add("Power User");
-			cmbUserAccess.Items.Add("User");
-			cmbUserAccess.Items.Add("Programmer");
-			cmbUserAccess.SelectedIndex = 3;
-			lblResult.Visible = false;
 			if (action == "New")
 			{
 				btnUpdate.Text = "Save";
 				txtRDWebUsername.Text = @"hsn-pcms\";
+				cmbUserStatus.Text = "Active";
+				cmbUserAccess.Items.Add("Administrator");
+				cmbUserAccess.Items.Add("Management");
+				cmbUserAccess.Items.Add("Power User");
+				cmbUserAccess.Items.Add("User");
+				cmbUserAccess.Items.Add("Programmer");
+				cmbUserAccess.SelectedIndex = 3;
+				lblResult.Visible = false;
 			}
 			else
 			{
@@ -374,59 +386,77 @@ namespace PCMS_Lipa_General_Tool.Forms
 		}
 		private void cmbUserAccess_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
 		{
-			if (cmbUserAccess.SelectedItem == null)
+			LoadDropdownValues();
+		}
+
+		private void LoadDropdownValues()
+		{
+			try
 			{
-				cmbUserDept.Text = "";
-				cmbPosition.Text = "";
-				//RadMessageBox.Show("Department, Position and User Access are mandatory, Please don't leave them empty");
-			}
-			else
-			{
-				string userAccess = cmbUserAccess.SelectedItem.Text;
+				// Ensure user has selected an access level
+				if (string.IsNullOrWhiteSpace(cmbUserAccess.Text))
+				{
+					RadMessageBox.Show("Please select user access first.", "Warning", MessageBoxButtons.OK, RadMessageIcon.Info);
+					cmbUserDept.Text = "";
+					cmbPosition.Text = "";
+					return;
+				}
+
+				// Get the user access text (handles cases where SelectedItem is null)
+				string userAccess = cmbUserAccess.SelectedItem != null ? cmbUserAccess.SelectedItem.Text : cmbUserAccess.Text;
+
+				// Clear existing items before adding new ones
 				cmbUserDept.Items.Clear();
 				cmbPosition.Items.Clear();
 
+				// Load department and position based on user access
 				switch (userAccess)
 				{
 					case "Administrator":
-						cmbUserDept.Items.Add("All Department");
-						cmbPosition.Items.Add("Operations Manager");
-						cmbPosition.Items.Add("Supervisor");
+						cmbUserDept.Items.AddRange(["All Department", "IT"]);
+						cmbPosition.Items.AddRange(["IT Manager", "Operations Manager", "Supervisor"]);
 						break;
 
 					case "Management":
 						cmbUserDept.Items.Add("All Department");
-						cmbPosition.Items.Add("Operations Manager");
-						cmbPosition.Items.Add("Supervisor");
+						cmbPosition.Items.AddRange(["Operations Manager", "Supervisor"]);
 						break;
 
 					case "Power User":
-						cmbUserDept.Items.Add("Workers Comp");
-						cmbUserDept.Items.Add("Private");
-						cmbPosition.Items.Add("Collector");
-						cmbPosition.Items.Add("Back Office");
-						break;
-
 					case "User":
-						cmbUserDept.Items.Add("Workers Comp");
-						cmbUserDept.Items.Add("Private");
-						cmbPosition.Items.Add("Collector");
-						cmbPosition.Items.Add("Back Office");
+						cmbUserDept.Items.AddRange(["Workers Comp", "Private"]);
+						cmbPosition.Items.AddRange(["Collector", "Back Office"]);
 						break;
 
 					case "Programmer":
-						cmbUserDept.Items.Add("All Department");
+						cmbUserDept.Items.AddRange(["All Department", "IT"]);
 						cmbPosition.Items.Add("Programmer");
 						break;
+
+					default:
+						RadMessageBox.Show("Invalid selection. Please choose a valid user access.", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+						return;
 				}
 
-				// Optionally, set a default selection for radDropDownList2
-				if (cmbUserDept.Items.Count > 0)
-					cmbUserDept.SelectedIndex = 0;
-				if (cmbPosition.Items.Count > 0)
-					cmbPosition.SelectedIndex = 0;
+				// Ensure default selection is set (prevents empty dropdowns)
+				SetDefaultSelections();
+			}
+			catch (Exception ex)
+			{
+				error.LogError("LoadDropdownValues", EmpName, "frmUserInformation", null, ex);
 			}
 		}
+
+		// Helper method to set default selections
+		private void SetDefaultSelections()
+		{
+			if (cmbUserDept.Items.Count > 0)
+				cmbUserDept.SelectedIndex = 0;
+			if (cmbPosition.Items.Count > 0)
+				cmbPosition.SelectedIndex = 0;
+		}
+
+
 
 		private void txtUsername_TextChanged(object sender, EventArgs e)
 		{
@@ -508,7 +538,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void cmbPosition_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
 		{
-			if (cmbPosition.SelectedIndex == 0)
+			// Set the default management name based on the selected position
+			if (cmbPosition.Text == "Collector")
 			{
 				cmbManagement.Text = "Angeline Uy";
 			}
@@ -518,14 +549,31 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 		}
 
-		private void cmbManagement_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
+
+
+		private void cmbUserAccess_PopupOpening(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			List<string> items = user.GetManagementList(EmpName);
-			cmbManagement.Items.Clear(); // Clear existing items, if any
-			foreach (var item in items)
-			{
-				cmbManagement.Items.Add(item);
-			}
+			cmbUserAccess.Items.Add("Administrator");
+			cmbUserAccess.Items.Add("Management");
+			cmbUserAccess.Items.Add("Power User");
+			cmbUserAccess.Items.Add("User");
+			cmbUserAccess.Items.Add("Programmer");
+		}
+
+		private void cmbManagement_PopupOpening(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			cmbManagement.Items.Add("Angeline Uy");
+			cmbManagement.Items.Add("Edimson Escalona");
+		}
+
+		private void cmbUserDept_PopupOpening(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			LoadDropdownValues();
+		}
+
+		private void cmbPosition_PopupOpening(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			LoadDropdownValues();
 		}
 	}
 }

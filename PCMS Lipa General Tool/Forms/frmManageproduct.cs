@@ -27,7 +27,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ShowAllUserAccess()
 		{
-			dgPantryProduct.BestFitColumns(BestFitColumnMode.AllCells);
+			dgPantryProduct.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			var dataTable = pantry.ViewProductList(empName, out string lblCount);
 			dgPantryProduct.DataSource = dataTable;
 			lblSearchCount.Text = lblCount;
@@ -48,7 +48,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			lblalert.Visible = false;
 			//txtSearch.Enabled = true;
 			btnNew.Enabled = true;
-			dgPantryProduct.BestFitColumns(BestFitColumnMode.AllCells);
+			dgPantryProduct.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			ShowAllUserAccess();
 			paneltable.Enabled = true;
 		}
@@ -66,7 +66,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 			dgPantryProduct.Enabled = false;
 			//txtSearch.Enabled = true;
 			btnNew.Enabled = false;
-			dgPantryProduct.BestFitColumns(BestFitColumnMode.AllCells);
 			ShowAllUserAccess();
 			paneltable.Enabled = false;
 		}
@@ -95,6 +94,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			btnNew.Enabled = false;
 			paneltable.Enabled = true;
 			txtIntID.Enabled = true;
+			lblalert.Visible = false;
 
 		}
 
@@ -277,7 +277,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				DataTable resultTable = pantry.SearchData(
 				txtSearch.Text,
 				out string searchcount, empName);
-
+				dgPantryProduct.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				dgPantryProduct.DataSource = resultTable;
 				lblSearchCount.Text = searchcount;
 
@@ -292,7 +292,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void txtProductName_TextChanged(object sender, EventArgs e)
 		{
-			if (txtProductName.TextLength > 5)
+			if (txtProductName.TextLength > 3)
 			{
 				pantry.CheckProductExist(txtProductName.Text, empName, out string message);
 				lblalert.Visible = true;

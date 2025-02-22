@@ -263,11 +263,15 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		private bool ConfigureVisibility(frmMainApp mainApp, frmDemoTool demoTool, string role, string department, string position, SqlDataReader readerSQL)
 		{
-			HashSet<string> programmerRoles = ["Programmer_All Department_Programmer"];
+			HashSet<string> programmerRoles =
+			[
+				"Programmer_All Department_Programmer",
+				"Programmer_IT_Programmer"];
 			HashSet<string> adminRoles =
 			[
 			"Administrator_All Department_Supervisor",
-			"Administrator_All Department_Operations Manager"
+			"Administrator_All Department_Operations Manager",
+			"Administrator_IT_Operations Manager"
 		];
 			HashSet<string> managementRoles =
 			[

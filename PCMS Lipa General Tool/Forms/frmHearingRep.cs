@@ -25,10 +25,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void ShowHearingRepList()
 		{
+			dgHearingRep.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			var dataTable = hearing.ViewHearinRepList(EmpName, out string lblCount);
-
 			dgHearingRep.DataSource = dataTable;
-
 			lblSearchCount.Text = lblCount;
 			
 		}
@@ -48,12 +47,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 				var selectedRow = dgHearingRep.SelectedRows[0];
 				var modHearingRep = new frmModHearingRep
 				{
-					txtIntID = { Text = selectedRow.Cells[0].Value?.ToString() ?? string.Empty },
-					txtBoard = { Text = selectedRow.Cells[1].Value?.ToString() ?? string.Empty },
-					txtHearingRep = { Text = selectedRow.Cells[2].Value?.ToString() ?? string.Empty },
-					txtEmailAdd = { Text = selectedRow.Cells[3].Value?.ToString() ?? string.Empty },
-					txtPhoneNo = { Text = selectedRow.Cells[4].Value?.ToString() ?? string.Empty },
-					txtRemarks = { Text = selectedRow.Cells[5].Value?.ToString() ?? string.Empty }
+					txtIntID = { Text = selectedRow.Cells["Rep ID"].Value?.ToString() ?? string.Empty },
+					txtBoard = { Text = selectedRow.Cells["Board"].Value?.ToString() ?? string.Empty },
+					txtHearingRep = { Text = selectedRow.Cells["Name"].Value?.ToString() ?? string.Empty },
+					txtEmailAdd = { Text = selectedRow.Cells["Email"].Value?.ToString() ?? string.Empty },
+					txtPhoneNo = { Text = selectedRow.Cells["Phone No."].Value?.ToString() ?? string.Empty },
+					txtRemarks = { Text = selectedRow.Cells["Remarks"].Value?.ToString() ?? string.Empty }
 				};
 
 				if (accessLevel != "User")
@@ -79,7 +78,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmHearingRep_Load(object sender, EventArgs e)
 		{
-			dgHearingRep.BestFitColumns(BestFitColumnMode.AllCells);
+			dgHearingRep.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			dgHearingRep.ReadOnly = true;
 		}
 
@@ -112,10 +111,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 			try
 			{
+				dgHearingRep.BestFitColumns(BestFitColumnMode.DisplayedCells);	
 				DataTable resultTable = hearing.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);
-
 				dgHearingRep.DataSource = resultTable;
 				lblSearchCount.Text = searchcount;
 

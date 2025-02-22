@@ -26,9 +26,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ShowBundleCodes()
 		{
 			var dataTable = bundle.ViewBundleCodes(EmpName, out string lblCount);
-
 			dgBundleCode.DataSource = dataTable;
-
+			dgBundleCode.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			lblbundeCode.Text = lblCount;
 		}
 
@@ -104,7 +103,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmBundlecodes_Load(object sender, EventArgs e)
 		{
-			dgBundleCode.BestFitColumns(BestFitColumnMode.AllCells);
+			dgBundleCode.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			dgBundleCode.ReadOnly = true;
 		}
 
@@ -123,8 +122,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				DataTable resultTable = bundle.SearchData(
 				txtSearch.Text,
 				out string searchcount, EmpName);
-
 				dgBundleCode.DataSource = resultTable;
+				dgBundleCode.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				lblbundeCode.Text = searchcount;
 
 			}

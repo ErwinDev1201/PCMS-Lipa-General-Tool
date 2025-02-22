@@ -94,6 +94,7 @@
 			this.dgHearingRep.Size = new System.Drawing.Size(835, 472);
 			this.dgHearingRep.TabIndex = 11;
 			this.dgHearingRep.ThemeName = "Crystal";
+			this.dgHearingRep.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgHearingRep_MouseDoubleClick);
 			// 
 			// radLabel2
 			// 

@@ -172,7 +172,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//			dataGrid.DataSource = data.DefaultView;
 		//			lblcount.Text = $"Total Notes (Today): {dataGrid.RowCount}";
 		//		}
-		//		dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+		//		dataGrid.BestFitColumns(BestFitColumnMode.DisplayedCells);
 		//	}
 		//	catch (Exception ex)
 		//	{
@@ -308,7 +308,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		//			dataGrid.DataSource = data.DefaultView;
 		//			//lcount.Text = $"Total Notes (Today): {dataGrid.RowCount}";
 		//		}
-		//		dataGrid.BestFitColumns(BestFitColumnMode.AllCells);
+		//		dataGrid.BestFitColumns(BestFitColumnMode.DisplayedCells);
 		//	}
 		//	catch (Exception ex)
 		//	{

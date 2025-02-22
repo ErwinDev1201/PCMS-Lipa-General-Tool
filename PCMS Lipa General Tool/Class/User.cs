@@ -31,6 +31,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		public string EmpName;
 
 
+
 		public void GetDBID(out string ID, string empName)
 		{
 			ID = string.Empty;
@@ -115,6 +116,9 @@ namespace PCMS_Lipa_General_Tool.Class
 				notif.LogError("FillAdminUserProfile", empName, "User", txtIntID, ex);
 			}
 		}
+
+
+
 
 		//public void FillUserProfile(
 		//	string txtIntID,
@@ -1292,6 +1296,28 @@ namespace PCMS_Lipa_General_Tool.Class
 			return items;
 		}
 
+		public List<string> GetUserITList(string empName)
+		{
+			var query = "SELECT [EMPLOYEE NAME] FROM [User Information] WHERE STATUS = 'ACTIVE' AND DEPARTMENT = 'IT'";
+			var items = new List<string>();
+			var con = new SqlConnection(_dbConnection);
+			try
+			{
+				con.Open();
+				SqlCommand cmd = new(query, con);
+				SqlDataReader reader = cmd.ExecuteReader();
+				while (reader.Read())
+				{
+					items.Add(reader.GetString(0));
+				}
+				con.Close();
+			}
+			catch (Exception ex)
+			{
+				notif.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
+			}
+			return items;
+		}
 
 		//public void FillComboEmp(RadDropDownList cmbEmpList, string query, string empName)
 		//{
