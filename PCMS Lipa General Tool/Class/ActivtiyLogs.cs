@@ -91,28 +91,43 @@ OR Message LIKE @itemToSearch";
 			return resultTable;
 		}
 
-		public List<string> GetListofAction(string empName)
+		public List<string> GetListOfActions(string empName)
 		{
-			var query = "SELECT DISTINCT [Action] from [Activity Logs] ORDER BY [Action]";
 			var items = new List<string>();
-			var con = new SqlConnection(_dbConnection);
+			string query = "SELECT DISTINCT [Action] FROM [Activity Logs] ORDER BY [Action]";
+
 			try
 			{
-				con.Open();
-				SqlCommand cmd = new(query, con);
-				SqlDataReader reader = cmd.ExecuteReader();
-				while (reader.Read())
+				using (SqlConnection con = new SqlConnection(_dbConnection))
 				{
-					items.Add(reader.GetString(0));
+					con.Open();
+					using (SqlCommand cmd = new SqlCommand(query, con))
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							// Use column name instead of index and handle NULL values
+							string action = reader["Action"] != DBNull.Value ? reader["Action"].ToString() : string.Empty;
+							if (!string.IsNullOrWhiteSpace(action))
+							{
+								items.Add(action);
+							}
+						}
+					}
 				}
-				con.Close();
+			}
+			catch (SqlException sqlEx)
+			{
+				notif.LogError("GetListOfActions", empName, "ActivityLogs", "N/A", sqlEx);
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("GetListofAction", empName, "ActivityLogs", "N/A", ex);
+				notif.LogError("GetListOfActions", empName, "ActivityLogs", "N/A", ex);
 			}
+
 			return items;
 		}
+
 
 		public void AddActivityLog(string TextContent, string empName, string DCLog, string actionLog)
 		{

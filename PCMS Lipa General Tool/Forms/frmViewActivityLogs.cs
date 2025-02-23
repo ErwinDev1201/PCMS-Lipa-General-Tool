@@ -90,8 +90,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			try
 			{
-				// check what the dropdown is firing
-				Console.WriteLine($"Selected status: {cmbAction.Text}");
 				// Input values for the search
 				// Call the back-end method to perform the search
 				DataTable resultTable = log.GetSearch(

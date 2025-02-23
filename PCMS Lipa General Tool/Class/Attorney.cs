@@ -5,7 +5,6 @@ using System.Data;
 using System.Data.SqlClient;
 
 
-
 namespace PCMS_Lipa_General_Tool.Class
 {
 	public class Attorney

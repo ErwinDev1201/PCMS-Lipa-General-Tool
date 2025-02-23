@@ -10,6 +10,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 	public partial class frmUpdateDCPassword : Telerik.WinControls.UI.RadForm
 	{
 		private static readonly ActivtiyLogs log = new();
+		private static readonly FEWinForm fe = new();
 		readonly Discord dc = new();
 		public string empName;
 
@@ -39,7 +40,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnOK_Click(object sender, EventArgs e)
 		{
-			dc.UpdateDCPassword(txtUsername.Text, txtNewPassword.Text, empName);
+			bool isSuccess = dc.UpdateDCPassword(txtUsername.Text.Trim(), txtNewPassword.Text.Trim(), empName, out string message);
+			fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
 			log.AddActivityLog(empName + " his/her their Discord password for " + txtUsername.Text, empName, txtUsername.Text + " is updated", "PASSWORD UPDATE");
 		}
 

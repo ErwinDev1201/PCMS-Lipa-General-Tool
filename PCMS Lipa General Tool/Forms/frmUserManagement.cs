@@ -205,9 +205,10 @@ We're having a little trouble retrieving the information right now. Please try a
 			};
 			user.GetDBID(out string ID, empName);
 			userUpdate.txtEmpID.Text = ID;
+			//userUpdate.lblResult.Visible = false;
 			userUpdate.EmpName = empName;
 			userUpdate.cmbFirstTime.Text = "Yes";
-			userUpdate.DefaultItem("New");
+			userUpdate.DefaultItem("Create");
 			userUpdate.btnResetPassword.Enabled = false;
 			userUpdate.ShowDialog();
 			ShowAllUserAccess();

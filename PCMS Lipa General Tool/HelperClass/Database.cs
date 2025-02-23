@@ -102,7 +102,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 			}
 			catch (Exception ex)
 			{
-				notif.LogError($"AlterDBSequence", empName, "CommonTask", "N/A", ex);
+				notif.LogError($"AlterDBSequence", empName, "Database", "N/A", ex);
 			}
 			finally
 			{
@@ -127,7 +127,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("GetSequenceNoPre", "N/A", "CommonTask", "N/A", ex);
+				notif.LogError("GetSequenceNoPre", "N/A", "Database", "N/A", ex);
 			}
 
 			return currSeq; // Return the sequence number
@@ -158,7 +158,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("GetSequenceNo", "N/A", "CommonTask", "N/A", ex);
+				notif.LogError("GetSequenceNo", "N/A", "Database", "N/A", ex);
 				return null; // Return null in case of an error
 			}
 			finally

@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -958,7 +959,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				}
 
 				UpdatePassword(password, userNameDB, reason, empName);
-				SendCredentialstoEmail(email, userName, empName, password, name, "Reset");
+				SendCredentialstoEmail(email, userName, empName, password, name, "Reset", null, null, null, null, null, null);
 
 				//SendCredentialstoEmail(email, userName, empName, password, "Reset");
 
@@ -1625,7 +1626,7 @@ namespace PCMS_Lipa_General_Tool.Class
 					//cmd.Parameters.AddWithValue("@NEWEMP", newEmp ?? "N/A");
 					cmd.Parameters.AddWithValue("@PASSWORD", sec.PassHash(password ?? string.Empty));
 					cmd.Parameters.AddWithValue("@THEME", theme ?? "Default");
-					SendCredentialstoEmail(workEmail.Trim(), userName.Trim(), EmpName.Trim(), password.Trim(), empName, "New");
+					SendCredentialstoEmail(workEmail.Trim(), userName.Trim(), authorName.Trim(), password.Trim(), empName, "Create", rdWebUsername, rdWebPassword, lytecUsername, lytecPassword, workEmail, broadvoiceNo);
 				}
 
 				// Add parameter for all requests
@@ -1648,7 +1649,7 @@ namespace PCMS_Lipa_General_Tool.Class
 				notif.LogError($"EmployeeDatabase {request}", authorName, "User", empID, ex);
 				message = $"Failed to {request.ToLower()} {empID}, Please try again later";
 				return false;
-				//MessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		
 			}
 			finally
 			{
@@ -1656,409 +1657,66 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-
-		//public bool EmployeeDatabase(
-		//	string request,
-		//	string empID,
-		//	string empName,
-		//	string userName,
-		//	//string passWord,
-		//	string userAccess,
-		//	string position,
-		//	string userDept,
-		//	string userStatus,
-		//	string workEmail,
-		//	string bvNo,
-		//	string office,
-		//	string newEmp,
-		//	string theme,
-		//	string authorName,
-		//	out string message)
-		//{
-		//	using SqlConnection conn = new(_dbConnection);
-		//	try
-		//	{
-		//		ValidateInputs(workEmail);
-		//		conn.Open();
-		//		SqlCommand cmd = new()
-		//		{
-		//			Connection = conn
-		//		};
-		//
-		//		string logs;
-		//
-		//		// Determine the SQL command based on the request type
-		//		cmd.CommandText = request switch
-		//		{
-		//			"Update" => @"UPDATE [User Information]
-		//                  SET 
-		//                      [EMPLOYEE NAME] = @EMPNAME,
-		//                      USERNAME = @USERNAME,
-		//                      [USER ACCESS] = @USERACCESS,
-		//                      POSITION = @POSITION,
-		//                      DEPARTMENT = @USERDEPT,
-		//                      [STATUS] = @USERSTATUS,
-		//                      [EMAIL ADDRESS] = @WORKEMAIL,
-		//                      [OFFICE] = @OFFICE,
-		//                      [Broadvoice No.] = @BVNo,
-		//                      [Broadvoice Status] = @BVStatus
-		//                  WHERE
-		//                      [Employee ID] = @EMPID",
-		//			"Create" => @"INSERT INTO [User Information]
-		//                  ([EMPLOYEE NAME], USERNAME, PASSWORD, [USER ACCESS],
-		//                  POSITION, DEPARTMENT, [STATUS], [EMAIL ADDRESS], 
-		//                  [Broadvoice No.], OFFICE, [FIRST TIME LOGIN], THEME) 
-		//                  VALUES
-		//                  (@EMPNAME, @USERNAME, @PASSWORD, @USERACCESS,
-		//                  @POSITION, @USERDEPT, @USERSTATUS, @WORKEMAIL, 
-		//                  @BVNO, @OFFICE, @NEWEMP, @THEME)",
-		//			"Delete" => @"DELETE FROM [User Information]
-		//                  WHERE
-		//                      [Employee ID] = @EMPID",
-		//			_ => throw new ArgumentException("Invalid request type."),
-		//		};
-		//
-		//		// Add common parameters for "Update" and "Create"
-		//		if (request != "Delete")
-		//		{
-		//			cmd.Parameters.AddWithValue("@EMPNAME", empName ?? string.Empty);
-		//			cmd.Parameters.AddWithValue("@USERNAME", userName ?? string.Empty);
-		//			cmd.Parameters.AddWithValue("@USERACCESS", userAccess ?? string.Empty);
-		//			cmd.Parameters.AddWithValue("@POSITION", position ?? string.Empty);
-		//			cmd.Parameters.AddWithValue("@USERDEPT", userDept ?? string.Empty);
-		//			cmd.Parameters.AddWithValue("@USERSTATUS", userStatus ?? string.Empty);
-		//			cmd.Parameters.AddWithValue("@WORKEMAIL", workEmail ?? string.Empty);
-		//			cmd.Parameters.AddWithValue("@BVNO", bvNo ?? string.Empty);
-		//			cmd.Parameters.AddWithValue("@OFFICE", office ?? string.Empty);
-		//			cmd.Parameters.AddWithValue("@BVStatus", userStatus ?? string.Empty);
-		//		}
-		//
-		//		// Add specific parameters for "Create"
-		//		var password = GenerateRandomPassword();
-		//
-		//		if (request == "Create")
-		//		{
-		//			cmd.Parameters.AddWithValue("@NEWEMP", newEmp ?? "N/A");
-		//			cmd.Parameters.AddWithValue("@PASSWORD", sec.PassHash(password ?? string.Empty));
-		//			cmd.Parameters.AddWithValue("@THEME", theme ?? "Default");
-		//		}
-		//
-		//		// Add parameter for all requests
-		//		cmd.Parameters.AddWithValue("@EMPID", empID ?? string.Empty);
-		//
-		//		// Execute query
-		//		cmd.ExecuteNonQuery();
-		//
-		//		// Log activity
-		//		logs = $"{authorName} {request.ToLower()}d Employee ID: {empID}";
-		//		message = $"Done! {empID} has been successfully {request.ToLower()}d.";
-		//		SendCredentialstoEmail(workEmail.Trim(), userName.Trim(), empName.Trim(), password.Trim());
-		//
-		//		log.AddActivityLog(message, authorName, logs, $"{request.ToUpper()} USER INFORMATION");
-		//		return true;
-		//		//fe.SendToastNotifDesktop(message, "Success");
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		notif.LogError($"EmployeeDatabase {request}", authorName, "User", newEmp, ex);
-		//		message = $"Failed to {request.ToLower()} {empID}, Please try again later";
-		//		return false;
-		//		//MessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-		//	}
-		//	finally
-		//	{
-		//		conn.Close();
-		//	}
-		//}
-
-
-		//public void EmployeeDatabase(
-		//	string request,
-		//	RadTextBox txtempID,
-		//	RadTextBox txtempName,
-		//	RadTextBox txtuserName,
-		//	RadTextBox txtpassWord,
-		//	RadDropDownList cmbUserAccess,
-		//	RadDropDownList cmbPosition,
-		//	RadDropDownList cmbUserDept,
-		//	RadDropDownList cmbUserStatus,
-		//	RadTextBox txtWorkEmail,
-		//	RadTextBox txtBVNo,
-		//	RadDropDownList cmbOffice,
-		//	string newEmp,
-		//	string theme,
-		//	string empName)
-		//{
-		//	using SqlConnection conn = new(_dbConnection);
-		//	try
-		//	{
-		//		ValidateInputs(txtWorkEmail.Text);
-		//		conn.Open();
-		//		SqlCommand cmd = new()
-		//		{
-		//			Connection = conn
-		//		};
-		//
-		//		string logs, message;
-		//
-		//		cmd.CommandText = request switch
-		//		{
-		//			"Update" => @"UPDATE [User Information]
-		//                  SET 
-		//                      [EMPLOYEE NAME] = @EMPNAME,
-		//                      USERNAME = @USERNAME,
-		//                      [USER ACCESS] = @USERACCESS,
-		//                      POSITION = @POSITION,
-		//                      DEPARTMENT = @USERDEPT,
-		//                      [STATUS] = @USERSTATUS,
-		//                      [EMAIL ADDRESS] = @WORKEMAIL,
-		//                      [OFFICE] = @OFFICE,
-		//                      [Broadvoice No.] = @BVNo,
-		//                      [Broadvoice Status] = @BVStatus
-		//                  WHERE
-		//                      [Employee ID] = @EMPID",
-		//			"Create" => @"INSERT INTO [User Information]
-		//                  ([EMPLOYEE NAME], USERNAME, PASSWORD, [USER ACCESS],
-		//                  POSITION, DEPARTMENT, [STATUS], [EMAIL ADDRESS], 
-		//                  [Broadvoice No.], OFFICE, [FIRST TIME LOGIN], THEME) 
-		//                  VALUES
-		//                  (@EMPNAME, @USERNAME, @PASSWORD, @USERACCESS,
-		//                  @POSITION, @USERDEPT, @USERSTATUS, @WORKEMAIL, 
-		//                  @BVNO, @OFFICE, @NEWEMP, @THEME)",
-		//			"Delete" => @"DELETE FROM [User Information]
-		//                  WHERE
-		//                      [Employee ID] = @EMPID",
-		//			_ => throw new ArgumentException("Invalid request type."),
-		//		};
-		//
-		//		// Add common parameters for "Update" and "Create"
-		//		if (request != "Delete")
-		//		{
-		//			cmd.Parameters.AddWithValue("@EMPNAME", txtempName.Text);
-		//			cmd.Parameters.AddWithValue("@USERNAME", txtuserName.Text);
-		//			cmd.Parameters.AddWithValue("@USERACCESS", cmbUserAccess.Text);
-		//			cmd.Parameters.AddWithValue("@POSITION", cmbPosition.Text);
-		//			cmd.Parameters.AddWithValue("@USERDEPT", cmbUserDept.Text);
-		//			cmd.Parameters.AddWithValue("@USERSTATUS", cmbUserStatus.Text);
-		//			cmd.Parameters.AddWithValue("@WORKEMAIL", txtWorkEmail.Text);
-		//			cmd.Parameters.AddWithValue("@BVNO", txtBVNo.Text);
-		//			cmd.Parameters.AddWithValue("@OFFICE", cmbOffice.Text);
-		//			cmd.Parameters.AddWithValue("@BVStatus", cmbUserStatus.Text);
-		//		}
-		//
-		//		// Add specific parameters for "Create"
-		//		if (request == "Create")
-		//		{
-		//			cmd.Parameters.AddWithValue("@NEWEMP", newEmp ?? "N/A");
-		//			cmd.Parameters.AddWithValue("@PASSWORD", sec.PassHash(txtpassWord.Text));
-		//			cmd.Parameters.AddWithValue("@THEME", theme ?? "Default");
-		//		}
-		//
-		//		// Add parameter for all requests
-		//		cmd.Parameters.AddWithValue("@EMPID", txtempID.Text);
-		//
-		//		// Execute query
-		//		cmd.ExecuteNonQuery();
-		//
-		//		// Log activity
-		//		logs = $"{empName} {request.ToLower()}d Employee ID: {txtempID.Text}";
-		//		message = $"Done! {txtempID.Text} has been successfully {request.ToLower()}d.";
-		//		SendCredentialstoEmail(txtWorkEmail.Text.Trim(), txtuserName.Text.Trim(), txtempName.Text.Trim());
-		//
-		//		log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} USER INFORMATION");
-		//		fe.SendToastNotifDesktop(message, "Success");
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		notif.LogError($"EmployeeDatabase {request}", empName, "Adjuster", newEmp, ex);
-		//		RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
-		//	}
-		//	finally
-		//	{
-		//		conn.Close();
-		//	}
-		//}
-
-		public void SendCredentialstoEmail(string recipientEmail, string userName, string empName, string password, string Name, string action)
+		public void SendCredentialstoEmail(string recipientEmail, string userName, string empName, string password, string Name, string action, string rdwebName, string rdwebPassword, string lytecUsername, string lytecPassword, string email, string bvNO)
 		{
 			string machineName = Environment.MachineName;
-			string emailAddressCC;
-
-			if (machineName == "ERWIN-PC")
-			{
-				emailAddressCC = "Edimson@yopmail.com";
-			}
-			else
-			{
-				emailAddressCC = "Edimson@pcmsbilling.net";
-			}
+			string emailAddressCC = machineName == "ERWIN-PC" ? "Edimson@yopmail.com" : "Edimson@pcmsbilling.net";
 
 			try
 			{
 				string subject;
+				StringBuilder bodyBuilder = new StringBuilder();
 
-				// Corrected placeholder usage
-				string bodyTemplate = @"
-<h3>Hello {0},</h3>
-<p>{1}</p>
-<ul>
-    <li><strong>Username:</strong> {2}</li>
-    <li><strong>Password:</strong> {3}</li>
-</ul>
-<p>Best regards,<br>System Administrator</p>";
-
-				string body;
+				// Common greeting and introduction
+				bodyBuilder.AppendFormat("<h3>Hello {0},</h3>", Name);
 
 				if (action == "Reset")
 				{
 					subject = "Password Reset";
-					body = string.Format(bodyTemplate, Name,
-						"Your account credentials for PCMS Lipa General Tools have been updated. Please check the details below:",
-						userName, password);
+					bodyBuilder.Append("<p>Your account credentials for PCMS Lipa General Tools have been updated. Please check the details below:</p>");
 				}
-				else
+				else // "Create" action includes additional credentials
 				{
 					subject = "Your Account Credentials";
-					body = string.Format(bodyTemplate, Name,
-						"Welcome to Primary Care Management Service. " +
-						"Please log in and change your password immediately. Your account credentials for PCMS Lipa General Tools are as follows:",
-						userName, password);
+					bodyBuilder.Append("<p>Welcome to Primary Care Management Service. Please log in and change your password immediately. Your account credentials for PCMS Lipa General Tools are as follows:</p>");
 				}
 
-				mailSender.SendEmail(recipientEmail, subject, body, emailAddressCC, "PCMS Lipa General Tool - User", null);
+				// Common user credentials
+				bodyBuilder.AppendFormat(@"
+        <ul>
+            <li><strong>Username:</strong> {0}</li>
+            <li><strong>Password:</strong> {1}</li>
+        </ul>", userName, password);
+
+				// Additional RDWeb and Lytec credentials when creating a new account
+				if (action == "Create")
+				{
+					bodyBuilder.AppendFormat(@"
+            <p>Your Logins to RDWeb and Lytec are as follows:</p>
+            <ul>
+                <li><strong>RDWeb Username:</strong> {0}</li>
+                <li><strong>RDWeb Password:</strong> {1}</li>
+                <li><strong>Lytec Username:</strong> {2}</li>
+                <li><strong>Lytec Password:</strong> {3}</li>
+			</ul>
+			<p>For your reference, here are the other details:</p>
+			<ul>
+			<li><strong>Work Email:</strong> {4}</li>
+				<li><strong>Broadvoice Number:</strong> {5}</li>	
+            </ul>", rdwebName, rdwebPassword, lytecUsername, lytecPassword, email, bvNO);
+				}
+
+				// Closing message
+				bodyBuilder.Append("<p>Best regards,<br>System Administrator</p>");
+
+				// Send email
+				mailSender.SendEmail(recipientEmail, subject, bodyBuilder.ToString(), emailAddressCC, "PCMS Lipa General Tool - User", null);
 			}
 			catch (Exception ex)
 			{
 				notif.LogError(nameof(SendCredentialstoEmail), empName, "User", recipientEmail, ex);
 			}
 		}
-
-
-		//public void SendCredentialstoEmail(string recipientEmail, string userName, string empName, string password, string action)
-		//{
-		//	try
-		//	{
-		//		if (action == "Reset")
-		//		{
-		//			string subject = "Password Reset";
-		//			string body = $@"
-		//            <h3>Hello {empName},</h3>
-		//            <p>Your account credentials for PCMS Lipa General Tools has been reset. Please check the details below:</p>
-		//            <ul>
-		//                <li><strong>Username:</strong> {userName}</li>
-		//                <li><strong>Password:</strong> {password}</li>
-		//            </ul>
-		//            <p>Please log in and change your password immediately.</p>
-		//            <p>Best regards,<br>SystemAdministrator</br> </p>";
-		//
-		//			SendEmail(recipientEmail, subject, body);
-		//		}
-		//		else
-		//		{
-		//			string subject = "Your Account Credentials";
-		//			string body = $@"
-		//			<h3>Hello {empName},</h3>
-		//			<p>Welcome to Primary Care Management Service. Your account credentials for PCMS Lipa General Tools are as follows:</p>
-		//			<ul>
-		//				<li><strong>Username:</strong> {userName}</li>
-		//				<li><strong>Password:</strong> {password}</li>
-		//			</ul>
-		//			<p>Please log in and change your password immediately.</p>
-		//			<p>Best regards,<br>SystemAdministrator</br> </p>";
-		//			SendEmail(recipientEmail, subject, body);
-		//			//ShowNotification("Email sent successfully!", NotificationType.Success);
-		//		}
-		//		
-		//		//ShowNotification("Email sent successfully!", NotificationType.Success);
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		notif.LogError($"SendCredentialstoEmail", empName,"User", recipientEmail, ex);
-		//		//RadMessageBox.Show($"Error during {request} operation. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);/ ShowNotification($"Error sending email: {ex.Message}", NotificationType.Error);
-		//	}
-		//}
-
-		//private void SendEmail(string recipient, string subject, string body)
-		//{
-		//	try
-		//	{
-		//		string senderEmail = "yourmeeappnoreply@gmail.com";
-		//		string appPassword = "qrgd alxm otut euuq";
-		//		string senderName = "PCMS Lipa General Tool - noreply";
-		//		// Use the App Password generated from Google
-		//		//string recipientEmail = txtRecipient.Text.Trim();
-		//		//string subject = txtSubject.Text.Trim();
-		//		//string body = txtBody.Text.Trim();
-		//
-		//		using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587))
-		//		{
-		//			smtpClient.Credentials = new NetworkCredential(senderEmail, appPassword);
-		//			smtpClient.EnableSsl = true;
-		//
-		//			using (MailMessage mailMessage = new MailMessage())
-		//			{
-		//				mailMessage.From = new MailAddress(senderEmail, senderName); // Custom Sender Name
-		//				mailMessage.To.Add(new MailAddress(recipient));
-		//				mailMessage.Subject = subject;
-		//				mailMessage.Body = body;
-		//				mailMessage.IsBodyHtml = true;
-		//				mailMessage.CC.Add("edimson@yopmail.com");
-		//				mailMessage.Bcc.Add("mr.erwinalcantara@gmail.com");
-		//				smtpClient.Send(mailMessage);
-		//			}
-		//		}
-		//
-		//		RadMessageBox.Show("Email Sent Successfully!", "Success", MessageBoxButtons.OK, RadMessageIcon.Info);
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		RadMessageBox.Show($"Error: {ex.Message}", "Email Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
-		//	}
-
-		//string smtpHost = "smtp." + EmailHost;
-		//int smtpPort = 587;
-		//string senderEmail = "erwin@pcmsbilling.net";
-		////gmail app password = qrgd alxm otut euuq
-		//string senderPassword = "W3yHzy-j-A";
-		//int retryCount = 3; // Number of retries
-		//int retryDelay = 2000; // Delay in milliseconds between retries
-		//
-		//for (int attempt = 1; attempt <= retryCount; attempt++)
-		//{
-		//	try
-		//	{
-		//		using var smtpClient = new SmtpClient(smtpHost)
-		//		{
-		//			Port = smtpPort,
-		//			Credentials = new NetworkCredential(senderEmail, senderPassword),
-		//			EnableSsl = true
-		//		};
-		//
-		//		using MailMessage mail = new()
-		//		{
-		//			From = new MailAddress(senderEmail, "PCMS Lipa General Tool"),
-		//			Subject = subject,
-		//			Body = body
-		//
-		//		};
-		//		mail.IsBodyHtml = true;	
-		//		mail.To.Add(recipient);
-		//		mail.CC.Add("edimson@pcmsbilling.net");
-		//		mail.Bcc.Add("mr.erwinalcantara@gmail.com");
-		//		smtpClient.Send(mail);
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		if (attempt == retryCount)
-		//		{
-		//			notif.LogError("SendEmail", null, "User", recipient, ex);
-		//			return;
-		//		}
-		//
-		//		// Delay before retrying
-		//		Task.Delay(retryDelay).Wait();
-		//	}
-		//}
 
 
 		public string GenerateRandomPassword()
@@ -2507,42 +2165,7 @@ WHERE USERNAME LIKE @itemToSearch";
 			return resultTable;
 		}
 
-		public DataTable SearchData(
-	string searchTerm,
-	out string searchCount,
-	string empName)
-		{
-			DataTable resultTable = new();
-
-			using SqlConnection conn = new(_dbConnection);
-			try
-			{
-				conn.Open();
-				string query = $@"
-SELECT *
-FROM [User Information]
-WHERE [Employee Name] LIKE @searchTerm
-OR [Broadvoice No.] LIKE @searchTerm
-OR [Remarks] LIKE @searchTerm";
-
-				using SqlCommand cmd = new(query, conn);
-				cmd.Parameters.AddWithValue("@searchTerm", $"%{searchTerm}%");
-
-				using SqlDataAdapter adapter = new(cmd);
-				adapter.Fill(resultTable);
-
-				// Calculate the search count
-				searchCount = $"Total records: {resultTable.Rows.Count}";
-			}
-			catch (Exception ex)
-			{
-				notif.LogError("SearchData", empName, "Adjuster", null, ex);
-				searchCount = "An error occurred while fetching records.";
-			}
-
-			return resultTable;
-		}
-
+		
 		//public void MoreEmployeeDatabase(RadTextBox txtempID, RadTextBox txtempName, RadTextBox txtRDWebName, RadTextBox txtRDWebPassword, RadTextBox txtLytecUsername, RadTextBox txtLytecPassword, RadTextBox txtWorkEmail, RadTextBox txtEmailPassword, RadTextBox DateOfBirth, RadTextBox broadvoiceNo, RadTextBox broadvoiceUsername, RadTextBox broadvoicePassword, RadTextBox pcName, RadTextBox pcUN, RadTextBox pcPW, RadDropDownList team, RadTextBoxControl Remarks, RadDropDownList cmbFirstLogin, RadTextBox dcUsernaame, RadTextBox dcPassword, string empName, RadDropDownList cmbEmploymentStat)
 		//{
 		//

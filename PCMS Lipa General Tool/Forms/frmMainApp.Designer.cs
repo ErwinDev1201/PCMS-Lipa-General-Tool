@@ -198,8 +198,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgallNotesView)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgallNotesView.MasterTemplate)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radMenu1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// mnuTool
@@ -1237,12 +1237,6 @@
 			this.pictureBox1.TabIndex = 2;
 			this.pictureBox1.TabStop = false;
 			// 
-			// frmMainApp
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1193, 754);
-			// 
 			// radMenu1
 			// 
 			this.radMenu1.Items.AddRange(new Telerik.WinControls.RadItem[] {
@@ -1259,6 +1253,12 @@
 			this.radMenu1.Size = new System.Drawing.Size(1193, 34);
 			this.radMenu1.TabIndex = 1;
 			this.radMenu1.ThemeName = "Crystal";
+			// 
+			// frmMainApp
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.ClientSize = new System.Drawing.Size(1193, 754);
 			this.Controls.Add(this.radStatusStrip1);
 			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.radMenu1);
@@ -1267,7 +1267,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "frmMainApp";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = ",b";
+			this.Text = "";
 			this.ThemeName = "Crystal";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMainApp_FormClosing);

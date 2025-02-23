@@ -233,7 +233,7 @@
 			// dtpDateofBirth
 			// 
 			this.dtpDateofBirth.CalendarSize = new System.Drawing.Size(290, 320);
-			this.dtpDateofBirth.Location = new System.Drawing.Point(157, 334);
+			this.dtpDateofBirth.Location = new System.Drawing.Point(157, 340);
 			this.dtpDateofBirth.Name = "dtpDateofBirth";
 			this.dtpDateofBirth.Size = new System.Drawing.Size(180, 24);
 			this.dtpDateofBirth.TabIndex = 25;
@@ -244,7 +244,7 @@
 			// 
 			// txtRemarks
 			// 
-			this.txtRemarks.Location = new System.Drawing.Point(157, 453);
+			this.txtRemarks.Location = new System.Drawing.Point(157, 459);
 			this.txtRemarks.Multiline = true;
 			this.txtRemarks.Name = "txtRemarks";
 			this.txtRemarks.Size = new System.Drawing.Size(180, 67);
@@ -253,7 +253,7 @@
 			// 
 			// radLabel11
 			// 
-			this.radLabel11.Location = new System.Drawing.Point(8, 474);
+			this.radLabel11.Location = new System.Drawing.Point(11, 480);
 			this.radLabel11.Name = "radLabel11";
 			this.radLabel11.Size = new System.Drawing.Size(68, 20);
 			this.radLabel11.TabIndex = 123;
@@ -271,7 +271,7 @@
 			this.cmbEmploymentStatus.Items.Add(radListDataItem2);
 			this.cmbEmploymentStatus.Items.Add(radListDataItem3);
 			this.cmbEmploymentStatus.Items.Add(radListDataItem4);
-			this.cmbEmploymentStatus.Location = new System.Drawing.Point(157, 393);
+			this.cmbEmploymentStatus.Location = new System.Drawing.Point(157, 399);
 			this.cmbEmploymentStatus.Name = "cmbEmploymentStatus";
 			this.cmbEmploymentStatus.Size = new System.Drawing.Size(180, 24);
 			this.cmbEmploymentStatus.TabIndex = 27;
@@ -279,7 +279,7 @@
 			// 
 			// radLabel19
 			// 
-			this.radLabel19.Location = new System.Drawing.Point(9, 395);
+			this.radLabel19.Location = new System.Drawing.Point(10, 401);
 			this.radLabel19.Name = "radLabel19";
 			this.radLabel19.Size = new System.Drawing.Size(133, 20);
 			this.radLabel19.TabIndex = 121;
@@ -293,7 +293,7 @@
 			radListDataItem6.Text = "Yes";
 			this.cmbFirstTime.Items.Add(radListDataItem5);
 			this.cmbFirstTime.Items.Add(radListDataItem6);
-			this.cmbFirstTime.Location = new System.Drawing.Point(157, 423);
+			this.cmbFirstTime.Location = new System.Drawing.Point(157, 429);
 			this.cmbFirstTime.Name = "cmbFirstTime";
 			this.cmbFirstTime.Size = new System.Drawing.Size(125, 24);
 			this.cmbFirstTime.TabIndex = 28;
@@ -301,7 +301,7 @@
 			// 
 			// txtDCPassword
 			// 
-			this.txtDCPassword.Location = new System.Drawing.Point(157, 303);
+			this.txtDCPassword.Location = new System.Drawing.Point(157, 309);
 			this.txtDCPassword.Name = "txtDCPassword";
 			this.txtDCPassword.Size = new System.Drawing.Size(180, 24);
 			this.txtDCPassword.TabIndex = 24;
@@ -309,7 +309,7 @@
 			// 
 			// radLabel8
 			// 
-			this.radLabel8.Location = new System.Drawing.Point(9, 333);
+			this.radLabel8.Location = new System.Drawing.Point(10, 340);
 			this.radLabel8.Name = "radLabel8";
 			this.radLabel8.Size = new System.Drawing.Size(83, 20);
 			this.radLabel8.TabIndex = 119;
@@ -318,7 +318,7 @@
 			// 
 			// radLabel10
 			// 
-			this.radLabel10.Location = new System.Drawing.Point(10, 425);
+			this.radLabel10.Location = new System.Drawing.Point(11, 431);
 			this.radLabel10.Name = "radLabel10";
 			this.radLabel10.Size = new System.Drawing.Size(115, 20);
 			this.radLabel10.TabIndex = 109;
@@ -327,7 +327,7 @@
 			// 
 			// txtWorkEmailPass
 			// 
-			this.txtWorkEmailPass.Location = new System.Drawing.Point(157, 243);
+			this.txtWorkEmailPass.Location = new System.Drawing.Point(157, 249);
 			this.txtWorkEmailPass.Name = "txtWorkEmailPass";
 			this.txtWorkEmailPass.Size = new System.Drawing.Size(180, 24);
 			this.txtWorkEmailPass.TabIndex = 21;
@@ -335,7 +335,7 @@
 			// 
 			// txtDCUsernaem
 			// 
-			this.txtDCUsernaem.Location = new System.Drawing.Point(157, 273);
+			this.txtDCUsernaem.Location = new System.Drawing.Point(157, 279);
 			this.txtDCUsernaem.Name = "txtDCUsernaem";
 			this.txtDCUsernaem.Size = new System.Drawing.Size(180, 24);
 			this.txtDCUsernaem.TabIndex = 23;
@@ -343,7 +343,7 @@
 			// 
 			// radLabel20
 			// 
-			this.radLabel20.Location = new System.Drawing.Point(9, 303);
+			this.radLabel20.Location = new System.Drawing.Point(10, 309);
 			this.radLabel20.Name = "radLabel20";
 			this.radLabel20.Size = new System.Drawing.Size(128, 20);
 			this.radLabel20.TabIndex = 112;
@@ -352,7 +352,7 @@
 			// 
 			// radLabel21
 			// 
-			this.radLabel21.Location = new System.Drawing.Point(11, 273);
+			this.radLabel21.Location = new System.Drawing.Point(11, 279);
 			this.radLabel21.Name = "radLabel21";
 			this.radLabel21.Size = new System.Drawing.Size(126, 20);
 			this.radLabel21.TabIndex = 111;
@@ -361,7 +361,7 @@
 			// 
 			// txtWorkEmail
 			// 
-			this.txtWorkEmail.Location = new System.Drawing.Point(157, 213);
+			this.txtWorkEmail.Location = new System.Drawing.Point(157, 219);
 			this.txtWorkEmail.Name = "txtWorkEmail";
 			this.txtWorkEmail.Size = new System.Drawing.Size(180, 24);
 			this.txtWorkEmail.TabIndex = 20;
@@ -369,7 +369,7 @@
 			// 
 			// radLabel7
 			// 
-			this.radLabel7.Location = new System.Drawing.Point(10, 243);
+			this.radLabel7.Location = new System.Drawing.Point(10, 249);
 			this.radLabel7.Name = "radLabel7";
 			this.radLabel7.Size = new System.Drawing.Size(147, 20);
 			this.radLabel7.TabIndex = 116;
@@ -378,7 +378,7 @@
 			// 
 			// txtPCPassword
 			// 
-			this.txtPCPassword.Location = new System.Drawing.Point(157, 183);
+			this.txtPCPassword.Location = new System.Drawing.Point(157, 189);
 			this.txtPCPassword.Name = "txtPCPassword";
 			this.txtPCPassword.Size = new System.Drawing.Size(180, 24);
 			this.txtPCPassword.TabIndex = 19;
@@ -386,7 +386,7 @@
 			// 
 			// radLabel6
 			// 
-			this.radLabel6.Location = new System.Drawing.Point(11, 213);
+			this.radLabel6.Location = new System.Drawing.Point(11, 219);
 			this.radLabel6.Name = "radLabel6";
 			this.radLabel6.Size = new System.Drawing.Size(83, 20);
 			this.radLabel6.TabIndex = 115;
@@ -395,7 +395,7 @@
 			// 
 			// txtBVPassword
 			// 
-			this.txtBVPassword.Location = new System.Drawing.Point(157, 93);
+			this.txtBVPassword.Location = new System.Drawing.Point(157, 99);
 			this.txtBVPassword.Name = "txtBVPassword";
 			this.txtBVPassword.Size = new System.Drawing.Size(180, 24);
 			this.txtBVPassword.TabIndex = 16;
@@ -404,7 +404,7 @@
 			// cmbManagement
 			// 
 			this.cmbManagement.DropDownAnimationEnabled = true;
-			this.cmbManagement.Location = new System.Drawing.Point(157, 363);
+			this.cmbManagement.Location = new System.Drawing.Point(157, 369);
 			this.cmbManagement.Name = "cmbManagement";
 			this.cmbManagement.Size = new System.Drawing.Size(180, 24);
 			this.cmbManagement.TabIndex = 26;
@@ -413,7 +413,7 @@
 			// 
 			// txtPCUsername
 			// 
-			this.txtPCUsername.Location = new System.Drawing.Point(157, 153);
+			this.txtPCUsername.Location = new System.Drawing.Point(157, 159);
 			this.txtPCUsername.Name = "txtPCUsername";
 			this.txtPCUsername.Size = new System.Drawing.Size(180, 24);
 			this.txtPCUsername.TabIndex = 18;
@@ -421,7 +421,7 @@
 			// 
 			// txtPCName
 			// 
-			this.txtPCName.Location = new System.Drawing.Point(157, 123);
+			this.txtPCName.Location = new System.Drawing.Point(157, 129);
 			this.txtPCName.Name = "txtPCName";
 			this.txtPCName.Size = new System.Drawing.Size(180, 24);
 			this.txtPCName.TabIndex = 17;
@@ -429,7 +429,7 @@
 			// 
 			// txtBVUsername
 			// 
-			this.txtBVUsername.Location = new System.Drawing.Point(157, 63);
+			this.txtBVUsername.Location = new System.Drawing.Point(157, 69);
 			this.txtBVUsername.Name = "txtBVUsername";
 			this.txtBVUsername.Size = new System.Drawing.Size(180, 24);
 			this.txtBVUsername.TabIndex = 15;
@@ -437,7 +437,7 @@
 			// 
 			// txtBVNo
 			// 
-			this.txtBVNo.Location = new System.Drawing.Point(157, 33);
+			this.txtBVNo.Location = new System.Drawing.Point(157, 39);
 			this.txtBVNo.Name = "txtBVNo";
 			this.txtBVNo.Size = new System.Drawing.Size(180, 24);
 			this.txtBVNo.TabIndex = 14;
@@ -445,7 +445,7 @@
 			// 
 			// radLabel12
 			// 
-			this.radLabel12.Location = new System.Drawing.Point(10, 365);
+			this.radLabel12.Location = new System.Drawing.Point(10, 371);
 			this.radLabel12.Name = "radLabel12";
 			this.radLabel12.Size = new System.Drawing.Size(93, 20);
 			this.radLabel12.TabIndex = 101;
@@ -454,7 +454,7 @@
 			// 
 			// radLabel13
 			// 
-			this.radLabel13.Location = new System.Drawing.Point(12, 183);
+			this.radLabel13.Location = new System.Drawing.Point(12, 189);
 			this.radLabel13.Name = "radLabel13";
 			this.radLabel13.Size = new System.Drawing.Size(96, 20);
 			this.radLabel13.TabIndex = 100;
@@ -463,7 +463,7 @@
 			// 
 			// radLabel14
 			// 
-			this.radLabel14.Location = new System.Drawing.Point(11, 153);
+			this.radLabel14.Location = new System.Drawing.Point(12, 159);
 			this.radLabel14.Name = "radLabel14";
 			this.radLabel14.Size = new System.Drawing.Size(97, 20);
 			this.radLabel14.TabIndex = 99;
@@ -472,7 +472,7 @@
 			// 
 			// radLabel15
 			// 
-			this.radLabel15.Location = new System.Drawing.Point(12, 119);
+			this.radLabel15.Location = new System.Drawing.Point(12, 129);
 			this.radLabel15.Name = "radLabel15";
 			this.radLabel15.Size = new System.Drawing.Size(71, 20);
 			this.radLabel15.TabIndex = 98;
@@ -481,7 +481,7 @@
 			// 
 			// radLabel16
 			// 
-			this.radLabel16.Location = new System.Drawing.Point(11, 93);
+			this.radLabel16.Location = new System.Drawing.Point(11, 99);
 			this.radLabel16.Name = "radLabel16";
 			this.radLabel16.Size = new System.Drawing.Size(146, 20);
 			this.radLabel16.TabIndex = 97;
@@ -490,7 +490,7 @@
 			// 
 			// radLabel17
 			// 
-			this.radLabel17.Location = new System.Drawing.Point(11, 63);
+			this.radLabel17.Location = new System.Drawing.Point(11, 69);
 			this.radLabel17.Name = "radLabel17";
 			this.radLabel17.Size = new System.Drawing.Size(148, 20);
 			this.radLabel17.TabIndex = 96;
@@ -499,7 +499,7 @@
 			// 
 			// radLabel18
 			// 
-			this.radLabel18.Location = new System.Drawing.Point(11, 33);
+			this.radLabel18.Location = new System.Drawing.Point(11, 39);
 			this.radLabel18.Name = "radLabel18";
 			this.radLabel18.Size = new System.Drawing.Size(103, 20);
 			this.radLabel18.TabIndex = 95;
@@ -520,48 +520,48 @@
 			this.radGroupBox2.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.radGroupBox2.HeaderMargin = new System.Windows.Forms.Padding(1);
 			this.radGroupBox2.HeaderText = "RD App Credentials";
-			this.radGroupBox2.Location = new System.Drawing.Point(13, 371);
+			this.radGroupBox2.Location = new System.Drawing.Point(13, 383);
 			this.radGroupBox2.Name = "radGroupBox2";
-			this.radGroupBox2.Size = new System.Drawing.Size(369, 180);
+			this.radGroupBox2.Size = new System.Drawing.Size(369, 168);
 			this.radGroupBox2.TabIndex = 50;
 			this.radGroupBox2.Text = "RD App Credentials";
 			this.radGroupBox2.ThemeName = "Crystal";
 			// 
 			// txtLytecPassword
 			// 
-			this.txtLytecPassword.Location = new System.Drawing.Point(149, 131);
+			this.txtLytecPassword.Location = new System.Drawing.Point(149, 132);
 			this.txtLytecPassword.Name = "txtLytecPassword";
-			this.txtLytecPassword.Size = new System.Drawing.Size(180, 24);
+			this.txtLytecPassword.Size = new System.Drawing.Size(200, 24);
 			this.txtLytecPassword.TabIndex = 13;
 			this.txtLytecPassword.ThemeName = "Crystal";
 			// 
 			// txtRDWebPassword
 			// 
-			this.txtRDWebPassword.Location = new System.Drawing.Point(149, 71);
+			this.txtRDWebPassword.Location = new System.Drawing.Point(149, 72);
 			this.txtRDWebPassword.Name = "txtRDWebPassword";
-			this.txtRDWebPassword.Size = new System.Drawing.Size(180, 24);
+			this.txtRDWebPassword.Size = new System.Drawing.Size(200, 24);
 			this.txtRDWebPassword.TabIndex = 11;
 			this.txtRDWebPassword.ThemeName = "Crystal";
 			// 
 			// txtLytecUsername
 			// 
-			this.txtLytecUsername.Location = new System.Drawing.Point(149, 101);
+			this.txtLytecUsername.Location = new System.Drawing.Point(149, 102);
 			this.txtLytecUsername.Name = "txtLytecUsername";
-			this.txtLytecUsername.Size = new System.Drawing.Size(180, 24);
+			this.txtLytecUsername.Size = new System.Drawing.Size(200, 24);
 			this.txtLytecUsername.TabIndex = 12;
 			this.txtLytecUsername.ThemeName = "Crystal";
 			// 
 			// txtRDWebUsername
 			// 
-			this.txtRDWebUsername.Location = new System.Drawing.Point(149, 41);
+			this.txtRDWebUsername.Location = new System.Drawing.Point(149, 42);
 			this.txtRDWebUsername.Name = "txtRDWebUsername";
-			this.txtRDWebUsername.Size = new System.Drawing.Size(180, 24);
+			this.txtRDWebUsername.Size = new System.Drawing.Size(200, 24);
 			this.txtRDWebUsername.TabIndex = 10;
 			this.txtRDWebUsername.ThemeName = "Crystal";
 			// 
 			// radLabel5
 			// 
-			this.radLabel5.Location = new System.Drawing.Point(9, 131);
+			this.radLabel5.Location = new System.Drawing.Point(9, 132);
 			this.radLabel5.Name = "radLabel5";
 			this.radLabel5.Size = new System.Drawing.Size(111, 20);
 			this.radLabel5.TabIndex = 68;
@@ -570,7 +570,7 @@
 			// 
 			// radLabel4
 			// 
-			this.radLabel4.Location = new System.Drawing.Point(8, 101);
+			this.radLabel4.Location = new System.Drawing.Point(8, 102);
 			this.radLabel4.Name = "radLabel4";
 			this.radLabel4.Size = new System.Drawing.Size(112, 20);
 			this.radLabel4.TabIndex = 67;
@@ -579,7 +579,7 @@
 			// 
 			// radLabel3
 			// 
-			this.radLabel3.Location = new System.Drawing.Point(9, 71);
+			this.radLabel3.Location = new System.Drawing.Point(9, 72);
 			this.radLabel3.Name = "radLabel3";
 			this.radLabel3.Size = new System.Drawing.Size(126, 20);
 			this.radLabel3.TabIndex = 66;
@@ -588,7 +588,7 @@
 			// 
 			// radLabel2
 			// 
-			this.radLabel2.Location = new System.Drawing.Point(8, 41);
+			this.radLabel2.Location = new System.Drawing.Point(8, 42);
 			this.radLabel2.Name = "radLabel2";
 			this.radLabel2.Size = new System.Drawing.Size(127, 20);
 			this.radLabel2.TabIndex = 65;
@@ -623,7 +623,7 @@
 			this.radGroupBox1.HeaderText = "Mandatory Information";
 			this.radGroupBox1.Location = new System.Drawing.Point(13, 14);
 			this.radGroupBox1.Name = "radGroupBox1";
-			this.radGroupBox1.Size = new System.Drawing.Size(369, 351);
+			this.radGroupBox1.Size = new System.Drawing.Size(369, 360);
 			this.radGroupBox1.TabIndex = 49;
 			this.radGroupBox1.Text = "Mandatory Information";
 			this.radGroupBox1.ThemeName = "Crystal";
@@ -631,7 +631,7 @@
 			// lblResult
 			// 
 			this.lblResult.ForeColor = System.Drawing.Color.IndianRed;
-			this.lblResult.Location = new System.Drawing.Point(243, 68);
+			this.lblResult.Location = new System.Drawing.Point(256, 76);
 			this.lblResult.Name = "lblResult";
 			this.lblResult.Size = new System.Drawing.Size(75, 20);
 			this.lblResult.TabIndex = 120;
@@ -641,7 +641,7 @@
 			// btnResetPassword
 			// 
 			this.btnResetPassword.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnResetPassword.Location = new System.Drawing.Point(15, 307);
+			this.btnResetPassword.Location = new System.Drawing.Point(15, 315);
 			this.btnResetPassword.Name = "btnResetPassword";
 			this.btnResetPassword.Size = new System.Drawing.Size(334, 33);
 			this.btnResetPassword.TabIndex = 9;
@@ -660,7 +660,7 @@
 			radListDataItem8.Text = "San Dimas";
 			this.cmbOffice.Items.Add(radListDataItem7);
 			this.cmbOffice.Items.Add(radListDataItem8);
-			this.cmbOffice.Location = new System.Drawing.Point(134, 273);
+			this.cmbOffice.Location = new System.Drawing.Point(134, 280);
 			this.cmbOffice.Name = "cmbOffice";
 			this.cmbOffice.Size = new System.Drawing.Size(184, 24);
 			this.cmbOffice.TabIndex = 8;
@@ -672,7 +672,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.radLabel28.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel28.Location = new System.Drawing.Point(15, 277);
+			this.radLabel28.Location = new System.Drawing.Point(15, 282);
 			this.radLabel28.Name = "radLabel28";
 			this.radLabel28.Size = new System.Drawing.Size(43, 19);
 			this.radLabel28.TabIndex = 118;
@@ -681,9 +681,9 @@
 			// 
 			// txtEmpName
 			// 
-			this.txtEmpName.Location = new System.Drawing.Point(134, 95);
+			this.txtEmpName.Location = new System.Drawing.Point(134, 102);
 			this.txtEmpName.Name = "txtEmpName";
-			this.txtEmpName.Size = new System.Drawing.Size(195, 24);
+			this.txtEmpName.Size = new System.Drawing.Size(215, 24);
 			this.txtEmpName.TabIndex = 2;
 			this.txtEmpName.ThemeName = "Crystal";
 			// 
@@ -693,7 +693,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.radLabel24.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel24.Location = new System.Drawing.Point(15, 126);
+			this.radLabel24.Location = new System.Drawing.Point(15, 133);
 			this.radLabel24.Name = "radLabel24";
 			this.radLabel24.Size = new System.Drawing.Size(47, 19);
 			this.radLabel24.TabIndex = 116;
@@ -706,7 +706,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtWorkEmailMain.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtWorkEmailMain.Location = new System.Drawing.Point(134, 125);
+			this.txtWorkEmailMain.Location = new System.Drawing.Point(134, 132);
 			this.txtWorkEmailMain.Name = "txtWorkEmailMain";
 			this.txtWorkEmailMain.Size = new System.Drawing.Size(215, 23);
 			this.txtWorkEmailMain.TabIndex = 3;
@@ -715,7 +715,7 @@
 			// 
 			// radLabel9
 			// 
-			this.radLabel9.Location = new System.Drawing.Point(15, 95);
+			this.radLabel9.Location = new System.Drawing.Point(15, 102);
 			this.radLabel9.Name = "radLabel9";
 			this.radLabel9.Size = new System.Drawing.Size(113, 20);
 			this.radLabel9.TabIndex = 114;
@@ -729,7 +729,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.cmbUserDept.DropDownAnimationEnabled = true;
 			this.cmbUserDept.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmbUserDept.Location = new System.Drawing.Point(134, 184);
+			this.cmbUserDept.Location = new System.Drawing.Point(134, 191);
 			this.cmbUserDept.Name = "cmbUserDept";
 			this.cmbUserDept.Size = new System.Drawing.Size(185, 24);
 			this.cmbUserDept.TabIndex = 5;
@@ -742,7 +742,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.radLabel23.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel23.Location = new System.Drawing.Point(14, 188);
+			this.radLabel23.Location = new System.Drawing.Point(14, 193);
 			this.radLabel23.Name = "radLabel23";
 			this.radLabel23.Size = new System.Drawing.Size(114, 19);
 			this.radLabel23.TabIndex = 112;
@@ -756,7 +756,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.cmbUserAccess.DropDownAnimationEnabled = true;
 			this.cmbUserAccess.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmbUserAccess.Location = new System.Drawing.Point(134, 154);
+			this.cmbUserAccess.Location = new System.Drawing.Point(134, 161);
 			this.cmbUserAccess.Name = "cmbUserAccess";
 			this.cmbUserAccess.Size = new System.Drawing.Size(185, 24);
 			this.cmbUserAccess.TabIndex = 4;
@@ -771,7 +771,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.cmbPosition.DropDownAnimationEnabled = true;
 			this.cmbPosition.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmbPosition.Location = new System.Drawing.Point(134, 214);
+			this.cmbPosition.Location = new System.Drawing.Point(134, 221);
 			this.cmbPosition.Name = "cmbPosition";
 			this.cmbPosition.Size = new System.Drawing.Size(185, 24);
 			this.cmbPosition.TabIndex = 6;
@@ -790,7 +790,7 @@
 			radListDataItem10.Text = "InActive";
 			this.cmbUserStatus.Items.Add(radListDataItem9);
 			this.cmbUserStatus.Items.Add(radListDataItem10);
-			this.cmbUserStatus.Location = new System.Drawing.Point(134, 243);
+			this.cmbUserStatus.Location = new System.Drawing.Point(134, 250);
 			this.cmbUserStatus.Name = "cmbUserStatus";
 			this.cmbUserStatus.Size = new System.Drawing.Size(185, 24);
 			this.cmbUserStatus.TabIndex = 7;
@@ -802,7 +802,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.radLabel25.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel25.Location = new System.Drawing.Point(15, 249);
+			this.radLabel25.Location = new System.Drawing.Point(15, 252);
 			this.radLabel25.Name = "radLabel25";
 			this.radLabel25.Size = new System.Drawing.Size(82, 19);
 			this.radLabel25.TabIndex = 108;
@@ -815,7 +815,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.radLabel26.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel26.Location = new System.Drawing.Point(15, 218);
+			this.radLabel26.Location = new System.Drawing.Point(15, 223);
 			this.radLabel26.Name = "radLabel26";
 			this.radLabel26.Size = new System.Drawing.Size(86, 19);
 			this.radLabel26.TabIndex = 107;
@@ -828,7 +828,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.radLabel27.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel27.Location = new System.Drawing.Point(14, 158);
+			this.radLabel27.Location = new System.Drawing.Point(14, 163);
 			this.radLabel27.Name = "radLabel27";
 			this.radLabel27.Size = new System.Drawing.Size(81, 19);
 			this.radLabel27.TabIndex = 106;
@@ -838,9 +838,9 @@
 			// txtUsername
 			// 
 			this.txtUsername.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtUsername.Location = new System.Drawing.Point(134, 66);
+			this.txtUsername.Location = new System.Drawing.Point(134, 73);
 			this.txtUsername.Name = "txtUsername";
-			this.txtUsername.Size = new System.Drawing.Size(102, 23);
+			this.txtUsername.Size = new System.Drawing.Size(111, 23);
 			this.txtUsername.TabIndex = 1;
 			this.txtUsername.ThemeName = "Crystal";
 			this.txtUsername.TextChanged += new System.EventHandler(this.txtUsername_TextChanged);
@@ -851,7 +851,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.radLabel22.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel22.Location = new System.Drawing.Point(15, 67);
+			this.radLabel22.Location = new System.Drawing.Point(15, 74);
 			this.radLabel22.Name = "radLabel22";
 			this.radLabel22.Size = new System.Drawing.Size(71, 19);
 			this.radLabel22.TabIndex = 104;
@@ -861,7 +861,7 @@
 			// txtEmpID
 			// 
 			this.txtEmpID.BackColor = System.Drawing.Color.Gainsboro;
-			this.txtEmpID.Location = new System.Drawing.Point(134, 36);
+			this.txtEmpID.Location = new System.Drawing.Point(134, 43);
 			this.txtEmpID.Name = "txtEmpID";
 			this.txtEmpID.ReadOnly = true;
 			this.txtEmpID.Size = new System.Drawing.Size(111, 24);
@@ -870,7 +870,7 @@
 			// 
 			// radLabel1
 			// 
-			this.radLabel1.Location = new System.Drawing.Point(15, 40);
+			this.radLabel1.Location = new System.Drawing.Point(15, 45);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(90, 20);
 			this.radLabel1.TabIndex = 102;

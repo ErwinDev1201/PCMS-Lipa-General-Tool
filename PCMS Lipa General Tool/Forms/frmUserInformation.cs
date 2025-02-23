@@ -366,7 +366,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void DefaultItem(string action)
 		{
-			if (action == "New")
+			if (action == "Create")
 			{
 				btnUpdate.Text = "Save";
 				txtRDWebUsername.Text = @"hsn-pcms\";
@@ -414,23 +414,23 @@ namespace PCMS_Lipa_General_Tool.Forms
 				switch (userAccess)
 				{
 					case "Administrator":
-						cmbUserDept.Items.AddRange(new[] { "All Department", "IT" });
-						cmbPosition.Items.AddRange(new[] { "IT Manager", "Operations Manager", "Supervisor" });
+						cmbUserDept.Items.AddRange(["All Department", "IT"]);
+						cmbPosition.Items.AddRange(["IT Manager", "Operations Manager", "Supervisor"]);
 						break;
 
 					case "Management":
 						cmbUserDept.Items.Add("All Department");
-						cmbPosition.Items.AddRange(new[] { "Operations Manager", "Supervisor" });
+						cmbPosition.Items.AddRange(["Operations Manager", "Supervisor"]);
 						break;
 
 					case "Power User":
 					case "User":
-						cmbUserDept.Items.AddRange(new[] { "Workers Comp", "Private" });
-						cmbPosition.Items.AddRange(new[] { "Collector", "Back Office" });
+						cmbUserDept.Items.AddRange(["Workers Comp", "Private"]);
+						cmbPosition.Items.AddRange(["Collector", "Back Office"]);
 						break;
 
 					case "Programmer":
-						cmbUserDept.Items.AddRange(new[] { "All Department", "IT" });
+						cmbUserDept.Items.AddRange(["All Department", "IT"]);
 						cmbPosition.Items.Add("Programmer");
 						break;
 
@@ -589,17 +589,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 				switch (userAccess)
 				{
 					case "Administrator":
-						cmbUserDept.Items.AddRange(new[] { "All Department", "IT" });
+						cmbUserDept.Items.AddRange(["All Department", "IT"]);
 						break;
 					case "Management":
 						cmbUserDept.Items.Add("All Department");
 						break;
 					case "Power User":
 					case "User":
-						cmbUserDept.Items.AddRange(new[] { "Workers Comp", "Private" });
+						cmbUserDept.Items.AddRange(["Workers Comp", "Private"]);
 						break;
 					case "Programmer":
-						cmbUserDept.Items.AddRange(new[] { "All Department", "IT" });
+						cmbUserDept.Items.AddRange(["All Department", "IT"]);
 						break;
 				}
 
@@ -626,14 +626,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 				switch (userAccess)
 				{
 					case "Administrator":
-						cmbPosition.Items.AddRange(new[] { "IT Manager", "Operations Manager", "Supervisor" });
+						cmbPosition.Items.AddRange(["IT Manager", "Operations Manager", "Supervisor"]);
 						break;
 					case "Management":
-						cmbPosition.Items.AddRange(new[] { "Operations Manager", "Supervisor" });
+						cmbPosition.Items.AddRange(["Operations Manager", "Supervisor"]);
 						break;
 					case "Power User":
 					case "User":
-						cmbPosition.Items.AddRange(new[] { "Collector", "Back Office" });
+						cmbPosition.Items.AddRange(["Collector", "Back Office"]);
 						break;
 					case "Programmer":
 						cmbPosition.Items.Add("Programmer");
