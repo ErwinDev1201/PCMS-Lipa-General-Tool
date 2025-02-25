@@ -536,7 +536,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
-		{
+		{ 
 			if (RadMessageBox.Show(
 						"Would you like to go ahead and delete this record?",
 						"Confirmation",

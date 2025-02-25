@@ -1665,7 +1665,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			try
 			{
 				string subject;
-				StringBuilder bodyBuilder = new StringBuilder();
+				StringBuilder bodyBuilder = new();
 
 				// Common greeting and introduction
 				bodyBuilder.AppendFormat("<h3>Hello {0},</h3>", Name);

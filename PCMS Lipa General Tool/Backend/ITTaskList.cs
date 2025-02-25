@@ -98,7 +98,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			try
 			{
 				conn.Open();
-				using SqlCommand cmd = new SqlCommand();
+				using SqlCommand cmd = new();
 				cmd.Connection = conn;
 
 				// Base Query
