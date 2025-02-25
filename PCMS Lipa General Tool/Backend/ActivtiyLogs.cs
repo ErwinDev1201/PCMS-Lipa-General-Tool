@@ -98,10 +98,10 @@ OR Message LIKE @itemToSearch";
 
 			try
 			{
-				using (SqlConnection con = new SqlConnection(_dbConnection))
+				using (SqlConnection con = new(_dbConnection))
 				{
 					con.Open();
-					using (SqlCommand cmd = new SqlCommand(query, con))
+					using (SqlCommand cmd = new(query, con))
 					using (SqlDataReader reader = cmd.ExecuteReader())
 					{
 						while (reader.Read())

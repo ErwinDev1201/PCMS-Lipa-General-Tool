@@ -91,41 +91,6 @@ namespace PCMS_Lipa_General_Tool.Class
 			return data;
 		}
 
-		//public void FillUpProvTxtBox(string query, RadGridView dgproviderInfo, RadTextBox txtIntProvId, RadTextBox txtProviderName, RadTextBox txtNPiNO, RadTextBox txtPTANNo, RadTextBox txtTaxIDNo, RadTextBox txtPalPTAN, RadTextBox txtPhysicalAdd, RadTextBox txtBillAdd, RadTextBox txtRemarks, string empName)
-		//{
-		//	using var con = new SqlConnection(_dbConnection);
-		//	try
-		//	{
-		//		con.Open();
-		//		using SqlCommand cmd = new(query, con);
-		//		cmd.ExecuteNonQuery();
-		//		if (dgproviderInfo.SelectedRows.Count > 0)
-		//		{
-		//			var row = dgproviderInfo.SelectedRows[0];
-		//			{
-		//				//txtID = (row["NO"]).ToString();
-		//				txtIntProvId.Text = row.Cells[0].Value + string.Empty;
-		//				txtProviderName.Text = row.Cells[1].Value + string.Empty;
-		//				txtNPiNO.Text = row.Cells[2].Value + string.Empty;
-		//				txtPTANNo.Text = row.Cells[3].Value + string.Empty;
-		//				txtTaxIDNo.Text = row.Cells[4].Value + string.Empty;
-		//				txtPalPTAN.Text = row.Cells[5].Value + string.Empty;
-		//				txtPhysicalAdd.Text = row.Cells[6].Value + string.Empty;
-		//				txtBillAdd.Text = row.Cells[7].Value + string.Empty;
-		//				txtRemarks.Text = row.Cells[8].Value + string.Empty;
-		//			}
-		//		}
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		notif.LogError("FillUpProvTxtBox", empName, "Provider", "N/A", ex);
-		//	}
-		//	finally
-		//	{
-		//		con.Close();
-		//	}
-		//
-		//}
 
 		public bool ProviderInfoDBRequest(
 			string request,
@@ -324,35 +289,6 @@ Additional Remarks: {remarks}";
 			return resultTable;
 		}
 
-		//public void FillupAssignProvider(RadGridView dgAssignProvider, RadTextBox txtAssignID, RadDropDownList cmbProviderName, RadDropDownList cmbEmployeeName, RadTextBoxControl txtRemarks, string empName)
-		//{
-		//	var query = "SELECT * FROM [Provider Collector]";
-		//	using var con = new SqlConnection(_dbConnection);
-		//	try
-		//	{
-		//		con.Open();
-		//		using SqlCommand cmd = new(query, con);
-		//		cmd.ExecuteNonQuery();
-		//		var row = dgAssignProvider.SelectedRows[0];
-		//		if (dgAssignProvider.SelectedRows.Count > 0)
-		//		{
-		//			{
-		//				txtAssignID.Text = row.Cells[0].Value + string.Empty;
-		//				cmbEmployeeName.Text = row.Cells[1].Value + string.Empty;
-		//				cmbProviderName.Text = row.Cells[2].Value + string.Empty;
-		//				txtRemarks.Text = row.Cells[3].Value + string.Empty;
-		//			}
-		//		}
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		notif.LogError("GenerateActivityMessage", empName, "Provider", "N/A", ex);
-		//	}
-		//	finally
-		//	{
-		//		con.Close();
-		//	}
-		//}
 
 		public List<string> GetProviderList(string empName)
 		{

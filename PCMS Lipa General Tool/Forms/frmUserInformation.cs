@@ -105,6 +105,74 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtWorkEmailMain.NullText = "Add Work Email here";
 		}
 
+		private void EnableInput()
+		{
+			txtEmpID.Enabled = true;
+			txtUsername.Enabled = true;
+			txtEmpName.Enabled = true;
+			txtWorkEmailMain.Enabled = true;
+			txtRDWebUsername.Enabled = true;
+			txtRDWebPassword.Enabled = true;
+			txtLytecUsername.Enabled = true;
+			txtLytecPassword.Enabled = true;
+			txtBVNo.Enabled = true;
+			txtBVUsername.Enabled = true;
+			txtBVPassword.Enabled = true;
+			txtPCName.Enabled = true;
+			txtPCUsername.Enabled = true;
+			txtPCPassword.Enabled = true;
+			txtWorkEmail.Enabled = true;
+			txtWorkEmailPass.Enabled = true;
+			txtDCUsernaem.Enabled = true;
+			txtDCPassword.Enabled = true;
+			txtRemarks.Enabled = true;
+			cmbUserAccess.Enabled = true;
+			cmbUserDept.Enabled = true;
+			cmbPosition.Enabled = true;
+			cmbUserStatus.Enabled = true;
+			cmbOffice.Enabled = true;
+			cmbManagement.Enabled = true;
+			cmbEmploymentStatus.Enabled = true;
+			cmbFirstTime.Enabled = true;
+			dtpDateofBirth.Enabled = true;
+			btnUpdate.Visible = true;
+			btnDelete.Visible = true;
+		}
+
+		private void DisableInput()
+		{
+			txtEmpID.Enabled = false;
+			txtUsername.Enabled = false;
+			txtEmpName.Enabled = false;
+			txtWorkEmailMain.Enabled = false;
+			txtRDWebUsername.Enabled = false;
+			txtRDWebPassword.Enabled = false;
+			txtLytecUsername.Enabled = false;
+			txtLytecPassword.Enabled = false;
+			txtBVNo.Enabled = false;
+			txtBVUsername.Enabled = false;
+			txtBVPassword.Enabled = false;
+			txtPCName.Enabled = false;
+			txtPCUsername.Enabled = false;
+			txtPCPassword.Enabled = false;
+			txtWorkEmail.Enabled = false;
+			txtWorkEmailPass.Enabled = false;
+			txtDCUsernaem.Enabled = false;
+			txtDCPassword.Enabled = false;
+			txtRemarks.Enabled = false;
+			cmbUserAccess.Enabled = false;
+			cmbUserDept.Enabled = false;
+			cmbPosition.Enabled = false;
+			cmbUserStatus.Enabled = false;
+			cmbOffice.Enabled = false;
+			cmbManagement.Enabled = false;
+			cmbEmploymentStatus.Enabled = false;
+			cmbFirstTime.Enabled = false;
+			dtpDateofBirth.Enabled = false;
+			btnUpdate.Visible = false;
+			btnDelete.Visible = false;
+		}
+
 		private void BtnLyPass_Click(object sender, EventArgs e)
 		{
 			this.txtLytecPassword.UseSystemPasswordChar = !this.txtLytecPassword.UseSystemPasswordChar;
@@ -159,6 +227,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 					return;
 				}
 
+				DisableInput();
+
 				bool isSuccess = user.EmployeeDatabaseAllInfo(
 					operation,
 					txtEmpID.Text, txtEmpName.Text, txtUsername.Text, cmbUserAccess.Text,
@@ -170,6 +240,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					txtPCPassword.Text, cmbManagement.Text, txtRemarks.Text, txtDCUsernaem.Text,
 					txtDCPassword.Text, cmbEmploymentStatus.Text, EmpName, out string message
 				);
+				EnableInput();
 
 				fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
 				Close();
@@ -199,6 +270,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 			if (result != DialogResult.Yes)
 				return;
+			DisableInput();
 			bool isSuccess = user.EmployeeDatabaseAllInfo(
 				"Delete",
 				txtEmpID.Text,
@@ -207,6 +279,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				null, null, null, DateTime.MinValue, null, null, null, null, null, null,
 				null, null, null, null, EmpName, out string message);
 			fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
+			EnableInput();
 			Close();
 		}
 

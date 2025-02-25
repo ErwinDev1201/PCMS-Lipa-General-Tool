@@ -445,9 +445,16 @@ of
 
 				string dtpFromValue = dtpFrom.Value.ToShortDateString();
 				string dtpToValue = dtpTo.Value.ToShortDateString();
-				string mailContent = $"Hi,\n\nAttached is the Extracted Pantry List from {dtpFromValue} - {dtpToValue}\n\nRegards,\nSystem Administrator";
+
 				string mailSubject = $"Pantry List from {dtpFromValue} - {dtpToValue}";
 				string recipientEmail = pantry.GetRecipientEmail(_empName);
+
+				string mailContent = @$"Hi,
+Attached is the Extracted Pantry List from {dtpFromValue} - {dtpToValue}
+
+Regards,
+Tm Pantry Store
+via PCMS Lipa General Tool";
 
 				lblstatus.Text = $"Sending email to {recipientEmail}...";
 				await Task.Delay(1000);
@@ -467,7 +474,6 @@ of
 				{
 					lblstatus.Text = "Failed to send email.";
 				}
-
 				LoadPantryListwithFilter();
 				EnableAll();
 				DefaultFields();

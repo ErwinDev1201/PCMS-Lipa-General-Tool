@@ -1,4 +1,6 @@
-﻿using PCMS_Lipa_General_Tool.HelperClass;
+﻿using DocumentFormat.OpenXml.ExtendedProperties;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using PCMS_Lipa_General_Tool.HelperClass;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -50,16 +52,16 @@ namespace PCMS_Lipa_General_Tool.Class
 			{
 				con.Open();
 				{
-					using SqlCommand cmd = new("SELECT * FROM [COLLECTOR NOTES]", con);
+					using SqlCommand cmd = new("SELECT [Notes ID], [Provider Name], [Chart No], [Patient Name], Notes, Remarks FROM [COLLECTOR NOTES]", con);
 					cmd.ExecuteNonQuery();
 					var dgRow = dgCurrentNotes.SelectedRows[0];
 					{
-						txtIntID.Text = dgRow.Cells[0].Value + string.Empty;
-						cmbProviderList.Text = dgRow.Cells[3].Value + string.Empty;
-						txtChartNo.Text = dgRow.Cells[4].Value + string.Empty;
-						txtPatientName.Text = dgRow.Cells[5].Value + string.Empty;
-						txtNotes.Text = dgRow.Cells[6].Value + string.Empty;
-						txtRemarks.Text = dgRow.Cells[7].Value + string.Empty;
+						txtIntID.Text = dgRow.Cells["Notes ID"].Value + string.Empty;
+						cmbProviderList.Text = dgRow.Cells["Provider Name"].Value + string.Empty;
+						txtChartNo.Text = dgRow.Cells["Chart No"].Value + string.Empty;
+						txtPatientName.Text = dgRow.Cells["Patient Name"].Value + string.Empty;
+						txtNotes.Text = dgRow.Cells["Notes"].Value + string.Empty;
+						txtRemarks.Text = dgRow.Cells["Remarks"].Value + string.Empty;
 					}
 				}
 			}
