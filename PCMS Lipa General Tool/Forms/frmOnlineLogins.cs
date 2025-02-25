@@ -464,57 +464,75 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void btnOpenLink_Click(object sender, EventArgs e)
 		{
-			string AuditTextContent;
-			if (txtWebLink.Text == "")
+			try
 			{
-				RadMessageBox.Show("URL Link is Empty", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
-			}
-			else
-			{
-				if (officeLoc == "LIPA" && cmbBrowser.Text != "Local Browser")
+				string AuditTextContent;
+				if (txtWebLink.Text == "")
 				{
-					DialogResult result = RadMessageBox.Show(
-	"The provided website is designed for RD Web Browser and may not function correctly in a local browser." +
-	"\nThe link has been copied and is ready to be pasted into RD Web Browser." +
-	"\nWould you like to open Microsoft Edge in Remote Desktop?",
-	"Confirmation",
-	MessageBoxButtons.YesNo,
-	RadMessageIcon.Question);
-
-					if (result == DialogResult.Yes)
-					{
-						Clipboard.SetText(txtWebLink.Text);
-						openRDLinkWebsite();
-						AuditTextContent = empName + " open the link for " + txtInsuranceName.Text + " using Remote Microsoft Edge";
-						log.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
-					}
-					//var remotePCMessage = "I'm using a PCMS Lipa remote PC to access websites that are only available in the US.";
-					////winDiscordAPI.PublishtoDiscord("PCMS Lipa General Tool - Remote PC", "", remotePCMessage, empName, "https://discord.com/api/webhooks/1091534659579551744/3Nb2cboGirv3OCAQ-xhImXI9ck3uJ35JbTHLU34iJ9-EK7MgY3cUbT_uXBtNM28Pwhvx", "https://discord.gg/4Ns5NJaW");
-					//Process.Start(_remotePc);
+					RadMessageBox.Show("URL Link is Empty", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 				}
 				else
 				{
-					if (accessLevel == "Programmer")
+					if (officeLoc == "LIPA" && cmbBrowser.Text != "Local Browser")
 					{
-						Process.Start(txtWebLink.Text);
+						DialogResult result = RadMessageBox.Show(
+		"The provided website is designed for RD Web Browser and may not function correctly in a local browser." +
+		"\nThe link has been copied and is ready to be pasted into RD Web Browser." +
+		"\nWould you like to open Microsoft Edge in Remote Desktop?",
+		"Confirmation",
+		MessageBoxButtons.YesNo,
+		RadMessageIcon.Question);
+
+						if (result == DialogResult.Yes)
+						{
+							try
+							{
+								Clipboard.SetText(txtWebLink.Text);
+								openRDLinkWebsite();
+								AuditTextContent = empName + " open the link for " + txtInsuranceName.Text + " using Remote Microsoft Edge";
+								log.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
+							}
+							catch (Exception ex)
+							{
+								notif.LogError("Trying to open RD Link", empName, "OnlineLogins", txtLoginID.Text, ex);
+							}
+							
+						}
+						//var remotePCMessage = "I'm using a PCMS Lipa remote PC to access websites that are only available in the US.";
+						////winDiscordAPI.PublishtoDiscord("PCMS Lipa General Tool - Remote PC", "", remotePCMessage, empName, "https://discord.com/api/webhooks/1091534659579551744/3Nb2cboGirv3OCAQ-xhImXI9ck3uJ35JbTHLU34iJ9-EK7MgY3cUbT_uXBtNM28Pwhvx", "https://discord.gg/4Ns5NJaW");
+						//Process.Start(_remotePc);
 					}
 					else
 					{
-						try
-						{
-							Process.Start("chrome.exe", txtWebLink.Text);
-						}
-						catch (Exception)
+						if (accessLevel == "Programmer")
 						{
 							Process.Start(txtWebLink.Text);
 						}
+						else
+						{
+							Process.Start(txtWebLink.Text);
+							//try
+							//{
+							//	Process.Start("chrome.exe", txtWebLink.Text);
+							//}
+							//catch (Exception)
+							//{
+							//	
+							//}
+						}
+						AuditTextContent = empName + " open the link for " + txtInsuranceName.Text;
+						log.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
 					}
-					AuditTextContent = empName + " open the link for " + txtInsuranceName.Text;
-					log.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
 				}
+				//log.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
+				UserAccessDefault();
 			}
-			//log.AddActivityLog(AuditTextContent, empName, AuditTextContent, "OPEN ONLINE LOGIN");
-			UserAccessDefault();
+			catch (Exception ex)
+			{
+				notif.LogError("btnOpenLink_Click", empName, "OnlineLogins", txtLoginID.Text, ex);
+				RadMessageBox.Show("Error opening the link. Please try again later.", "Operation Failed", MessageBoxButtons.OK, RadMessageIcon.Error);
+			}
+			
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)

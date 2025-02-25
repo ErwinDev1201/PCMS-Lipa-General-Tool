@@ -189,6 +189,7 @@
 			this.txtSummary.Text = "dfasdf";
 			this.txtSummary.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.txtSummary.ThemeName = "Crystal";
+			this.txtSummary.VerticalScrollBarState = Telerik.WinControls.UI.ScrollState.AlwaysShow;
 			// 
 			// radLabel4
 			// 

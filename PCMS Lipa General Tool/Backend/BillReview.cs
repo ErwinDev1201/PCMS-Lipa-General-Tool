@@ -18,7 +18,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		{
 			ID = string.Empty;
 
-			string nextSequence = db.GetSequenceNo("BillReviewSeq", "BR-");
+			string nextSequence = db.GetSequenceNo("BillReviewSeq", "BR-0");
 
 			try
 			{
@@ -30,10 +30,11 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("GetDBID", empName, "BillReview", "N/A", ex);
+				notif.LogError("GetProvID", empName, "Bundle", "N/A", ex);
 			}
-			//db.GetSequenceNo("textbox", "BillReviewSeq", txtIntID.Text, null, "BR-");
+			//db.GetSequenceNo("textbox", "BundleCodeSeq", txtIntID.Text, null, "TX-");
 		}
+
 
 		public DataTable ViewBillReviewList(string empName, out string lblCount)
 		{

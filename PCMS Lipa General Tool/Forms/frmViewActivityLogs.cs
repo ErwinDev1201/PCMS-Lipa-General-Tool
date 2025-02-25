@@ -53,7 +53,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void FillActionDropdown()
 		{
-			List<string> items = log.GetListofAction(empName);
+			List<string> items = log.GetListOfActions(empName);
 			cmbAction.Items.Clear(); // Clear existing items, if any
 			foreach (var item in items)
 			{
@@ -66,18 +66,25 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (dgActivityLogs.SelectedRows.Count > 0)
 			{
+				var selectedRow = dgActivityLogs.SelectedRows[0];
+
 				var readActivityLogs = new frmReadActivityLogs
 				{
-					txtIntID = { Text = dgActivityLogs.SelectedRows[0].Cells[0].Value + string.Empty, ReadOnly = true },
-					txtTimeStamp = { Text = dgActivityLogs.SelectedRows[0].Cells[1].Value + string.Empty, ReadOnly = true },
-					txtActionMake = { Text = dgActivityLogs.SelectedRows[0].Cells[2].Value + string.Empty, ReadOnly = true },
-					txtAction = { Text = dgActivityLogs.SelectedRows[0].Cells[3].Value + string.Empty, ReadOnly = true },
-					txtMessage = { Text = dgActivityLogs.SelectedRows[0].Cells[4].Value + string.Empty, IsReadOnly = true },
-					txtDCLogs = { Text = dgActivityLogs.SelectedRows[0].Cells[5].Value + string.Empty, ReadOnly = true },
+					txtIntID = { Text = selectedRow.Cells["Activity ID"]?.Value?.ToString() ?? string.Empty, ReadOnly = true },
+					txtTimeStamp = { Text = selectedRow.Cells["Time Stamp"]?.Value?.ToString() ?? string.Empty, ReadOnly = true },	
+					txtActionMake = { Text = selectedRow.Cells["Name"]?.Value?.ToString() ?? string.Empty, ReadOnly = true },
+					txtAction = { Text = selectedRow.Cells["Action"]?.Value?.ToString() ?? string.Empty, ReadOnly = true },
+					txtMessage = { Text = selectedRow.Cells["Message"]?.Value?.ToString() ?? string.Empty, IsReadOnly = true },
+					txtDCLogs = { Text = selectedRow.Cells["Discord Logs"]?.Value?.ToString() ?? string.Empty, ReadOnly = true },
 					Text = "Activity Logs"
 				};
 				readActivityLogs.ShowDialog();
 			}
+			else
+			{
+				notif.LogError("dgActivityLogs_MouseDoubleClick", empName, "frmViewActivityLogs", "N/A", null);
+			}
+
 		}
 
 		private void txtSearch_TextChanged(object sender, EventArgs e)

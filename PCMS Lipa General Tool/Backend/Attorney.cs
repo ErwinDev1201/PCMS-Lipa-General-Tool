@@ -15,9 +15,11 @@ namespace PCMS_Lipa_General_Tool.Class
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
 
+
 		public void GetDBID(out string ID, string empName)
 		{
 			ID = string.Empty;
+
 			string nextSequence = db.GetSequenceNo("AttyInfo", "ATTY-0");
 
 			try
@@ -30,35 +32,38 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("GetDBID", empName, "Attoryney", "N/A", ex);
+				notif.LogError("GetProvID", empName, "Bundle", "N/A", ex);
 			}
-			//db.GetSequenceNo("textbox", "AttyInfo", txtIntID.Text, null, "ATTY-");
+			//db.GetSequenceNo("textbox", "BundleCodeSeq", txtIntID.Text, null, "TX-");
 		}
 
 		public DataTable ViewAttorneyList(string empName, out string lblCount)
 		{
-			var query = "SELECT * FROM [Attorney Information]";
-			var data = new DataTable();
-			lblCount = string.Empty;
+			lblCount = "Total records: 0"; // Default value to avoid empty results
 
 			try
 			{
-				using var con = new SqlConnection(_dbConnection);
-				using var adp = new SqlDataAdapter(query, con);
+				string query = "SELECT [AttorneyID], [Name], [Firm], [Email], [Phone] FROM [Attorney Information] ORDER BY [Name]";
 
-				// Fill the DataTable with data from the query
-				adp.Fill(data);
+				using (var con = new SqlConnection(_dbConnection))
+				using (var adp = new SqlDataAdapter(query, con))
+				{
+					var data = new DataTable();
+					adp.Fill(data);
 
-				// Calculate the record count
-				lblCount = $"Total records: {data.Rows.Count}";
+					// Set record count
+					lblCount = $"Total records: {data.Rows.Count}";
+					return data;
+				}
 			}
 			catch (Exception ex)
 			{
 				notif.LogError("ViewAttorneyList", empName, "Attorney", "N/A", ex);
+				lblCount = "Error retrieving records.";
+				return new DataTable(); // Return empty table on error
 			}
-
-			return data;
 		}
+
 
 		public DataTable SearchData(
 	string searchTerm,

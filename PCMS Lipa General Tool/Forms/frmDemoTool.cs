@@ -332,8 +332,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			var dlgPantryList = new frmPantry
 			{
-				accessLevel = accessLevel,
-				EmpName = EmpName,
+				_accessLevel = accessLevel,
+				_empName = EmpName,
 				Text = "Tm Pantry Store List"
 			};
 			dlgPantryList.ShowDialog();

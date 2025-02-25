@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
+using PCMS_Lipa_General_Tool.Service;
+using System.IO;
 
 
 
@@ -19,6 +21,7 @@ namespace PCMS_Lipa_General_Tool.Class
 		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
+		private readonly emailSender _emailSender = new();
 
 
 		public void GetDBListID(out string ID, string empName)
@@ -41,6 +44,35 @@ namespace PCMS_Lipa_General_Tool.Class
 
 			//db.GetSequenceNo("textbox", "PantryListSeq", txtIntID.Text, null, "PL-");
 		}
+
+
+		public string GetRecipientEmail(string empName)
+		{
+			return Environment.MachineName == "ERWIN-PC"
+				? (empName == "Erwin Alcantara" ? "yourmeeappnoreply@gmail.com" : "edimson@yopmail.com")
+				: (empName == "Erwin Alcantara" ? "yourmeeappnoreply@gmail.com" : "edimson@pcmsbilling.net");
+		}
+
+		public bool SendEmailWithAttachment(string mailContent, string filePath, string mailSubject, string recipientEmail)
+		{
+			try
+			{
+				if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+					throw new FileNotFoundException("Attachment file not found.", filePath);
+
+				//_emailSender.SendEmail("yesAttach", mailContent, filePath, mailSubject, recipientEmail, "TM Pantry Store");
+				_emailSender.SendEmail(recipientEmail,mailSubject, mailContent, null, "TM Pantry Store", filePath);
+				return true;
+			}
+			catch (Exception ex)
+			{
+				notif.LogError("SendEmailWithAttachment", "System", "BackendService", null, ex);
+				return false;
+			}
+		}
+
+
+
 
 		//public void FillUpPantryListField(string query, RadGridView dataGrid, RadDropDownList cmbProducts, RadTextBox quantity, RadTextBox price, RadTextBox Remarks, RadTextBox TransactionNo, RadTextBox Summary, RadTextBox totalPrices, string empName)
 		//{

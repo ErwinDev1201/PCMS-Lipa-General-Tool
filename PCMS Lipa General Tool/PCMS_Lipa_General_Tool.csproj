@@ -218,30 +218,30 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class\ActivtiyLogs.cs" />
-    <Compile Include="Class\Adjuster.cs" />
-    <Compile Include="Class\Attorney.cs" />
-    <Compile Include="Class\BillReview.cs" />
-    <Compile Include="Class\Broadvoice.cs" />
-    <Compile Include="Class\Bundle.cs" />
-    <Compile Include="Class\CollectorNotes.cs" />
-    <Compile Include="Class\DeveloperAccess.cs" />
-    <Compile Include="Class\Diagnosis.cs" />
-    <Compile Include="Class\Discord.cs" />
-    <Compile Include="Class\EasyPrint.cs" />
-    <Compile Include="Class\EmailFormatDB.cs" />
-    <Compile Include="Class\ErwinAIAssistant.cs" />
-    <Compile Include="Class\Global.cs" />
-    <Compile Include="Class\HearingRep.cs" />
-    <Compile Include="Class\Insurance.cs" />
-    <Compile Include="Class\ITTaskList.cs" />
-    <Compile Include="Class\Leave.cs" />
-    <Compile Include="Class\Login.cs" />
-    <Compile Include="Class\MPN.cs" />
-    <Compile Include="Class\OnlineLogins.cs" />
-    <Compile Include="Class\Pantry.cs" />
-    <Compile Include="Class\Provider.cs" />
-    <Compile Include="Class\User.cs" />
+    <Compile Include="Backend\ActivtiyLogs.cs" />
+    <Compile Include="Backend\Adjuster.cs" />
+    <Compile Include="Backend\Attorney.cs" />
+    <Compile Include="Backend\BillReview.cs" />
+    <Compile Include="Backend\Broadvoice.cs" />
+    <Compile Include="Backend\Bundle.cs" />
+    <Compile Include="Backend\CollectorNotes.cs" />
+    <Compile Include="Backend\DeveloperAccess.cs" />
+    <Compile Include="Backend\Diagnosis.cs" />
+    <Compile Include="Backend\Discord.cs" />
+    <Compile Include="Backend\EasyPrint.cs" />
+    <Compile Include="Backend\EmailFormatDB.cs" />
+    <Compile Include="Backend\ErwinAIAssistant.cs" />
+    <Compile Include="Backend\Global.cs" />
+    <Compile Include="Backend\HearingRep.cs" />
+    <Compile Include="Backend\Insurance.cs" />
+    <Compile Include="Backend\ITTaskList.cs" />
+    <Compile Include="Backend\Leave.cs" />
+    <Compile Include="Backend\Login.cs" />
+    <Compile Include="Backend\MPN.cs" />
+    <Compile Include="Backend\OnlineLogins.cs" />
+    <Compile Include="Backend\Pantry.cs" />
+    <Compile Include="Backend\Provider.cs" />
+    <Compile Include="Backend\User.cs" />
     <Compile Include="Forms\frmAIAssistant.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -561,6 +561,7 @@
     <Compile Include="HelperClass\FEWinForm.cs" />
     <Compile Include="HelperClass\SecurityEncryption.cs" />
     <Compile Include="HelperClass\WinDiscordAPI.cs" />
+    <Compile Include="Service\ExportService.cs" />
     <EmbeddedResource Include="Forms\frmAIAssistant.resx">
       <DependentUpon>frmAIAssistant.cs</DependentUpon>
     </EmbeddedResource>
@@ -769,6 +770,7 @@
       <Name>editform</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

@@ -33,7 +33,7 @@
 			this.radLabelVersion = new Telerik.WinControls.UI.RadLabel();
 			this.radLabelCopyright = new Telerik.WinControls.UI.RadLabel();
 			this.radLabelCompanyName = new Telerik.WinControls.UI.RadLabel();
-			this.radTextBoxDescription = new Telerik.WinControls.UI.RadTextBox();
+			this.txtDescription = new Telerik.WinControls.UI.RadTextBox();
 			this.okRadButton = new Telerik.WinControls.UI.RadButton();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.crystalDarkTheme1 = new Telerik.WinControls.Themes.CrystalDarkTheme();
@@ -43,7 +43,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabelVersion)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabelCopyright)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabelCompanyName)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radTextBoxDescription)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtDescription)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.okRadButton)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
@@ -59,7 +59,7 @@
 			this.tableLayoutPanel.Controls.Add(this.radLabelVersion, 1, 1);
 			this.tableLayoutPanel.Controls.Add(this.radLabelCopyright, 1, 2);
 			this.tableLayoutPanel.Controls.Add(this.radLabelCompanyName, 1, 3);
-			this.tableLayoutPanel.Controls.Add(this.radTextBoxDescription, 1, 4);
+			this.tableLayoutPanel.Controls.Add(this.txtDescription, 1, 4);
 			this.tableLayoutPanel.Controls.Add(this.okRadButton, 1, 5);
 			this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel.Location = new System.Drawing.Point(9, 9);
@@ -154,25 +154,25 @@
 			this.radLabelCompanyName.Text = "Company Name";
 			this.radLabelCompanyName.ThemeName = "Crystal";
 			// 
-			// radTextBoxDescription
+			// txtDescription
 			// 
-			this.radTextBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.radTextBoxDescription.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radTextBoxDescription.Location = new System.Drawing.Point(260, 103);
-			this.radTextBoxDescription.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
-			this.radTextBoxDescription.Multiline = true;
-			this.radTextBoxDescription.Name = "radTextBoxDescription";
-			this.radTextBoxDescription.ReadOnly = true;
+			this.txtDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtDescription.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtDescription.Location = new System.Drawing.Point(260, 103);
+			this.txtDescription.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+			this.txtDescription.Multiline = true;
+			this.txtDescription.Name = "txtDescription";
+			this.txtDescription.ReadOnly = true;
 			// 
 			// 
 			// 
-			this.radTextBoxDescription.RootElement.StretchVertically = true;
-			this.radTextBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.radTextBoxDescription.Size = new System.Drawing.Size(364, 120);
-			this.radTextBoxDescription.TabIndex = 23;
-			this.radTextBoxDescription.TabStop = false;
-			this.radTextBoxDescription.Text = "Description";
-			this.radTextBoxDescription.ThemeName = "Crystal";
+			this.txtDescription.RootElement.StretchVertically = true;
+			this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this.txtDescription.Size = new System.Drawing.Size(364, 120);
+			this.txtDescription.TabIndex = 23;
+			this.txtDescription.TabStop = false;
+			this.txtDescription.Text = "Description";
+			this.txtDescription.ThemeName = "Crystal";
 			// 
 			// okRadButton
 			// 
@@ -212,7 +212,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabelVersion)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabelCopyright)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabelCompanyName)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radTextBoxDescription)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.txtDescription)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.okRadButton)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
@@ -227,7 +227,7 @@
         private Telerik.WinControls.UI.RadLabel radLabelVersion;
         private Telerik.WinControls.UI.RadLabel radLabelCopyright;
         private Telerik.WinControls.UI.RadLabel radLabelCompanyName;
-        private Telerik.WinControls.UI.RadTextBox radTextBoxDescription;
+        private Telerik.WinControls.UI.RadTextBox txtDescription;
         private Telerik.WinControls.UI.RadButton okRadButton;
 		private Telerik.WinControls.Themes.CrystalTheme crystalTheme1;
 		private Telerik.WinControls.Themes.CrystalDarkTheme crystalDarkTheme1;

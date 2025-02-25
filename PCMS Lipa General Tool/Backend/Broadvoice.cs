@@ -14,7 +14,8 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		public DataTable ViewBroadvoiceList(string empName, out string lblCount)
 		{
-			var query = "SELECT DISTINCT [BROADVOICE NO.], [Broadvoice Username], [Broadvoice Password] FROM [User Information] WHERE [Broadvoice Status] = 'Available' ORDER BY [BROADVOICE NO.]";
+			var query = "SELECT DISTINCT [BROADVOICE NO.], [Broadvoice Username]," +
+				"[Broadvoice Password] FROM [User Information] WHERE [Broadvoice Status] = 'Available' ORDER BY [BROADVOICE NO.]";
 			
 			var data = new DataTable();
 			lblCount = string.Empty;

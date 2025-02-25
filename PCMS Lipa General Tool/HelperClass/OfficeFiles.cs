@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using HorizontalAlignment = GemBox.Document.HorizontalAlignment;
 
 namespace PCMS_Lipa_General_Tool.HelperClass
 {
@@ -73,5 +75,6 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 				throw new Exception("An error occurred during the export process.", ex);
 			}
 		}
+
 	}
 }

@@ -21,8 +21,28 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.radLabelVersion.Text = String.Format("Version {0}", AssemblyVersion);
 			this.radLabelCopyright.Text = AssemblyCopyright;
 			this.radLabelCompanyName.Text = AssemblyCompany;
-			this.radTextBoxDescription.Text = AssemblyDescription;
+			this.txtDescription.Text = description;
 		}
+
+		readonly string description =
+	@"Acknowledgment & Gratitude
+	This tool would not have been possible without the invaluable contributions and support of the following individuals:
+
+- Sir Dimz Escalona
+- Ms. Arlene Escalona
+- Ms. April De Guzman
+- Ms. Lisa Brigildo
+- Sir Ron Sangalang
+- Gerald Lojo
+- Joven Bisa
+- Ms. Klaire Sisbas
+- Ms. Angeline Uy
+
+	And a heartfelt thank you to all PCMS employees for their suggestions and dedication in identifying and reporting bugs.
+
+	Your insights and feedback have been instrumental in improving this tool.
+	Your support and collaboration are truly appreciated!";
+
 
 
 		#region Assembly Attribute Accessors

@@ -1,5 +1,7 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Service;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,15 +19,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 {
 	public partial class frmPantry : Telerik.WinControls.UI.RadForm
 	{
-		public string EmpName;
-		public string accessLevel;
+		public string _empName;
+		public string _accessLevel;
 		//private static readonly string dbBackupcoll = ConfigurationManager.AppSettings["StoragePath"];
 		private readonly Pantry pantry = new();
 		private static readonly Notification notif = new();
 		private static readonly FEWinForm fe = new();
 		private readonly User user = new();
-		private readonly OfficeFiles office = new();
-
+		//private readonly OfficeFiles office = new();
+		private readonly ActivtiyLogs log = new();
 
 
 
@@ -38,7 +40,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			//DefaultFields();
 			//DefaultField1timeOnly();
 			//lblDevName.Text = "Developer: PCMS-0081 Mayor";
-			//statlblUsername.Text = EmpName;			
+			//statlblUsername.Text = _empName;			
 			//CheckAdmin();
 		}
 
@@ -75,12 +77,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtQuantity.Text = "";
 			txtRemarks.Text = "";
 			cmbProductList.Text = "";
-			cmbEmployee.Text = EmpName;
+			cmbEmployee.Text = _empName;
+			//cmbItemEmpList.Text = _empName;
 			lblstatus.Text = "Ready";
 			dgPantryList.ReadOnly = true;
 
 			// Apply specific settings for certain employees
-			if (EmpName == "Edimson Escalona" || EmpName == "Erwin Alcantara")
+			if (_empName == "Edimson Escalona" || _empName == "Erwin Alcantara")
 			{
 				cmbProductList.Enabled = false;
 				txtPrice.ReadOnly = true;
@@ -108,7 +111,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void FillProductDropdown()
 		{
-			List<string> items = pantry.GetProductList(EmpName);
+			List<string> items = pantry.GetProductList(_empName);
 			cmbProductList.Items.Clear(); // Clear existing items, if any
 			foreach (var item in items)
 			{
@@ -157,20 +160,21 @@ namespace PCMS_Lipa_General_Tool.Forms
 			cmbProductList.ReadOnly = false;
 			txtQuantity.ReadOnly = false;
 			Clear();
-			if (EmpName == "Edimson Escalona" || EmpName == "Erwin Alcantara")
+			if (_empName == "Edimson Escalona" || _empName == "Erwin Alcantara")
 			{
-				cmbItemEmpList.Text = EmpName;
-				cmbEmployee.Text = EmpName;
+				cmbItemEmpList.Text = _empName;
+				cmbEmployee.Text = _empName;
 			}
 			else
 			{
-				cmbEmployee.Text = EmpName;
+				cmbEmployee.Text = _empName;
+				cmbItemEmpList.Text = _empName;
 				cmbItemEmpList.Visible = false;
 				cmbEmployee.Enabled = false;
 
 			}
 			dgPantryList.Enabled = false;
-			pantry.GetDBListID(out string ID, EmpName);
+			pantry.GetDBListID(out string ID, _empName);
 			txtIntID.Text = ID;
 
 		}
@@ -191,7 +195,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void FillEmployeeDropdown()
 		{
-			List<string> items = user.GetEmployeeList(EmpName);
+			List<string> items = user.GetEmployeeList(_empName);
 			cmbEmployee.Items.Clear(); // Clear existing items, if any
 			foreach (var item in items)
 			{
@@ -243,7 +247,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 					decimal.TryParse(txtTotalPrice.Text, out decimal totalPrice) ? totalPrice : 0,
 					txtSummary.Text,
 					txtRemarks.Text,
-					EmpName,
+					_empName,
 					out string message);
 
 				string status = isSuccess ? "Success" : "Failed";
@@ -257,13 +261,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (FormatException ex)
 			{
-				notif.LogError("ProcessPantryItem", EmpName, "frmPantry", null, ex);
+				notif.LogError("ProcessPantryItem", _empName, "frmPantry", null, ex);
 				fe.SendToastNotifDesktop($"Invalid input format", "Error");
 				//RadMessageBox.Show($"Invalid input format: {ex.Message}", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("ProcessPantryItem", EmpName, "frmPantry", null, ex);
+				notif.LogError("ProcessPantryItem", _empName, "frmPantry", null, ex);
 				fe.SendToastNotifDesktop($"An unexpected error occurred", "Error");
 			}
 		}
@@ -314,7 +318,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("SumPantryExpense", EmpName, "frmPantry", null, ex); 
+				notif.LogError("SumPantryExpense", _empName, "frmPantry", null, ex); 
 			}
 		}
 
@@ -324,15 +328,15 @@ of
 			{
 				if (string.IsNullOrWhiteSpace(cmbEmployee.Text))
 				{
-					cmbEmployee.Text = EmpName;
+					cmbEmployee.Text = _empName;
 				}
 				dgPantryList.BestFitColumns(BestFitColumnMode.DisplayedCells);
-				pantry.ViewPantryList(dgPantryList, "withFilter", lblsearchCount, EmpName, cmbEmployee.Text, dtpFrom.Value, dtpTo.Value);
+				pantry.ViewPantryList(dgPantryList, "withFilter", lblsearchCount, _empName, cmbEmployee.Text, dtpFrom.Value, dtpTo.Value);
 				SumPantryExpense();
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("LoadPantryListwithFilter", EmpName, "frmPantry", null, ex);
+				notif.LogError("LoadPantryListwithFilter", _empName, "frmPantry", null, ex);
 			}
 		}
 
@@ -344,8 +348,8 @@ of
 			{
 
 				//process.ProductListIndex(txtPrice, query);
-				//pantry.FillItemPrice(out string txtPrice, cmbProductList.Text, EmpName);
-				string price = pantry.FillItemPrice(cmbProductList.Text, EmpName);
+				//pantry.FillItemPrice(out string txtPrice, cmbProductList.Text, _empName);
+				string price = pantry.FillItemPrice(cmbProductList.Text, _empName);
 				txtPrice.Text = price;
 				if (txtQuantity.Text != "")
 				{
@@ -363,7 +367,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("cmbProductList_SelectedIndexChanged", EmpName, "frmPantry", null, ex);
+				notif.LogError("cmbProductList_SelectedIndexChanged", _empName, "frmPantry", null, ex);
 			}
 		}
 
@@ -386,53 +390,7 @@ of
 			dlgManageProduct.ShowDialog();
 		}
 
-		private void LoadExportXcel(out string filePath)
-		{
-			try
-			{
-				// Convert RadGridView to DataTable
-				DataTable dataTable = GetDataTableFromRadGridView(dgPantryList);
-
-				// Generate a valid sheet name
-				string sheetName = GenerateValidSheetName($"Pantry List {dtpFrom.Value:MM.dd.yy}-{dtpTo.Value:MM.dd.yy}");
-
-				// Show sheetname
-				Console.WriteLine(sheetName);
-
-				// Call the export method with the validated sheet name
-				office.ExportTableToExcel(dataTable, sheetName, EmpName);
-
-				// Optionally notify the user and open the file
-				string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-				filePath = Path.Combine(desktopPath, $"{sheetName}.xlsx");
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show($"An error occurred during export:\n{ex.Message}", "Export Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				filePath = string.Empty; // Ensure filePath is assigned even on error
-			}
-			
-		} 
-
-		private string GenerateValidSheetName(string input)
-		{
-			// Replace invalid characters
-			string validSheetName = input;
-			char[] invalidChars = new[] { ':', '\\', '/', '?', '*', '[', ']' };
-			foreach (char invalidChar in invalidChars)
-			{
-				validSheetName = validSheetName.Replace(invalidChar.ToString(), "");
-			}
-
-			// Trim to 31 characters max
-			if (validSheetName.Length > 31)
-			{
-				validSheetName = validSheetName.Substring(0, 31);
-			}
-
-			return validSheetName;
-		}
-
+		 
 
 
 		public DataTable GetDataTableFromRadGridView(RadGridView gridView)
@@ -474,30 +432,41 @@ of
 				DisableAll();
 				lblstatus.Text = "Creating Spreadsheets and Collecting Data...";
 
-				await Task.Delay(3000); // Export data to Excel
-				LoadExportXcel(out string filePath);
-				if (string.IsNullOrEmpty(filePath)) throw new Exception("Failed to generate export file.");
+				await Task.Delay(1000);
 
-				await Task.Delay(3000);
+				ExportService exportService = new();
+				string filePath = exportService.LoadExportXcel(dgPantryList, dtpFrom.Value, dtpTo.Value, _empName);
+
+				if (string.IsNullOrEmpty(filePath))
+					throw new Exception("Failed to generate export file.");
+
 				lblstatus.Text = "Preparing Email Content and checking attachment...";
-				 // Simulate delay without freezing UI
+				await Task.Delay(1000);
 
 				string dtpFromValue = dtpFrom.Value.ToShortDateString();
 				string dtpToValue = dtpTo.Value.ToShortDateString();
 				string mailContent = $"Hi,\n\nAttached is the Extracted Pantry List from {dtpFromValue} - {dtpToValue}\n\nRegards,\nSystem Administrator";
 				string mailSubject = $"Pantry List from {dtpFromValue} - {dtpToValue}";
-				string recipientEmail = EmpName == "Erwin Alcantara" ? "mr.erwinalcantara@gmail.com" : "edimson@pcmsbilling.net";
+				string recipientEmail = pantry.GetRecipientEmail(_empName);
 
 				lblstatus.Text = $"Sending email to {recipientEmail}...";
-				await Task.Delay(3000); ; // Simulate delay for email
+				await Task.Delay(1000);
 
-				emailSender mail = new();
-				mail.SendEmail("yesAttach", mailContent, filePath, mailSubject, recipientEmail, "TM Pantry Store");
+				Console.WriteLine($"Email: {recipientEmail}, Mail Subjet: {mailSubject}, File Path: {filePath}, Content: {mailContent}");
 
-				fe.SendToastNotifDesktop($"Email sent to {recipientEmail}", "Success");
-				//RadMessageBox.Show, "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
-				await Task.Delay(3000);
-				lblstatus.Text = $"Spreadsheet attached and sent to {recipientEmail}.";
+				bool isSent = pantry.SendEmailWithAttachment(mailContent, filePath, mailSubject, recipientEmail);
+
+				if (isSent)
+				{
+					log.AddActivityLog($"{_empName} exported {mailSubject}  to {recipientEmail}", _empName, "Pantry", "Export");
+					fe.SendToastNotifDesktop($"Email sent to {recipientEmail}", "Success");
+					await Task.Delay(1000);
+					lblstatus.Text = $"Spreadsheet attached and sent to {recipientEmail}.";
+				}
+				else
+				{
+					lblstatus.Text = "Failed to send email.";
+				}
 
 				LoadPantryListwithFilter();
 				EnableAll();
@@ -505,11 +474,9 @@ of
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
-				//MessageBox.Show($"An error occurred:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				notif.LogError("btnExport_Click", _empName, "frmPantry", null, ex);
 			}
 		}
-
 
 
 		//private void DisableAll(Control parent)
@@ -561,7 +528,7 @@ of
 		//		DataTable dataTable = GetDataTableFromRadGridView(dgPantryList);
 		//
 		//		// Call the export method
-		//		task.ExportTableToExcel(dataTable, "Pantry", EmpName);
+		//		task.ExportTableToExcel(dataTable, "Pantry", _empName);
 		//
 		//		// Optionally notify the user and open the file
 		//		string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -619,14 +586,14 @@ of
 		//		LoadExportXcel(out string filePath);
 		//		string mailAttachment = filePath;
 		//		//DataTable dataTable = GetDataTableFromRadGridView(dgPantryList);
-		//		//task.ExportTableToExcel(dataTable, fileName, EmpName);
+		//		//task.ExportTableToExcel(dataTable, fileName, _empName);
 		//		System.Threading.Thread.Sleep(3000);
 		//		emailSender mail = new();
 		//		string mailContent = "Hi, \n\nAttached is the Extracted Pantry List from " + dtpfrom.ToShortDateString() + " - " + dtpto.ToShortDateString() + "\n\n Regards, \n System Administrator";
 		//		string mailSubject = "Pantry List from " + dtpfrom.ToShortDateString() + "-" + dtpto.ToShortDateString();
 		//		System.Threading.Thread.Sleep(3000);
 		//		lblstatus.Text = "Preparing Email Content and checking attachment...";
-		//		if (EmpName == "Erwin Alcantara")
+		//		if (_empName == "Erwin Alcantara")
 		//		{
 		//			emailAddress = "mr.erwinalcantara@gmail.com";
 		//			string mailSub = mailSubject;
@@ -647,7 +614,7 @@ of
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		notif.LogError("btnExport_Click", EmpName, "frmPantry", null, ex);
+		//		notif.LogError("btnExport_Click", _empName, "frmPantry", null, ex);
 		//	}
 		//}
 		//
@@ -726,7 +693,7 @@ of
 					decimal.Parse(txtTotalPrice.Text),
 					txtSummary.Text,
 					txtRemarks.Text,
-					EmpName,
+					_empName,
 					out string message);
 				if (isSuccess)
 				{
@@ -746,7 +713,7 @@ of
 		{
 			try
 			{
-				bool isAdmin = EmpName is "Edimson Escalona" or "Erwin Alcantara" or "Dimz Escalona";
+				bool isAdmin = _empName is "Edimson Escalona" or "Erwin Alcantara" or "Dimz Escalona";
 
 				// Common UI updates
 				grpItems.Enabled = true;
@@ -804,7 +771,7 @@ of
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("AutoFillUp", EmpName, "frmPantry", null, ex);
+				notif.LogError("AutoFillUp", _empName, "frmPantry", null, ex);
 			}
 		}
 
@@ -863,7 +830,7 @@ of
 		private void frmPantry_Load(object sender, EventArgs e)
 		{
 			dtpFrom.Value = DateTime.Now;
-			cmbEmployee.Text = EmpName;
+			cmbEmployee.Text = _empName;
 			DefaultFields();
 			//this.dgPantryList.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			DgFormatting();
@@ -878,9 +845,9 @@ of
 		private void btnCancelFilter_Click(object sender, EventArgs e)
 		{
 			dtpFrom.Value = DateTime.Now;
-			cmbEmployee.Text = EmpName;
+			cmbEmployee.Text = _empName;
 			//cmbItemEmpList.Visible = false;
-			if (EmpName == "Edimson Escalona" || EmpName == "Erwin Alcantara")
+			if (_empName == "Edimson Escalona" || _empName == "Erwin Alcantara")
 			{
 				cmbEmployee.Enabled = true;
 				cmbItemEmpList.Visible = true;
@@ -890,7 +857,7 @@ of
 
 		private void ListPantryNoChangeinName()
 		{
-			pantry.ViewPantryList(dgPantryList, "nofilter", lblsearchCount, EmpName, cmbEmployee.Text, dtpFrom.Value, dtpTo.Value);
+			pantry.ViewPantryList(dgPantryList, "nofilter", lblsearchCount, _empName, cmbEmployee.Text, dtpFrom.Value, dtpTo.Value);
 			SumPantryExpense();
 		
 		}
