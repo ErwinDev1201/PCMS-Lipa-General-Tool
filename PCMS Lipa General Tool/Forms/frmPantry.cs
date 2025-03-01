@@ -69,8 +69,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			dtpFrom.Enabled = true;
 			dtpTo.Enabled = true;
 			btnNew.Visible = true;
-			FillProductDropdown();
-			FillEmployeeDropdown();
+			//FillProductDropdown();
+			//FillEmployeeDropdown(cmbEmployee);
 			LoadPantryListwithFilter();
 			txtPrice.Text = "";
 			txtIntID.Text = "";
@@ -188,15 +188,15 @@ namespace PCMS_Lipa_General_Tool.Forms
 			cmbProductList.Text = "";
 			txtPrice.Text = "";
 			txtRemarks.Text = "";
-			cmbItemEmpList.Text = "";
+			//cmbItemEmpList.Text = "";
 		}
 
 
 
-		public void FillEmployeeDropdown()
+		public void FillEmployeeDropdown(RadDropDownList cmbList)
 		{
 			List<string> items = user.GetEmployeeList(_empName);
-			cmbEmployee.Items.Clear(); // Clear existing items, if any
+			cmbList.Items.Clear(); // Clear existing items, if any
 			foreach (var item in items)
 			{
 				cmbEmployee.Items.Add(item);
@@ -875,6 +875,21 @@ via PCMS Lipa General Tool";
 				e.Handled = true;
 			}
 		}
+
+		private void cmbItemEmpList_PopupOpening(object sender, CancelEventArgs e)
+		{
+			FillEmployeeDropdown(cmbItemEmpList);
+		}
+
+		private void cmbEmployee_PopupOpening(object sender, CancelEventArgs e)
+		{
+			FillEmployeeDropdown(cmbEmployee);
+		}
+
+		//private void cmbItemEmpList_PopupOpened(object sender, EventArgs e)
+		//{
+		//	FillEmployeeDropdown(cmbItemEmpList);
+		//}
 	}
 
 }

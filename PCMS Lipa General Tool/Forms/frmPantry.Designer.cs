@@ -33,11 +33,11 @@
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
 			this.grpItems = new Telerik.WinControls.UI.RadGroupBox();
+			this.cmbItemEmpList = new Telerik.WinControls.UI.RadDropDownList();
 			this.txtRemarks = new Telerik.WinControls.UI.RadTextBoxControl();
 			this.radLabel3 = new Telerik.WinControls.UI.RadLabel();
 			this.txtSummary = new Telerik.WinControls.UI.RadTextBoxControl();
 			this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
-			this.cmbItemEmpList = new Telerik.WinControls.UI.RadDropDownList();
 			this.btnRemove = new Telerik.WinControls.UI.RadButton();
 			this.btnAdditem = new Telerik.WinControls.UI.RadButton();
 			this.txtIntID = new Telerik.WinControls.UI.RadTextBox();
@@ -50,6 +50,7 @@
 			this.cmbProductList = new Telerik.WinControls.UI.RadDropDownList();
 			this.txtPrice = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
+			this.radLabel10 = new Telerik.WinControls.UI.RadLabel();
 			this.btnNew = new Telerik.WinControls.UI.RadButton();
 			this.radPanel2 = new Telerik.WinControls.UI.RadPanel();
 			this.lblsearchCount = new Telerik.WinControls.UI.RadLabel();
@@ -71,11 +72,11 @@
 			this.radPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.grpItems)).BeginInit();
 			this.grpItems.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.cmbItemEmpList)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtRemarks)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSummary)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.cmbItemEmpList)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnRemove)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnAdditem)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtIntID)).BeginInit();
@@ -88,6 +89,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.cmbProductList)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrice)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel10)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel2)).BeginInit();
 			this.radPanel2.SuspendLayout();
@@ -125,11 +127,11 @@
 			this.grpItems.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
 			this.grpItems.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpItems.Controls.Add(this.cmbItemEmpList);
 			this.grpItems.Controls.Add(this.txtRemarks);
 			this.grpItems.Controls.Add(this.radLabel3);
 			this.grpItems.Controls.Add(this.txtSummary);
 			this.grpItems.Controls.Add(this.radLabel4);
-			this.grpItems.Controls.Add(this.cmbItemEmpList);
 			this.grpItems.Controls.Add(this.btnRemove);
 			this.grpItems.Controls.Add(this.btnAdditem);
 			this.grpItems.Controls.Add(this.txtIntID);
@@ -142,6 +144,7 @@
 			this.grpItems.Controls.Add(this.cmbProductList);
 			this.grpItems.Controls.Add(this.txtPrice);
 			this.grpItems.Controls.Add(this.radLabel1);
+			this.grpItems.Controls.Add(this.radLabel10);
 			this.grpItems.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.grpItems.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.grpItems.HeaderMargin = new System.Windows.Forms.Padding(1);
@@ -152,6 +155,15 @@
 			this.grpItems.TabIndex = 0;
 			this.grpItems.Text = "Add Items";
 			this.grpItems.ThemeName = "Crystal";
+			// 
+			// cmbItemEmpList
+			// 
+			this.cmbItemEmpList.Location = new System.Drawing.Point(186, 110);
+			this.cmbItemEmpList.Name = "cmbItemEmpList";
+			this.cmbItemEmpList.Size = new System.Drawing.Size(177, 24);
+			this.cmbItemEmpList.TabIndex = 35;
+			this.cmbItemEmpList.ThemeName = "Crystal";
+			this.cmbItemEmpList.PopupOpening += new System.ComponentModel.CancelEventHandler(this.cmbItemEmpList_PopupOpening);
 			// 
 			// txtRemarks
 			// 
@@ -201,17 +213,6 @@
 			this.radLabel4.Text = "₱ ";
 			this.radLabel4.ThemeName = "Crystal";
 			// 
-			// cmbItemEmpList
-			// 
-			this.cmbItemEmpList.DropDownAnimationEnabled = true;
-			this.cmbItemEmpList.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmbItemEmpList.Location = new System.Drawing.Point(163, 110);
-			this.cmbItemEmpList.Name = "cmbItemEmpList";
-			this.cmbItemEmpList.Size = new System.Drawing.Size(200, 24);
-			this.cmbItemEmpList.TabIndex = 30;
-			this.cmbItemEmpList.Text = "Select Employee Name";
-			this.cmbItemEmpList.ThemeName = "Crystal";
-			// 
 			// btnRemove
 			// 
 			this.btnRemove.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -241,7 +242,7 @@
 			this.txtIntID.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtIntID.Location = new System.Drawing.Point(9, 60);
 			this.txtIntID.Name = "txtIntID";
-			this.txtIntID.Size = new System.Drawing.Size(53, 23);
+			this.txtIntID.Size = new System.Drawing.Size(71, 23);
 			this.txtIntID.TabIndex = 27;
 			this.txtIntID.ThemeName = "Crystal";
 			// 
@@ -294,7 +295,7 @@
 			this.txtQuantity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtQuantity.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtQuantity.Location = new System.Drawing.Point(89, 110);
+			this.txtQuantity.Location = new System.Drawing.Point(101, 110);
 			this.txtQuantity.Name = "txtQuantity";
 			this.txtQuantity.Size = new System.Drawing.Size(50, 23);
 			this.txtQuantity.TabIndex = 18;
@@ -305,7 +306,7 @@
 			// radLabel2
 			// 
 			this.radLabel2.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel2.Location = new System.Drawing.Point(89, 90);
+			this.radLabel2.Location = new System.Drawing.Point(101, 94);
 			this.radLabel2.Name = "radLabel2";
 			this.radLabel2.Size = new System.Drawing.Size(60, 19);
 			this.radLabel2.TabIndex = 19;
@@ -316,11 +317,10 @@
 			// 
 			this.cmbProductList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.cmbProductList.DropDownAnimationEnabled = true;
 			this.cmbProductList.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmbProductList.Location = new System.Drawing.Point(89, 60);
+			this.cmbProductList.Location = new System.Drawing.Point(101, 59);
 			this.cmbProductList.Name = "cmbProductList";
-			this.cmbProductList.Size = new System.Drawing.Size(236, 24);
+			this.cmbProductList.Size = new System.Drawing.Size(262, 24);
 			this.cmbProductList.TabIndex = 9;
 			this.cmbProductList.Text = "Select your Item";
 			this.cmbProductList.ThemeName = "Crystal";
@@ -334,19 +334,29 @@
 			this.txtPrice.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtPrice.Location = new System.Drawing.Point(9, 110);
 			this.txtPrice.Name = "txtPrice";
-			this.txtPrice.Size = new System.Drawing.Size(53, 23);
+			this.txtPrice.Size = new System.Drawing.Size(71, 23);
 			this.txtPrice.TabIndex = 10;
 			this.txtPrice.ThemeName = "Crystal";
 			// 
 			// radLabel1
 			// 
 			this.radLabel1.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel1.Location = new System.Drawing.Point(9, 89);
+			this.radLabel1.Location = new System.Drawing.Point(9, 94);
 			this.radLabel1.Name = "radLabel1";
 			this.radLabel1.Size = new System.Drawing.Size(40, 19);
 			this.radLabel1.TabIndex = 11;
 			this.radLabel1.Text = "Price:";
 			this.radLabel1.ThemeName = "Crystal";
+			// 
+			// radLabel10
+			// 
+			this.radLabel10.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.radLabel10.Location = new System.Drawing.Point(186, 95);
+			this.radLabel10.Name = "radLabel10";
+			this.radLabel10.Size = new System.Drawing.Size(126, 19);
+			this.radLabel10.TabIndex = 20;
+			this.radLabel10.Text = "Employee to Update";
+			this.radLabel10.ThemeName = "Crystal";
 			// 
 			// btnNew
 			// 
@@ -466,7 +476,6 @@
 			// cmbEmployee
 			// 
 			this.cmbEmployee.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.cmbEmployee.DropDownAnimationEnabled = true;
 			this.cmbEmployee.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmbEmployee.Location = new System.Drawing.Point(130, 93);
 			this.cmbEmployee.Name = "cmbEmployee";
@@ -474,6 +483,7 @@
 			this.cmbEmployee.TabIndex = 10;
 			this.cmbEmployee.Text = "Select Employee Name";
 			this.cmbEmployee.ThemeName = "Crystal";
+			this.cmbEmployee.PopupOpening += new System.ComponentModel.CancelEventHandler(this.cmbEmployee_PopupOpening);
 			this.cmbEmployee.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.cmbEmployee_SelectedIndexChanged);
 			// 
 			// radLabel7
@@ -567,7 +577,7 @@
 			this.MinimizeBox = false;
 			this.Name = "frmPantry";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "frmPantry";
+			this.Text = " ";
 			this.ThemeName = "Crystal";
 			this.Load += new System.EventHandler(this.frmPantry_Load);
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
@@ -575,11 +585,11 @@
 			((System.ComponentModel.ISupportInitialize)(this.grpItems)).EndInit();
 			this.grpItems.ResumeLayout(false);
 			this.grpItems.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.cmbItemEmpList)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtRemarks)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtSummary)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.cmbItemEmpList)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnRemove)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnAdditem)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtIntID)).EndInit();
@@ -592,6 +602,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.cmbProductList)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrice)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel10)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel2)).EndInit();
 			this.radPanel2.ResumeLayout(false);
@@ -648,7 +659,6 @@
 		public Telerik.WinControls.UI.RadGroupBox radGroupBox3;
 		public Telerik.WinControls.UI.RadGridView dgPantryList;
 		public Telerik.WinControls.UI.RadLabelElement lblstatus;
-		public Telerik.WinControls.UI.RadDropDownList cmbItemEmpList;
 		public Telerik.WinControls.UI.RadLabel radLabel4;
 		private Telerik.WinControls.RadThemeManager radThemeManager1;
 		public Telerik.WinControls.UI.RadDropDownList cmbEmployee;
@@ -656,5 +666,7 @@
 		public Telerik.WinControls.UI.RadTextBoxControl txtSummary;
 		public Telerik.WinControls.UI.RadTextBoxControl txtRemarks;
 		public Telerik.WinControls.UI.RadLabel radLabel3;
+		public Telerik.WinControls.UI.RadLabel radLabel10;
+		private Telerik.WinControls.UI.RadDropDownList cmbItemEmpList;
 	}
 }
