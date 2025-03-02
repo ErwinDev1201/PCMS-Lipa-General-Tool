@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace PCMS_Lipa_General_Tool.HelperClass
+namespace PCMS_Lipa_General_Tool.Services
 {
 	public  class SecurityEncryption
 	{

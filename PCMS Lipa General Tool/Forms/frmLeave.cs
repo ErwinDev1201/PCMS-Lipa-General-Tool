@@ -1,5 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -7,7 +7,7 @@ using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmLeave : Telerik.WinControls.UI.RadForm
+	public partial class frmLeave : RadForm
 	{
 		private readonly Leave leave = new();
 		private readonly User user = new();

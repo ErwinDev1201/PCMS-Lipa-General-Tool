@@ -1,18 +1,13 @@
-﻿using PCMS_Lipa_General_Tool.HelperClass;
+﻿using PCMS_Lipa_General_Tool.Services;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using Telerik.WinControls;
 using Telerik.WinControls.UI;
 using PCMS_Lipa_General_Tool.Class;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmITTask : Telerik.WinControls.UI.RadForm
+	public partial class frmITTask : RadForm
 	{
 		public string _empName;
 		public string _accessLevel;
@@ -29,9 +24,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		private void frmITTask_Load(object sender, EventArgs e)
 		{
-			dgTask.BestFitColumns(BestFitColumnMode.DisplayedCells);
 			dgTask.ReadOnly = true;
 			ShowTaskListinUI();
+			dgTask.BestFitColumns(BestFitColumnMode.DisplayedCells);
 		}
 
 		private void ShowTaskListinUI()
@@ -48,6 +43,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void btnNewTicket_Click(object sender, EventArgs e)
 		{
 			task.GetDBID(out string ID, _empName);
+
 			var frmTask = new frmModTask()
 			{
 				empName = _empName,
@@ -59,9 +55,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 				cmbStatus = { Text = "To Do", Enabled = false },
 				btnDelete = { Visible = false },
 				txtTaskID = { ReadOnly = true, Text = ID },
-				cmbReporter = { Enabled = (_accessLevel != "Administrator" && _accessLevel != "Programmer") || cmbEmployeeStat.Enabled }
-
+				cmbReporter =
+				{
+					Enabled = (_accessLevel == "Administrator" || _accessLevel == "Programmer"), // Disables for Admin & Programmer
+				    Text = _empName
+				}
 			};
+
 			frmTask.ShowDialog();
 		}
 

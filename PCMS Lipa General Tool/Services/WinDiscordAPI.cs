@@ -4,7 +4,7 @@ using System.IO;
 using System.Net;
 
 
-namespace PCMS_Lipa_General_Tool.HelperClass
+namespace PCMS_Lipa_General_Tool.Services
 {
 	public class WinDiscordAPI
 	{

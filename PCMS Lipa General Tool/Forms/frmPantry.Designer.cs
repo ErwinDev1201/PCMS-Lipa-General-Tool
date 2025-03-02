@@ -50,7 +50,7 @@
 			this.cmbProductList = new Telerik.WinControls.UI.RadDropDownList();
 			this.txtPrice = new Telerik.WinControls.UI.RadTextBox();
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
-			this.radLabel10 = new Telerik.WinControls.UI.RadLabel();
+			this.lblEmployeetoUpdate = new Telerik.WinControls.UI.RadLabel();
 			this.btnNew = new Telerik.WinControls.UI.RadButton();
 			this.radPanel2 = new Telerik.WinControls.UI.RadPanel();
 			this.lblsearchCount = new Telerik.WinControls.UI.RadLabel();
@@ -89,7 +89,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.cmbProductList)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrice)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel10)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblEmployeetoUpdate)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel2)).BeginInit();
 			this.radPanel2.SuspendLayout();
@@ -144,7 +144,7 @@
 			this.grpItems.Controls.Add(this.cmbProductList);
 			this.grpItems.Controls.Add(this.txtPrice);
 			this.grpItems.Controls.Add(this.radLabel1);
-			this.grpItems.Controls.Add(this.radLabel10);
+			this.grpItems.Controls.Add(this.lblEmployeetoUpdate);
 			this.grpItems.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.grpItems.GroupBoxStyle = Telerik.WinControls.UI.RadGroupBoxStyle.Office;
 			this.grpItems.HeaderMargin = new System.Windows.Forms.Padding(1);
@@ -348,15 +348,15 @@
 			this.radLabel1.Text = "Price:";
 			this.radLabel1.ThemeName = "Crystal";
 			// 
-			// radLabel10
+			// lblEmployeetoUpdate
 			// 
-			this.radLabel10.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.radLabel10.Location = new System.Drawing.Point(186, 95);
-			this.radLabel10.Name = "radLabel10";
-			this.radLabel10.Size = new System.Drawing.Size(126, 19);
-			this.radLabel10.TabIndex = 20;
-			this.radLabel10.Text = "Employee to Update";
-			this.radLabel10.ThemeName = "Crystal";
+			this.lblEmployeetoUpdate.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblEmployeetoUpdate.Location = new System.Drawing.Point(186, 95);
+			this.lblEmployeetoUpdate.Name = "lblEmployeetoUpdate";
+			this.lblEmployeetoUpdate.Size = new System.Drawing.Size(126, 19);
+			this.lblEmployeetoUpdate.TabIndex = 20;
+			this.lblEmployeetoUpdate.Text = "Employee to Update";
+			this.lblEmployeetoUpdate.ThemeName = "Crystal";
 			// 
 			// btnNew
 			// 
@@ -602,7 +602,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.cmbProductList)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtPrice)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel10)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.lblEmployeetoUpdate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnNew)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel2)).EndInit();
 			this.radPanel2.ResumeLayout(false);
@@ -666,7 +666,7 @@
 		public Telerik.WinControls.UI.RadTextBoxControl txtSummary;
 		public Telerik.WinControls.UI.RadTextBoxControl txtRemarks;
 		public Telerik.WinControls.UI.RadLabel radLabel3;
-		public Telerik.WinControls.UI.RadLabel radLabel10;
+		public Telerik.WinControls.UI.RadLabel lblEmployeetoUpdate;
 		private Telerik.WinControls.UI.RadDropDownList cmbItemEmpList;
 	}
 }

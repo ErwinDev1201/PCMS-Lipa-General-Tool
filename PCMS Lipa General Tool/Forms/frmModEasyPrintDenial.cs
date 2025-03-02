@@ -1,8 +1,6 @@
-﻿using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
-using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.Services;
 using System;
-using System.Web.Caching;
 using System.Windows.Forms;
 using Telerik.WinControls;
 

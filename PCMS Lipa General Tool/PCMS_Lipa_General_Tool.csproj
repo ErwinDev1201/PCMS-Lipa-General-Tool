@@ -596,14 +596,14 @@
     <Compile Include="Forms\frmModTask.Designer.cs">
       <DependentUpon>frmModTask.cs</DependentUpon>
     </Compile>
-    <Compile Include="HelperClass\Database.cs" />
-    <Compile Include="HelperClass\OfficeFiles.cs" />
-    <Compile Include="HelperClass\emailSender.cs" />
-    <Compile Include="HelperClass\Notification.cs" />
-    <Compile Include="HelperClass\FEWinForm.cs" />
-    <Compile Include="HelperClass\SecurityEncryption.cs" />
-    <Compile Include="HelperClass\WinDiscordAPI.cs" />
-    <Compile Include="Service\ExportService.cs" />
+    <Compile Include="Services\Database.cs" />
+    <Compile Include="Services\OfficeFiles.cs" />
+    <Compile Include="Services\emailSender.cs" />
+    <Compile Include="Services\Notification.cs" />
+    <Compile Include="Services\FEWinForm.cs" />
+    <Compile Include="Services\SecurityEncryption.cs" />
+    <Compile Include="Services\WinDiscordAPI.cs" />
+    <Compile Include="Services\ExportService.cs" />
     <EmbeddedResource Include="Forms\frmAIAssistant.resx">
       <DependentUpon>frmAIAssistant.cs</DependentUpon>
     </EmbeddedResource>

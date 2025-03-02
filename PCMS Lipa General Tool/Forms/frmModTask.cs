@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 using System.Data.SqlClient;
 
 namespace PCMS_Lipa_General_Tool
@@ -152,6 +149,16 @@ namespace PCMS_Lipa_General_Tool
 			}
 		}
 
+		private void GetEmployee()
+		{
+			List<string> items = user.GetEmployeeList(empName);
+			cmbReporter.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbReporter.Items.Add(item);
+			}
+		}
+
 		private bool ProcessTaskRequest(string operationType, out string message)
 		{
 			try
@@ -258,10 +265,7 @@ namespace PCMS_Lipa_General_Tool
 		{
 			DialogResult result = RadMessageBox.Show(@"Are you sure you want to cancel this task?
 
-This will only close this window pop-up.",
-														 "Cancel Confirmation",
-														 MessageBoxButtons.YesNo,
-														 RadMessageIcon.Info);
+This will only close this window pop-up.", "Cancel Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Info);
 			if (result != DialogResult.Yes)
 			{
 				return;
@@ -272,6 +276,11 @@ This will only close this window pop-up.",
 		private void cmbAssigne_PopupOpening(object sender, CancelEventArgs e)
 		{
 			GetITList();
+		}
+
+		private void cmbReporter_PopupOpening(object sender, CancelEventArgs e)
+		{
+			GetEmployee();
 		}
 	}
 

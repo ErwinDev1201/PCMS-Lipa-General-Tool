@@ -1,9 +1,6 @@
-﻿using PCMS_Lipa_General_Tool.HelperClass;
+﻿using PCMS_Lipa_General_Tool.Services;
 using System;
-using System.Configuration;
 using System.Data.SqlClient;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
 namespace PCMS_Lipa_General_Tool.Class
 {

@@ -1,5 +1,4 @@
-﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+﻿using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Configuration;
 using System.Diagnostics;
@@ -218,7 +217,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 		}
 
-		private void frmWCTrainingtools_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+		private void frmWCTrainingtools_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Escape)
 			{

@@ -1,15 +1,9 @@
-﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Telerik.WinControls.UI;
 
-namespace PCMS_Lipa_General_Tool.Service
+namespace PCMS_Lipa_General_Tool.Services
 {
 	public class ExportService
 	{

@@ -1,7 +1,6 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 using System;
-using System.Configuration;
 using System.Data;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
@@ -9,7 +8,7 @@ using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmHearingRep : Telerik.WinControls.UI.RadForm
+	public partial class frmHearingRep : RadForm
 	{
 		private static readonly Notification notif = new();
 		private readonly HearingRep hearing = new();

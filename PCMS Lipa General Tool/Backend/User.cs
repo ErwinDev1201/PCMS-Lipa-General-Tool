@@ -1,16 +1,11 @@
-﻿using PCMS_Lipa_General_Tool.HelperClass;
+﻿using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
 
 namespace PCMS_Lipa_General_Tool.Class

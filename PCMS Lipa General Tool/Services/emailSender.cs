@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
-namespace PCMS_Lipa_General_Tool.HelperClass
+namespace PCMS_Lipa_General_Tool.Services
 {
 	public  class emailSender
 	{

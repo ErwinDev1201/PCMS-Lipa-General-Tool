@@ -182,6 +182,7 @@
 			this.btnChangedPassword.Text = "Change Password for this App";
 			this.btnChangedPassword.TextWrap = true;
 			this.btnChangedPassword.ThemeName = "Crystal";
+			this.btnChangedPassword.Click += new System.EventHandler(this.btnChangedPassword_Click);
 			// 
 			// radLabel10
 			// 

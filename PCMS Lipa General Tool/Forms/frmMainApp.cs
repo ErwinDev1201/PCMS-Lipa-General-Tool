@@ -1,7 +1,6 @@
-﻿using Org.BouncyCastle.Asn1.Mozilla;
-using PCMS_Lipa_General_Tool.Class;
+﻿using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.Forms;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,7 +14,7 @@ using Telerik.WinControls.UI;
 namespace PCMS_Lipa_General_Tool__WinForm_
 {
 
-	public partial class frmMainApp : Telerik.WinControls.UI.RadForm
+	public partial class frmMainApp : RadForm
 	{
 
 		private bool isMessageShown = false;
@@ -39,11 +38,11 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		//public string EmpName;
 		public string accessLevel;
-		public string userName;
+		public string UserName;
 		public string employeeID;
-		public string officeLoc;
-		public string themeName;
-		public string position;
+		public string OfficeLoc;
+		//public string ThemeName;
+		public string Position;
 		public string _dbConnection;
 
 		private string _empName;
@@ -67,15 +66,129 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			InitializeAllNotes();
 		}
 
+		#region importantUICOnfigurations
+		public void ConfigureVisibility(string role, string department, string position)
+		{
+			try
+			{
+				var rolesMapping = new Dictionary<string, Action>(StringComparer.OrdinalIgnoreCase)
+			{
+				{ "Programmer_All Department_Programmer", () => pictureBox1.Visible = true },
+				{ "Programmer_IT_Programmer", () => pictureBox1.Visible = true },
 
+				{ "Administrator_All Department_Supervisor", () => HideAdminControls() },
+				{ "Administrator_All Department_Operations Manager", () => HideAdminControls() },
+				{ "Administrator_IT_Operations Manager", () => HideAdminControls() },
+
+				{ "Management_All Department_Supervisor", () => { HideManagementControls(); mnuManageProduct.Visibility = ElementVisibility.Collapsed; } },
+				{ "Management_All Department_Operations Manager", () => { HideManagementControls(); mnuManageProduct.Visibility = ElementVisibility.Collapsed; } },
+
+				{ "Power User_Private_Collector", () => HidePrivateCollectorControls() },
+				{ "User_Private_Collector", () => HidePrivateCollectorControls() },
+
+				{ "Power User_Workers Comp_Private_Collector", () => HideWorkersCollectorControls() },
+				{ "User_Workers Comp_Collector", () => HideWorkersCollectorControls() }
+			};
+
+				string key = $"{role}_{department}_{position}";
+
+				// Execute action if key exists
+				if (rolesMapping.TryGetValue(key, out var action))
+				{
+					action?.Invoke();
+				}
+				else
+				{
+					RadMessageBox.Show($"No visibility rule defined for {key}", "Info", MessageBoxButtons.OK, RadMessageIcon.Info);
+				}
+			}
+			catch (Exception ex)
+			{
+				RadMessageBox.Show($"Error configuring visibility: {ex.Message}", "Error", MessageBoxButtons.OK, RadMessageIcon.Info);
+			}
+		}
+
+
+		private void HideAdminControls()
+		{
+			Console.WriteLine("Hiding Admin controls");
+			mnuOpenConfig.Visibility = ElementVisibility.Collapsed;
+			mnuDevAccountAccess.Visibility = ElementVisibility.Collapsed;
+			mnuActivityLog.Visibility = ElementVisibility.Collapsed;
+			mnuDBSequence.Visibility = ElementVisibility.Collapsed;
+			mnuOpenConfig.Visibility = ElementVisibility.Collapsed;
+			mnuViewCollectorNotes.Visibility = ElementVisibility.Collapsed;
+			pictureBox1.BringToFront();
+		}
+
+		private void HideManagementControls()
+		{
+			Console.WriteLine("Hiding management controls");
+			mnuOpenConfig.Visibility = ElementVisibility.Collapsed;
+			mnuDevAccountAccess.Visibility = ElementVisibility.Collapsed;
+			mnuActivityLog.Visibility = ElementVisibility.Collapsed;
+			mnuDBSequence.Visibility = ElementVisibility.Collapsed;
+			mnuOpenConfig.Visibility = ElementVisibility.Collapsed;
+			mnuViewCollectorNotes.Visibility = ElementVisibility.Collapsed;
+			mnuAdmin.Visibility = ElementVisibility.Collapsed;
+			pictureBox1.BringToFront();
+		}
+
+		private void HidePrivateCollectorControls()
+		{
+			Console.WriteLine("Hiding Collector controls");
+			mnuWorkcomp.Visibility = ElementVisibility.Collapsed;
+			mnuBackOffice.Visibility = ElementVisibility.Collapsed;
+			separator1.Visibility = ElementVisibility.Collapsed;
+			seperator2.Visibility = ElementVisibility.Collapsed;
+			mnuDevAccountAccess.Visibility = ElementVisibility.Collapsed;
+			mnuDBSequence.Visibility = ElementVisibility.Collapsed;
+			mnuActivityLog.Visibility = ElementVisibility.Collapsed;
+			mnuOpenConfig.Visibility = ElementVisibility.Collapsed;
+			mnuAssignProvider.Visibility = ElementVisibility.Collapsed;
+			mnuAdmin.Visibility = ElementVisibility.Collapsed;
+			mnuManageProduct.Visibility = ElementVisibility.Collapsed;
+			mnuViewCollectorNotes.Visibility = ElementVisibility.Collapsed;
+			pictureBox1.BringToFront();
+		}
+
+		private void HideWorkersCollectorControls()
+		{
+			Console.WriteLine("Hiding Collector controls");
+			mnuPrivateCollectors.Visibility = ElementVisibility.Collapsed;
+			mnuBackOffice.Visibility = ElementVisibility.Collapsed;
+			separator1.Visibility = ElementVisibility.Collapsed;
+			seperator2.Visibility = ElementVisibility.Collapsed;
+			mnuDevAccountAccess.Visibility = ElementVisibility.Collapsed;
+			mnuAdmin.Visibility = ElementVisibility.Collapsed;
+			mnuManageProduct.Visibility = ElementVisibility.Collapsed;
+			mnuViewCollectorNotes.Visibility = ElementVisibility.Collapsed;
+			pictureBox1.BringToFront();
+		}
+
+		public void SetMainAppProperties(string empID, string empName, string userName, string userAccess, string userPosition, string officeLoc, string theme)
+		{
+			employeeID = empID;
+			EmpName = empName;
+			UserName = userName;
+			accessLevel = userAccess;
+			statlblUsername.Text = empName;
+			statlblAccess.Text = userAccess;
+			statlblPosition.Text = Position;
+			OfficeLoc = officeLoc;
+			ThemeName = theme;
+			Position = userPosition;
+			//_dbConnection = _dbConnection;
+
+			//log.AddActivityLog(logMessage, EmpName, $"{EmpName} logged in", "USER LOGGED IN");
+		}
+
+		#endregion
 		private void InitializeApp()
 		{
-			//if (statlblPosition.Text == "Collector")
-			//{
 			viewNotesTab();
 			mnuViewCollectorNotes.Text = collectorPanel.Visible ? "Close Collector Notes" : "Open Collector Notes";
-			///dgCurrentNotes.ReadOnly = true;
-			//}
+
 		}
 		private void mnuOnlineLogins_Click(object sender, EventArgs e)
 		{
@@ -83,11 +196,11 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			{
 				accessLevel = accessLevel,
 				empName = EmpName,
-				officeLoc = officeLoc,
+				officeLoc = OfficeLoc,
 				Text = "Online Logins"
 
 			};
-			if (officeLoc == "SAN DIMAS")
+			if (OfficeLoc == "SAN DIMAS")
 			{
 				onlineLogins.cmbBrowser.Visible = false;
 				onlineLogins.txtRemarks.Height = 75;
@@ -140,7 +253,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		private void frmMainApp_Load(object sender, EventArgs e)
 		{
 			mainappTime.Start();
-			ThemeResolutionService.ApplicationThemeName = themeName;
+			ThemeResolutionService.ApplicationThemeName = ThemeName;
 			viewNotesTab();
 		}
 
@@ -152,7 +265,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		private void mnuLogout_Click(object sender, EventArgs e)
 		{
-			log.AddActivityLog($"User logout in the Application \n Time Logged Out: {DateTime.Now.ToShortDateString()} - {DateTime.Now.ToShortTimeString()}", EmpName, $"{EmpName} logged out", "USER LOG OUT");
+			log.AddActivityLog($"{EmpName} logout in the Application \n Time Logged Out: {DateTime.Now.ToShortDateString()} - {DateTime.Now.ToShortTimeString()}", EmpName, $"{EmpName} logged out", "USER LOG OUT");
 			Hide();
 			var dlglogin = new FrmLogin();
 			dlglogin.txtUsername.Focus();
@@ -163,7 +276,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to exit?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
-				log.AddActivityLog($"User Exit the Application \n Time Exit: {DateTime.Now.ToShortDateString()} - {DateTime.Now.ToShortTimeString()}", EmpName, $"{EmpName} exit the app", "USER CLOSE THE APP");
+				log.AddActivityLog($"{EmpName} has exit the Application \n Time Exit: {DateTime.Now.ToShortDateString()} - {DateTime.Now.ToShortTimeString()}", EmpName, $"{EmpName} exit the app", "USER CLOSE THE APP");
 				Application.Exit();
 			}
 		}
@@ -923,7 +1036,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		private void btnAddTransaction_Click(object sender, EventArgs e)
 		{
-			var notesTran = new frmModifyNotes(EmpName, position) // Pass EmpName here
+			var notesTran = new frmModifyNotes(EmpName, Position) // Pass EmpName here
 			{
 				Text = "Add Notes",
 				//position = position,
@@ -967,7 +1080,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		private void LoadAllNotes()
 		{
-			var dataTable = collnotes.ViewNotes(EmpName, out string lblCount, position);
+			var dataTable = collnotes.ViewNotes(EmpName, out string lblCount, Position);
 			dgCurrentNotes.DataSource = dataTable;
 			lblCountNotes.Text = lblCount;
 		}
@@ -1144,7 +1257,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		{
 			if (dgCurrentNotes.SelectedRows.Count > 0)
 			{
-				var modNotes = new frmModifyNotes(EmpName, position);
+				var modNotes = new frmModifyNotes(EmpName, Position);
 				collnotes.FillNotesInfo(dgCurrentNotes, modNotes.txtIntID, modNotes.cmbProviderList, modNotes.txtChartNo, modNotes.txtPatientName, modNotes.txtNotes, modNotes.txtRemarks, EmpName);
 				modNotes.Text = "View/Update Adjuster Information";
 				//modAdj.btnDelete.Visible = false;
@@ -1157,7 +1270,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		private void dgallNotesView_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			if (position == "Collector")
+			if (Position == "Collector")
 			{
 				return;
 			}
@@ -1165,7 +1278,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			{
 				if (dgallNotesView.SelectedRows.Count > 0)
 				{
-					var modNotes = new frmModifyNotes(EmpName, position);
+					var modNotes = new frmModifyNotes(EmpName, Position);
 					collnotes.FillNotesInfo(dgallNotesView, modNotes.txtIntID, modNotes.cmbProviderList, modNotes.txtChartNo, modNotes.txtPatientName, modNotes.txtNotes, modNotes.txtRemarks, EmpName);
 					modNotes.Text = "View/Update Adjuster Information";
 					//modAdj.btnDelete.Visible = false;

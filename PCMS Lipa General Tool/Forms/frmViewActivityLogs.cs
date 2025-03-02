@@ -4,11 +4,11 @@ using System.Windows.Forms;
 using Telerik.WinControls.UI;
 using System.Collections.Generic;
 using System.Data;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmViewActivityLogs : Telerik.WinControls.UI.RadForm
+	public partial class frmViewActivityLogs : RadForm
 	{
 		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();

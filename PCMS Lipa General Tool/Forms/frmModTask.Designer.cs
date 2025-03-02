@@ -28,10 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-			Telerik.WinControls.UI.RadListDataItem radListDataItem16 = new Telerik.WinControls.UI.RadListDataItem();
-			Telerik.WinControls.UI.RadListDataItem radListDataItem17 = new Telerik.WinControls.UI.RadListDataItem();
-			Telerik.WinControls.UI.RadListDataItem radListDataItem18 = new Telerik.WinControls.UI.RadListDataItem();
-			Telerik.WinControls.UI.RadListDataItem radListDataItem19 = new Telerik.WinControls.UI.RadListDataItem();
 			Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
 			Telerik.WinControls.UI.RadListDataItem radListDataItem2 = new Telerik.WinControls.UI.RadListDataItem();
 			Telerik.WinControls.UI.RadListDataItem radListDataItem3 = new Telerik.WinControls.UI.RadListDataItem();
@@ -41,10 +37,16 @@
 			Telerik.WinControls.UI.RadListDataItem radListDataItem7 = new Telerik.WinControls.UI.RadListDataItem();
 			Telerik.WinControls.UI.RadListDataItem radListDataItem8 = new Telerik.WinControls.UI.RadListDataItem();
 			Telerik.WinControls.UI.RadListDataItem radListDataItem9 = new Telerik.WinControls.UI.RadListDataItem();
-			Telerik.WinControls.UI.RadListDataItem radListDataItem20 = new Telerik.WinControls.UI.RadListDataItem();
-			Telerik.WinControls.UI.RadListDataItem radListDataItem21 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem10 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem11 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem12 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem13 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem14 = new Telerik.WinControls.UI.RadListDataItem();
+			Telerik.WinControls.UI.RadListDataItem radListDataItem15 = new Telerik.WinControls.UI.RadListDataItem();
 			this.crystalTheme1 = new Telerik.WinControls.Themes.CrystalTheme();
 			this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
+			this.txtComment = new Telerik.WinControls.UI.RadTextBox();
+			this.radLabel9 = new Telerik.WinControls.UI.RadLabel();
 			this.cmbReporter = new Telerik.WinControls.UI.RadDropDownList();
 			this.btnCancel = new Telerik.WinControls.UI.RadButton();
 			this.cmbStatus = new Telerik.WinControls.UI.RadDropDownList();
@@ -64,10 +66,10 @@
 			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel8 = new Telerik.WinControls.UI.RadLabel();
 			this.radLabel6 = new Telerik.WinControls.UI.RadLabel();
-			this.txtComment = new Telerik.WinControls.UI.RadTextBox();
-			this.radLabel9 = new Telerik.WinControls.UI.RadLabel();
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
 			this.radPanel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.txtComment)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel9)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbReporter)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnCancel)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbStatus)).BeginInit();
@@ -87,8 +89,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel8)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel6)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtComment)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel9)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -122,14 +122,37 @@
 			this.radPanel1.ThemeName = "Crystal";
 			this.radPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.radPanel1_Paint);
 			// 
+			// txtComment
+			// 
+			this.txtComment.Location = new System.Drawing.Point(98, 230);
+			this.txtComment.Multiline = true;
+			this.txtComment.Name = "txtComment";
+			// 
+			// 
+			// 
+			this.txtComment.RootElement.StretchVertically = true;
+			this.txtComment.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+			this.txtComment.Size = new System.Drawing.Size(274, 90);
+			this.txtComment.TabIndex = 27;
+			this.txtComment.ThemeName = "Crystal";
+			// 
+			// radLabel9
+			// 
+			this.radLabel9.Location = new System.Drawing.Point(12, 261);
+			this.radLabel9.Name = "radLabel9";
+			this.radLabel9.Size = new System.Drawing.Size(70, 20);
+			this.radLabel9.TabIndex = 26;
+			this.radLabel9.Text = "Comment:";
+			this.radLabel9.ThemeName = "Crystal";
+			// 
 			// cmbReporter
 			// 
-			this.cmbReporter.DropDownAnimationEnabled = true;
 			this.cmbReporter.Location = new System.Drawing.Point(98, 326);
 			this.cmbReporter.Name = "cmbReporter";
 			this.cmbReporter.Size = new System.Drawing.Size(197, 24);
 			this.cmbReporter.TabIndex = 25;
 			this.cmbReporter.ThemeName = "Crystal";
+			this.cmbReporter.PopupOpening += new System.ComponentModel.CancelEventHandler(this.cmbReporter_PopupOpening);
 			// 
 			// btnCancel
 			// 
@@ -144,15 +167,14 @@
 			// 
 			// cmbStatus
 			// 
-			this.cmbStatus.DropDownAnimationEnabled = true;
-			radListDataItem16.Text = "To Do";
-			radListDataItem17.Text = "In Progress";
-			radListDataItem18.Text = "Done";
-			radListDataItem19.Text = "Pending";
-			this.cmbStatus.Items.Add(radListDataItem16);
-			this.cmbStatus.Items.Add(radListDataItem17);
-			this.cmbStatus.Items.Add(radListDataItem18);
-			this.cmbStatus.Items.Add(radListDataItem19);
+			radListDataItem1.Text = "To Do";
+			radListDataItem2.Text = "In Progress";
+			radListDataItem3.Text = "Done";
+			radListDataItem4.Text = "Pending";
+			this.cmbStatus.Items.Add(radListDataItem1);
+			this.cmbStatus.Items.Add(radListDataItem2);
+			this.cmbStatus.Items.Add(radListDataItem3);
+			this.cmbStatus.Items.Add(radListDataItem4);
 			this.cmbStatus.Location = new System.Drawing.Point(319, 74);
 			this.cmbStatus.Name = "cmbStatus";
 			this.cmbStatus.Size = new System.Drawing.Size(169, 24);
@@ -192,11 +214,10 @@
 			// 
 			// cmbAssigne
 			// 
-			this.cmbAssigne.DropDownAnimationEnabled = true;
-			radListDataItem1.Text = "Erwin Alcantara";
-			radListDataItem2.Text = "Dimz Escalona";
-			this.cmbAssigne.Items.Add(radListDataItem1);
-			this.cmbAssigne.Items.Add(radListDataItem2);
+			radListDataItem5.Text = "Erwin Alcantara";
+			radListDataItem6.Text = "Dimz Escalona";
+			this.cmbAssigne.Items.Add(radListDataItem5);
+			this.cmbAssigne.Items.Add(radListDataItem6);
 			this.cmbAssigne.Location = new System.Drawing.Point(319, 44);
 			this.cmbAssigne.Name = "cmbAssigne";
 			this.cmbAssigne.Size = new System.Drawing.Size(169, 24);
@@ -206,13 +227,12 @@
 			// 
 			// cmbPriority
 			// 
-			this.cmbPriority.DropDownAnimationEnabled = true;
-			radListDataItem3.Text = "High";
-			radListDataItem4.Text = "Normal";
-			radListDataItem5.Text = "Low";
-			this.cmbPriority.Items.Add(radListDataItem3);
-			this.cmbPriority.Items.Add(radListDataItem4);
-			this.cmbPriority.Items.Add(radListDataItem5);
+			radListDataItem7.Text = "High";
+			radListDataItem8.Text = "Normal";
+			radListDataItem9.Text = "Low";
+			this.cmbPriority.Items.Add(radListDataItem7);
+			this.cmbPriority.Items.Add(radListDataItem8);
+			this.cmbPriority.Items.Add(radListDataItem9);
 			this.cmbPriority.Location = new System.Drawing.Point(98, 74);
 			this.cmbPriority.Name = "cmbPriority";
 			this.cmbPriority.Size = new System.Drawing.Size(124, 24);
@@ -221,19 +241,18 @@
 			// 
 			// cmbCategory
 			// 
-			this.cmbCategory.DropDownAnimationEnabled = true;
-			radListDataItem6.Text = "Bug";
-			radListDataItem7.Text = "Feature";
-			radListDataItem8.Text = "Request";
-			radListDataItem9.Text = "Rejection";
-			radListDataItem20.Text = "COB Billing";
-			radListDataItem21.Text = "System";
-			this.cmbCategory.Items.Add(radListDataItem6);
-			this.cmbCategory.Items.Add(radListDataItem7);
-			this.cmbCategory.Items.Add(radListDataItem8);
-			this.cmbCategory.Items.Add(radListDataItem9);
-			this.cmbCategory.Items.Add(radListDataItem20);
-			this.cmbCategory.Items.Add(radListDataItem21);
+			radListDataItem10.Text = "Bug";
+			radListDataItem11.Text = "Feature";
+			radListDataItem12.Text = "Request";
+			radListDataItem13.Text = "Rejection";
+			radListDataItem14.Text = "COB Billing";
+			radListDataItem15.Text = "System";
+			this.cmbCategory.Items.Add(radListDataItem10);
+			this.cmbCategory.Items.Add(radListDataItem11);
+			this.cmbCategory.Items.Add(radListDataItem12);
+			this.cmbCategory.Items.Add(radListDataItem13);
+			this.cmbCategory.Items.Add(radListDataItem14);
+			this.cmbCategory.Items.Add(radListDataItem15);
 			this.cmbCategory.Location = new System.Drawing.Point(98, 44);
 			this.cmbCategory.Name = "cmbCategory";
 			this.cmbCategory.Size = new System.Drawing.Size(124, 24);
@@ -333,29 +352,6 @@
 			this.radLabel6.Text = "Assigned To:";
 			this.radLabel6.ThemeName = "Crystal";
 			// 
-			// txtComment
-			// 
-			this.txtComment.Location = new System.Drawing.Point(98, 230);
-			this.txtComment.Multiline = true;
-			this.txtComment.Name = "txtComment";
-			// 
-			// 
-			// 
-			this.txtComment.RootElement.StretchVertically = true;
-			this.txtComment.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-			this.txtComment.Size = new System.Drawing.Size(274, 90);
-			this.txtComment.TabIndex = 27;
-			this.txtComment.ThemeName = "Crystal";
-			// 
-			// radLabel9
-			// 
-			this.radLabel9.Location = new System.Drawing.Point(12, 261);
-			this.radLabel9.Name = "radLabel9";
-			this.radLabel9.Size = new System.Drawing.Size(70, 20);
-			this.radLabel9.TabIndex = 26;
-			this.radLabel9.Text = "Comment:";
-			this.radLabel9.ThemeName = "Crystal";
-			// 
 			// frmModTask
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -372,6 +368,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
 			this.radPanel1.ResumeLayout(false);
 			this.radPanel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.txtComment)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.radLabel9)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbReporter)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.btnCancel)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmbStatus)).EndInit();
@@ -391,8 +389,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel8)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radLabel6)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.txtComment)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel9)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 

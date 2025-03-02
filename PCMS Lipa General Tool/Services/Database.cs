@@ -1,11 +1,9 @@
 ﻿using System.Data.SqlClient;
 using System.Data;
 using System;
-using Telerik.WinControls.UI;
 using System.Configuration;
-using DocumentFormat.OpenXml.Office2013.Excel;
 
-namespace PCMS_Lipa_General_Tool.HelperClass
+namespace PCMS_Lipa_General_Tool.Services
 {
 	public class Database
 	{

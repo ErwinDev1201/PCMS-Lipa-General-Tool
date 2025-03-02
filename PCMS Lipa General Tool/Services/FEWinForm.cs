@@ -2,7 +2,7 @@
 using System.Reflection;
 using Telerik.WinControls.UI;
 
-namespace PCMS_Lipa_General_Tool.HelperClass
+namespace PCMS_Lipa_General_Tool.Services
 {
 	public class FEWinForm
 	{
@@ -14,7 +14,7 @@ namespace PCMS_Lipa_General_Tool.HelperClass
 				AutoCloseDelay = 7, //seconds to
 				CaptionText = Assembly.GetExecutingAssembly().GetName().Name.ToString(),
 				//AutoSize = true,
-				FixedSize = new System.Drawing.Size(380, 120),
+				FixedSize = new Size(380, 120),
 				ScreenPosition = AlertScreenPosition.BottomRight,
 				Opacity = 0.9f,
 

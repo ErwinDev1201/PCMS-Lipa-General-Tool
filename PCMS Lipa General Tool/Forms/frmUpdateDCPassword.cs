@@ -1,5 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -7,7 +7,7 @@ using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmUpdateDCPassword : Telerik.WinControls.UI.RadForm
+	public partial class frmUpdateDCPassword : RadForm
 	{
 		private static readonly ActivtiyLogs log = new();
 		private static readonly FEWinForm fe = new();

@@ -1,5 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -8,7 +8,7 @@ using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class FrmAdjusterinformation : Telerik.WinControls.UI.RadForm
+	public partial class FrmAdjusterinformation : RadForm
 	{
 		private readonly Adjuster adj = new();
 		//private readonly MailSender mailSender = new MailSender();						

@@ -1,5 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmMPN : Telerik.WinControls.UI.RadForm
+	public partial class frmMPN : RadForm
 	{
 		private static readonly Notification notif = new();
 		private readonly MPN mpn = new();

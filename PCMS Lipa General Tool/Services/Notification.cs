@@ -1,7 +1,7 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
 using System;
 
-namespace PCMS_Lipa_General_Tool.HelperClass
+namespace PCMS_Lipa_General_Tool.Services
 {
 	public class Notification
 	{

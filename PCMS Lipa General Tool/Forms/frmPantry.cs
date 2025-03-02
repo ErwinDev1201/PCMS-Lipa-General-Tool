@@ -1,13 +1,9 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
-using PCMS_Lipa_General_Tool.Service;
-using SkiaSharp;
+using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -17,16 +13,14 @@ using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmPantry : Telerik.WinControls.UI.RadForm
+	public partial class frmPantry : RadForm
 	{
 		public string _empName;
 		public string _accessLevel;
-		//private static readonly string dbBackupcoll = ConfigurationManager.AppSettings["StoragePath"];
 		private readonly Pantry pantry = new();
 		private static readonly Notification notif = new();
 		private static readonly FEWinForm fe = new();
 		private readonly User user = new();
-		//private readonly OfficeFiles office = new();
 		private readonly ActivtiyLogs log = new();
 
 
@@ -36,12 +30,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 			InitializeComponent();
 			AutoCompleteCombo();
 			LoadPantryListwithFilter();
-
-			//DefaultFields();
-			//DefaultField1timeOnly();
-			//lblDevName.Text = "Developer: PCMS-0081 Mayor";
-			//statlblUsername.Text = _empName;			
-			//CheckAdmin();
 		}
 
 
@@ -78,7 +66,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			txtRemarks.Text = "";
 			cmbProductList.Text = "";
 			cmbEmployee.Text = _empName;
-			//cmbItemEmpList.Text = _empName;
+			cmbItemEmpList.Text = _empName;
 			lblstatus.Text = "Ready";
 			dgPantryList.ReadOnly = true;
 
@@ -95,6 +83,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				btnExport.Visible = true;
 				cmbEmployee.Enabled = true;
 				cmbItemEmpList.Enabled = true;
+				lblEmployeetoUpdate.Visible = true;
+
 			}
 			else
 			{
@@ -105,6 +95,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				cmbEmployee.Enabled = false;
 				cmbItemEmpList.Visible = false;
 				btnCancelFilter.Height = 79;
+				lblEmployeetoUpdate.Visible = false;
 				btnCancelFilter.Location = new System.Drawing.Point(385, 35);
 			}
 		}
@@ -195,11 +186,12 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 		public void FillEmployeeDropdown(RadDropDownList cmbList)
 		{
+			cmbList.Items.Clear();
 			List<string> items = user.GetEmployeeList(_empName);
-			cmbList.Items.Clear(); // Clear existing items, if any
+			 // Clear existing items, if any
 			foreach (var item in items)
 			{
-				cmbEmployee.Items.Add(item);
+				cmbList.Items.Add(item);
 			}
 		}
 
@@ -484,146 +476,6 @@ via PCMS Lipa General Tool";
 			}
 		}
 
-
-		//private void DisableAll(Control parent)
-		//{
-		//	// Disable all controls in the form dynamically
-		//	foreach (Control control in this.Controls)
-		//	{
-		//		if (control is TextBox textBox)
-		//		{
-		//			textBox.Enabled = false;
-		//			textBox.Text = string.Empty; // Clear the text
-		//		}
-		//		else if (control is ComboBox comboBox)
-		//		{
-		//			comboBox.Enabled = false;
-		//			comboBox.Text = string.Empty; // Clear the selection
-		//		}
-		//		else if (control is Button button) // Leave btnNew visible
-		//		{
-		//			button.Enabled = false;
-		//		}
-		//		else if (control is DateTimePicker dateTimePicker)
-		//		{
-		//			dateTimePicker.Enabled = false;
-		//		}
-		//		else if (control is RadGridView gridView)
-		//		{
-		//			gridView.ReadOnly = true;
-		//			gridView.Enabled = false;
-		//		}
-		//		else if (control is GroupBox groupBox)
-		//		{
-		//			groupBox.Enabled = false;
-		//		}
-		//	}
-		//
-		//	// Ensure specific properties for btnNew
-		//	///btnNew.Enabled = true;
-		//	//btnNew.Visible = true;
-		//}
-
-
-
-		//private void LoadExportXcel(out string filePath)
-		//{
-		//	try
-		//	{
-		//		// Convert RadGridView to DataTable
-		//		DataTable dataTable = GetDataTableFromRadGridView(dgPantryList);
-		//
-		//		// Call the export method
-		//		task.ExportTableToExcel(dataTable, "Pantry", _empName);
-		//
-		//		// Optionally notify the user and open the file
-		//		string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-		//		filePath = Path.Combine(desktopPath, $"Pantry List {dtpFrom:MM.dd.yy} - {dtpTo:MM.dd.yy}.xlsx");
-		//
-		//		return filePath;
-		//
-		//		//MessageBox.Show($"Export successful! File saved to:\n{filePath}", "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
-		//		//
-		//		//if (MessageBox.Show("Would you like to open the file?", "Open File", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-		//		//{
-		//		//	System.Diagnostics.Process.Start(filePath);
-		//		//}
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		MessageBox.Show($"An error occurred during export:\n{ex.Message}", "Export Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-		//	}
-		//}
-		//
-		//public DataTable GetDataTableFromRadGridView(RadGridView gridView)
-		//{
-		//	DataTable dataTable = new();
-		//
-		//	// Add columns
-		//	foreach (GridViewDataColumn column in gridView.Columns)
-		//	{
-		//		dataTable.Columns.Add(column.HeaderText, column.DataType);
-		//	}
-		//
-		//	// Add rows
-		//	foreach (GridViewRowInfo row in gridView.Rows)
-		//	{
-		//		if (!row.IsVisible) continue; // Skip hidden rows
-		//		DataRow dataRow = dataTable.NewRow();
-		//		foreach (GridViewDataColumn column in gridView.Columns)
-		//		{
-		//			dataRow[column.HeaderText] = row.Cells[column.Name].Value ?? DBNull.Value;
-		//		}
-		//		dataTable.Rows.Add(dataRow);
-		//	}
-		//
-		//	return dataTable;
-		//}
-		//private void btnExport_Click(object sender, EventArgs e)
-		//{
-		//	try
-		//	{
-		//		var dtpfrom = dtpFrom.Value;
-		//		var dtpto = dtpTo.Value;
-		//		//var pathFile = dbBackupcoll;
-		//		DisableAll();
-		//		//string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-		//		lblstatus.Text = "Creating Spreadsheets and Collecting Data...";
-		//		LoadExportXcel(out string filePath);
-		//		string mailAttachment = filePath;
-		//		//DataTable dataTable = GetDataTableFromRadGridView(dgPantryList);
-		//		//task.ExportTableToExcel(dataTable, fileName, _empName);
-		//		System.Threading.Thread.Sleep(3000);
-		//		emailSender mail = new();
-		//		string mailContent = "Hi, \n\nAttached is the Extracted Pantry List from " + dtpfrom.ToShortDateString() + " - " + dtpto.ToShortDateString() + "\n\n Regards, \n System Administrator";
-		//		string mailSubject = "Pantry List from " + dtpfrom.ToShortDateString() + "-" + dtpto.ToShortDateString();
-		//		System.Threading.Thread.Sleep(3000);
-		//		lblstatus.Text = "Preparing Email Content and checking attachment...";
-		//		if (_empName == "Erwin Alcantara")
-		//		{
-		//			emailAddress = "mr.erwinalcantara@gmail.com";
-		//			string mailSub = mailSubject;
-		//			System.Threading.Thread.Sleep(3000);
-		//			mail.SendEmail("yesAttach", mailContent, mailAttachment, mailSubject, emailAddress, "TM Pantry Store", null, null);
-		//		}
-		//		else
-		//		{
-		//			emailAddress = "edimson@pcmsbilling.net";
-		//			string mailSub = mailSubject;
-		//			System.Threading.Thread.Sleep(3000);
-		//			mail.SendEmail("yesAttach", mailContent, mailAttachment, mailSubject, emailAddress, "TM Pantry Store", null, null);
-		//		}
-		//		RadMessageBox.Show("Hi\n\n" +
-		//			"Email Sent was sent to " + emailAddress, "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
-		//		LoadPantryListwithFilter();
-		//		DefaultFields();
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		notif.LogError("btnExport_Click", _empName, "frmPantry", null, ex);
-		//	}
-		//}
-		//
 		private void DisableAll()
 		{
 			btnNew.Enabled = false;
@@ -685,8 +537,6 @@ via PCMS Lipa General Tool";
 		//
 		private void btnRemove_Click(object sender, EventArgs e)
 		{
-			//var query = "DELETE FROM [Pantry Listahan] WHERE [INT ID]='" + txtIntID.Text + "'";
-			//process.DeleteValues(query);
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure you want to delete this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
 				bool isSuccess = pantry.PantryListDBRequest(
@@ -838,8 +688,6 @@ via PCMS Lipa General Tool";
 			dtpFrom.Value = DateTime.Now;
 			cmbEmployee.Text = _empName;
 			DefaultFields();
-			//this.dgPantryList.BestFitColumns(BestFitColumnMode.DisplayedCells);
-			DgFormatting();
 			dgPantryList.BestFitColumns(BestFitColumnMode.DisplayedCells);
 		}
 
@@ -885,11 +733,6 @@ via PCMS Lipa General Tool";
 		{
 			FillEmployeeDropdown(cmbEmployee);
 		}
-
-		//private void cmbItemEmpList_PopupOpened(object sender, EventArgs e)
-		//{
-		//	FillEmployeeDropdown(cmbItemEmpList);
-		//}
 	}
 
 }

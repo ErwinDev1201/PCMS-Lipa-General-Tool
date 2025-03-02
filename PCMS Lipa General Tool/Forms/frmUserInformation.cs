@@ -1,6 +1,5 @@
-﻿using DocumentFormat.OpenXml.Vml.Office;
-using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,14 +9,13 @@ using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.Primitives;
 using Telerik.WinControls.UI;
-using Telerik.WinControls.UI.Barcode.Symbology;
 
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
 	
 
-	public partial class frmUserInformation : Telerik.WinControls.UI.RadForm
+	public partial class frmUserInformation : RadForm
 	{
 		private readonly User user = new();
 		private static readonly FEWinForm fe = new();

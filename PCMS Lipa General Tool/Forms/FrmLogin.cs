@@ -1,6 +1,6 @@
 ﻿
 using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 using PCMS_Lipa_General_Tool__WinForm_;
 using System;
 using System.Windows.Forms;
@@ -9,7 +9,7 @@ using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class FrmLogin : Telerik.WinControls.UI.RadForm
+	public partial class FrmLogin : RadForm
 	{
 		private readonly Login pushLogin = new();
 		private static readonly Notification notif = new();
@@ -49,30 +49,95 @@ namespace PCMS_Lipa_General_Tool.Forms
 			UserLogin();
 		}
 
-		private void UserLogin()
+		private async void UserLogin()
 		{
-			string username = txtUsername.Text;
-			string password = txtPassword.Text;
-			bool isLoginPanelEnabled = true;
-			string alertMessage = string.Empty; // Initialize here to avoid the error
-			Hide();
-			var loginManager = new Login();
-			loginManager.UserLogin(ref username, ref password, ref isLoginPanelEnabled, ref alertMessage);
-			lblalert.Text = alertMessage;
-			lblalert.Visible = true;
-			txtPassword.Text = "";
-			txtUsername.Focus();
-			lblalert.Refresh(); // Force UI update
-
-			// Update login panel state
-			loginPanel.Enabled = isLoginPanelEnabled;
-
-			if (!string.IsNullOrEmpty(alertMessage))
+			try
 			{
-				Show(); // Close the login form if successful
-			}
+				string username = txtUsername.Text.Trim();
+				string password = txtPassword.Text.Trim();
+				loginPanel.Enabled = false; // Disable panel to prevent multiple clicks
 
+				// Execute login asynchronously
+				var (isSuccess, alertMessage, empID, empName, userName, email, firstTime, userPosition, userAccess, userDept, officeLoc, theme, isLoginPanelEnabled, isLblAlertShow) = await pushLogin.UserLoginAsync(username, password);
+				//Console.WriteLine(isSuccess);
+
+				if (isSuccess)
+				{
+					if (firstTime == "Yes")
+					{
+						var changePassword = new frmResetPassword
+						{
+							Text = "Change Password",
+							changePassword = "Yes",
+							empName = empName,
+							txtEmpID = { Text = userName },
+							txtWorkEmail = { Text = email }
+						};
+						changePassword.ShowDialog();
+					}
+					else
+					{
+						if (userPosition != "Back Office")
+						{
+							try
+							{
+								var mainApp = new frmMainApp();
+								mainApp.ConfigureVisibility(userAccess, userDept, userPosition);
+								mainApp.SetMainAppProperties(empID, empName, userName, userAccess, userPosition, officeLoc, theme);
+								Hide();
+								mainApp.Show();
+							}
+							catch (Exception ex)
+							{
+								notif.LogError("demoTool", empName, "Login", null, ex);
+								//RadMessageBox.Show($"An error occurred while loading the main application:\n{ex.Message}", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+							}
+						}
+						else
+						{
+							var demoTool = new frmDemoTool();
+							try
+							{
+								demoTool.EmpName = empName;
+								demoTool.userName = userName;
+								demoTool.accessLevel = userAccess;
+								demoTool.statlblUsername.Text = empName;
+								demoTool.statlblAccess.Text = userAccess;
+								demoTool.statlblPosition.Text = userPosition;
+								demoTool.officeLoc = officeLoc;
+								demoTool.Text = $"{lblProgName.Text} | Demo Tool | ({empName})";
+								Hide();
+								demoTool.Show();
+							}
+							catch (Exception ex)
+							{
+								notif.LogError("demoToolsetup", empName, "Login", $"Error setting up back office user: {ex.Message}", ex);
+							}
+						}
+
+					}
+				}
+				else
+				{
+					lblalert.Visible = true;// Show alert message in Telerik label
+					lblalert.Text = alertMessage;
+				}
+			}
+			catch (Exception ex)
+			{
+				// Handle unexpected errors
+				notif.LogError("UserLogin", txtUsername.Text, "Login", null, ex);
+				//RadMessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+			}
+			finally
+			{
+				// Re-enable login panel for retries
+				loginPanel.Enabled = true;
+				txtPassword.Clear();
+				txtUsername.Focus();
+			}
 		}
+
 
 
 		private void txtUsername_TextChanged(object sender, EventArgs e)
@@ -125,26 +190,10 @@ namespace PCMS_Lipa_General_Tool.Forms
 			bool isInputValid = txtPassword.Text.Length > 0 && txtUsername.Text.Length > 0;
 			btnLogin.Enabled = isInputValid;
 			lblalert.Text = isInputValid ? "" : lblalert.Text;
-
-			//if (txtPassword.Text.Length > 0 && txtUsername.Text.Length > 0)
-			//{
-			//	btnLogin.Enabled = true;
-			//	lblalert.Text = "";
-			//}
-			//else
-			//{
-			//	btnLogin.Enabled = false;
-			//	//lblalert.Text = "";
-			//}
 		}
 
 		private void frmLogin_Load(object sender, EventArgs e)
 		{
-			//txtUsername.ShowEmbeddedLabel = true;
-			//txtUsername.EmbeddedLabelText = "Username:";
-
-			//txtPassword.ShowEmbeddedLabel = true;
-			//txtPassword.EmbeddedLabelText = "Password:"
 			frmLoginTimer.Start();
 			pushLogin.CheckConnectivity();
 			Text = pushLogin.conStatus.ToString();
@@ -168,14 +217,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 			changePassword.lblTemp.Text = "Username";
 			changePassword.ShowDialog();
 
-			// Initialize variables for resetting the login form
-			string username = txtUsername.Text;
-			string password = txtPassword.Text;
-			bool isLoginPanelEnabled = true;
-
 			// Reset the login form using the refactored Login class
 			var loginManager = new Login();
-			loginManager.DefaultLoginSet(ref username, ref password, ref isLoginPanelEnabled, out string alertMessage);
+			var (username, password, isLoginPanelEnabled, alertMessage) = loginManager.DefaultLoginSet();
 
 			// Update the UI after resetting
 			txtUsername.Text = username;
@@ -184,20 +228,6 @@ namespace PCMS_Lipa_General_Tool.Forms
 			lblalert.Text = alertMessage;
 		}
 
-
-		//private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		//{
-		//	var changePassword = new frmResetPassword
-		//	{
-		//		Text = "Forgot Password",
-		//		changePassword = "forgot"
-		//
-		//	};
-		//	changePassword.btnOK.Text = "Update Password";
-		//	changePassword.lblTemp.Text = "Username";
-		//	changePassword.ShowDialog();
-		//	pushLogin.DefaultLoginSet(txtUsername, txtPassword, loginPanel, lblalert);
-		//}
 
 		private void txtPassword_KeyDown(object sender, KeyEventArgs e)
 		{
