@@ -1,5 +1,5 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -8,7 +8,7 @@ using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmUserManagement : Telerik.WinControls.UI.RadForm
+	public partial class frmUserManagement : RadForm
 	{
 		private static readonly Notification notif = new();
 		private readonly User user = new();
@@ -116,7 +116,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				modUser.DefaultItem("Update");
 
 				// Set button visibility based on access level
-				modUser.btnDelete.Visible = accessLevel == "Administrator";
+				modUser.btnDelete.Visible = accessLevel == "Programmer";
 
 				// Show the form
 				modUser.ShowDialog();
@@ -175,7 +175,7 @@ We're having a little trouble retrieving the information right now. Please try a
 				Console.WriteLine($"Rows returned: {resultTable.Rows.Count}");
 
 				// Ensure the data grid gets updated in both cases
-				dgEmployeeInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
+				//dgEmployeeInfo.BestFitColumns(BestFitColumnMode.DisplayedCells);
 				dgEmployeeInfo.DataSource = null;
 				dgEmployeeInfo.DataSource = resultTable;
 				dgEmployeeInfo.Refresh();

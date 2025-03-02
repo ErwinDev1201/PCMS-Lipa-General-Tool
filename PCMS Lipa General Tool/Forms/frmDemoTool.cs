@@ -1,11 +1,10 @@
 ﻿using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Telerik.WinControls;
@@ -13,7 +12,7 @@ using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
-	public partial class frmDemoTool : Telerik.WinControls.UI.RadForm
+	public partial class frmDemoTool : RadForm
 	{
 		private static readonly string privSupport = ConfigurationManager.AppSettings["privsupportpath"];
 		//private readonly MailSender mailSender = new MailSender();
@@ -23,7 +22,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private readonly Leave leave = new();
 		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
-		private static readonly FEWinForm fe = new();
+
 		private readonly User user = new();
 		private readonly OfficeFiles office = new();
 
@@ -56,6 +55,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void mnuLogout_Click(object sender, EventArgs e)
 		{
 			Hide();
+			log.AddActivityLog($"{EmpName} has logged out", EmpName, $"{EmpName} has logged out", "USER LOGGED OUT");
 			var login = new FrmLogin();
 			login.Show();
 		}
@@ -64,6 +64,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		{
 			if (DialogResult.Yes == RadMessageBox.Show("Are you sure want to exit?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
+				log.AddActivityLog($"{EmpName} has exit the app", EmpName, $"{EmpName} has logged out", "USER EXIT");
 				Application.Exit();
 			}
 		}
@@ -349,8 +350,11 @@ namespace PCMS_Lipa_General_Tool.Forms
 			CreateThemeMenuItem(mnuYourmeeThemes, "Windows 7 Feel", "Windows7");
 			CreateThemeMenuItem(mnuYourmeeThemes, "Windows 8 Feel", "Windows8");
 			CreateThemeMenuItem(mnuYourmeeThemes, "Office 2010 (Blue)", "Office2010Blue");
-			CreateThemeMenuItem(mnuYourmeeThemes, "Windows 11 Feel", "Windows11");
+			CreateThemeMenuItem(mnuYourmeeThemes, "Windows 11 Feel", "Windows11");;
+			CreateThemeMenuItem(mnuYourmeeThemes, "Desert", "Desert"); //windows11DarkTheme1
+			CreateThemeMenuItem(mnuYourmeeThemes, "Windows 11 Dark", "Windows11Dark");
 			//CreateThemeMenuItem(mnuYourmeeThemes, "Default", "Crystal");
+
 			//CreateThemeMenuItem(mnuYourmeeThemes, "Default", "Crystal");
 			//CreateThemeMenuItem(mnuYourmeeThemes, "Default", "Crystal");
 			//CreateThemeMenuItem(mnuYourmeeThemes, "Default", "Crystal");
@@ -372,7 +376,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			RadMenuItem menuItem = sender as RadMenuItem;
 			ThemeResolutionService.ApplicationThemeName = menuItem.Tag as string;
 			user.UpdateUserTheme(menuItem.Tag.ToString(), EmpName, out string message);
-			fe.SendToastNotifDesktop(message, "Success");
+			notif.SendToastNotifDesktop(message, "Success");
 		}
 
 		private void mnuUseProfile_Click(object sender, EventArgs e)

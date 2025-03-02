@@ -1,6 +1,5 @@
-﻿using DocumentFormat.OpenXml.Vml.Office;
-using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+﻿using PCMS_Lipa_General_Tool.Class;
+using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,18 +9,17 @@ using System.Windows.Forms;
 using Telerik.WinControls;
 using Telerik.WinControls.Primitives;
 using Telerik.WinControls.UI;
-using Telerik.WinControls.UI.Barcode.Symbology;
 
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
 	
 
-	public partial class frmUserInformation : Telerik.WinControls.UI.RadForm
+	public partial class frmUserInformation : RadForm
 	{
 		private readonly User user = new();
-		private static readonly FEWinForm fe = new();
-		private static readonly Notification error = new();
+
+		private static readonly Notification notif = new();
 		public string txtNoProv;
 		public string EmpName;
 		public string accessLevel;
@@ -207,7 +205,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 				&& cmbUserAccess.Text != ""
 				&& cmbPosition.Text != ""
 				&& cmbUserStatus.Text != ""
-				&& cmbOffice.Text != "")
+				&& cmbOffice.Text != ""
+				&& txtWorkEmailMain.Text != "")
 			{
 				if (btnUpdate.Text == "Update")
 				{
@@ -229,7 +228,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 
 				DisableInput();
 
-				bool isSuccess = user.EmployeeDatabaseAllInfo(
+				bool isSuccess = user.UserInformation(
 					operation,
 					txtEmpID.Text, txtEmpName.Text, txtUsername.Text, cmbUserAccess.Text,
 					cmbPosition.Text, cmbUserDept.Text, cmbUserStatus.Text, txtWorkEmail.Text,
@@ -242,19 +241,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 				);
 				EnableInput();
 
-				fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
+				notif.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
 				Close();
 			}
 			else
 			{
-				RadMessageBox.Show("Below fields are required to save Information \n" +
-						"Employee Name \n" +
-						"Username \n" +
-						"User Department \n" +
-						"User Access \n" +
-						"User Position \n" +
-						"User Status \n" +
-						"Office", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
+				RadMessageBox.Show(@$"Below fields are required to save Information
+					Employee Name
+					Username
+					User Department
+					User Access
+					User Position
+					User Status
+					Email
+					Office", "Notification", MessageBoxButtons.OK, RadMessageIcon.Info);
 			}
 
 			
@@ -271,14 +271,14 @@ namespace PCMS_Lipa_General_Tool.Forms
 			if (result != DialogResult.Yes)
 				return;
 			DisableInput();
-			bool isSuccess = user.EmployeeDatabaseAllInfo(
+			bool isSuccess = user.UserInformation(
 				"Delete",
 				txtEmpID.Text,
 				txtEmpName.Text,
 				null, null, null, null, null, txtWorkEmail.Text, null, null, null, null, null, null,
 				null, null, null, DateTime.MinValue, null, null, null, null, null, null,
 				null, null, null, null, EmpName, out string message);
-			fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
+			notif.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
 			EnableInput();
 			Close();
 		}
@@ -450,6 +450,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				cmbUserAccess.Items.Add("User");
 				cmbUserAccess.Items.Add("Programmer");
 				cmbUserAccess.SelectedIndex = 3;
+				cmbEmploymentStatus.Text = "Probationary";
 				lblResult.Visible = false;
 			}
 			else
@@ -535,7 +536,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("LoadDropdownValues", EmpName, "frmUserInformation", null, ex);
+				notif.LogError("LoadDropdownValues", EmpName, "frmUserInformation", null, ex);
 			}
 		}
 
@@ -548,15 +549,17 @@ namespace PCMS_Lipa_General_Tool.Forms
 				//lblalert.Text = "";
 				if (txtUsername.Text.Contains(";") || txtUsername.Text.Contains("--") || txtUsername.Text.Contains("/*") || txtUsername.Text.Contains("xp_"))
 				{
-					RadMessageBox.Show("Invalid Input", "Warning", MessageBoxButtons.OK, RadMessageIcon.Info);
+					lblResult.Visible = true;
+					lblResult.Text = "Invalid Input";
+					//RadMessageBox.Show("Invalid Input", "Warning", MessageBoxButtons.OK, RadMessageIcon.Info);
 				}
 				else
 				{
 					string resultMessage = user.CheckIfExistinDB(txtUsername.Text, "UserMgmt", "Create");
 					if (!string.IsNullOrEmpty(resultMessage))
 					{
-						lblResult.Text = resultMessage;
 						lblResult.Visible = true;
+						lblResult.Text = resultMessage;
 					}
 					else
 					{
@@ -682,7 +685,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("LoadDepartmentValues", EmpName, "frmUserInformation", null, ex);
+				notif.LogError("LoadDepartmentValues", EmpName, "frmUserInformation", null, ex);
 			}
 		}
 
@@ -719,7 +722,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("LoadPositionValues", EmpName, "frmUserInformation", null, ex);
+				notif.LogError("LoadPositionValues", EmpName, "frmUserInformation", null, ex);
 			}
 		}
 
@@ -740,7 +743,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("cmbUserDept_PopupOpening", EmpName, "frmUserInformation", null, ex);
+				notif.LogError("cmbUserDept_PopupOpening", EmpName, "frmUserInformation", null, ex);
 			}
 		}
 
@@ -759,7 +762,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 			}
 			catch (Exception ex)
 			{
-				error.LogError("cmbPosition_PopupOpening", EmpName, "frmUserInformation", null, ex);
+				notif.LogError("cmbPosition_PopupOpening", EmpName, "frmUserInformation", null, ex);
 			}
 		}
 	}

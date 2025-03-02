@@ -1,12 +1,8 @@
-﻿using PCMS_Lipa_General_Tool.HelperClass;
+﻿using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.ModelBinding;
 
 namespace PCMS_Lipa_General_Tool.Class
 {
@@ -16,6 +12,8 @@ namespace PCMS_Lipa_General_Tool.Class
 		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
+		private static readonly User user = new();
+		private static readonly emailSender mail = new();
 
 
 		public void GetDBID(out string ID, string empName)
@@ -217,11 +215,24 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Execute query
 				cmd.ExecuteNonQuery();
 
+				string email = user.GetUsersEmail(reporter, empName);
+				string content = $@"
+            <html>
+                <body>
+                    <p>Dear {reporter},</p>
+                    <p>Your requested task is now in {status}. If you need to review your request. Open the PCMS Lipa General Tool and go to Help then IT Assistance Request</p>
+					<br/>
+					<p>This is a system generated email do not reply</p>
+                </body>
+            </html>";
+				mail.SendEmail(email, $"IT: {summary} - Status", content, null, "PCMS Lipa General Tool - IT Task", null);
+				
+
 				// Log activity
 				logs = $"{empName} {request.ToLower()}d Diagnosis ID: {taskID}";
 				message = $"Done! {taskID} has been successfully {request.ToLower()}d.";
 				log.AddActivityLog(message, empName, logs, $"{request.ToUpper()} IT TASK INFORMATION");
-				///fe.SendToastNotifDesktop(message, "Success");
+				///notif.SendToastNotifDesktop(message, "Success");
 				return true;
 
 			}

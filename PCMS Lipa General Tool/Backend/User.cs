@@ -1,16 +1,11 @@
-﻿using PCMS_Lipa_General_Tool.HelperClass;
+﻿using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Telerik.WinControls;
 
 
 namespace PCMS_Lipa_General_Tool.Class
@@ -389,24 +384,31 @@ namespace PCMS_Lipa_General_Tool.Class
 
 		public List<string> GetEmployeeList(string empName)
 		{
-			var query = "SELECT [EMPLOYEE NAME] FROM [User Information] WHERE STATUS = 'ACTIVE'";
 			var items = new List<string>();
-			var con = new SqlConnection(_dbConnection);
+			var query = "SELECT [EMPLOYEE NAME] FROM [User Information] WHERE STATUS = @status";
+
 			try
 			{
+				using SqlConnection con = new(_dbConnection);
+				using SqlCommand cmd = new(query, con);
+				cmd.Parameters.AddWithValue("@status", "ACTIVE");
+
 				con.Open();
-				SqlCommand cmd = new(query, con);
-				SqlDataReader reader = cmd.ExecuteReader();
+				using SqlDataReader reader = cmd.ExecuteReader();
 				while (reader.Read())
 				{
-					items.Add(reader.GetString(0));
+					items.Add(reader.IsDBNull(0) ? string.Empty : reader.GetString(0));
 				}
-				con.Close();
+			}
+			catch (SqlException ex)
+			{
+				notif.LogError("GetEmployeeList", empName, "User", "SQL Error", ex);
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("GetEmployeeList", empName, "Pantry", "N/A", ex);
+				notif.LogError("GetEmployeeList", empName, "user", "General Error", ex);
 			}
+
 			return items;
 		}
 
@@ -472,7 +474,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		public bool EmployeeDatabaseAllInfo(
+		public bool UserInformation(
 			string request,
 			string empID,
 			string empName,
@@ -633,7 +635,7 @@ namespace PCMS_Lipa_General_Tool.Class
 
 				log.AddActivityLog(message, authorName, logs, $"{request.ToUpper()} USER INFORMATION");
 				return true;
-				//fe.SendToastNotifDesktop(message, "Success");
+				//notif.SendToastNotifDesktop(message, "Success");
 			}
 			catch (Exception ex)
 			{

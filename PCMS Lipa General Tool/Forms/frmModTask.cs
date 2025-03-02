@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using Telerik.WinControls;
 using PCMS_Lipa_General_Tool.Class;
-using PCMS_Lipa_General_Tool.HelperClass;
+using PCMS_Lipa_General_Tool.Services;
 using System.Data.SqlClient;
+using Telerik.WinControls.UI;
 
 namespace PCMS_Lipa_General_Tool
 {
@@ -19,7 +17,6 @@ namespace PCMS_Lipa_General_Tool
 		private static readonly Notification notif = new();
 		private readonly ActivtiyLogs log = new();
 		private readonly ITTaskList task = new();
-		private readonly FEWinForm fe = new();
 		private readonly User user = new();
 
 
@@ -40,13 +37,14 @@ namespace PCMS_Lipa_General_Tool
 			txtDescription.NullText = "Enter a detailed Description of Task";
 		}
 
-		public void FillEmployeeDropdown()
+		public void FillEmployeeDropdown(RadDropDownList cmbName)
 		{
+			cmbName.Items.Clear();  // Clear existing items, if any
 			List<string> items = user.GetEmployeeList(empName);
-			cmbReporter.Items.Clear(); // Clear existing items, if any
+	
 			foreach (var item in items)
 			{
-				cmbReporter.Items.Add(item);
+				cmbName.Items.Add(item);
 			}
 		}
 
@@ -102,7 +100,7 @@ namespace PCMS_Lipa_General_Tool
 				// Validate input fields first
 				if(txtDescription.Text == "" || txtSummary.Text == "" || cmbCategory.Text == "" || cmbPriority.Text == "" || cmbAssigne.Text == "" || cmbStatus.Text == "" || cmbReporter.Text == "")
 				{
-					fe.SendToastNotifDesktop("Please fill out all required fields.", "Warning");
+					notif.SendToastNotifDesktop("Please fill out all required fields.", "Warning");
 					return;
 				}
 
@@ -128,7 +126,7 @@ namespace PCMS_Lipa_General_Tool
 				bool isSuccess = ProcessTaskRequest(operationType, out string message);
 
 				// Show toast notification based on result
-				fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
+				notif.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
 
 				// Final cleanup
 				ClearData();
@@ -136,7 +134,7 @@ namespace PCMS_Lipa_General_Tool
 			}
 			catch (Exception ex)
 			{
-				fe.SendToastNotifDesktop($"An error occurred: {ex.Message}", "Error");
+				notif.SendToastNotifDesktop($"An error occurred: {ex.Message}", "Error");
 			}
 
 		}
@@ -149,6 +147,16 @@ namespace PCMS_Lipa_General_Tool
 			foreach (var item in items)
 			{
 				cmbAssigne.Items.Add(item);
+			}
+		}
+
+		private void GetEmployee()
+		{
+			List<string> items = user.GetEmployeeList(empName);
+			cmbReporter.Items.Clear(); // Clear existing items, if any
+			foreach (var item in items)
+			{
+				cmbReporter.Items.Add(item);
 			}
 		}
 
@@ -234,7 +242,7 @@ namespace PCMS_Lipa_General_Tool
 				bool isSuccess = ProcessTaskRequest("Delete", out string message);
 
 				// Show result message
-				fe.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
+				notif.SendToastNotifDesktop(message, isSuccess ? "Success" : "Failed");
 
 				if (isSuccess)
 				{
@@ -245,23 +253,20 @@ namespace PCMS_Lipa_General_Tool
 			catch (Exception ex)
 			{
 				notif.LogError("btnDelete_Click", empName, "frmModTask", "N/A", ex);
-				//fe.SendToastNotifDesktop($"An error occurred: {ex.Message}", "Error");
+				//notif.SendToastNotifDesktop($"An error occurred: {ex.Message}", "Error");
 			}
 		}
 
 		private void cmbReporter_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
 		{
-			FillEmployeeDropdown();
+			FillEmployeeDropdown(cmbReporter);
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)
 		{
 			DialogResult result = RadMessageBox.Show(@"Are you sure you want to cancel this task?
 
-This will only close this window pop-up.",
-														 "Cancel Confirmation",
-														 MessageBoxButtons.YesNo,
-														 RadMessageIcon.Info);
+This will only close this window pop-up.", "Cancel Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Info);
 			if (result != DialogResult.Yes)
 			{
 				return;
@@ -271,7 +276,20 @@ This will only close this window pop-up.",
 
 		private void cmbAssigne_PopupOpening(object sender, CancelEventArgs e)
 		{
-			GetITList();
+			if (empName != "Erwin Alcantara" && empName != "Dimz Escalona" && empName != "Ron Sangalang")
+			{
+				GetITList();
+			}
+			else
+			{
+				FillEmployeeDropdown(cmbAssigne);
+			}
+			
+		}
+
+		private void cmbReporter_PopupOpening(object sender, CancelEventArgs e)
+		{
+			GetEmployee();
 		}
 	}
 

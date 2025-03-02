@@ -161,6 +161,7 @@
 			this.desertTheme1 = new Telerik.WinControls.Themes.DesertTheme();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.radMenu1 = new Telerik.WinControls.UI.RadMenu();
+			this.windows11DarkTheme1 = new Telerik.WinControls.Themes.Windows11DarkTheme();
 			((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pgViewCollectorNotes)).BeginInit();
 			this.pgViewCollectorNotes.SuspendLayout();
@@ -345,7 +346,6 @@
 			// 
 			// mnuDeletedCodes
 			// 
-			this.mnuDeletedCodes.Font = null;
 			this.mnuDeletedCodes.Name = "mnuDeletedCodes";
 			this.mnuDeletedCodes.Text = "&Deleted Diagnosis Code";
 			this.mnuDeletedCodes.Click += new System.EventHandler(this.mnuDeletedCodes_Click);
@@ -1077,7 +1077,6 @@
 			// 
 			// cmbAllProvider
 			// 
-			this.cmbAllProvider.DropDownAnimationEnabled = true;
 			this.cmbAllProvider.Location = new System.Drawing.Point(15, 58);
 			this.cmbAllProvider.Name = "cmbAllProvider";
 			this.cmbAllProvider.Size = new System.Drawing.Size(203, 24);
@@ -1453,5 +1452,6 @@
 		private Telerik.WinControls.UI.RadMenuItem mnuAIAssist;
 		private Telerik.WinControls.UI.RadMenuItem mnuITHelp;
 		private Telerik.WinControls.UI.RadMenu radMenu1;
+		private Telerik.WinControls.Themes.Windows11DarkTheme windows11DarkTheme1;
 	}
 }
