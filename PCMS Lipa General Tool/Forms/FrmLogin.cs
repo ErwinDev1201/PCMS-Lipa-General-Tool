@@ -58,7 +58,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				loginPanel.Enabled = false; // Disable panel to prevent multiple clicks
 
 				// Execute login asynchronously
-				var (isSuccess, alertMessage, empID, empName, userName, email, firstTime, userPosition, userAccess, userDept, officeLoc, theme, isLoginPanelEnabled, isLblAlertShow) = await pushLogin.UserLoginAsync(username, password);
+				var (isSuccess, alertMessage, empID, empName, userName, email, firstTime, userPosition, userAccess, userDept, officeLoc, theme, empStat, isLoginPanelEnabled, isLblAlertShow) = await pushLogin.UserLoginAsync(username, password);
 				//Console.WriteLine(isSuccess);
 
 				if (isSuccess)
@@ -77,24 +77,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 					}
 					else
 					{
-						if (userPosition != "Back Office")
+						if (userPosition == "Back Office")
 						{
-							try
-							{
-								var mainApp = new frmMainApp();
-								mainApp.ConfigureVisibility(userAccess, userDept, userPosition);
-								mainApp.SetMainAppProperties(empID, empName, userName, userAccess, userPosition, officeLoc, theme);
-								Hide();
-								mainApp.Show();
-							}
-							catch (Exception ex)
-							{
-								notif.LogError("demoTool", empName, "Login", null, ex);
-								//RadMessageBox.Show($"An error occurred while loading the main application:\n{ex.Message}", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
-							}
-						}
-						else
-						{
+
 							var demoTool = new frmDemoTool();
 							try
 							{
@@ -105,13 +90,64 @@ namespace PCMS_Lipa_General_Tool.Forms
 								demoTool.statlblAccess.Text = userAccess;
 								demoTool.statlblPosition.Text = userPosition;
 								demoTool.officeLoc = officeLoc;
-								demoTool.Text = $"{lblProgName.Text} | Demo Tool | ({empName})";
+								demoTool.employmentStat = empStat;
+								demoTool.Text = $"{lblProgName.Text} | {userPosition} | ({empName})";
 								Hide();
 								demoTool.Show();
 							}
 							catch (Exception ex)
 							{
-								notif.LogError("demoToolsetup", empName, "Login", $"Error setting up back office user: {ex.Message}", ex);
+								notif.LogError("demoToolsetup", empName, "Login", $"Error setting up demo user: {ex.Message}", ex);
+							}
+							
+						}
+						else if (userPosition == "Collector")
+						{
+							try
+							{
+								//var collectors = new frmCollectors
+								//{
+								//	EmpName = empName,
+								//	UserName = userName,
+								//	accessLevel = userAccess
+								//};
+								var collectors = new frmCollectors(empName, userName, userAccess, empID, officeLoc, empStat, userPosition);
+                                //collectors.EmpName = empName;
+								//collectors.u = userName;
+								//collectors.accessLevel = userAccess;
+                                collectors.statlblUsername.Text = empName;
+								collectors.statlblAccess.Text = userAccess;
+								collectors.statlblPosition.Text = userPosition;
+								//collectors.employeeStat = empStat;
+								collectors.Position = userPosition;
+								//collectors.OfficeLoc = officeLoc;
+								//collectors.employeeStat = empStat;
+								//collectors.employeeID = empID;
+								collectors.Text = $"{lblProgName.Text} | {userPosition} | ({empName})";
+								Hide();
+								collectors.Show();
+							}
+							catch (Exception ex)
+							{
+								notif.LogError("CollectorToolsetup", empName, "Login", $"Error setting up collector user: {ex.Message}", ex);
+							}
+							
+						}
+						else
+						{
+							try
+							{
+								var mainApp = new frmMainApp();
+								mainApp.ConfigureVisibility(userAccess, userDept, userPosition);
+								mainApp.SetMainAppProperties(empID, empName, userName, userAccess, userPosition, officeLoc, theme, empStat);
+								Hide();
+								mainApp.Show();
+							}
+							catch (Exception ex)
+							{
+								notif.LogError("demoToolsetup", empName, "Login", $"Error setting up {userPosition} user: {ex.Message}", ex);
+								//notif.LogError("frmMainApp", empName, "Login", null, ex);
+								//RadMessageBox.Show($"An error occurred while loading the main application:\n{ex.Message}", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
 							}
 						}
 

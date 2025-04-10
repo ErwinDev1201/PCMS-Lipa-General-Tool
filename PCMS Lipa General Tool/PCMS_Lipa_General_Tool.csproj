@@ -48,7 +48,20 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>online-test.ico</ApplicationIcon>
+    <ApplicationIcon>PCMS_Lipa_General_Tool_Simple.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
@@ -262,6 +275,7 @@
   <ItemGroup>
     <Compile Include="Backend\ActivtiyLogs.cs" />
     <Compile Include="Backend\Adjuster.cs" />
+    <Compile Include="Backend\AgingUpload.cs" />
     <Compile Include="Backend\Attorney.cs" />
     <Compile Include="Backend\BillReview.cs" />
     <Compile Include="Backend\Broadvoice.cs" />
@@ -313,6 +327,24 @@
     </Compile>
     <Compile Include="Forms\frmAttorneyInformation.Designer.cs">
       <DependentUpon>frmAttorneyInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmAgingExcelPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAgingExcelPreview.Designer.cs">
+      <DependentUpon>frmAgingExcelPreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmCollectorsold.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmCollectorsold.Designer.cs">
+      <DependentUpon>frmCollectorsold.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmAgingUploader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAgingUploader.Designer.cs">
+      <DependentUpon>frmAgingUploader.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmDiagnosis.cs">
       <SubType>Form</SubType>
@@ -367,6 +399,12 @@
     </Compile>
     <Compile Include="Forms\frmITTask.Designer.cs">
       <DependentUpon>frmITTask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmCollectors.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmCollectors.Designer.cs">
+      <DependentUpon>frmCollectors.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmUserInformation.cs">
       <SubType>Form</SubType>
@@ -619,6 +657,15 @@
     <EmbeddedResource Include="Forms\frmAttorneyInformation.resx">
       <DependentUpon>frmAttorneyInformation.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmAgingExcelPreview.resx">
+      <DependentUpon>frmAgingExcelPreview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmCollectorsold.resx">
+      <DependentUpon>frmCollectorsold.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmAgingUploader.resx">
+      <DependentUpon>frmAgingUploader.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmDiagnosis.resx">
       <DependentUpon>frmDiagnosis.cs</DependentUpon>
     </EmbeddedResource>
@@ -645,6 +692,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmITTask.resx">
       <DependentUpon>frmITTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmCollectors.resx">
+      <DependentUpon>frmCollectors.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmUserInformation.resx">
       <DependentUpon>frmUserInformation.cs</DependentUpon>
@@ -790,6 +840,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\analytics.png" />
+    <None Include="Images\ChatGPT Image Apr 22, 2025, 08_09_54 PM.png" />
+    <Content Include="PCMS_Lipa_General_Tool.ico" />
+    <Content Include="PCMS_Lipa_General_Tool_Simple.ico" />
     <None Include="Images\discord-hero-1.jpg" />
     <None Include="Images\new.png" />
     <None Include="Images\file-gif.png" />
@@ -800,6 +853,7 @@
     <Content Include="Images\pcms-logo-footer.ico" />
     <Content Include="Images\pcms.png" />
     <Content Include="Images\pcms5.png" />
+    <Content Include="Images\PCMS_Lipa_General_Tool_Simple.ico" />
     <Content Include="Images\refresh-icon-vector-clipart.png" />
     <None Include="Images\refreshh.png" />
     <Content Include="online-test.ico" />

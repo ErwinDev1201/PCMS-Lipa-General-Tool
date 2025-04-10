@@ -73,6 +73,16 @@ namespace PCMS_Lipa_General_Tool.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ChatGPT_Image_Apr_22__2025__08_09_54_PM {
+            get {
+                object obj = ResourceManager.GetObject("ChatGPT Image Apr 22, 2025, 08_09_54 PM", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap discord_hero_1 {
             get {
                 object obj = ResourceManager.GetObject("discord-hero-1", resourceCulture);

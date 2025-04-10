@@ -29,8 +29,6 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition1 = new Telerik.WinControls.UI.TableViewDefinition();
-			Telerik.WinControls.UI.TableViewDefinition tableViewDefinition2 = new Telerik.WinControls.UI.TableViewDefinition();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainApp));
 			this.mnuTool = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuPrivateCollectors = new Telerik.WinControls.UI.RadMenuItem();
@@ -63,6 +61,7 @@
 			this.mnuAdjEmailFormat = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuWCTool = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuwcDX = new Telerik.WinControls.UI.RadMenuItem();
+			this.mnuAgingUploader = new Telerik.WinControls.UI.RadMenuItem();
 			this.separator1 = new Telerik.WinControls.UI.RadMenuSeparatorItem();
 			this.mnuBackOffice = new Telerik.WinControls.UI.RadMenuItem();
 			this.mnuDemoTool = new Telerik.WinControls.UI.RadMenuItem();
@@ -123,33 +122,6 @@
 			this.mnuLogout = new Telerik.WinControls.UI.RadMenuItem();
 			this.radMenuSeparatorItem1 = new Telerik.WinControls.UI.RadMenuSeparatorItem();
 			this.mnuExit = new Telerik.WinControls.UI.RadMenuItem();
-			this.pgViewCollectorNotes = new Telerik.WinControls.UI.RadPageView();
-			this.pgCollectorStats = new Telerik.WinControls.UI.RadPageViewPage();
-			this.collectorPanel = new Telerik.WinControls.UI.RadPanel();
-			this.lblAverage = new Telerik.WinControls.UI.RadLabel();
-			this.lblMonthly = new Telerik.WinControls.UI.RadLabel();
-			this.lblCountNotes = new Telerik.WinControls.UI.RadLabel();
-			this.radButton2 = new Telerik.WinControls.UI.RadButton();
-			this.btnAddTransaction = new Telerik.WinControls.UI.RadButton();
-			this.dgCurrentNotes = new Telerik.WinControls.UI.RadGridView();
-			this.pgAllNotes = new Telerik.WinControls.UI.RadPageViewPage();
-			this.btnallRefresh = new Telerik.WinControls.UI.RadButton();
-			this.lblresultCount = new Telerik.WinControls.UI.RadLabel();
-			this.btnExportExcel = new Telerik.WinControls.UI.RadButton();
-			this.grpProvider = new Telerik.WinControls.UI.RadGroupBox();
-			this.cmbAllProvider = new Telerik.WinControls.UI.RadDropDownList();
-			this.rdoFilter = new Telerik.WinControls.UI.RadRadioButton();
-			this.rdoSearch = new Telerik.WinControls.UI.RadRadioButton();
-			this.grpDate = new Telerik.WinControls.UI.RadGroupBox();
-			this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
-			this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
-			this.dtpEndate = new Telerik.WinControls.UI.RadDateTimePicker();
-			this.dtpStartDate = new Telerik.WinControls.UI.RadDateTimePicker();
-			this.grpPatientName = new Telerik.WinControls.UI.RadGroupBox();
-			this.txtPatientName = new Telerik.WinControls.UI.RadTextBox();
-			this.grpSearch = new Telerik.WinControls.UI.RadGroupBox();
-			this.txtSearch = new Telerik.WinControls.UI.RadTextBox();
-			this.dgallNotesView = new Telerik.WinControls.UI.RadGridView();
 			this.fluentTheme1 = new Telerik.WinControls.Themes.FluentTheme();
 			this.fluentDarkTheme1 = new Telerik.WinControls.Themes.FluentDarkTheme();
 			this.materialPinkTheme2 = new Telerik.WinControls.Themes.MaterialPinkTheme();
@@ -159,46 +131,11 @@
 			this.breezeTheme1 = new Telerik.WinControls.Themes.BreezeTheme();
 			this.office2010BlueTheme1 = new Telerik.WinControls.Themes.Office2010BlueTheme();
 			this.desertTheme1 = new Telerik.WinControls.Themes.DesertTheme();
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.radMenu1 = new Telerik.WinControls.UI.RadMenu();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pgViewCollectorNotes)).BeginInit();
-			this.pgViewCollectorNotes.SuspendLayout();
-			this.pgCollectorStats.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.collectorPanel)).BeginInit();
-			this.collectorPanel.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.lblAverage)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblMonthly)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblCountNotes)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radButton2)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.btnAddTransaction)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.dgCurrentNotes)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.dgCurrentNotes.MasterTemplate)).BeginInit();
-			this.pgAllNotes.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.btnallRefresh)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblresultCount)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.btnExportExcel)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.grpProvider)).BeginInit();
-			this.grpProvider.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.cmbAllProvider)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.rdoFilter)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.rdoSearch)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.grpDate)).BeginInit();
-			this.grpDate.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.dtpEndate)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.dtpStartDate)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.grpPatientName)).BeginInit();
-			this.grpPatientName.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.txtPatientName)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.grpSearch)).BeginInit();
-			this.grpSearch.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.dgallNotesView)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.dgallNotesView.MasterTemplate)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.radMenu1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -208,6 +145,7 @@
 			this.mnuTool.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.mnuPrivateCollectors,
             this.mnuWorkcomp,
+            this.mnuAgingUploader,
             this.separator1,
             this.mnuBackOffice,
             this.seperator2,
@@ -345,7 +283,6 @@
 			// 
 			// mnuDeletedCodes
 			// 
-			this.mnuDeletedCodes.Font = null;
 			this.mnuDeletedCodes.Name = "mnuDeletedCodes";
 			this.mnuDeletedCodes.Text = "&Deleted Diagnosis Code";
 			this.mnuDeletedCodes.Click += new System.EventHandler(this.mnuDeletedCodes_Click);
@@ -459,6 +396,12 @@
 			this.mnuwcDX.Name = "mnuwcDX";
 			this.mnuwcDX.Text = "&Diagnosis";
 			this.mnuwcDX.Click += new System.EventHandler(this.mnuwcDX_Click);
+			// 
+			// mnuAgingUploader
+			// 
+			this.mnuAgingUploader.Name = "mnuAgingUploader";
+			this.mnuAgingUploader.Text = "Aging Uploader";
+			this.mnuAgingUploader.Click += new System.EventHandler(this.mnuAgingUploader_Click);
 			// 
 			// separator1
 			// 
@@ -719,7 +662,7 @@
             this.statlbldateTime});
 			this.radStatusStrip1.Location = new System.Drawing.Point(0, 728);
 			this.radStatusStrip1.Name = "radStatusStrip1";
-			this.radStatusStrip1.Size = new System.Drawing.Size(1193, 26);
+			this.radStatusStrip1.Size = new System.Drawing.Size(1192, 26);
 			this.radStatusStrip1.TabIndex = 3;
 			this.radStatusStrip1.ThemeName = "Crystal";
 			this.radStatusStrip1.StatusBarClick += new Telerik.WinControls.UI.RadStatusStrip.RadStatusBarClickEvenHandler(this.radStatusStrip1_StatusBarClick);
@@ -894,349 +837,6 @@
 			this.mnuExit.Text = "E&xit";
 			this.mnuExit.Click += new System.EventHandler(this.mnuExit_Click);
 			// 
-			// pgViewCollectorNotes
-			// 
-			this.pgViewCollectorNotes.Controls.Add(this.pgCollectorStats);
-			this.pgViewCollectorNotes.Controls.Add(this.pgAllNotes);
-			this.pgViewCollectorNotes.DefaultPage = this.pgCollectorStats;
-			this.pgViewCollectorNotes.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pgViewCollectorNotes.Location = new System.Drawing.Point(0, 0);
-			this.pgViewCollectorNotes.Name = "pgViewCollectorNotes";
-			this.pgViewCollectorNotes.SelectedPage = this.pgCollectorStats;
-			this.pgViewCollectorNotes.Size = new System.Drawing.Size(1193, 754);
-			this.pgViewCollectorNotes.TabIndex = 5;
-			this.pgViewCollectorNotes.ThemeName = "Crystal";
-			// 
-			// pgCollectorStats
-			// 
-			this.pgCollectorStats.Controls.Add(this.collectorPanel);
-			this.pgCollectorStats.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.pgCollectorStats.ItemSize = new System.Drawing.SizeF(51F, 28F);
-			this.pgCollectorStats.Location = new System.Drawing.Point(6, 33);
-			this.pgCollectorStats.Name = "pgCollectorStats";
-			this.pgCollectorStats.Size = new System.Drawing.Size(1181, 714);
-			this.pgCollectorStats.Text = "Notes";
-			// 
-			// collectorPanel
-			// 
-			this.collectorPanel.Controls.Add(this.lblAverage);
-			this.collectorPanel.Controls.Add(this.lblMonthly);
-			this.collectorPanel.Controls.Add(this.lblCountNotes);
-			this.collectorPanel.Controls.Add(this.radButton2);
-			this.collectorPanel.Controls.Add(this.btnAddTransaction);
-			this.collectorPanel.Controls.Add(this.dgCurrentNotes);
-			this.collectorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.collectorPanel.Location = new System.Drawing.Point(0, 0);
-			this.collectorPanel.Name = "collectorPanel";
-			this.collectorPanel.Size = new System.Drawing.Size(1181, 714);
-			this.collectorPanel.TabIndex = 2;
-			// 
-			// lblAverage
-			// 
-			this.lblAverage.Font = new System.Drawing.Font("Roboto", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblAverage.Location = new System.Drawing.Point(373, 29);
-			this.lblAverage.Name = "lblAverage";
-			this.lblAverage.Size = new System.Drawing.Size(159, 44);
-			this.lblAverage.TabIndex = 6;
-			this.lblAverage.Text = "radLabel2";
-			// 
-			// lblMonthly
-			// 
-			this.lblMonthly.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblMonthly.Location = new System.Drawing.Point(7, 65);
-			this.lblMonthly.Name = "lblMonthly";
-			this.lblMonthly.Size = new System.Drawing.Size(104, 23);
-			this.lblMonthly.TabIndex = 5;
-			this.lblMonthly.Text = "No of Notes: ";
-			// 
-			// lblCountNotes
-			// 
-			this.lblCountNotes.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblCountNotes.Location = new System.Drawing.Point(7, 18);
-			this.lblCountNotes.Name = "lblCountNotes";
-			this.lblCountNotes.Size = new System.Drawing.Size(104, 23);
-			this.lblCountNotes.TabIndex = 4;
-			this.lblCountNotes.Text = "No of Notes: ";
-			// 
-			// radButton2
-			// 
-			this.radButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.radButton2.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.radButton2.Location = new System.Drawing.Point(1065, 15);
-			this.radButton2.Name = "radButton2";
-			this.radButton2.Size = new System.Drawing.Size(110, 73);
-			this.radButton2.TabIndex = 2;
-			this.radButton2.Text = "Refresh";
-			this.radButton2.ThemeName = "Crystal";
-			this.radButton2.Click += new System.EventHandler(this.radButton2_Click);
-			// 
-			// btnAddTransaction
-			// 
-			this.btnAddTransaction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnAddTransaction.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.btnAddTransaction.Location = new System.Drawing.Point(949, 15);
-			this.btnAddTransaction.Name = "btnAddTransaction";
-			this.btnAddTransaction.Size = new System.Drawing.Size(110, 73);
-			this.btnAddTransaction.TabIndex = 1;
-			this.btnAddTransaction.Text = "Add Note";
-			this.btnAddTransaction.ThemeName = "Crystal";
-			this.btnAddTransaction.Click += new System.EventHandler(this.btnAddTransaction_Click);
-			// 
-			// dgCurrentNotes
-			// 
-			this.dgCurrentNotes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.dgCurrentNotes.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dgCurrentNotes.Location = new System.Drawing.Point(7, 113);
-			// 
-			// 
-			// 
-			this.dgCurrentNotes.MasterTemplate.AllowAddNewRow = false;
-			this.dgCurrentNotes.MasterTemplate.AllowCellContextMenu = false;
-			this.dgCurrentNotes.MasterTemplate.AllowColumnChooser = false;
-			this.dgCurrentNotes.MasterTemplate.AllowColumnHeaderContextMenu = false;
-			this.dgCurrentNotes.MasterTemplate.AllowColumnReorder = false;
-			this.dgCurrentNotes.MasterTemplate.AllowColumnResize = false;
-			this.dgCurrentNotes.MasterTemplate.AllowDeleteRow = false;
-			this.dgCurrentNotes.MasterTemplate.AllowDragToGroup = false;
-			this.dgCurrentNotes.MasterTemplate.AllowEditRow = false;
-			this.dgCurrentNotes.MasterTemplate.AllowRowHeaderContextMenu = false;
-			this.dgCurrentNotes.MasterTemplate.AllowRowResize = false;
-			this.dgCurrentNotes.MasterTemplate.ViewDefinition = tableViewDefinition1;
-			this.dgCurrentNotes.Name = "dgCurrentNotes";
-			this.dgCurrentNotes.Size = new System.Drawing.Size(1168, 582);
-			this.dgCurrentNotes.TabIndex = 0;
-			this.dgCurrentNotes.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgCurrentNotes_MouseDoubleClick);
-			// 
-			// pgAllNotes
-			// 
-			this.pgAllNotes.Controls.Add(this.btnallRefresh);
-			this.pgAllNotes.Controls.Add(this.lblresultCount);
-			this.pgAllNotes.Controls.Add(this.btnExportExcel);
-			this.pgAllNotes.Controls.Add(this.grpProvider);
-			this.pgAllNotes.Controls.Add(this.rdoFilter);
-			this.pgAllNotes.Controls.Add(this.rdoSearch);
-			this.pgAllNotes.Controls.Add(this.grpDate);
-			this.pgAllNotes.Controls.Add(this.grpPatientName);
-			this.pgAllNotes.Controls.Add(this.grpSearch);
-			this.pgAllNotes.Controls.Add(this.dgallNotesView);
-			this.pgAllNotes.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.pgAllNotes.ItemSize = new System.Drawing.SizeF(70F, 28F);
-			this.pgAllNotes.Location = new System.Drawing.Point(6, 33);
-			this.pgAllNotes.Name = "pgAllNotes";
-			this.pgAllNotes.Size = new System.Drawing.Size(1181, 654);
-			this.pgAllNotes.Text = "All Notes";
-			this.pgAllNotes.ToolTipText = "Refresh";
-			// 
-			// btnallRefresh
-			// 
-			this.btnallRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnallRefresh.DisplayStyle = Telerik.WinControls.DisplayStyle.Image;
-			this.btnallRefresh.ImageAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-			this.btnallRefresh.Location = new System.Drawing.Point(978, 11);
-			this.btnallRefresh.Name = "btnallRefresh";
-			this.btnallRefresh.Size = new System.Drawing.Size(37, 44);
-			this.btnallRefresh.TabIndex = 14;
-			this.btnallRefresh.Text = "Refresh";
-			this.btnallRefresh.ThemeName = "Crystal";
-			this.btnallRefresh.Click += new System.EventHandler(this.btnallRefresh_Click);
-			// 
-			// lblresultCount
-			// 
-			this.lblresultCount.Location = new System.Drawing.Point(270, 35);
-			this.lblresultCount.Name = "lblresultCount";
-			this.lblresultCount.Size = new System.Drawing.Size(68, 20);
-			this.lblresultCount.TabIndex = 13;
-			this.lblresultCount.Text = "radLabel3";
-			this.lblresultCount.ThemeName = "Crystal";
-			// 
-			// btnExportExcel
-			// 
-			this.btnExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnExportExcel.Location = new System.Drawing.Point(1021, 10);
-			this.btnExportExcel.Name = "btnExportExcel";
-			this.btnExportExcel.Size = new System.Drawing.Size(154, 44);
-			this.btnExportExcel.TabIndex = 12;
-			this.btnExportExcel.Text = "Export Table to Excel";
-			this.btnExportExcel.ThemeName = "Crystal";
-			this.btnExportExcel.Click += new System.EventHandler(this.btnExportExcel_Click);
-			// 
-			// grpProvider
-			// 
-			this.grpProvider.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
-			this.grpProvider.Controls.Add(this.cmbAllProvider);
-			this.grpProvider.HeaderMargin = new System.Windows.Forms.Padding(1);
-			this.grpProvider.HeaderText = "By Provider Name";
-			this.grpProvider.Location = new System.Drawing.Point(6, 535);
-			this.grpProvider.Name = "grpProvider";
-			this.grpProvider.Size = new System.Drawing.Size(242, 116);
-			this.grpProvider.TabIndex = 11;
-			this.grpProvider.Text = "By Provider Name";
-			this.grpProvider.ThemeName = "Crystal";
-			// 
-			// cmbAllProvider
-			// 
-			this.cmbAllProvider.DropDownAnimationEnabled = true;
-			this.cmbAllProvider.Location = new System.Drawing.Point(15, 58);
-			this.cmbAllProvider.Name = "cmbAllProvider";
-			this.cmbAllProvider.Size = new System.Drawing.Size(203, 24);
-			this.cmbAllProvider.TabIndex = 0;
-			this.cmbAllProvider.ThemeName = "Crystal";
-			this.cmbAllProvider.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.cmbAllProvider_SelectedIndexChanged);
-			// 
-			// rdoFilter
-			// 
-			this.rdoFilter.Location = new System.Drawing.Point(6, 174);
-			this.rdoFilter.Name = "rdoFilter";
-			this.rdoFilter.Size = new System.Drawing.Size(83, 22);
-			this.rdoFilter.TabIndex = 10;
-			this.rdoFilter.Text = "Use Filter";
-			this.rdoFilter.ThemeName = "Crystal";
-			// 
-			// rdoSearch
-			// 
-			this.rdoSearch.Location = new System.Drawing.Point(6, 10);
-			this.rdoSearch.Name = "rdoSearch";
-			this.rdoSearch.Size = new System.Drawing.Size(95, 22);
-			this.rdoSearch.TabIndex = 9;
-			this.rdoSearch.Text = "Use Search";
-			this.rdoSearch.ThemeName = "Crystal";
-			this.rdoSearch.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.rdoSearch_ToggleStateChanged);
-			// 
-			// grpDate
-			// 
-			this.grpDate.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
-			this.grpDate.Controls.Add(this.radLabel2);
-			this.grpDate.Controls.Add(this.radLabel1);
-			this.grpDate.Controls.Add(this.dtpEndate);
-			this.grpDate.Controls.Add(this.dtpStartDate);
-			this.grpDate.HeaderMargin = new System.Windows.Forms.Padding(1);
-			this.grpDate.HeaderText = "By Date";
-			this.grpDate.Location = new System.Drawing.Point(6, 334);
-			this.grpDate.Name = "grpDate";
-			this.grpDate.Size = new System.Drawing.Size(239, 184);
-			this.grpDate.TabIndex = 8;
-			this.grpDate.Text = "By Date";
-			this.grpDate.ThemeName = "Crystal";
-			// 
-			// radLabel2
-			// 
-			this.radLabel2.Location = new System.Drawing.Point(15, 106);
-			this.radLabel2.Name = "radLabel2";
-			this.radLabel2.Size = new System.Drawing.Size(68, 20);
-			this.radLabel2.TabIndex = 9;
-			this.radLabel2.Text = "End Date: ";
-			this.radLabel2.ThemeName = "Crystal";
-			// 
-			// radLabel1
-			// 
-			this.radLabel1.Location = new System.Drawing.Point(17, 37);
-			this.radLabel1.Name = "radLabel1";
-			this.radLabel1.Size = new System.Drawing.Size(75, 20);
-			this.radLabel1.TabIndex = 8;
-			this.radLabel1.Text = "Start Date: ";
-			this.radLabel1.ThemeName = "Crystal";
-			// 
-			// dtpEndate
-			// 
-			this.dtpEndate.CalendarSize = new System.Drawing.Size(290, 320);
-			this.dtpEndate.Location = new System.Drawing.Point(13, 130);
-			this.dtpEndate.Name = "dtpEndate";
-			this.dtpEndate.Size = new System.Drawing.Size(205, 24);
-			this.dtpEndate.TabIndex = 7;
-			this.dtpEndate.TabStop = false;
-			this.dtpEndate.Text = "Thursday, November 14, 2024";
-			this.dtpEndate.ThemeName = "Crystal";
-			this.dtpEndate.Value = new System.DateTime(2024, 11, 14, 19, 7, 56, 27);
-			this.dtpEndate.ValueChanged += new System.EventHandler(this.dtpEndate_ValueChanged);
-			// 
-			// dtpStartDate
-			// 
-			this.dtpStartDate.CalendarSize = new System.Drawing.Size(290, 320);
-			this.dtpStartDate.Location = new System.Drawing.Point(17, 61);
-			this.dtpStartDate.Name = "dtpStartDate";
-			this.dtpStartDate.Size = new System.Drawing.Size(201, 24);
-			this.dtpStartDate.TabIndex = 6;
-			this.dtpStartDate.TabStop = false;
-			this.dtpStartDate.Text = "Thursday, November 14, 2024";
-			this.dtpStartDate.ThemeName = "Crystal";
-			this.dtpStartDate.Value = new System.DateTime(2024, 11, 14, 19, 7, 56, 27);
-			this.dtpStartDate.ValueChanged += new System.EventHandler(this.dtpStartDate_ValueChanged);
-			// 
-			// grpPatientName
-			// 
-			this.grpPatientName.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
-			this.grpPatientName.Controls.Add(this.txtPatientName);
-			this.grpPatientName.HeaderMargin = new System.Windows.Forms.Padding(1);
-			this.grpPatientName.HeaderText = "By Patient Name";
-			this.grpPatientName.Location = new System.Drawing.Point(3, 202);
-			this.grpPatientName.Name = "grpPatientName";
-			this.grpPatientName.Size = new System.Drawing.Size(242, 116);
-			this.grpPatientName.TabIndex = 5;
-			this.grpPatientName.Text = "By Patient Name";
-			this.grpPatientName.ThemeName = "Crystal";
-			// 
-			// txtPatientName
-			// 
-			this.txtPatientName.Location = new System.Drawing.Point(18, 53);
-			this.txtPatientName.Name = "txtPatientName";
-			this.txtPatientName.Size = new System.Drawing.Size(199, 24);
-			this.txtPatientName.TabIndex = 6;
-			this.txtPatientName.ThemeName = "Crystal";
-			this.txtPatientName.TextChanged += new System.EventHandler(this.txtPatientName_TextChanged);
-			// 
-			// grpSearch
-			// 
-			this.grpSearch.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
-			this.grpSearch.Controls.Add(this.txtSearch);
-			this.grpSearch.HeaderMargin = new System.Windows.Forms.Padding(1);
-			this.grpSearch.HeaderText = "Search";
-			this.grpSearch.Location = new System.Drawing.Point(6, 46);
-			this.grpSearch.Name = "grpSearch";
-			this.grpSearch.Size = new System.Drawing.Size(239, 100);
-			this.grpSearch.TabIndex = 4;
-			this.grpSearch.Text = "Search";
-			this.grpSearch.ThemeName = "Crystal";
-			// 
-			// txtSearch
-			// 
-			this.txtSearch.Location = new System.Drawing.Point(13, 44);
-			this.txtSearch.Name = "txtSearch";
-			this.txtSearch.Size = new System.Drawing.Size(205, 24);
-			this.txtSearch.TabIndex = 3;
-			this.txtSearch.ThemeName = "Crystal";
-			this.txtSearch.TextChanging += new Telerik.WinControls.TextChangingEventHandler(this.txtSearch_TextChanging);
-			// 
-			// dgallNotesView
-			// 
-			this.dgallNotesView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.dgallNotesView.Location = new System.Drawing.Point(270, 60);
-			// 
-			// 
-			// 
-			this.dgallNotesView.MasterTemplate.AllowAddNewRow = false;
-			this.dgallNotesView.MasterTemplate.AllowCellContextMenu = false;
-			this.dgallNotesView.MasterTemplate.ViewDefinition = tableViewDefinition2;
-			this.dgallNotesView.Name = "dgallNotesView";
-			this.dgallNotesView.Size = new System.Drawing.Size(905, 591);
-			this.dgallNotesView.TabIndex = 0;
-			this.dgallNotesView.ThemeName = "Crystal";
-			this.dgallNotesView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgallNotesView_MouseDoubleClick);
-			// 
-			// pictureBox1
-			// 
-			this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-			this.pictureBox1.Location = new System.Drawing.Point(0, 34);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(1193, 720);
-			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pictureBox1.TabIndex = 2;
-			this.pictureBox1.TabStop = false;
-			// 
 			// radMenu1
 			// 
 			this.radMenu1.Items.AddRange(new Telerik.WinControls.RadItem[] {
@@ -1250,19 +850,29 @@
             this.mnuHelp});
 			this.radMenu1.Location = new System.Drawing.Point(0, 0);
 			this.radMenu1.Name = "radMenu1";
-			this.radMenu1.Size = new System.Drawing.Size(1193, 34);
+			this.radMenu1.Size = new System.Drawing.Size(1192, 34);
 			this.radMenu1.TabIndex = 1;
 			this.radMenu1.ThemeName = "Crystal";
+			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+			this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(1192, 754);
+			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox1.TabIndex = 2;
+			this.pictureBox1.TabStop = false;
 			// 
 			// frmMainApp
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1193, 754);
+			this.ClientSize = new System.Drawing.Size(1192, 754);
 			this.Controls.Add(this.radStatusStrip1);
-			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.radMenu1);
-			this.Controls.Add(this.pgViewCollectorNotes);
+			this.Controls.Add(this.pictureBox1);
 			this.Font = new System.Drawing.Font("Roboto", 9.749998F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "frmMainApp";
@@ -1273,49 +883,8 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMainApp_FormClosing);
 			this.Load += new System.EventHandler(this.frmMainApp_Load);
 			((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pgViewCollectorNotes)).EndInit();
-			this.pgViewCollectorNotes.ResumeLayout(false);
-			this.pgCollectorStats.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.collectorPanel)).EndInit();
-			this.collectorPanel.ResumeLayout(false);
-			this.collectorPanel.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.lblAverage)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblMonthly)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblCountNotes)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radButton2)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.btnAddTransaction)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.dgCurrentNotes.MasterTemplate)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.dgCurrentNotes)).EndInit();
-			this.pgAllNotes.ResumeLayout(false);
-			this.pgAllNotes.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.btnallRefresh)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.lblresultCount)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.btnExportExcel)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.grpProvider)).EndInit();
-			this.grpProvider.ResumeLayout(false);
-			this.grpProvider.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.cmbAllProvider)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.rdoFilter)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.rdoSearch)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.grpDate)).EndInit();
-			this.grpDate.ResumeLayout(false);
-			this.grpDate.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.dtpEndate)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.dtpStartDate)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.grpPatientName)).EndInit();
-			this.grpPatientName.ResumeLayout(false);
-			this.grpPatientName.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.txtPatientName)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.grpSearch)).EndInit();
-			this.grpSearch.ResumeLayout(false);
-			this.grpSearch.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.txtSearch)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.dgallNotesView.MasterTemplate)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.dgallNotesView)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.radMenu1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -1412,33 +981,6 @@
 		private Telerik.WinControls.UI.RadMenuItem mnuViewLeave;
 		private Telerik.WinControls.UI.RadMenuItem mnuBVAvailablity;
 		public System.Windows.Forms.PictureBox pictureBox1;
-		private Telerik.WinControls.UI.RadPageViewPage pgCollectorStats;
-		private Telerik.WinControls.UI.RadPanel collectorPanel;
-		private Telerik.WinControls.UI.RadPageViewPage pgAllNotes;
-		private Telerik.WinControls.UI.RadGridView dgCurrentNotes;
-		private Telerik.WinControls.UI.RadButton radButton2;
-		private Telerik.WinControls.UI.RadButton btnAddTransaction;
-		public Telerik.WinControls.UI.RadPageView pgViewCollectorNotes;
-		private Telerik.WinControls.UI.RadLabel lblCountNotes;
-		private Telerik.WinControls.UI.RadLabel lblMonthly;
-		private Telerik.WinControls.UI.RadLabel lblAverage;
-		private Telerik.WinControls.UI.RadGridView dgallNotesView;
-		private Telerik.WinControls.UI.RadGroupBox grpSearch;
-		private Telerik.WinControls.UI.RadTextBox txtSearch;
-		private Telerik.WinControls.UI.RadGroupBox grpDate;
-		private Telerik.WinControls.UI.RadDateTimePicker dtpStartDate;
-		private Telerik.WinControls.UI.RadDateTimePicker dtpEndate;
-		private Telerik.WinControls.UI.RadGroupBox grpPatientName;
-		private Telerik.WinControls.UI.RadTextBox txtPatientName;
-		private Telerik.WinControls.UI.RadRadioButton rdoFilter;
-		private Telerik.WinControls.UI.RadRadioButton rdoSearch;
-		private Telerik.WinControls.UI.RadLabel radLabel2;
-		private Telerik.WinControls.UI.RadLabel radLabel1;
-		private Telerik.WinControls.UI.RadGroupBox grpProvider;
-		private Telerik.WinControls.UI.RadDropDownList cmbAllProvider;
-		private Telerik.WinControls.UI.RadButton btnExportExcel;
-		private Telerik.WinControls.UI.RadLabel lblresultCount;
-		private Telerik.WinControls.UI.RadButton btnallRefresh;
 		public Telerik.WinControls.UI.RadMenuItem mnuAssignProvider;
 		public Telerik.WinControls.UI.RadMenuItem mnuViewCollectorNotes;
 		private Telerik.WinControls.Themes.FluentTheme fluentTheme1;
@@ -1453,5 +995,6 @@
 		private Telerik.WinControls.UI.RadMenuItem mnuAIAssist;
 		private Telerik.WinControls.UI.RadMenuItem mnuITHelp;
 		private Telerik.WinControls.UI.RadMenu radMenu1;
+		private Telerik.WinControls.UI.RadMenuItem mnuAgingUploader;
 	}
 }

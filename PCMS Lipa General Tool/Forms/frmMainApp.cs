@@ -1,4 +1,5 @@
-﻿using PCMS_Lipa_General_Tool.Class;
+﻿using DocumentFormat.OpenXml.Office.CoverPageProps;
+using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.Forms;
 using PCMS_Lipa_General_Tool.Services;
 using System;
@@ -41,6 +42,9 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		public string UserName;
 		public string employeeID;
 		public string OfficeLoc;
+		public string employeeStat;
+
+
 		//public string ThemeName;
 		public string Position;
 		public string _dbConnection;
@@ -62,8 +66,6 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 			this.FormClosing += frmMainApp_FormClosing;
 			PopulateTelerikThemes();
-			InitializeApp();
-			InitializeAllNotes();
 		}
 
 		#region importantUICOnfigurations
@@ -149,7 +151,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			mnuAdmin.Visibility = ElementVisibility.Collapsed;
 			mnuManageProduct.Visibility = ElementVisibility.Collapsed;
 			mnuViewCollectorNotes.Visibility = ElementVisibility.Collapsed;
-			pictureBox1.BringToFront();
+			//pictureBox1.BringToFront();
 		}
 
 		private void HideWorkersCollectorControls()
@@ -166,7 +168,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			pictureBox1.BringToFront();
 		}
 
-		public void SetMainAppProperties(string empID, string empName, string userName, string userAccess, string userPosition, string officeLoc, string theme)
+		public void SetMainAppProperties(string empID, string empName, string userName, string userAccess, string userPosition, string officeLoc, string theme, string empStat)
 		{
 			employeeID = empID;
 			EmpName = empName;
@@ -178,18 +180,14 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			OfficeLoc = officeLoc;
 			ThemeName = theme;
 			Position = userPosition;
+			employeeStat = empStat;
 			//_dbConnection = _dbConnection;
 
 			//log.AddActivityLog(logMessage, EmpName, $"{EmpName} logged in", "USER LOGGED IN");
 		}
 
 		#endregion
-		private void InitializeApp()
-		{
-			viewNotesTab();
-			mnuViewCollectorNotes.Text = collectorPanel.Visible ? "Close Collector Notes" : "Open Collector Notes";
 
-		}
 		private void mnuOnlineLogins_Click(object sender, EventArgs e)
 		{
 			var onlineLogins = new frmOnlineLogins
@@ -254,7 +252,6 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		{
 			mainappTime.Start();
 			ThemeResolutionService.ApplicationThemeName = ThemeName;
-			viewNotesTab();
 		}
 
 		private void mainappTime_Tick(object sender, EventArgs e)
@@ -939,16 +936,16 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			modleave.txtEmpID.Text = employeeID;
 			leave.GetDBListID(out string ID, EmpName);
 			modleave.lblLeaveID.Text = ID;
+			modleave.txtPosition.Text = Position;
+			modleave.txtEmploymentStatus.Text = employeeStat;
 			//modleave.GetDBListID();
-			string position = modleave.txtPosition.Text;
-			string empStat = modleave.txtEmploymentStatus.Text;
+			//string position = modleave.txtPosition.Text;
+			///string empStat = modleave.txtEmploymentStatus.Text;
 			//string empName = EmpName;
 
-			leave.FillUpSupportLeaveForm(employeeID, ref position, ref empStat, EmpName);
+			//leave.FillUpSupportLeaveForm(employeeID, ref position, ref empStat, EmpName);
 
 			modleave.txtEmployeeName.Text = EmpName;
-			modleave.txtPosition.Text = position;
-			modleave.txtEmploymentStatus.Text = empStat;
 			modleave.dtpStartdate.Focus();
 			///leave.FillUpSupportLeaveForm(modleave.txtEmpID.Text, modleave.txtEmployeeName.Text, modleave.txtPosition.Text, modleave.txtEmploymentStatus.Text, EmpName);
 			modleave.ShowDialog();
@@ -961,7 +958,9 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 				Text = "Leave",
 				EmpName = EmpName,
 				accessLevel = accessLevel,
-				empID = employeeID
+				empID = employeeID,
+				empStat = employeeStat,
+				position = Position,
 			};
 
 			// Configure `cmbFilterName` and `cmbFilterStatus` based on access level.
@@ -1031,24 +1030,6 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		}
 
 
-		// this is the start of CollectorNotes
-
-
-		private void btnAddTransaction_Click(object sender, EventArgs e)
-		{
-			var notesTran = new frmModifyNotes(EmpName, Position) // Pass EmpName here
-			{
-				Text = "Add Notes",
-				//position = position,
-			};
-			notesTran.btnDelete.Visible = false;
-			notesTran.btnUpdateSave.Text = "Save";
-			collnotes.GetDBID(out string ID, EmpName);
-			notesTran.txtIntID.Text = ID;
-			notesTran.ShowDialog();
-			viewNotesTab();
-		}
-
 
 		private void mnuAssignProvider_Click(object sender, EventArgs e)
 		{
@@ -1061,235 +1042,6 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			assignProvider.ShowDialog();
 
 		}
-
-		public void viewNotesTab()
-		{
-			//collnotes.ViewNotesToday(dgCurrentNotes, lblCountNotes, EmpName);
-			//LoadAllNotes();
-			//LoadNotesToday();
-			//collnotes.ViewNotesMonth(lblMonthly.Text, lblAverage.Text, EmpName);
-			//collnotes.ViewNotes(dgallNotesView, EmpName, position);
-		}
-
-		private void LoadNotesToday()
-		{
-			var dataTable = collnotes.ViewNotesToday(EmpName, out string lblCount);
-			dgCurrentNotes.DataSource = dataTable;
-			lblCountNotes.Text = lblCount;
-		}
-
-		private void LoadAllNotes()
-		{
-			var dataTable = collnotes.ViewNotes(EmpName, out string lblCount, Position);
-			dgCurrentNotes.DataSource = dataTable;
-			lblCountNotes.Text = lblCount;
-		}
-
-		private void radButton2_Click(object sender, EventArgs e)
-		{
-			viewNotesTab();
-		}
-
-		private void InitializeAllNotes()
-		{
-			rdoSearch.IsChecked = true;
-			rdoFilter.IsChecked = false;
-			grpSearch.Enabled = true;
-			grpProvider.Enabled = false;
-			grpPatientName.Enabled = false;
-			grpDate.Enabled = false;
-			dgallNotesView.ReadOnly = true;
-			FillProviderDropdown();  
-		}
-
-
-		private void FillProviderDropdown()
-		{
-			List<string> items = provider.GetProviderList(EmpName);
-			cmbAllProvider.Items.Clear(); // Clear existing items, if any
-			foreach (var item in items)
-			{
-				cmbAllProvider.Items.Add(item);
-			}
-		}
-
-		private void radbuttonAction()
-		{
-			if (rdoSearch.IsChecked == true)
-			{
-				grpSearch.Enabled = true;
-				grpProvider.Enabled = false;
-				grpPatientName.Enabled = false;
-				grpDate.Enabled = false;
-				viewNotesTab();
-			}
-			else
-			{
-				grpSearch.Enabled = false;
-				grpProvider.Enabled = true;
-				grpPatientName.Enabled = true;
-				grpDate.Enabled = true;
-				txtSearch.Clear();
-				viewNotesTab();
-			}
-		}
-
-		private void rdoSearch_ToggleStateChanged(object sender, StateChangedEventArgs args)
-		{
-			radbuttonAction();
-		}
-
-		private void txtSearch_TextChanging(object sender, TextChangingEventArgs e)
-		{
-			collnotes.SearchTextAcrossColumns(dgallNotesView, "[COLLECTOR NOTES]", txtSearch.Text, lblresultCount, EmpName);
-		}
-
-		private void useFilterSearch()
-		{
-
-			collnotes.FilterCollectorNotes(dgallNotesView, "[COLLECTOR NOTES]", lblresultCount, cmbAllProvider.Text, dtpEndate.Value.ToString("yyyy-MM-dd"), dtpStartDate.Value.ToString("yyyy-MM-dd"), txtPatientName.Text, EmpName);
-		}
-
-		private void txtPatientName_TextChanged(object sender, EventArgs e)
-		{
-			useFilterSearch();
-		}
-
-
-		private void cmbAllProvider_SelectedIndexChanged(object sender, Telerik.WinControls.UI.Data.PositionChangedEventArgs e)
-		{
-			useFilterSearch();
-		}
-
-		private void dtpEndate_ValueChanged(object sender, EventArgs e)
-		{
-			if (dtpStartDate.Value > dtpEndate.Value)
-			{
-				RadMessageBox.Show("Oops! It looks like the start date is later than the end date. Could you please check and update the dates?", "Invalid Date", MessageBoxButtons.OK, RadMessageIcon.Error);
-				return;
-			}
-			else
-			{
-				useFilterSearch();
-			}
-		}
-
-		private void dtpStartDate_ValueChanged(object sender, EventArgs e)
-		{
-			if (dtpStartDate.Value > dtpEndate.Value)
-			{
-				RadMessageBox.Show("Oops! It looks like the start date is later than the end date. Could you please check and update the dates?", "Invalid Date", MessageBoxButtons.OK, RadMessageIcon.Error);
-				return;
-			}
-			else
-			{
-				useFilterSearch();
-			}
-		}
-
-		private void btnallRefresh_Click(object sender, EventArgs e)
-		{
-			if (rdoSearch.IsChecked == true)
-			{
-				collnotes.FilterCollectorNotes(dgallNotesView, "[COLLECTOR NOTES]", lblresultCount, cmbAllProvider.Text, dtpEndate.Value.ToString("yyyy-MM-dd"), dtpStartDate.Value.ToString("yyyy-MM-dd"), txtPatientName.Text, EmpName);
-			}
-			else
-			{
-				useFilterSearch();
-			}
-		}
-
-		private void btnExportExcel_Click(object sender, EventArgs e)
-		{
-
-			try
-			{
-				// Convert RadGridView to DataTable
-				DataTable dataTable = GetDataTableFromRadGridView(dgallNotesView);
-
-				// Call the export method
-				office.ExportTableToExcel(dataTable, "Collector Notes", EmpName);
-
-				// Optionally notify the user and open the file
-				string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-				string filePath = Path.Combine(desktopPath, "EmployeeData.xlsx");
-
-				MessageBox.Show($"Export successful! File saved to:\n{filePath}", "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-				if (MessageBox.Show("Would you like to open the file?", "Open File", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-				{
-					System.Diagnostics.Process.Start(filePath);
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show($"An error occurred during export:\n{ex.Message}", "Export Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			//task.ExportTabletoExcel(dgallNotesView, "CollectorNotes-" + EmpName, EmpName);
-		}
-
-		public DataTable GetDataTableFromRadGridView(RadGridView gridView)
-		{
-			DataTable dataTable = new();
-
-			// Add columns
-			foreach (GridViewDataColumn column in gridView.Columns)
-			{
-				dataTable.Columns.Add(column.HeaderText, column.DataType);
-			}
-
-			// Add rows
-			foreach (GridViewRowInfo row in gridView.Rows)
-			{
-				if (!row.IsVisible) continue; // Skip hidden rows
-				DataRow dataRow = dataTable.NewRow();
-				foreach (GridViewDataColumn column in gridView.Columns)
-				{
-					dataRow[column.HeaderText] = row.Cells[column.Name].Value ?? DBNull.Value;
-				}
-				dataTable.Rows.Add(dataRow);
-			}
-
-			return dataTable;
-		}
-
-		private void dgCurrentNotes_MouseDoubleClick(object sender, MouseEventArgs e)
-		{
-			if (dgCurrentNotes.SelectedRows.Count > 0)
-			{
-				var modNotes = new frmModifyNotes(EmpName, Position);
-				collnotes.FillNotesInfo(dgCurrentNotes, modNotes.txtIntID, modNotes.cmbProviderList, modNotes.txtChartNo, modNotes.txtPatientName, modNotes.txtNotes, modNotes.txtRemarks, EmpName);
-				modNotes.Text = "View/Update Adjuster Information";
-				//modAdj.btnDelete.Visible = false;
-				modNotes.btnUpdateSave.Text = "Update";
-				modNotes.btnDelete.Visible = false;
-				modNotes.ShowDialog();
-			}
-			viewNotesTab();
-		}
-
-		private void dgallNotesView_MouseDoubleClick(object sender, MouseEventArgs e)
-		{
-			if (Position == "Collector")
-			{
-				return;
-			}
-			else
-			{
-				if (dgallNotesView.SelectedRows.Count > 0)
-				{
-					var modNotes = new frmModifyNotes(EmpName, Position);
-					collnotes.FillNotesInfo(dgallNotesView, modNotes.txtIntID, modNotes.cmbProviderList, modNotes.txtChartNo, modNotes.txtPatientName, modNotes.txtNotes, modNotes.txtRemarks, EmpName);
-					modNotes.Text = "View/Update Adjuster Information";
-					//modAdj.btnDelete.Visible = false;
-					modNotes.btnUpdateSave.Text = "Update";
-					modNotes.btnDelete.Visible = true;
-					modNotes.ShowDialog();
-				}
-
-			}
-		}
-
 
 
 		private void mnuViewCollectorNotes_Click(object sender, EventArgs e)
@@ -1377,6 +1129,17 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			//	Text = "Assign Task to IT"
 			//};
 			dlgITask.ShowDialog();
+		}
+
+		private void mnuAgingUploader_Click(object sender, EventArgs e)
+		{
+			var dlgAgingUploader = new frmAgingUploader
+			{
+				_empName = EmpName,
+				_accessLevel = accessLevel,
+				Text = "Aging Uploader"
+			};
+			dlgAgingUploader.ShowDialog();
 		}
 	}
 }

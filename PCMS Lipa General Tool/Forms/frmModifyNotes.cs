@@ -1,9 +1,12 @@
-﻿using PCMS_Lipa_General_Tool.Class;
+﻿using ClosedXML.Excel;
+using PCMS_Lipa_General_Tool.Class;
 using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Telerik.WinControls;
+using System.Linq;
+using System.Reflection.Emit;
 
 namespace PCMS_Lipa_General_Tool.Forms
 {
@@ -16,7 +19,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public string txtID;
 		public string empName;
 		public string position;
-
+		public string tableName;
 
 		public frmModifyNotes(string empName, string position)
 		{
@@ -24,7 +27,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 			this.empName = empName;
 			this.position = position;
 			txtIntID.ReadOnly = true;
-			PullValueforDropdown(); // provider list
+			lblWarning.Visible = false;
+            PullValueforDropdown(); // provider list
 		}
 
 
@@ -32,18 +36,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void ClearData()
 		{
 			txtIntID.Clear();
-			txtRemarks.Clear();
-			cmbProviderList.Items.Clear();
 			txtNotes.Clear();
+			cmbProviderList.Items.Clear();
+			txtPrevNotes.Clear();
 			txtPatientName.Clear();
 			txtChartNo.Clear();
 			PullValueforDropdown();
 
 
 			txtIntID.Enabled = true;
-			txtRemarks.Enabled = true;
-			cmbProviderList.Enabled = true;
 			txtNotes.Enabled = true;
+			cmbProviderList.Enabled = true;
+			txtPrevNotes.Enabled = true;
 			txtPatientName.Enabled = true;
 			txtChartNo.Enabled = true;
 			btnDelete.Enabled = true;
@@ -55,9 +59,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void DisableInput()
 		{
 			txtIntID.Enabled = false;
-			txtRemarks.Enabled = false;
-			cmbProviderList.Enabled = false;
 			txtNotes.Enabled = false;
+			cmbProviderList.Enabled = false;
+			txtPrevNotes.Enabled = false;
 			txtPatientName.Enabled = false;
 			txtChartNo.Enabled = false;
 			btnDelete.Enabled = false;
@@ -67,6 +71,9 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void btnUpdateSave_Click(object sender, EventArgs e)
 		{
 			DisableInput();
+
+			//string tableName = $"{cmbProviderList.Text}_{DateTime.Now:yyyy_MM}";
+			//string tableName = empName;
 			if (btnUpdateSave.Text == "Update")
 			{
 				if (DialogResult.Yes == RadMessageBox.Show("Would you like to go ahead and update this record?", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
@@ -74,18 +81,19 @@ namespace PCMS_Lipa_General_Tool.Forms
 					cx.NoteDBRequest(
 						"Update",
 						txtIntID.Text,
-						cmbProviderList.Text,
+						//cmbProviderList.Text,
 						txtChartNo.Text,
-						txtPatientName.Text,
+						//txtPatientName.Text,
+						//txtPrevNotes.Text,
 						txtNotes.Text,
 						txtRemarks.Text,
-						empName);
+						empName, empName);
 					
 				}
 			}
 			else
 			{
-				if (string.IsNullOrEmpty(cmbProviderList.Text) || string.IsNullOrEmpty(txtChartNo.Text) || string.IsNullOrEmpty(txtPatientName.Text) || string.IsNullOrEmpty(txtNotes.Text))
+				if (string.IsNullOrEmpty(txtPrevNotes.Text) && string.IsNullOrEmpty(cmbProviderList.Text))
 				{
 					RadMessageBox.Show("Oops! It looks like some important information is missing. \n Please fill in the Notes, Provider, Chart No, and Patient Name fields to proceed.", "Information", MessageBoxButtons.OK, RadMessageIcon.Info);
 				}
@@ -94,12 +102,13 @@ namespace PCMS_Lipa_General_Tool.Forms
 					cx.NoteDBRequest(
 						"Create",
 						txtIntID.Text,
-						cmbProviderList.Text,
-						txtChartNo.Text,
-						txtPatientName.Text,
-						txtNotes.Text,
+                        //cmbProviderList.Text,
+                        txtChartNo.Text,
+						
+                        //txtPrevNotes.Text,
+                        txtNotes.Text,
 						txtRemarks.Text,
-						empName);
+						empName, empName);
 				}
 			}
 			ClearData();
@@ -109,17 +118,20 @@ namespace PCMS_Lipa_General_Tool.Forms
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
 			DisableInput();
+			//string tableName = $"{cmbProviderList.Text}_{DateTime.Now:yyyy_MM}";
 			if (DialogResult.Yes == RadMessageBox.Show("Just checking, do you want to delete this record? You can’t undo this action.", "Confirmation", MessageBoxButtons.YesNo, RadMessageIcon.Question))
 			{
 				cx.NoteDBRequest(
 					"Delete",
 					txtIntID.Text,
-					cmbProviderList.Text,
+					//cmbProviderList.Text,
 					txtChartNo.Text,
-					txtPatientName.Text,
+					//txtPatientName.Text,
+					//txtPrevNotes.Text,
 					txtNotes.Text,
 					txtRemarks.Text,
-					empName);
+					empName,
+					tableName);
 				ClearData();
 				Close();
 			}
@@ -172,6 +184,54 @@ namespace PCMS_Lipa_General_Tool.Forms
 			foreach (var item in items)
 			{
 				cmbProviderList.Items.Add(item);
+			}
+		}
+
+		private void txtChartNo_TextChanged(object sender, EventArgs e)
+		{
+			string userInput = txtChartNo.Text.Trim();
+			if (userInput.Length < 2) return;
+
+			//tableName = string.IsNullOrWhiteSpace(cmbProviderList.Text)
+			//? tableName
+			//: cmbProviderList.Text.Trim();
+			tableName = empName;
+			//string tableName = $"{cmbProviderList.Text}_{DateTime.Now:yyyy_MM}";
+			//string tableName = $"{cmbProviderList.Text}";
+			var matchedCharts = cx.SearchChartRecords(userInput, tableName);
+
+			if (matchedCharts.Count > 0)
+			{
+				// Fill autocomplete suggestions
+				var chartSuggestions = new AutoCompleteStringCollection();
+				chartSuggestions.AddRange(matchedCharts.Select(c => c.Chart).ToArray());
+
+				txtChartNo.AutoCompleteCustomSource = chartSuggestions;
+
+				// Autofill other fields if an exact chart match exists
+				var exact = matchedCharts.FirstOrDefault(c =>
+					c.Chart.Equals(userInput, StringComparison.OrdinalIgnoreCase));
+
+				if (exact != null)
+				{
+					txtPrevNotes.Text = exact.NoteDescription;
+					txtInsurance.Text = exact.Insurance;
+					txtPatientName.Text = exact.Name;
+					txtPatientType.Text = exact.Type;
+					rdtpDOB.Value = exact.DOB;
+				}
+			}
+		}
+
+		private void cmbProviderList_PopupOpened(object sender, EventArgs e)
+		{
+			if (position == "Collector")
+			{
+				FillProviderperCollectorDropdown();
+			}
+			else
+			{
+				FillProviderDropdown();
 			}
 		}
 	}

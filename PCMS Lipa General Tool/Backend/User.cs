@@ -696,7 +696,15 @@ namespace PCMS_Lipa_General_Tool.Class
 				bodyBuilder.Append("<p>Best regards,<br>System Administrator</p>");
 
 				// Send email
-				mailSender.SendEmail(recipientEmail, subject, bodyBuilder.ToString(), emailAddressCC, "PCMS Lipa General Tool - User", null);
+				if (action == "Password Reset")
+				{
+					mailSender.SendEmail(recipientEmail, subject, bodyBuilder.ToString(), null, "PCMS Lipa General Tool - User", null);
+				}
+				else
+				{
+					mailSender.SendEmail(recipientEmail, subject, bodyBuilder.ToString(), emailAddressCC, "PCMS Lipa General Tool - User", null);
+				}
+				
 			}
 			catch (Exception ex)
 			{

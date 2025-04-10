@@ -1,6 +1,7 @@
 ﻿using PCMS_Lipa_General_Tool.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -13,9 +14,209 @@ namespace PCMS_Lipa_General_Tool.Class
 	public class CollectorNotes
 	{
 		private readonly string _dbConnection = db.GetDbConnection();
+		private readonly string _agingDbConnection = db.GetAgingDbConnection();
 		private static readonly Notification notif = new();
 		private static readonly ActivtiyLogs log = new();
 		private static readonly Database db = new();
+
+		public string empName;
+		public string accessLevel;
+        public string userName;
+		public string Position;
+
+
+        public class AgingRecord
+		{
+			public string Chart { get; set; }
+			public string NoteDescription { get; set; }
+			public string Insurance { get; set; }
+			public string Name { get; set; }
+			public string Type { get; set; }
+			public DateTime DOB { get; set; }
+		}
+
+		//public (int todayCount, int monthCount, double averagePerDay) GetNotesCountsAndAverage(string tableName)
+		//{
+		//	if (string.IsNullOrWhiteSpace(tableName))
+		//		return (0, 0, 0);
+		//
+		//	int todayCount = 0;
+		//	int monthCount = 0;
+		//	double averagePerDay = 0;
+		//
+		//	string query = @$"
+		//SELECT 
+		//    SUM(CASE WHEN CAST([Time Stamp] AS DATE) = CAST(GETDATE() AS DATE) THEN 1 ELSE 0 END) AS TodayCount,
+		//    COUNT(*) AS MonthCount
+		//FROM [{tableName}]
+		//WHERE YEAR([Time Stamp]) = YEAR(GETDATE()) 
+		//  AND MONTH([Time Stamp]) = MONTH(GETDATE());";
+		//
+		//	try
+		//	{
+		//		using SqlConnection con = new SqlConnection(_dbConnection);
+		//		using SqlCommand cmd = new SqlCommand(query, con);
+		//		con.Open();
+		//
+		//		using SqlDataReader reader = cmd.ExecuteReader();
+		//		if (reader.Read())
+		//		{
+		//			todayCount = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
+		//			monthCount = reader.IsDBNull(1) ? 0 : reader.GetInt32(1);
+		//		}
+		//
+		//		int dayOfMonth = DateTime.Now.Day;
+		//		averagePerDay = dayOfMonth > 0 ? (double)monthCount / dayOfMonth : 0;
+		//	}
+		//	catch (SqlException sqlEx)
+		//	{
+		//		RadMessageBox.Show($"Database error occurred.\n\n{sqlEx.Message}", "SQL Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		RadMessageBox.Show($"Unexpected error occurred.\n\n{ex.Message}", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+		//	}
+		//
+		//	return (todayCount, monthCount, Math.Round(averagePerDay, 2)); // Round to 2 decimals
+		//}
+
+		public (int todayCount, int monthCount, double averagePerDay) GetNotesCountsAndAverage(string tableName)
+		{
+			if (string.IsNullOrWhiteSpace(tableName))
+				return (0, 0, 0);
+
+			//	int todayCount = 0;
+			//	int monthCount = 0;
+			//	double averagePerDay = 0;
+			//
+			//	string query = @$"
+			//SELECT 
+			//    SUM(CASE 
+			//            WHEN [Date] IS NOT NULL AND CAST([Date] AS DATE) = CAST(GETDATE() AS DATE) 
+			//            THEN 1 ELSE 0 
+			//        END) AS TodayCount,
+			//    COUNT(CASE 
+			//              WHEN [Date] IS NOT NULL 
+			//              THEN 1 
+			//          END) AS MonthCount
+			//FROM [{tableName}]
+			//WHERE [Date] IS NOT NULL
+			//  AND YEAR([Date]) = YEAR(GETDATE()) 
+			//  AND MONTH([Date]) = MONTH(GETDATE());";
+			//
+			int todayCount = 0;
+			int monthCount = 0;
+			int loginDaysCount = 0;
+			double averagePerLoginDay = 0;
+
+			string notesQuery = @$"
+				SELECT 
+				    SUM(CASE 
+				            WHEN [Date] IS NOT NULL AND CAST([Date] AS DATE) = CAST(GETDATE() AS DATE) 
+				            THEN 1 ELSE 0 
+				        END) AS TodayCount,
+				    COUNT(CASE 
+				              WHEN [Date] IS NOT NULL 
+				              THEN 1 
+				          END) AS MonthCount
+				FROM [{tableName}]
+				WHERE [Date] IS NOT NULL
+				  AND YEAR([Date]) = YEAR(GETDATE()) 
+				  AND MONTH([Date]) = MONTH(GETDATE());";
+				
+			string loginHistoryQuery = @"
+				SELECT COUNT(DISTINCT CAST([Date] AS DATE)) 
+				FROM [Login History]
+				WHERE [Date] IS NOT NULL
+				  AND YEAR([Date]) = YEAR(GETDATE())
+				  AND MONTH([Date]) = MONTH(GETDATE());";
+
+
+			try
+			{
+				using (SqlConnection agingCon = new(_agingDbConnection))
+				{
+					agingCon.Open();
+					using SqlCommand notesCmd = new(notesQuery, agingCon);
+					using SqlDataReader reader = notesCmd.ExecuteReader();
+					if (reader.Read())
+					{
+						todayCount = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
+						monthCount = reader.IsDBNull(1) ? 0 : reader.GetInt32(1);
+					}
+				}
+				//reader.Close();
+
+				//Query login databasehistory
+				using (SqlConnection loginCon = new(_dbConnection))
+				{
+					loginCon.Open();
+					using SqlCommand loginCmd = new(loginHistoryQuery, loginCon);
+					object loginResult = loginCmd.ExecuteScalar();
+					loginDaysCount = loginResult != DBNull.Value ? Convert.ToInt32(loginResult) : 0;
+				}
+
+				averagePerLoginDay = loginDaysCount > 0 ? (double)monthCount / loginDaysCount : 0;
+				//int dayOfMonth = DateTime.Now.Day;
+				//averagePerDay = dayOfMonth > 0 ? (double)monthCount / dayOfMonth : 0;
+			}
+			catch (SqlException sqlEx)
+			{
+				notif.LogError("GetNotesCountsAndAverage", "N/A", "CollectorNotes", "N/A", sqlEx);
+				//RadMessageBox.Show($"Database error occurred.\n\n{sqlEx.Message}", "SQL Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+			}
+			catch (Exception ex)
+			{
+				notif.LogError("GetNotesCountsAndAverage", "N/A", "CollectorNotes", "N/A", ex);
+				//RadMessageBox.Show($"Unexpected error occurred.\n\n{ex.Message}", "Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+			}
+
+			return (todayCount, monthCount, Math.Round(averagePerLoginDay, 2));
+		}
+
+
+
+		public List<AgingRecord> SearchChartRecords(string searchTerm, string tableName)
+		{
+			var resultList = new List<AgingRecord>();
+			var connString = _agingDbConnection;
+
+			string query = $@"
+        SELECT TOP 10 Chart, [Note Description], Insurance, Name, Type, DOB
+        FROM [{tableName}]
+        WHERE Chart LIKE @search + '%'";
+
+			try
+			{
+				using var conn = new SqlConnection(connString);
+				using var cmd = new SqlCommand(query, conn);
+				cmd.Parameters.AddWithValue("@search", searchTerm);
+
+				conn.Open();
+				using var reader = cmd.ExecuteReader();
+				while (reader.Read())
+				{
+					resultList.Add(new AgingRecord
+					{
+						Chart = reader["Chart"]?.ToString(),
+						NoteDescription = reader["Note Description"]?.ToString(),
+						Insurance = reader["Insurance"]?.ToString(),
+						Name = reader["Name"]?.ToString(),
+						Type = reader["Type"]?.ToString(),
+						DOB = reader.GetDateTime(reader.GetOrdinal("DOB"))
+					});
+				}
+			}
+			catch (SqlException ex)
+			{
+				notif.LogError("SearchChartRecords", "N/A", "CollectorNotes", "N/A", ex);
+				RadMessageBox.Show("Not able to find the chart number to populate.", "Chart Search Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+			//RadMessageBox.Show("SQL error while searching chart info. Contact administrator.", "DB Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+				// Log ex if needed
+			}
+
+			return resultList;
+		}
 
 
 		public void GetDBID(out string intID, string empName)
@@ -42,47 +243,19 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 
-		public void FillNotesInfo(RadGridView dgCurrentNotes, RadTextBox txtIntID, RadDropDownList cmbProviderList, RadTextBox txtChartNo, RadTextBox txtPatientName, RadTextBoxControl txtNotes, RadTextBoxControl txtRemarks, string empName)
-		{
-			using SqlConnection con = new(_dbConnection);
-			try
-			{
-				con.Open();
-				{
-					using SqlCommand cmd = new("SELECT [Notes ID], [Provider Name], [Chart No], [Patient Name], Notes, Remarks FROM [COLLECTOR NOTES]", con);
-					cmd.ExecuteNonQuery();
-					var dgRow = dgCurrentNotes.SelectedRows[0];
-					{
-						txtIntID.Text = dgRow.Cells["Notes ID"].Value + string.Empty;
-						cmbProviderList.Text = dgRow.Cells["Provider Name"].Value + string.Empty;
-						txtChartNo.Text = dgRow.Cells["Chart No"].Value + string.Empty;
-						txtPatientName.Text = dgRow.Cells["Patient Name"].Value + string.Empty;
-						txtNotes.Text = dgRow.Cells["Notes"].Value + string.Empty;
-						txtRemarks.Text = dgRow.Cells["Remarks"].Value + string.Empty;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				notif.LogError("FillNotesInfo", empName, "ModifyNotes", "N/A", ex);
-			}
-			finally
-			{
-				con.Close();
-			}
-		}
-
 		public void NoteDBRequest(
 			string request,
 			string noteID,
-			string providerName,
+			//string providerName,
 			string chartNo,
-			string patientName,
+			//string patientName,
+			//string notes,
 			string notes,
 			string remarks,
-			string empName)
+			string empName,
+			string tableAging)
 		{
-			using SqlConnection conn = new(_dbConnection);
+			using SqlConnection conn = new(_agingDbConnection);
 			try
 			{
 				conn.Open();
@@ -96,24 +269,31 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Define SQL command based on the request type
 				cmd.CommandText = request switch
 				{
-					"Update" => @"
-                    UPDATE [Collector Notes]
+					"Update" => $@"
+                    UPDATE [{tableAging}]
                     SET 
-                        [Provider Name] = @providerName,
-                        [Chart No] = @chartNo, [Patient Name] = @patientName,
                         [Notes] = @Notes, [Collector Name] = @collectorName,
                         REMARKS = @REMARKS
                     WHERE
                         [Notes ID] = @noteID",
-					"Create" => @"
-                    INSERT INTO [Collector Notes] ([Notes ID], Date, [Time Stamp], [Provider Name], [Chart No],
-                        [Patient Name], Notes, [Collector Name], Remarks)
-                    VALUES
-                        (@noteID, @Date, @TimeStamp, @providerName,
-                        @chartNo, @patientName, @Notes, @collectorName, @Remarks)",
-					"Delete" => @"
+
+					"Create" => $@"
+					UPDATE [{tableAging}]
+                    SET 
+                        [Notes] = @Notes, [Collector Name] = @collectorName,
+                        REMARKS = @REMARKS, [Date] = @Date, [Time Stamp] = @TimeStamp,
+						[Notes ID] = @noteID, [Month] = @month, [Year] = @year
+                    WHERE
+                        [CHART] = @chartNo",
+
+					// "Create" => $@"
+					//INSERT INTO [{tableAging}] ([Notes ID], Date, [Time Stamp], Notes, [Collector Name], Remarks)
+					//VALUES
+					//    (@noteID, @Date, @TimeStamp, @Notes, @collectorName, @Remarks)",
+
+					"Delete" => $@"
                     DELETE FROM
-                        [Collector Notes]
+                        [{tableAging}]
                     WHERE
                         [Notes ID] = @noteID",
 					_ => throw new ArgumentException("Invalid request type"),
@@ -122,14 +302,15 @@ namespace PCMS_Lipa_General_Tool.Class
 				// Add parameters for Update and Create requests
 				if (request != "Delete")
 				{
-					var currentDate = DateTime.Now.ToString("yyyy-MM-dd"); // Date only
+					//var currentDate = DateTime.Now.ToString("yyyy-MM-dd"); // Date only
 					DateTime currentTimeStamp = DateTime.Now; // Full timestamp
-
-					cmd.Parameters.AddWithValue("@Date", currentDate);
+					cmd.Parameters.AddWithValue("@Date", DateTime.Now.ToString("yyyy-MM-dd"));
+					cmd.Parameters.AddWithValue("@month", DateTime.Now.ToString("MMMM"));
+					cmd.Parameters.AddWithValue("@year", DateTime.Now.ToString("yyyy"));
 					cmd.Parameters.AddWithValue("@TimeStamp", currentTimeStamp);
-					cmd.Parameters.AddWithValue("@providerName", string.IsNullOrEmpty(providerName) ? (object)DBNull.Value : providerName);
+					//cmd.Parameters.AddWithValue("@providerName", string.IsNullOrEmpty(providerName) ? (object)DBNull.Value : providerName);
 					cmd.Parameters.AddWithValue("@chartNo", chartNo ?? string.Empty);
-					cmd.Parameters.AddWithValue("@patientName", patientName ?? string.Empty);
+					//cmd.Parameters.AddWithValue("@patientName", patientName ?? string.Empty);
 					cmd.Parameters.AddWithValue("@Notes", notes ?? string.Empty);
 					cmd.Parameters.AddWithValue("@collectorName", empName ?? string.Empty);
 					cmd.Parameters.AddWithValue("@Remarks", remarks ?? string.Empty);
@@ -157,92 +338,88 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 		}
 
-		//public void ViewNotesToday(RadGridView dataGrid, RadLabel lblcount, string empName)
+		//public DataTable ViewNotesToday(string empName, out string lblCount, string tableName)
 		//{
-		//	var query = $"SELECT * FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%' AND DATE LIKE '{DateTime.Now:yyyy-MM-dd}'";
-		//	var con = new SqlConnection(_dbConnection);
+		//	var query = $"SELECT [Notes ID], [TIME STAMP], [Provider], [Chart], [Type], [DOB], [INSURANCE], [NOTES DESCRIPTION], [NOTES], REMARKS FROM [{tableName}]";
+		//	var data = new DataTable();
+		//	lblCount = string.Empty;
+		//
 		//	try
 		//	{
-		//		using (var adp = new SqlDataAdapter(query, con))
-		//		{
-		//			var data = new DataTable();
-		//			adp.Fill(data);
-		//			adp.Update(data);
-		//			dataGrid.DataSource = data.DefaultView;
-		//			lblcount.Text = $"Total Notes (Today): {dataGrid.RowCount}";
-		//		}
-		//		dataGrid.BestFitColumns(BestFitColumnMode.DisplayedCells);
+		//		using var con = new SqlConnection(_dbConnection);
+		//		using var adp = new SqlDataAdapter(query, con);
+		//
+		//		// Fill the DataTable with data from the query
+		//		adp.Fill(data);
+		//
+		//		// Calculate the record count
+		//		lblCount = $"Total records: {data.Rows.Count}";
 		//	}
 		//	catch (Exception ex)
 		//	{
-		//		notif.LogError($"ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
+		//		notif.LogError("ViewBundleCodes", empName, "Bundle", "N/A", ex);
 		//	}
-		//	finally
-		//	{
-		//		con.Close();
-		//	}
+		//
+		//	return data;
 		//}
 
-		public DataTable ViewNotesToday(string empName, out string lblCount)
-		{
-			var query = $"SELECT * FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%' AND DATE LIKE '{DateTime.Now:yyyy-MM-dd}'";
-			var data = new DataTable();
-			lblCount = string.Empty;
 
+		// need to check after this line
+
+
+		public DataRow GetSelectedNoteDetails(string connectionString, string empName, string tableName)
+		{
 			try
 			{
-				using var con = new SqlConnection(_dbConnection);
-				using var adp = new SqlDataAdapter(query, con);
+				using var con = new SqlConnection(_agingDbConnection);
+				con.Open();
 
-				// Fill the DataTable with data from the query
-				adp.Fill(data);
+				using var cmd = new SqlCommand($@"
+			SELECT TOP 1 [Notes ID], [Provider Name], [Chart No], [Patient Name], Notes, Remarks
+			FROM {tableName}", con);
 
-				// Calculate the record count
-				lblCount = $"Total records: {data.Rows.Count}";
+				using var adapter = new SqlDataAdapter(cmd);
+				var dataTable = new DataTable();
+				adapter.Fill(dataTable);
+
+				return dataTable.AsEnumerable().FirstOrDefault(); // Only one expected
+			}
+			catch (SqlException ex)
+			{
+				notif.LogError("GetSelectedNoteDetails", empName, "ModifyNotes", "SQL", ex);
+				return null;
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
+				notif.LogError("GetSelectedNoteDetails", empName, "ModifyNotes", "General", ex);
+				return null;
 			}
-
-			return data;
 		}
 
-		
 
-		public void ViewNotesMonth(string lblcount, string lblAverage, string empName)
+		public void FillNotesInfo(RadGridView dgCurrentNotes, RadTextBox txtIntID, RadDropDownList cmbProviderList, RadTextBox txtChartNo, RadTextBox txtPatientName, RadTextBoxControl txtNotes, RadTextBoxControl txtRemarks, string empName)
 		{
-			var noofNotesMonthQuery = $"SELECT COUNT(*) FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%' AND DATE LIKE '{DateTime.Now:yyyy-MM}%'";
-			var noofdaysQuery = $"SELECT COUNT(DISTINCT CAST(DATE AS DATE)) FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%' AND DATE LIKE '{DateTime.Now:yyyy-MM}%'";
-
-			var con = new SqlConnection(_dbConnection);
+			using SqlConnection con = new(_agingDbConnection);
 			try
 			{
 				con.Open();
-
-				int noofNotesMonth = 0;
-				int noofdays = 0;
-
-				// Execute query to get total notes for the month
-				using (var cmd = new SqlCommand(noofNotesMonthQuery, con))
 				{
-					noofNotesMonth = (int)cmd.ExecuteScalar();
-					lblcount = $"Total Notes (This Month): {noofNotesMonth}";
+					using SqlCommand cmd = new("SELECT [Notes ID], [Provider Name], [Chart No], [Patient Name], Notes, Remarks FROM [COLLECTOR NOTES]", con);
+					cmd.ExecuteNonQuery();
+					var dgRow = dgCurrentNotes.SelectedRows[0];
+					{
+						txtIntID.Text = dgRow.Cells["Notes ID"].Value + string.Empty;
+						cmbProviderList.Text = dgRow.Cells["Provider Name"].Value + string.Empty;
+						txtChartNo.Text = dgRow.Cells["Chart No"].Value + string.Empty;
+						txtPatientName.Text = dgRow.Cells["Patient Name"].Value + string.Empty;
+						txtNotes.Text = dgRow.Cells["Notes"].Value + string.Empty;
+						txtRemarks.Text = dgRow.Cells["Remarks"].Value + string.Empty;
+					}
 				}
-
-				// Execute query to get the count of distinct days with notes
-				using (var cmd = new SqlCommand(noofdaysQuery, con))
-				{
-					noofdays = (int)cmd.ExecuteScalar();
-				}
-
-				// Calculate average notes per day
-				double averageNotesPerDay = noofdays > 0 ? (double)noofNotesMonth / noofdays : 0;
-				lblAverage = $"Average Notes per Day: {averageNotesPerDay:F2}";
 			}
 			catch (Exception ex)
 			{
-				notif.LogError($"ViewNotesMonth", empName, "CollectorNotes", "N/A", ex);
+				notif.LogError("FillNotesInfo", empName, "ModifyNotes", "N/A", ex);
 			}
 			finally
 			{
@@ -251,75 +428,799 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 
-		public DataTable ViewNotes(string empName, out string lblCount, string position)
+
+        //public void ViewNotesToday(RadGridView dataGrid, RadLabel lblcount, string empName)
+        //{
+        //	var query = $"SELECT * FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%' AND DATE LIKE '{DateTime.Now:yyyy-MM-dd}'";
+        //	var con = new SqlConnection(_dbConnection);
+        //	try
+        //	{
+        //		using (var adp = new SqlDataAdapter(query, con))
+        //		{
+        //			var data = new DataTable();
+        //			adp.Fill(data);
+        //			adp.Update(data);
+        //			dataGrid.DataSource = data.DefaultView;
+        //			lblcount.Text = $"Total Notes (Today): {dataGrid.RowCount}";
+        //		}
+        //		dataGrid.BestFitColumns(BestFitColumnMode.DisplayedCells);
+        //	}
+        //	catch (Exception ex)
+        //	{
+        //		notif.LogError($"ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
+        //	}
+        //	finally
+        //	{
+        //		con.Close();
+        //	}
+        //}
+
+        //public DataTable ViewNotesToday(string empName, out string lblCount, string tableName)
+        //{
+        //	var query = $"SELECT * FROM [{tableName}] WHERE [Collector Name] LIKE '%{empName}%' AND [DATE] LIKE '{DateTime.Now:yyyy-MM-dd}'";
+        //	var data = new DataTable();
+        //	lblCount = string.Empty;
+        //
+        //	try
+        //	{
+        //		using var con = new SqlConnection(_dbConnection);
+        //		using var adp = new SqlDataAdapter(query, con);
+        //
+        //		// Fill the DataTable with data from the query
+        //		adp.Fill(data);
+        //
+        //		// Calculate the record count
+        //		lblCount = $"Total records: {data.Rows.Count}";
+        //	}
+        //	catch (SqlException ex)
+        //	{
+        //		RadMessageBox.Show("Error while viewing notes. Contact administrator.", "DB Error", MessageBoxButtons.OK, RadMessageIcon.Error);
+        //		notif.LogError("ViewNotesToday - SQL Ex", empName, "CollectorNotes", "N/A", ex);
+        //		//Log ex if needed
+        //	}
+        //	catch (Exception ex)
+        //	{
+        //		notif.LogError("ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
+        //	}
+        //
+        //	return data;
+        //}
+
+        //		public DataTable NotesToday(string empName, out string lblCount, string tableName, string keyword, string mode)
+        //		{
+        //			lblCount = string.Empty;
+        //			var data = new DataTable();
+        //
+        //			string safeTableName = $"[dbo].[{tableName.Replace("]", "]]")}]";
+        //			string query;
+        //
+        //			if (mode == "Aging")
+        //			{
+        //				query = $@"
+        //SELECT [INT ID], [Chart], [Name], [DOB], [ID], [Code], [Type], [Amount], [Current], [31-60], [61-90], [91-120],
+        //       [>120], [Total], [Insurance], [Last Visit], [Last Note], [Note Description], [Time Stamp], [Notes], [Remarks],
+        //       [Collector Name], [Provider]
+        //FROM {safeTableName}
+        //WHERE [Name] LIKE @PatientName
+        //  {(string.IsNullOrWhiteSpace(keyword) ? "" : "AND ([Chart] LIKE @Keyword OR [NOTE DESCRIPTION] LIKE @Keyword OR [NOTES] LIKE @Keyword)")}";
+        //			}
+        //			else // Trans mode
+        //			{
+        //				query = $@"
+        //SELECT [NOTES ID], [TIME STAMP], [Provider], [Chart], [Type], [DOB], [INSURANCE], [NOTE DESCRIPTION], [NOTES], REMARKS 
+        //FROM {safeTableName}
+        //WHERE [Collector Name] LIKE @CollectorName
+        //  AND CONVERT(VARCHAR, [Date], 23) = @DateFilter
+        //  {(string.IsNullOrWhiteSpace(keyword) ? "" : "AND ([Chart] LIKE @Keyword OR [NOTE DESCRIPTION] LIKE @Keyword OR [NOTES] LIKE @Keyword)")}";
+        //			}
+        //
+        //			try
+        //			{
+        //				using var con = new SqlConnection(_agingDbConnection);
+        //				using var cmd = new SqlCommand(query, con);
+        //
+        //				if (mode == "Aging")
+        //				{
+        //					// Use empName as patient name for Aging mode
+        //					cmd.Parameters.AddWithValue("@PatientName", $"%{empName}%");
+        //				}
+        //				else
+        //				{
+        //					cmd.Parameters.AddWithValue("@CollectorName", $"%{empName}%");
+        //					cmd.Parameters.AddWithValue("@DateFilter", DateTime.Now.ToString("yyyy-MM-dd"));
+        //				}
+        //
+        //				if (!string.IsNullOrWhiteSpace(keyword))
+        //					cmd.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
+        //
+        //				using var adp = new SqlDataAdapter(cmd);
+        //				adp.Fill(data);
+        //
+        //				lblCount = $"Total records: {data.Rows.Count}";
+        //			}
+        //			catch (SqlException ex)
+        //			{
+        //				notif.LogError("ViewNotesToday - SQL Ex", empName, "CollectorNotes", "N/A", ex);
+        //			}
+        //			catch (Exception ex)
+        //			{
+        //				notif.LogError("ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
+        //			}
+        //
+        //			return data;
+        //		}
+
+        public (bool isSuccess, DataTable result, string errorMessage) GetNotesForAging(
+            string tableName,
+            string keyword,
+            string exNotes,
+            DateTime? startDate,
+            DateTime? endDate,
+            string pageTab,
+            string insurance,
+            string patientType,
+            string provider)
+        {
+            var dtResult = new DataTable();
+            string errorMessage = string.Empty;
+
+            string safeTableName = $"[dbo].[{tableName.Replace("]", "]]")}]";
+            var whereConditions = new List<string>();
+
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                whereConditions.Add(@"(
+            [Chart] LIKE @Keyword OR 
+            [NOTE DESCRIPTION] LIKE @Keyword OR 
+            [NOTES] LIKE @Keyword OR 
+            [Name] LIKE @Keyword)");
+            }
+
+            // Exclude notes without timestamp
+            if (!string.IsNullOrEmpty(exNotes) && exNotes.Equals("excludeNotes", StringComparison.OrdinalIgnoreCase))
+            {
+                whereConditions.Add("[Time Stamp] IS NULL");
+            }
+
+            // Insurance condition
+            if (!string.IsNullOrWhiteSpace(insurance) && !insurance.Equals("All", StringComparison.OrdinalIgnoreCase))
+            {
+                whereConditions.Add("[Insurance] LIKE @Insurance");
+            }
+
+            if (!string.IsNullOrWhiteSpace(provider) && !provider.Equals("All", StringComparison.OrdinalIgnoreCase))
+            {
+                whereConditions.Add("[Provider] LIKE @Provider");
+            }
+
+            if (!string.IsNullOrWhiteSpace(patientType) && !patientType.Equals("All", StringComparison.OrdinalIgnoreCase))
+            {
+                whereConditions.Add("[Type] = @patientType");
+            }
+
+            // Date condition logic
+            bool skipDateFilter = string.Equals(pageTab, "AllNotes", StringComparison.OrdinalIgnoreCase) &&
+                                  !startDate.HasValue && !endDate.HasValue;
+
+            if (!skipDateFilter)
+            {
+                if (startDate.HasValue)
+                    whereConditions.Add("[Time Stamp] >= @StartDate");
+
+                if (endDate.HasValue)
+                    whereConditions.Add("[Time Stamp] <= @EndDate");
+
+                //if (!startDate.HasValue && !endDate.HasValue)
+                //{
+                //    whereConditions.Add("CAST([UploadDate] AS DATE) = CAST(GETDATE() AS DATE)");
+                //}
+            }
+
+            string whereClause = whereConditions.Count > 0
+                ? "WHERE " + string.Join(" AND ", whereConditions)
+                : string.Empty;
+
+            string query = $@"
+        SELECT [INT ID], [Chart], [Name], [DOB], [ID], [Code], [Type], [Amount], [Current], [31-60], [61-90], [91-120],
+               [>120], [Total], [Insurance], [Last Visit], [Last Note], [Note Description], [Time Stamp], [Notes], [Remarks],
+               [Collector Name], [Provider]
+        FROM {safeTableName}
+        {whereClause}";
+
+            try
+            {
+                using var con = new SqlConnection(_agingDbConnection);
+                using var cmd = new SqlCommand(query, con);
+
+                if (!string.IsNullOrWhiteSpace(keyword))
+                    cmd.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
+
+                if (!string.IsNullOrWhiteSpace(insurance) && !insurance.Equals("All", StringComparison.OrdinalIgnoreCase))
+                    cmd.Parameters.AddWithValue("@Insurance", $"%{insurance}%");
+
+                if (!string.IsNullOrWhiteSpace(provider) && !provider.Equals("All", StringComparison.OrdinalIgnoreCase))
+                    cmd.Parameters.AddWithValue("@Provider", provider);
+
+                if (!string.IsNullOrWhiteSpace(patientType) && !patientType.Equals("All", StringComparison.OrdinalIgnoreCase))
+                    cmd.Parameters.AddWithValue("@patientType", patientType);
+
+                if (!skipDateFilter)
+                {
+                    if (startDate.HasValue)
+                        cmd.Parameters.AddWithValue("@StartDate", startDate.Value.Date);
+
+                    if (endDate.HasValue)
+                        cmd.Parameters.AddWithValue("@EndDate", endDate.Value.Date.AddDays(1).AddSeconds(-1));
+                }
+
+                using var adp = new SqlDataAdapter(cmd);
+                adp.Fill(dtResult);
+
+                return (true, dtResult, string.Empty);
+            }
+            catch (SqlException ex)
+            {
+                notif.LogError("GetNotesForAging - SQL", "N/A", "CollectorNotes", "N/A", ex);
+                errorMessage = "Sorry, the aging data couldn't be retrieved. Please check if the correct file is loaded.";
+            }
+            catch (Exception ex)
+            {
+                notif.LogError("GetNotesForAging - System", "N/A", "CollectorNotes", "N/A", ex);
+                errorMessage = "Something went wrong while loading aging notes. The developer has been notified.";
+            }
+
+            return (false, dtResult, errorMessage);
+        }
+
+
+
+        public (bool isSuccess, DataTable result, string errorMessage) GetNotesForTrans(
+            string tableName,
+            string keyword,
+            string dateMode,
+            DateTime? startDate,
+            DateTime? endDate,
+            string pageTab,
+            string insurance,
+            string patientType,
+            string provider)
+        {
+            var data = new DataTable();
+            string errorMessage = string.Empty;
+
+            string safeTableName = $"[dbo].[{tableName.Replace("]", "]]")}]";
+            var whereConditions = new List<string> { "[Date] IS NOT NULL" };
+
+            //bool skipDateFilter = pageTab.Equals("AllNotes", StringComparison.OrdinalIgnoreCase) &&
+            //                      !startDate.HasValue && !endDate.HasValue;
+            bool skipDateFilter = string.Equals(pageTab, "AllNotes", StringComparison.OrdinalIgnoreCase) &&
+                      !startDate.HasValue && !endDate.HasValue;
+
+
+            if (!skipDateFilter)
+            {
+                if (startDate.HasValue)
+                    whereConditions.Add("[Date] >= @StartDate");
+
+                if (endDate.HasValue)
+                    whereConditions.Add("[Date] <= @EndDate");
+
+                if (!startDate.HasValue && !endDate.HasValue)
+                {
+                    if (string.Equals(dateMode, "Month", StringComparison.OrdinalIgnoreCase))
+                    {
+                        whereConditions.Add("[Date] >= @MonthStart");
+                        whereConditions.Add("[Date] <= @MonthEnd");
+                    }
+                    else
+                    {
+                        whereConditions.Add("CAST([Date] AS DATE) = CAST(GETDATE() AS DATE)");
+                    }
+                }
+
+
+                //if (!startDate.HasValue && !endDate.HasValue && dateMode == "Month")
+                //{
+                //    whereConditions.Add("[Date] >= @MonthStart");
+                //    whereConditions.Add("[Date] <= @MonthEnd");
+                //}
+            }
+
+            // Keyword filter
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                whereConditions.Add(@"(
+            [Chart] LIKE @Keyword OR 
+            [NOTE DESCRIPTION] LIKE @Keyword OR 
+            [NOTES] LIKE @Keyword OR 
+            [Name] LIKE @Keyword)");
+            }
+
+            // Insurance filter
+            if (!string.IsNullOrWhiteSpace(insurance) && !insurance.Equals("All", StringComparison.OrdinalIgnoreCase))
+            {
+                whereConditions.Add("[Insurance] LIKE @Insurance");
+            }
+
+            if (!string.IsNullOrWhiteSpace(patientType) && !patientType.Equals("All", StringComparison.OrdinalIgnoreCase))
+            {
+                whereConditions.Add("[Type] = @patientType");
+            }
+
+            if (!string.IsNullOrWhiteSpace(provider) && !provider.Equals("All", StringComparison.OrdinalIgnoreCase))
+            {
+                whereConditions.Add("[Provider] = @Provider");
+            }
+
+            string whereClause = "WHERE " + string.Join(" AND ", whereConditions);
+
+            string query = $@"
+                SELECT [NOTES ID], [TIME STAMP], [Provider], [Chart], [Name], [Type], [DOB], [INSURANCE], 
+                       [NOTE DESCRIPTION], [NOTES], REMARKS 
+                FROM {safeTableName}
+                {whereClause}";
+
+            try
+            {
+                using var con = new SqlConnection(_agingDbConnection);
+                using var cmd = new SqlCommand(query, con);
+
+                if (!string.IsNullOrWhiteSpace(keyword))
+                    cmd.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
+
+                if (!string.IsNullOrWhiteSpace(insurance) && !insurance.Equals("All", StringComparison.OrdinalIgnoreCase))
+                    cmd.Parameters.AddWithValue("@Insurance", $"%{insurance}%");
+
+                if (!string.IsNullOrWhiteSpace(provider) && !provider.Equals("All", StringComparison.OrdinalIgnoreCase))
+                    cmd.Parameters.AddWithValue("@Provider", provider);
+
+                if (!string.IsNullOrWhiteSpace(patientType) && !patientType.Equals("All", StringComparison.OrdinalIgnoreCase))
+                    cmd.Parameters.AddWithValue("@patientType", patientType);
+
+                if (!skipDateFilter)
+                {
+                    if (startDate.HasValue)
+                        cmd.Parameters.AddWithValue("@StartDate", startDate.Value.Date);
+
+                    if (endDate.HasValue)
+                        cmd.Parameters.AddWithValue("@EndDate", endDate.Value.Date.AddDays(1).AddSeconds(-1));
+
+                    if (!startDate.HasValue && !endDate.HasValue)
+                    {
+                        if (string.Equals(dateMode, "Month", StringComparison.OrdinalIgnoreCase))
+                        {
+                            DateTime firstOfMonth = new(DateTime.Now.Year, DateTime.Now.Month, 1);
+                            DateTime lastOfMonth = firstOfMonth.AddMonths(1).AddDays(-1).Date.AddDays(1).AddSeconds(-1);
+
+                            cmd.Parameters.AddWithValue("@MonthStart", firstOfMonth);
+                            cmd.Parameters.AddWithValue("@MonthEnd", lastOfMonth);
+                        }
+                        // No parameter needed for GETDATE(), it's inline SQL
+                    }
+                    //if (!startDate.HasValue && !endDate.HasValue && dateMode == "Month")
+                    //{
+                    //    DateTime firstOfMonth = new(DateTime.Now.Year, DateTime.Now.Month, 1);
+                    //    DateTime lastOfMonth = firstOfMonth.AddMonths(1).AddDays(-1).Date.AddDays(1).AddSeconds(-1);
+                    //
+                    //    cmd.Parameters.AddWithValue("@MonthStart", firstOfMonth);
+                    //    cmd.Parameters.AddWithValue("@MonthEnd", lastOfMonth);
+                    //}
+                }
+
+                using var adp = new SqlDataAdapter(cmd);
+                adp.Fill(data);
+
+                return (true, data, string.Empty);
+            }
+            catch (SqlException ex)
+            {
+                notif.LogError("GetNotesForTrans - SQL", "N/A", "CollectorNotes", "N/A", ex);
+                errorMessage = "Could not retrieve transaction mode notes. Please verify the file.";
+            }
+            catch (Exception ex)
+            {
+                notif.LogError("GetNotesForTrans", "N/A", "CollectorNotes", "N/A", ex);
+                errorMessage = "An error occurred while loading transaction notes. The developer has been alerted.";
+            }
+
+            return (false, data, errorMessage);
+        }
+
+
+
+        public (bool isSuccess, DataTable result, string errorMessage) GetNotesForTable(
+			string tableName,
+			string keyword,
+			string mode,
+			string dateMode,
+			string exNotes,
+			DateTime? startDate,
+			DateTime? endDate,
+			string pageTab,
+            string insurance,
+            string patientType,
+            string provider)
 		{
-			string query;
-			if (position == "Collector")
+			return mode switch
 			{
-				query = $"SELECT * FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%'";
-			}
-			else
-			{
-				query = $"SELECT * FROM [Collector Notes]";
-			}
-			var data = new DataTable();
-			lblCount = string.Empty;
-
-			try
-			{
-				using var con = new SqlConnection(_dbConnection);
-				using var adp = new SqlDataAdapter(query, con);
-
-				// Fill the DataTable with data from the query
-				adp.Fill(data);
-
-				// Calculate the record count
-				lblCount = $"Total records: {data.Rows.Count}";
-			}
-			catch (Exception ex)
-			{
-				notif.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
-			}
-
-			return data;
+				"Aging" => GetNotesForAging(tableName, keyword, exNotes, startDate, endDate, pageTab, insurance, patientType, provider),
+				"Trans" => GetNotesForTrans(tableName, keyword, dateMode, startDate, endDate, pageTab, insurance, patientType, provider),
+				_ => (false, new DataTable(), "Invalid mode specified.")
+			};
 		}
 
-		//public void ViewNotes(DataTable dataGrid, string empName, string position)
-		//{
-		//	string query;
-		//	if (position == "Collector")
-		//	{
-		//		query = $"SELECT * FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%'";
-		//	}
-		//	else
-		//	{
-		//		query = $"SELECT * FROM [Collector Notes]";
-		//	}
-		//
-		//	var con = new SqlConnection(_dbConnection);
-		//	try
-		//	{
-		//		using (var adp = new SqlDataAdapter(query, con))
-		//		{
-		//			var data = new DataTable();
-		//			adp.Fill(data);
-		//			adp.Update(data);
-		//			dataGrid.DataSource = data.DefaultView;
-		//			//lcount.Text = $"Total Notes (Today): {dataGrid.RowCount}";
-		//		}
-		//		dataGrid.BestFitColumns(BestFitColumnMode.DisplayedCells);
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		notif.LogError($"ViewNotes", empName, "CollectorNotes", "N/A", ex);
-		//	}
-		//	finally
-		//	{
-		//		con.Close();
-		//	}
-		//}
 
-		public void SearchTextAcrossColumns(RadGridView uiTableName, string dbTableName, string searchValue, RadLabel searchCount, string empName)
+        public DataTable GetAllNotes(
+            string tableName,
+            string modeOption,
+            out string lblCount,
+            string empName,
+            string patientName,
+            string insuranceName,
+            string keyword,
+            string patienType,
+            string provider)
+        {
+            lblCount = string.Empty;
+            var data = new DataTable();
+
+            string safeTableName = $"[{tableName.Replace("]", "]]")}]";
+            var whereConditions = new List<string>();
+
+            // Keyword search on multiple text fields
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                whereConditions.Add(@"(
+            [NOTES] LIKE @Keyword OR 
+            [NOTE DESCRIPTION] LIKE @Keyword OR 
+            [REMARKS] LIKE @Keyword)");
+            }
+
+            if (!string.IsNullOrWhiteSpace(patientName))
+                whereConditions.Add("[Name] LIKE @PatientName");
+
+            if (!string.IsNullOrWhiteSpace(insuranceName) && !insuranceName.Equals("All", StringComparison.OrdinalIgnoreCase))
+                whereConditions.Add("[Insurance] LIKE @Insurance");
+
+            if (!string.IsNullOrWhiteSpace(patienType) && !patienType.Equals("All", StringComparison.OrdinalIgnoreCase))
+                whereConditions.Add("[Type] = @patientType");
+
+            if (!string.IsNullOrWhiteSpace(provider) && !provider.Equals("All", StringComparison.OrdinalIgnoreCase))
+                whereConditions.Add("[Provider] = @Provider");
+
+            string whereClause = whereConditions.Count > 0
+                ? "WHERE " + string.Join(" AND ", whereConditions)
+                : string.Empty;
+
+            string query = modeOption == "Aging"
+                ? $"SELECT * FROM {safeTableName} {whereClause}"
+                : $@"
+          SELECT [NOTES ID], [TIME STAMP], [Provider], [Chart], [Name], [Type], [DOB], 
+                 [INSURANCE], [NOTE DESCRIPTION], [NOTES], REMARKS 
+          FROM {safeTableName}
+          {whereClause}";
+
+            try
+            {
+                using var con = new SqlConnection(_agingDbConnection);
+                using var cmd = new SqlCommand(query, con);
+
+                if (!string.IsNullOrWhiteSpace(keyword))
+                    cmd.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
+
+                if (!string.IsNullOrWhiteSpace(patientName))
+                    cmd.Parameters.AddWithValue("@PatientName", $"%{patientName}%");
+
+                if (!string.IsNullOrWhiteSpace(insuranceName) && !insuranceName.Equals("All", StringComparison.OrdinalIgnoreCase))
+                    cmd.Parameters.AddWithValue("@Insurance", $"%{insuranceName}%");
+
+                if (!string.IsNullOrWhiteSpace(patienType) && !patienType.Equals("All", StringComparison.OrdinalIgnoreCase))
+                    cmd.Parameters.AddWithValue("@patientType", patienType);
+
+                if (!string.IsNullOrWhiteSpace(provider) && !provider.Equals("All", StringComparison.OrdinalIgnoreCase))
+                    cmd.Parameters.AddWithValue("@Provider", provider);
+
+                using var adp = new SqlDataAdapter(cmd);
+                adp.Fill(data);
+
+                lblCount = $"Total records: {data.Rows.Count:N0}";
+            }
+            catch (SqlException sqlEx)
+            {
+                notif.LogError("GetAllNotes_SQL", empName, "BillReview", "N/A", sqlEx);
+            }
+            catch (Exception ex)
+            {
+                notif.LogError("GetAllNotes_System", empName, "BillReview", "N/A", ex);
+            }
+
+            return data;
+        }
+
+
+
+
+        //	public (bool isSuccess, DataTable result, string errorMessage) GetNotesForTable(
+        //		string empName,
+        //		string tableName,
+        //		string keyword,
+        //		string mode,
+        //		string dateMode,
+        //		string exNotes)
+        //	{
+        //		var data = new DataTable();
+        //		string errorMessage = string.Empty;
+        //
+        //		string safeTableName = $"[dbo].[{tableName.Replace("]", "]]")}]";
+        //		string query;
+        //
+        //		if (mode == "Aging")
+        //		{
+        //			var whereConditions = new List<string>
+        //			{
+        //				"[Name] LIKE @keyword"
+        //			};
+        //
+        //			if (!string.IsNullOrWhiteSpace(keyword))
+        //			{
+        //				whereConditions.Add("([Chart] LIKE @Keyword OR [NOTE DESCRIPTION] LIKE @Keyword OR [NOTES] LIKE @Keyword)");
+        //			}
+        //
+        //			if (!string.IsNullOrEmpty(exNotes) && exNotes.Equals("excludeNotes", StringComparison.OrdinalIgnoreCase))
+        //			{
+        //				whereConditions.Add("[Time Stamp] IS NULL");
+        //			}
+        //
+        //			string whereClause = string.Join(" AND ", whereConditions);
+        //
+        //			query = $@"
+        //			SELECT [INT ID], [Chart], [Name], [DOB], [ID], [Code], [Type], [Amount], [Current], [31-60], [61-90], [91-120],
+        //			       [>120], [Total], [Insurance], [Last Visit], [Last Note], [Note Description], [Time Stamp], [Notes], [Remarks],
+        //			       [Collector Name], [Provider]
+        //			FROM {safeTableName}
+        //			WHERE {whereClause}";
+        //		}
+        //		else
+        //		{
+        //			string dateFilter = dateMode switch
+        //			{
+        //				"Month" => "YEAR([Date]) = YEAR(GETDATE()) AND MONTH([Date]) = MONTH(GETDATE())",
+        //				_ => "CAST([Date] AS DATE) = CAST(GETDATE() AS DATE)"
+        //			};
+        //
+        //			query = $@"
+        //		SELECT [NOTES ID], [TIME STAMP], [Provider], [Chart], [Name], [Type], [DOB], [INSURANCE], [NOTE DESCRIPTION], [NOTES], REMARKS 
+        //		FROM {safeTableName}
+        //		WHERE [Name] LIKE @Keyword
+        //		  AND [Date] IS NOT NULL
+        //		  AND {dateFilter}
+        //		  {(string.IsNullOrWhiteSpace(keyword) ? "" : "AND ([Chart] LIKE @Keyword OR [NOTE DESCRIPTION] LIKE @Keyword OR [NAME] LIKE @Keyword OR [NOTES] LIKE @Keyword)")}";
+        //		}
+        //
+        //		try
+        //		{
+        //			using var con = new SqlConnection(_agingDbConnection);
+        //			using var cmd = new SqlCommand(query, con);
+        //
+        //			//if (mode == "Aging")
+        //			//	cmd.Parameters.AddWithValue("@PatientName", $"%{empName}%");
+        //			//else
+        //			//	cmd.Parameters.AddWithValue("@CollectorName", $"%{empName}%");
+        //
+        //			if (!string.IsNullOrWhiteSpace(keyword))
+        //				cmd.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
+        //
+        //			using var adp = new SqlDataAdapter(cmd);
+        //			adp.Fill(data);
+        //
+        //			return (true, data, string.Empty);
+        //		}
+        //		catch (SqlException ex)
+        //		{
+        //			notif.LogError("ViewNotesToday - SQL Ex", empName, "CollectorNotes", "N/A", ex);
+        //			errorMessage = $@"Sorry, we couldn't find the selected provider.
+        //			Please make sure the aging file was uploaded properly.
+        //			If you’re still seeing this error, don't worry — the developer has already been notified.";
+        //		}
+        //		catch (Exception ex)
+        //		{
+        //			notif.LogError("ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
+        //			errorMessage = $@"Oh, sorry — this wasn't supposed to happen.
+        //			I've gathered the details about the error and have already informed the developer.";
+        //		}
+        //
+        //		return (false, data, errorMessage);
+        //	}
+
+
+        //public DataTable GetNotesForTable(string empName, string tableName, string keyword, string mode, string dateMode, out string errorMessage)
+        //{
+        //	//lblCount = string.Empty;
+        //	var data = new DataTable();
+        //
+        //	string safeTableName = $"[dbo].[{tableName.Replace("]", "]]")}]";
+        //	string query;
+        //
+        //	if (mode == "Aging")
+        //	{
+        //		query = $@"
+        //			SELECT [INT ID], [Chart], [Name], [DOB], [ID], [Code], [Type], [Amount], [Current], [31-60], [61-90], [91-120],
+        //			       [>120], [Total], [Insurance], [Last Visit], [Last Note], [Note Description], [Time Stamp], [Notes], [Remarks],
+        //			       [Collector Name], [Provider]
+        //			FROM {safeTableName}
+        //			WHERE [Name] LIKE @PatientName
+        //		    {(string.IsNullOrWhiteSpace(keyword) ? "" : "AND ([Chart] LIKE @Keyword OR [NOTE DESCRIPTION] LIKE @Keyword OR [NOTES] LIKE @Keyword)")}";
+        //	}
+        //	else // Trans mode with flexible date filter
+        //	{
+        //		string dateFilter = dateMode switch
+        //		{
+        //			"Month" => "YEAR([Date]) = YEAR(GETDATE()) AND MONTH([Date]) = MONTH(GETDATE())",
+        //			_ => "CAST([Date] AS DATE) = CAST(GETDATE() AS DATE)" // Default to Today
+        //		};
+        //
+        //		query = $@"
+        //			SELECT [NOTES ID], [TIME STAMP], [Provider], [Chart], [Type], [DOB], [INSURANCE], [NOTE DESCRIPTION], [NOTES], REMARKS 
+        //			FROM {safeTableName}
+        //			WHERE [Collector Name] LIKE @CollectorName
+        //			  AND [Date] IS NOT NULL
+        //			  AND {dateFilter}
+        //			  {(string.IsNullOrWhiteSpace(keyword) ? "" : "AND ([Chart] LIKE @Keyword OR [NOTE DESCRIPTION] LIKE @Keyword OR [NOTES] LIKE @Keyword)")}";
+        //	}
+        //
+        //	try
+        //	{
+        //		using var con = new SqlConnection(_agingDbConnection);
+        //		using var cmd = new SqlCommand(query, con);
+        //
+        //		if (mode == "Aging")
+        //		{
+        //			cmd.Parameters.AddWithValue("@PatientName", $"%{empName}%");
+        //		}
+        //		else
+        //		{
+        //			cmd.Parameters.AddWithValue("@CollectorName", $"%{empName}%");
+        //		}
+        //
+        //		if (!string.IsNullOrWhiteSpace(keyword))
+        //			cmd.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
+        //
+        //		using var adp = new SqlDataAdapter(cmd);
+        //		adp.Fill(data);
+        //
+        //		//lblCount = $"Total records: {data.Rows.Count}";
+        //	}
+        //	catch (SqlException ex)
+        //	{
+        //		notif.LogError("ViewNotesToday - SQL Ex", empName, "CollectorNotes", "N/A", ex);
+        //		errorMessage = $@"Sorry, we couldn't find the selected provider.
+        //			Please make sure the aging file was uploaded properly.
+        //			If you’re still seeing this error, don't worry — the developer has already been notified.";
+        //	}
+        //	catch (Exception ex)
+        //	{
+        //		notif.LogError("ViewNotesToday", empName, "CollectorNotes", "N/A", ex);
+        //		errorMessage = $@"Oh, sorry — this wasn't supposed to happen.
+        //		I've gathered the details about the error and have already informed the developer.";
+        //	}
+        //
+        //	return data; errorMessage;
+        //}
+
+
+
+
+        //public void ViewNotesMonth(string lblcount, string lblAverage, string empName)
+        //{
+        //	var noofNotesMonthQuery = $"SELECT COUNT(*) FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%' AND DATE LIKE '{DateTime.Now:yyyy-MM}%'";
+        //	var noofdaysQuery = $"SELECT COUNT(DISTINCT CAST(DATE AS DATE)) FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%' AND DATE LIKE '{DateTime.Now:yyyy-MM}%'";
+        //
+        //	var con = new SqlConnection(_dbConnection);
+        //	try
+        //	{
+        //		con.Open();
+        //
+        //		int noofNotesMonth = 0;
+        //		int noofdays = 0;
+        //
+        //		// Execute query to get total notes for the month
+        //		using (var cmd = new SqlCommand(noofNotesMonthQuery, con))
+        //		{
+        //			noofNotesMonth = (int)cmd.ExecuteScalar();
+        //			lblcount = $"Total Notes (This Month): {noofNotesMonth}";
+        //		}
+        //
+        //		// Execute query to get the count of distinct days with notes
+        //		using (var cmd = new SqlCommand(noofdaysQuery, con))
+        //		{
+        //			noofdays = (int)cmd.ExecuteScalar();
+        //		}
+        //
+        //		// Calculate average notes per day
+        //		double averageNotesPerDay = noofdays > 0 ? (double)noofNotesMonth / noofdays : 0;
+        //		lblAverage = $"Average Notes per Day: {averageNotesPerDay:F2}";
+        //	}
+        //	catch (Exception ex)
+        //	{
+        //		notif.LogError($"ViewNotesMonth", empName, "CollectorNotes", "N/A", ex);
+        //	}
+        //	finally
+        //	{
+        //		con.Close();
+        //	}
+        //}
+
+
+        //public DataTable ViewNotesToday(string empName, out string lblCount, string position)
+        //{
+        //	string query;
+        //	if (position == "Collector")
+        //	{
+        //		query = $"SELECT * FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%'";
+        //	}
+        //	else
+        //	{
+        //		query = $"SELECT * FROM [Collector Notes]";
+        //	}
+        //	var data = new DataTable();
+        //	lblCount = string.Empty;
+        //
+        //	try
+        //	{
+        //		using var con = new SqlConnection(_dbConnection);
+        //		using var adp = new SqlDataAdapter(query, con);
+        //
+        //		// Fill the DataTable with data from the query
+        //		adp.Fill(data);
+        //
+        //		// Calculate the record count
+        //		lblCount = $"Total records: {data.Rows.Count}";
+        //	}
+        //	catch (Exception ex)
+        //	{
+        //		notif.LogError("ViewAdjusterList", empName, "Adjuster", "N/A", ex);
+        //	}
+        //
+        //	return data;
+        //}
+        //
+        //public void ViewNotes(DataTable dataGrid, string empName, string position)
+        //{
+        //	string query;
+        //	if (position == "Collector")
+        //	{
+        //		query = $"SELECT * FROM [Collector Notes] WHERE [Collector Name] LIKE '%{empName}%'";
+        //	}
+        //	else
+        //	{
+        //		query = $"SELECT * FROM [Collector Notes]";
+        //	}
+        //
+        //	var con = new SqlConnection(_dbConnection);
+        //	try
+        //	{
+        //		using (var adp = new SqlDataAdapter(query, con))
+        //		{
+        //			var data = new DataTable();
+        //			adp.Fill(data);
+        //			adp.Update(data);
+        //			dataGrid.DataSource = data.DefaultView;
+        //			//lcount.Text = $"Total Notes (Today): {dataGrid.RowCount}";
+        //		}
+        //		dataGrid.BestFitColumns(BestFitColumnMode.DisplayedCells);
+        //	}
+        //	catch (Exception ex)
+        //	{
+        //		notif.LogError($"ViewNotes", empName, "CollectorNotes", "N/A", ex);
+        //	}
+        //	finally
+        //	{
+        //		con.Close();
+        //	}
+        //}
+
+        public void SearchTextAcrossColumns(RadGridView uiTableName, string dbTableName, string searchValue, RadLabel searchCount, string empName)
 		{
 			List<string> columnsToSearch = ["[PROVIDER NAME]", "[CHART NO]", "[PATIENT NAME]", "NOTES", "REMARKS"];
 
@@ -354,74 +1255,74 @@ namespace PCMS_Lipa_General_Tool.Class
 		}
 
 
-		public void FilterCollectorNotes(RadGridView uiTableName, string dbTableName, RadLabel searchCount, string providerName, string dateFilterStart, string dateFilterEnd, string patientName, string empName)
-		{
-			if (string.IsNullOrEmpty(dbTableName))
-				throw new ArgumentException("Table name cannot be null or empty.");
-
-			// Ensure columns and search values are aligned
-			var filters = new Dictionary<string, string>
-			{
-				{
-					"[PROVIDER NAME]", providerName
-				},
-				{
-					"[PATIENT NAME]", patientName
-				}
-			};
-
-			// Remove empty filter criteria
-			filters = filters.Where(f => !string.IsNullOrEmpty(f.Value)).ToDictionary(f => f.Key, f => f.Value);
-
-			// Build query dynamically
-			var whereClauses = new List<string>();
-			int paramIndex = 0;
-
-			foreach (var filter in filters)
-			{
-				whereClauses.Add($"{filter.Key} LIKE @param{paramIndex}");
-				paramIndex++;
-			}
-
-			if (!string.IsNullOrEmpty(dateFilterStart) && !string.IsNullOrEmpty(dateFilterEnd))
-			{
-				whereClauses.Add("[DATE] BETWEEN @dateStart AND @dateEnd");
-			}
-
-			string whereClause = whereClauses.Any() ? $"WHERE {string.Join(" AND ", whereClauses)}" : string.Empty;
-			string query = $"SELECT * FROM {dbTableName} {whereClause}";
-
-			try
-			{
-				using var conn = new SqlConnection(_dbConnection);
-				using var cmd = new SqlCommand(query, conn);
-				conn.Open();
-
-				// Add parameters
-				paramIndex = 0;
-				foreach (var filter in filters)
-				{
-					cmd.Parameters.Add($"@param{paramIndex}", SqlDbType.NVarChar).Value = $"%{filter.Value}%";
-					paramIndex++;
-				}
-
-				if (!string.IsNullOrEmpty(dateFilterStart) && !string.IsNullOrEmpty(dateFilterEnd))
-				{
-					cmd.Parameters.Add("@dateStart", SqlDbType.Date).Value = dateFilterStart;
-					cmd.Parameters.Add("@dateEnd", SqlDbType.Date).Value = dateFilterEnd;
-				}
-
-				using var adapter = new SqlDataAdapter(cmd);
-				using var dt = new DataTable(dbTableName);
-				adapter.Fill(dt);
-				uiTableName.DataSource = dt;
-				searchCount.Text = $"Total records: {dt.Rows.Count}";
-			}
-			catch (Exception ex)
-			{
-				notif.LogError($"filterCollectorNotes", empName, "CollectorNotes", "N/A", ex);
-			}
-		}
+		//public void FilterCollectorNotes(RadGridView uiTableName, string dbTableName, RadLabel searchCount, string providerName, string dateFilterStart, string dateFilterEnd, string patientName, string empName)
+		//{
+		//	if (string.IsNullOrEmpty(dbTableName))
+		//		throw new ArgumentException("Table name cannot be null or empty.");
+        //
+		//	// Ensure columns and search values are aligned
+		//	var filters = new Dictionary<string, string>
+		//	{
+		//		{
+		//			"[PROVIDER NAME]", providerName
+		//		},
+		//		{
+		//			"[PATIENT NAME]", patientName
+		//		}
+		//	};
+        //
+		//	// Remove empty filter criteria
+		//	filters = filters.Where(f => !string.IsNullOrEmpty(f.Value)).ToDictionary(f => f.Key, f => f.Value);
+        //
+		//	// Build query dynamically
+		//	var whereClauses = new List<string>();
+		//	int paramIndex = 0;
+        //
+		//	foreach (var filter in filters)
+		//	{
+		//		whereClauses.Add($"{filter.Key} LIKE @param{paramIndex}");
+		//		paramIndex++;
+		//	}
+        //
+		//	if (!string.IsNullOrEmpty(dateFilterStart) && !string.IsNullOrEmpty(dateFilterEnd))
+		//	{
+		//		whereClauses.Add("[DATE] BETWEEN @dateStart AND @dateEnd");
+		//	}
+        //
+		//	string whereClause = whereClauses.Any() ? $"WHERE {string.Join(" AND ", whereClauses)}" : string.Empty;
+		//	string query = $"SELECT * FROM {dbTableName} {whereClause}";
+        //
+		//	try
+		//	{
+		//		using var conn = new SqlConnection(_dbConnection);
+		//		using var cmd = new SqlCommand(query, conn);
+		//		conn.Open();
+        //
+		//		// Add parameters
+		//		paramIndex = 0;
+		//		foreach (var filter in filters)
+		//		{
+		//			cmd.Parameters.Add($"@param{paramIndex}", SqlDbType.NVarChar).Value = $"%{filter.Value}%";
+		//			paramIndex++;
+		//		}
+        //
+		//		if (!string.IsNullOrEmpty(dateFilterStart) && !string.IsNullOrEmpty(dateFilterEnd))
+		//		{
+		//			cmd.Parameters.Add("@dateStart", SqlDbType.Date).Value = dateFilterStart;
+		//			cmd.Parameters.Add("@dateEnd", SqlDbType.Date).Value = dateFilterEnd;
+		//		}
+        //
+		//		using var adapter = new SqlDataAdapter(cmd);
+		//		using var dt = new DataTable(dbTableName);
+		//		adapter.Fill(dt);
+		//		uiTableName.DataSource = dt;
+		//		searchCount.Text = $"Total records: {dt.Rows.Count}";
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		notif.LogError($"filterCollectorNotes", empName, "CollectorNotes", "N/A", ex);
+		//	}
+		//}
 
 
 		//public void filterCollectorNotes(RadGridView uiTableName, string dbTableName, RadLabel searchCount, string providerName, string dateFilterStart, string dateFilterEnd, string patientName)

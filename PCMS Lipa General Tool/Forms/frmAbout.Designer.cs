@@ -94,10 +94,6 @@
 			this.radLabelProductName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
 			this.radLabelProductName.MaximumSize = new System.Drawing.Size(0, 17);
 			this.radLabelProductName.Name = "radLabelProductName";
-			// 
-			// 
-			// 
-			this.radLabelProductName.RootElement.MaxSize = new System.Drawing.Size(0, 17);
 			this.radLabelProductName.Size = new System.Drawing.Size(93, 17);
 			this.radLabelProductName.TabIndex = 19;
 			this.radLabelProductName.Text = "Product Name";
@@ -111,10 +107,6 @@
 			this.radLabelVersion.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
 			this.radLabelVersion.MaximumSize = new System.Drawing.Size(0, 17);
 			this.radLabelVersion.Name = "radLabelVersion";
-			// 
-			// 
-			// 
-			this.radLabelVersion.RootElement.MaxSize = new System.Drawing.Size(0, 17);
 			this.radLabelVersion.Size = new System.Drawing.Size(52, 17);
 			this.radLabelVersion.TabIndex = 0;
 			this.radLabelVersion.Text = "Version";
@@ -128,10 +120,6 @@
 			this.radLabelCopyright.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
 			this.radLabelCopyright.MaximumSize = new System.Drawing.Size(0, 17);
 			this.radLabelCopyright.Name = "radLabelCopyright";
-			// 
-			// 
-			// 
-			this.radLabelCopyright.RootElement.MaxSize = new System.Drawing.Size(0, 17);
 			this.radLabelCopyright.Size = new System.Drawing.Size(64, 17);
 			this.radLabelCopyright.TabIndex = 21;
 			this.radLabelCopyright.Text = "Copyright";
@@ -145,10 +133,6 @@
 			this.radLabelCompanyName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
 			this.radLabelCompanyName.MaximumSize = new System.Drawing.Size(0, 17);
 			this.radLabelCompanyName.Name = "radLabelCompanyName";
-			// 
-			// 
-			// 
-			this.radLabelCompanyName.RootElement.MaxSize = new System.Drawing.Size(0, 17);
 			this.radLabelCompanyName.Size = new System.Drawing.Size(102, 17);
 			this.radLabelCompanyName.TabIndex = 22;
 			this.radLabelCompanyName.Text = "Company Name";
