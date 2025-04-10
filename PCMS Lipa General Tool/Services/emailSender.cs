@@ -41,7 +41,7 @@ namespace PCMS_Lipa_General_Tool.Services
 						mailMessage.Subject = subject;
 						mailMessage.Body = body;
 						mailMessage.IsBodyHtml = true;
-						mailMessage.Bcc.Add("mr.erwinalcantara@gmail.com");
+						mailMessage.Bcc.Add("yourmeeappnoreply@gmail.com");
 						if (!string.IsNullOrWhiteSpace(CC))
 							mailMessage.CC.Add(CC);
 						if (!string.IsNullOrWhiteSpace(attachmentPath) && File.Exists(attachmentPath))

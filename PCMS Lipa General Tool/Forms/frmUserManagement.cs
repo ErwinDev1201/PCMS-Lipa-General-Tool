@@ -116,7 +116,7 @@ namespace PCMS_Lipa_General_Tool.Forms
 				modUser.DefaultItem("Update");
 
 				// Set button visibility based on access level
-				modUser.btnDelete.Visible = accessLevel == "Administrator";
+				modUser.btnDelete.Visible = accessLevel == "Programmer";
 
 				// Show the form
 				modUser.ShowDialog();

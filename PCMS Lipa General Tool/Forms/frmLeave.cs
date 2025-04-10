@@ -16,6 +16,8 @@ namespace PCMS_Lipa_General_Tool.Forms
 		public string accessLevel;
 		public string EmpName;
 		public string empID;
+		public string position;
+		public string empStat;
 
 		public frmLeave()
 		{
@@ -85,17 +87,18 @@ namespace PCMS_Lipa_General_Tool.Forms
 			modleave.txtEmpID.Text = empID;
 			leave.GetDBListID(out string ID, EmpName);
 			modleave.lblLeaveID.Text = ID;
-			//modleave.GetDBListID();
-			string position = modleave.txtPosition.Text;
-			string empStat = modleave.txtEmploymentStatus.Text;
-			//string empName = EmpName;
-
-			leave.FillUpSupportLeaveForm(empID, ref position, ref empStat, EmpName);
-
-			modleave.txtEmployeeName.Text = EmpName;
 			modleave.txtPosition.Text = position;
 			modleave.txtEmploymentStatus.Text = empStat;
+			modleave.txtEmployeeName.Text = EmpName;
 			modleave.dtpStartdate.Focus();
+			//modleave.GetDBListID();
+			//string position = modleave.txtPosition.Text;
+			//string empStat = modleave.txtEmploymentStatus.Text;
+			////string empName = EmpName;
+			//
+			//leave.FillUpSupportLeaveForm(empID, ref position, ref empStat, EmpName);
+
+
 			///leave.FillUpSupportLe
 			/////var modleave = new frmModLeave()
 			/////{

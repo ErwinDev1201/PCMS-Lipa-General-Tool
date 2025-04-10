@@ -9,6 +9,11 @@ namespace PCMS_Lipa_General_Tool.Services
 	{
 		private readonly string _dbConnection;
 		private static readonly Notification notif = new();
+		private static readonly Lazy<string> _machineName = new(() => Environment.MachineName);
+		private static readonly Lazy<string> _homeServerPath = new(() => ConfigurationManager.AppSettings["homeserverpath"]);
+		private static readonly Lazy<string> _officeServerPath = new(() => ConfigurationManager.AppSettings["serverpath"]);
+		private static readonly Lazy<string> _agingDbHome = new(() => ConfigurationManager.AppSettings["agingdbhome"]);
+		private static readonly Lazy<string> _agingDbOffice = new(() => ConfigurationManager.AppSettings["agingdboffice"]);
 
 		readonly SqlConnection cn;
 
@@ -40,13 +45,36 @@ namespace PCMS_Lipa_General_Tool.Services
 			}
 		}
 
+		//public string GetDbConnection(bool forAging = false)
+		//{
+		//	try
+		//	{
+		//		bool isHome = _machineName.Value.Equals("ERWIN-PC", StringComparison.OrdinalIgnoreCase);
+		//		return forAging
+		//			? (isHome ? _agingDbHome.Value : _agingDbOffice.Value)
+		//			: (isHome ? _homeServerPath.Value : _officeServerPath.Value);
+		//	}
+		//	catch (ConfigurationErrorsException ex)
+		//	{
+		//		// Log error if necessary
+		//		throw new ApplicationException("Error retrieving database configuration.", ex);
+		//	}
+		//}
 		public string GetDbConnection()
 		{
 			string machineName = Environment.MachineName;
-
+		
 			return machineName == "ERWIN-PC"
 				? ConfigurationManager.AppSettings["homeserverpath"]
 				: ConfigurationManager.AppSettings["serverpath"];
+		}
+
+		public string GetAgingDbConnection()
+		{
+			string machineName = Environment.MachineName;
+			return machineName == "ERWIN-PC"
+				? ConfigurationManager.AppSettings["agingdbhome"]
+				: ConfigurationManager.AppSettings["agingdboffice"];
 		}
 
 		// Dispose the SqlConnection when done

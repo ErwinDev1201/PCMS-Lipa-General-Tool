@@ -700,7 +700,7 @@ namespace PCMS_Lipa_General_Tool.Class
                     <br/>
                     <p>Best regards,</p>
                     <p>{empName}</p>
-					<p>{apposition}</p>
+					<p>Management</p>
                 </body>
             </html>";
 				}
@@ -716,7 +716,7 @@ namespace PCMS_Lipa_General_Tool.Class
                     <br/>
                     <p>Best regards,</p>
                     <p>{empName}</p>
-					<p>{apposition}</p>
+					<p>Management</p>
                 </body>
             </html>";
 				}
@@ -734,7 +734,7 @@ namespace PCMS_Lipa_General_Tool.Class
                     <br/>
                     <p>Best regards,</p>
                     <p>{empName}</p>
-					<p>{apposition}</p>
+					
                 </body>
             </html>";
 				}
@@ -759,6 +759,7 @@ namespace PCMS_Lipa_General_Tool.Class
                 <p>To Whom It May Concern,</p>
                 <p>I would like to formally request sick leave from {startDate} to {endDate} due to {reason}. I will make every effort to recover fully during this time and look forward to resuming my duties as soon as I am able.</p>
                 <p>Regards,<br/>{employeeName}</p>
+				<p>{apposition}</p>
             </body>
         </html>",
 
@@ -768,6 +769,7 @@ namespace PCMS_Lipa_General_Tool.Class
                 <p>To Whom It May Concern,</p>
                 <p>I am respectfully requesting bereavement leave from {startDate} to {endDate} due to a recent loss in my family. I appreciate your understanding during this difficult time and will ensure to return to work once I am able.</p>
                 <p>Regards,<br/>{employeeName}</p>
+				<p>{apposition}</p>	
             </body>
         </html>",
 
@@ -778,6 +780,7 @@ namespace PCMS_Lipa_General_Tool.Class
                 <p>Kindly consider my request for <strong>{typeofLeave.ToLower()} Leave</strong> from  <strong>{startDate}</strong> to  <strong>{endDate}</strong>, with <strong>{paymentOption}</strong> as the preferred payment option.<br/> I am requesting this leave in order to <strong>{reason}</strong>.</p>
                 <p>Thank you for your understanding and consideration</p>
 				<p>Regards,<br/>{employeeName}</p>
+				<p>{apposition}</p>	
             </body>
         </html>"
 			};
@@ -822,14 +825,29 @@ namespace PCMS_Lipa_General_Tool.Class
 					}
 					//user.GetUsersEmail(employeeName, empName);
 					mailSubject = "Filed Leave from " + employeeName;
+					string autoresponseHtml = $@"
+					<html>
+					    <body>
+					        <p>This is an automated response to your leave request. Your request is under review. Thank you.</p>
+					    </body>
+					</html>";
 					if (position == "Supervisor")
 					{
 						mail.SendEmail(emailAddress, mailSubject, mailContent, null, "PCMS Lipa General Tool - Leave Notification", null);
+						{
+							string emailNotiftoSend = user.GetUsersEmail(employeeName, empName);
+							mail.SendEmail(emailNotiftoSend, "Leave Verified", autoresponseHtml, null, "PCMS Lipa General Tool - Leave Notification", null);
+						}
+						
 						//mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", null, null);
 					}
 					else
 					{
 						mail.SendEmail(emailAddress, mailSubject, mailContent, ccEmail1, "PCMS Lipa General Tool - Leave Notification", null);
+						{
+							string emailNotiftoSend = user.GetUsersEmail(employeeName, empName);
+							mail.SendEmail(emailNotiftoSend, "Leave Verified", autoresponseHtml, null, "PCMS Lipa General Tool - Leave Notification", null);
+						}
 						//mail.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", ccEmail1, null);
 						//emailSender.SendEmail("noAttach", mailContent, null, mailSubject, emailAddress, "Filed Leave Notification (via PCMS Lipa General Tool)", );
 					}
@@ -846,7 +864,7 @@ namespace PCMS_Lipa_General_Tool.Class
 			}
 			catch (Exception ex)
 			{
-				notif.LogError("GetUsersEmail", empName, "CommonTask", "N/A", ex);
+				notif.LogError("NotifyEmail", empName, "Leave", "N/A", ex);
 			}
 		}
 		//private string GenerateEmailContent(string employeeName, string startDate, string endDate, string paymentOption, string typeofLeave, string reason)
