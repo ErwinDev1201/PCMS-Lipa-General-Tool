@@ -52,8 +52,8 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		public string tableName;
 
         public string ErrorMessage { get; private set; }
-        //public string ThemeName;
-        public string Position;
+		//public string ThemeName;
+		public string Position;
 		//public string _dbConnection;
 
 		//private string _empName;
@@ -1020,8 +1020,8 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		}
 
-        private void LoadNotesCountsAndAverage()
-        {
+		private void LoadNotesCountsAndAverage()
+		{
             tableName = Position == "Collector" ? EmpName : tableName;
 
             if (string.IsNullOrWhiteSpace(tableName))
@@ -1061,28 +1061,28 @@ namespace PCMS_Lipa_General_Tool__WinForm_
                 return;
             }
 
-            lblCountNotes.Text = $"Today's Notes: {todayNotes:N0}";
-            lblMonthly.Text = $"Month's Notes: {monthNotes:N0}";
-            lblAverage.Text = $"Average per Day: {avgNotesPerDay:N2}";
-        }
+			lblCountNotes.Text = $"Today's Notes: {todayNotes:N0}";
+			lblMonthly.Text = $"Month's Notes: {monthNotes:N0}";
+			lblAverage.Text = $"Average per Day: {avgNotesPerDay:N2}";
+		}
 
 
 
 
-        //private void UpdateNotesCounter()
-        //{
-        //	string mode = rdoToday.IsChecked ? "Today" : rdothisMonth.IsChecked ? "Month" : string.Empty;
-        //	if (string.IsNullOrEmpty(mode)) return;
-        //
-        //	string tableName = $"{cmbProviderList.Text.Trim()}_{DateTime.Now:yyyy_MM}";
-        //
-        //	int notesCount = notes.GetNotesCount(tableName, mode);
-        //
-        //	lblNotesCounter.Text = $"Total Notes: {notesCount:N0}";
-        //}
+		//private void UpdateNotesCounter()
+		//{
+		//	string mode = rdoToday.IsChecked ? "Today" : rdothisMonth.IsChecked ? "Month" : string.Empty;
+		//	if (string.IsNullOrEmpty(mode)) return;
+		//
+		//	string tableName = $"{cmbProviderList.Text.Trim()}_{DateTime.Now:yyyy_MM}";
+		//
+		//	int notesCount = notes.GetNotesCount(tableName, mode);
+		//
+		//	lblNotesCounter.Text = $"Total Notes: {notesCount:N0}";
+		//}
 
 
-        private void btnAddTransaction_Click(object sender, EventArgs e)
+		private void btnAddTransaction_Click(object sender, EventArgs e)
 		{
 			var notesTran = new frmModifyNotes(EmpName, Position) // Pass EmpName here
 			{
@@ -1096,79 +1096,79 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 			notesTran.ShowDialog();
 			if (Position == "Collector")
 			{
-                LoadNotes();
-                LoadNotesCountsAndAverage();
+			LoadNotes();
+			LoadNotesCountsAndAverage();
             }
 			
 			//ViewNotesToday();
 			//viewNotesTab();
 		}
 
-        //private void ViewNotesToday()
-        //{
-        //	string mode = rdoAgingMode.IsChecked ? "Aging" :
-        //				  rdoTransmode.IsChecked ? "Trans" : string.Empty;
-        //
-        //	if (string.IsNullOrWhiteSpace(mode))
-        //	{
-        //		RadMessageBox.Show("Please select a mode: Aging or Trans.", "Missing Mode", MessageBoxButtons.OK, RadMessageIcon.Info);
-        //		return;
-        //	}
-        //
-        //	if (mode == "Aging")
-        //	{
-        //		rdoToday.Enabled = false;
-        //	}
-        //	else
-        //	{
-        //		rdoToday.Enabled = true;
-        //	}
-        //
-        //	//string fullTableName = $"{cmbProviderList.Text.Trim()}_{DateTime.Now:yyyy_MM}";
-        //	string fullTableName = $"{cmbProviderList.Text.Trim()}";
-        //	string keyword = txtSearch.Text.Trim();
-        //
-        //	// Fetch data from BE
-        //	var dataTable = notes.NotesToday(EmpName, out string lblCount, fullTableName, keyword, mode);
-        //
-        //	// Clear and reload data source
-        //	dgCurrentNotes.DataSource = null;
-        //	dgCurrentNotes.DataSource = dataTable;
-        //	dgCurrentNotes.BestFitColumns(BestFitColumnMode.DisplayedCells);
-        //
-        //	lblCounterdgCurrent.Text = lblCount;
-        //}
+		//private void ViewNotesToday()
+		//{
+		//	string mode = rdoAgingMode.IsChecked ? "Aging" :
+		//				  rdoTransmode.IsChecked ? "Trans" : string.Empty;
+		//
+		//	if (string.IsNullOrWhiteSpace(mode))
+		//	{
+		//		RadMessageBox.Show("Please select a mode: Aging or Trans.", "Missing Mode", MessageBoxButtons.OK, RadMessageIcon.Info);
+		//		return;
+		//	}
+		//
+		//	if (mode == "Aging")
+		//	{
+		//		rdoToday.Enabled = false;
+		//	}
+		//	else
+		//	{
+		//		rdoToday.Enabled = true;
+		//	}
+		//
+		//	//string fullTableName = $"{cmbProviderList.Text.Trim()}_{DateTime.Now:yyyy_MM}";
+		//	string fullTableName = $"{cmbProviderList.Text.Trim()}";
+		//	string keyword = txtSearch.Text.Trim();
+		//
+		//	// Fetch data from BE
+		//	var dataTable = notes.NotesToday(EmpName, out string lblCount, fullTableName, keyword, mode);
+		//
+		//	// Clear and reload data source
+		//	dgCurrentNotes.DataSource = null;
+		//	dgCurrentNotes.DataSource = dataTable;
+		//	dgCurrentNotes.BestFitColumns(BestFitColumnMode.DisplayedCells);
+		//
+		//	lblCounterdgCurrent.Text = lblCount;
+		//}
 
-        private void LoadNotes()
-        {
+		private void LoadNotes()
+		{
             tableName = Position == "Collector" ? EmpName : tableName;
 
-            string providerName = string.IsNullOrWhiteSpace(cmbProviderList.Text) ? "All" : cmbProviderList.Text.Trim();
+			string providerName = string.IsNullOrWhiteSpace(cmbProviderList.Text) ? "All" : cmbProviderList.Text.Trim();
             string keyword = txtSearchTable.Text.Trim();
-            string modeOption = rdoTransmode.IsChecked ? "Trans" : "Aging";
-            string exclNotes = chkExclude.Checked ? "excludeNotes" : string.Empty;
-            string dateMode = rdoToday.IsChecked ? "Today" :
-                              rdothisMonth.IsChecked ? "Month" : "Today";
+			string modeOption = rdoTransmode.IsChecked ? "Trans" : "Aging";
+			string exclNotes = chkExclude.Checked ? "excludeNotes" : string.Empty;
+			string dateMode = rdoToday.IsChecked ? "Today" :
+							  rdothisMonth.IsChecked ? "Month" : "Today";
 
             (bool isSuccess, DataTable result, string errorMessage) = notes.FetchNotesData(
-                tableName: tableName,
-                keyword: keyword,
+				tableName: tableName,
+				keyword: keyword,
                 modeOption: modeOption,
-                dateMode: dateMode,
-                exNotes: exclNotes,
-                startDate: null,
-                endDate: null,
-                pageTab: null,
-                insurance: null,
-                patientType: null,
-                provider: providerName
+				dateMode: dateMode,
+				exNotes: exclNotes,
+				startDate: null,
+				endDate: null,
+				pageTab: null,
+				insurance: null,
+				patientType: null,
+				provider: providerName
             );
 
-            if (!isSuccess)
-            {
+			if (!isSuccess)
+			{
               
-                dgCurrentNotes.DataSource = null;
-                lblCounterdgCurrent.Text = "No notes available.";
+				dgCurrentNotes.DataSource = null;
+				lblCounterdgCurrent.Text = "No notes available.";
 
                 if (Position != "Collector")
                 {
@@ -1180,53 +1180,53 @@ namespace PCMS_Lipa_General_Tool__WinForm_
                     RadMessageBox.Show(errorMessage, "Notes Loader", MessageBoxButtons.OK, RadMessageIcon.Info);
                 }
 				return;
-            }
+			}
 
             // Bind and format
             dgCurrentNotes.BeginUpdate();
-            dgCurrentNotes.Columns.Clear();
-            dgCurrentNotes.DataSource = result;
-            dgCurrentNotes.BestFitColumns(BestFitColumnMode.DisplayedCells);
+			dgCurrentNotes.Columns.Clear();
+			dgCurrentNotes.DataSource = result;
+			dgCurrentNotes.BestFitColumns(BestFitColumnMode.DisplayedCells);
 
             if (dgCurrentNotes.Columns.Contains("DOB"))
             {
-                dgCurrentNotes.Columns["DOB"].FormatString = "{0:MM/dd/yyyy}";
-                dgCurrentNotes.Columns["DOB"].FormatInfo = CultureInfo.InvariantCulture;
+			dgCurrentNotes.Columns["DOB"].FormatString = "{0:MM/dd/yyyy}";
+			dgCurrentNotes.Columns["DOB"].FormatInfo = CultureInfo.InvariantCulture;
             }
 
             if (modeOption == "Aging" && dgCurrentNotes.Columns.Contains("Last Visit"))
-            {
-                dgCurrentNotes.Columns["Last Visit"].FormatString = "{0:MM/dd/yyyy}";
-                dgCurrentNotes.Columns["Last Visit"].FormatInfo = CultureInfo.InvariantCulture;
-            }
+			{
+				dgCurrentNotes.Columns["Last Visit"].FormatString = "{0:MM/dd/yyyy}";
+				dgCurrentNotes.Columns["Last Visit"].FormatInfo = CultureInfo.InvariantCulture;
+			}
 
             dgCurrentNotes.EndUpdate();
 
-            lblCounterdgCurrent.Text = result.Rows.Count > 0
-                ? $"Total records: {result.Rows.Count:N0}"
-                : "No notes available.";
-        }
+			lblCounterdgCurrent.Text = result.Rows.Count > 0
+				? $"Total records: {result.Rows.Count:N0}"
+				: "No notes available.";
+		}
 
 
 
 
 
-        //private void ViewNotesToday()
-        //{
-        //	string mode = rdoAgingMode.IsChecked ? "Aging" : rdoTransmode.IsChecked ? "Trans" : string.Empty;
-        //	string fullTableName = $"{cmbProviderList.Text.Trim()}_{DateTime.Now:yyyy_MM}";
-        //
-        //	string keyword = txtSearch.Text.Trim();
-        //	var dataTable = notes.NotesToday(EmpName, out string lblCount, fullTableName, keyword, mode);
-        //
-        //	dgCurrentNotes.DataSource = dataTable;
-        //	dgCurrentNotes.BestFitColumns(BestFitColumnMode.DisplayedCells);
-        //	lblCounterdgCurrent.Text = lblCount;
-        //}
-        //
+		//private void ViewNotesToday()
+		//{
+		//	string mode = rdoAgingMode.IsChecked ? "Aging" : rdoTransmode.IsChecked ? "Trans" : string.Empty;
+		//	string fullTableName = $"{cmbProviderList.Text.Trim()}_{DateTime.Now:yyyy_MM}";
+		//
+		//	string keyword = txtSearch.Text.Trim();
+		//	var dataTable = notes.NotesToday(EmpName, out string lblCount, fullTableName, keyword, mode);
+		//
+		//	dgCurrentNotes.DataSource = dataTable;
+		//	dgCurrentNotes.BestFitColumns(BestFitColumnMode.DisplayedCells);
+		//	lblCounterdgCurrent.Text = lblCount;
+		//}
+		//
 
 
-        private void mnuAssignProvider_Click(object sender, EventArgs e)
+		private void mnuAssignProvider_Click(object sender, EventArgs e)
 		{
 			var assignProvider = new frmAssignProvider()
 			{
@@ -1571,49 +1571,49 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 
 		}
 
-        private void frmMainApp_FormClosing(object sender, FormClosingEventArgs e)
-        {
+		private void frmMainApp_FormClosing(object sender, FormClosingEventArgs e)
+		{
             // Allow normal close for non-Collectors
             if (!string.Equals(Position, "Collector", StringComparison.OrdinalIgnoreCase))
                 return;
 
-            // Check if the user attempted to close using the X button
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                if (!isMessageShown) // Check if the message has already been displayed
-                {
-                    e.Cancel = true; // Cancel the close operation
+			// Check if the user attempted to close using the X button
+			if (e.CloseReason == CloseReason.UserClosing)
+			{
+				if (!isMessageShown) // Check if the message has already been displayed
+				{
+					e.Cancel = true; // Cancel the close operation
 
-                    RadMessageBox.Show(
-                        this,
-                        "Please use File -> Exit or File -> Logout to close the application.",
-                        "Action Required",
-                        MessageBoxButtons.OK,
-                        RadMessageIcon.Info
-                    );
+					RadMessageBox.Show(
+						this,
+						"Please use File -> Exit or File -> Logout to close the application.",
+						"Action Required",
+						MessageBoxButtons.OK,
+						RadMessageIcon.Info
+					);
 
-                    isMessageShown = true; // Mark that the message has been shown
-                }
-                else
-                {
-                    // Reset the flag after some time (optional)
-                    Timer resetTimer = new()
-                    {
-                        Interval = 1000 // 1 second delay before resetting
-                    };
-                    resetTimer.Tick += (s, args) =>
-                    {
-                        isMessageShown = false;
-                        resetTimer.Stop();
-                    };
-                    resetTimer.Start();
-                }
-            }
-        }
+					isMessageShown = true; // Mark that the message has been shown
+				}
+				else
+				{
+					// Reset the flag after some time (optional)
+					Timer resetTimer = new()
+					{
+						Interval = 1000 // 1 second delay before resetting
+					};
+					resetTimer.Tick += (s, args) =>
+					{
+						isMessageShown = false;
+						resetTimer.Stop();
+					};
+					resetTimer.Start();
+				}
+			}
+		}
 
 
 
-        private void cmbProviderList_PopupOpened(object sender, EventArgs e)
+		private void cmbProviderList_PopupOpened(object sender, EventArgs e)
 		{
 			List<string> items = provider.GetProviderListperCollector(EmpName);
 
@@ -1764,10 +1764,10 @@ namespace PCMS_Lipa_General_Tool__WinForm_
     //    }
 
 
-        #endregion Collector Notes
+		#endregion Collector Notes
 
 
-        private void StartUpAllNotes()
+		private void StartUpAllNotes()
 		{
 			
 			//StartUpCondition();
@@ -1783,7 +1783,9 @@ namespace PCMS_Lipa_General_Tool__WinForm_
         private void StartUpCondition()
         {
             bool isEnabled = !string.IsNullOrEmpty(cmbAllProvider.Text);
+
             dgallNotesView.TableElement.Text = isEnabled ? string.Empty : "Please select Provider";
+
             SetControlsEnabled(isEnabled);
             LoadAllNotesPerProvider();
         }
@@ -1834,31 +1836,33 @@ namespace PCMS_Lipa_General_Tool__WinForm_
 		{
             //if (cmbAllProvider.Text == "-- Select Provider --" || string.IsNullOrEmpty(cmbAllProvider.Text))
             //    return;
-            //
+			//
             //string tableName = EmpName;
             string keyword = txtSearch.Text.Trim();
             string modeOption = tglMode.Value ? "Trans" : "Aging";
-            //string exclNotes = chkExclude.Checked ? "excludeNotes" : string.Empty;
-            //string dateMode = rdoToday.IsChecked ? "Today" :
-            //                  rdothisMonth.IsChecked ? "Month" : "Today";
+			//string exclNotes = chkExclude.Checked ? "excludeNotes" : string.Empty;
+			//string dateMode = rdoToday.IsChecked ? "Today" :
+			//                  rdothisMonth.IsChecked ? "Month" : "Today";
 
-            // Call the routing method with explicit types
+			// Call the routing method with explicit types
             (bool isSuccess, DataTable result, string errorMessage) = notes.FetchNotesData(
-			    tableName: tableName,
-			    keyword: keyword,
+				tableName: tableName,
+				keyword: keyword,
 			    modeOption: modeOption,
-			    dateMode: null,
-			    exNotes: null,
-			    startDate: grpDateFilter.Enabled ? dtpStartDate.Value : (DateTime?)null,
-			    endDate: grpDateFilter.Enabled ? dtpEndate.Value : (DateTime?)null,
-			    pageTab: "AllNotes",
-			    insurance: txtInsurance.Text.Trim(),
-			    patientType: cmbPatientType.Text.Trim(),
-			    provider: cmbAllProvider.Text.Trim()
+				dateMode: null,
+				exNotes: null,
+				startDate: grpDateFilter.Enabled ? dtpStartDate.Value : (DateTime?)null,
+				endDate: grpDateFilter.Enabled ? dtpEndate.Value : (DateTime?)null,
+				pageTab: "AllNotes",
+				insurance: txtInsurance.Text.Trim(),
+				patientType: cmbPatientType.Text.Trim(),
+				provider: cmbAllProvider.Text.Trim()
 			);
+
 
             if (!isSuccess)
             {
+                RadMessageBox.Show(errorMessage, "Notes Loader", MessageBoxButtons.OK, RadMessageIcon.Info);
                 dgCurrentNotes.DataSource = null;
                 lblCounterdgCurrent.Text = "No notes available.";
 
@@ -1896,14 +1900,15 @@ namespace PCMS_Lipa_General_Tool__WinForm_
             // Determine the tableName based on Position
             tableName = Position == "Collector" ? EmpName : tableName;
 
+            string tableName = EmpName;
             string modeOption = tglMode.Value ? "Trans" : "Aging";
 
             // Gather filters
-            string insurance = txtInsurance.Text.Trim();
-            string patientName = txtPatientName.Text.Trim();
-            string keyword = txtSearch.Text.Trim();
-            string patientType = cmbPatientType.Text.Trim();
-            string provider = cmbAllProvider.Text.Trim();
+				string insurance = txtInsurance.Text.Trim();
+				string patientName = txtPatientName.Text.Trim();
+				string keyword = txtSearch.Text.Trim();
+				string patientType = cmbPatientType.Text.Trim();
+				string provider = cmbAllProvider.Text.Trim();
 
             // FE Output vars
             DataTable notesTable;
@@ -1940,12 +1945,14 @@ namespace PCMS_Lipa_General_Tool__WinForm_
                 dgallNotesView.DataSource = notesTable;
                
 
+                // Format DOB if exists
                 if (dgallNotesView.Columns.Contains("DOB"))
                 {
                     dgallNotesView.Columns["DOB"].FormatString = "{0:MM/dd/yyyy}";
                     dgallNotesView.Columns["DOB"].FormatInfo = CultureInfo.InvariantCulture;
                 }
 
+                // Format Last Visit if Aging Mode
                 if (modeOption == "Aging" && dgallNotesView.Columns.Contains("Last Visit"))
                 {
                     dgallNotesView.Columns["Last Visit"].FormatString = "{0:MM/dd/yyyy}";
@@ -1957,6 +1964,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
             }
             catch (SqlException sqlEx)
             {
+                RadMessageBox.Show("Database error occurred while retrieving notes.", "Database Error", MessageBoxButtons.OK, RadMessageIcon.Info);
                 notif.LogError("FE_LoadAllNotesPerProvider_SQL", EmpName, "NotesView", "N/A", sqlEx);
                 RadMessageBox.Show("A database error occurred while retrieving notes.", "Database Error", MessageBoxButtons.OK, RadMessageIcon.Info);
                 dgallNotesView.DataSource = null;
@@ -1966,6 +1974,7 @@ namespace PCMS_Lipa_General_Tool__WinForm_
             {
                 notif.LogError("FE_LoadAllNotesPerProvider", EmpName, "NotesView", "N/A", ex);
                 RadMessageBox.Show("An unexpected error occurred.", "System Error", MessageBoxButtons.OK, RadMessageIcon.Info);
+                notif.LogError("FE_LoadAllNotesPerProvider", EmpName, "NotesView", "N/A", ex);
                 dgallNotesView.DataSource = null;
                 lblresultCount.Text = "No notes loaded.";
             }

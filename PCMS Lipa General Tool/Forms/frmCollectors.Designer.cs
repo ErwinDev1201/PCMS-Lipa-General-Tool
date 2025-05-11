@@ -1669,6 +1669,7 @@
 		private Telerik.WinControls.Themes.DesertTheme desertTheme1;
 		private Telerik.WinControls.UI.RadMenuItem mnuAIAssist;
 		private Telerik.WinControls.UI.RadMenuItem mnuITHelp;
+		private Telerik.WinControls.UI.RadMenu radMenu1;
 		private Telerik.WinControls.UI.RadPageViewPage pgAllNotes;
 		private Telerik.WinControls.UI.RadButton btnExportExcel;
 		private Telerik.WinControls.UI.RadLabel lblresultCount;
